@@ -2,15 +2,16 @@ import pandas as pd
 import numpy as np
 from scipy.stats import poisson
 import requests
+from datetime import datetime
 
-# 1. Credenciales Listas
+# 1. Tus Credenciales
 TOKEN_TELEGRAM = "8459090797:AAGFC4uO7gAi1oglp7uSEcpmWrJKWghl9sQ"
 CHAT_ID = "6738814628"
 API_KEY_ODDS = "87a957dd05a36893ddc6c0901b344cda"
 
-print("🐙 Buscando cuotas en Betano y calculando valor...")
+print("🐙 El Pulpo Paul ha despertado en la nube...")
 
-# Función de Poisson
+# 2. Función de Poisson para calcular probabilidades
 def calcular_poisson(equipo_local, equipo_visita, df):
     promedio_local = df['FTHG'].mean()
     promedio_visita = df['FTAG'].mean()
@@ -30,24 +31,32 @@ def calcular_poisson(equipo_local, equipo_visita, df):
             elif L == V: prob_empate += prob
             else: prob_visita += prob
             
-    return prob_local * 100, prob_empate * 100, prob_visita * 100
+    return prob_local * 100, prob_empate * 100, prob_visita * 100, lambda_local, lambda_visita
 
-# 2. Descargar cuotas de The Odds API (Betano)
+# 3. Descargar cuotas de Betano vía The Odds API
 url_odds = f"https://api.the-odds-api.com/v4/sports/soccer_epl/odds/?apiKey={API_KEY_ODDS}&regions=eu&markets=h2h&bookmakers=betano"
 respuesta_odds = requests.get(url_odds)
+
+# 4. Cargar base de datos histórica actualizada (Temporada actual)
+url_csv = "https://www.football-data.co.uk/mmz4281/2526/E0.csv"
+df_historico = pd.read_csv(url_csv)
+
+# Diccionario para emparejar nombres de equipos
+diccionario_equipos = {
+    "Arsenal": "Arsenal", 
+    "Manchester City": "Man City", 
+    "Liverpool": "Liverpool",
+    "Chelsea": "Chelsea",
+    "Manchester United": "Man United",
+    "Tottenham Hotspur": "Tottenham"
+}
+
+resumen_diario = "🐙 **Reporte Diario del Pulpo Paul** 🐙\n\n"
+partidos_analizados = 0
 
 if respuesta_odds.status_code == 200:
     partidos = respuesta_odds.json()
     
-    # 3. Descargar histórico para el modelo
-    url_csv = "https://www.football-data.co.uk/mmz4281/2324/E0.csv"
-    df = pd.read_csv(url_csv)
-    
-    # Mapeo simple de nombres (Para evitar errores si Betano llama "Man City" y la API "Manchester City")
-    diccionario_equipos = {"Arsenal": "Arsenal", "Manchester City": "Man City", "Liverpool": "Liverpool"}
-    
-    alertas_enviadas = 0
-
     for partido in partidos:
         equipo_L = partido['home_team']
         equipo_V = partido['away_team']
@@ -57,36 +66,32 @@ if respuesta_odds.status_code == 200:
             eq_V_stats = diccionario_equipos[equipo_V]
             
             try:
-                # Extraer cuotas específicas de Betano
                 cuotas = partido['bookmakers'][0]['markets'][0]['outcomes']
                 cuota_L = next(item['price'] for item in cuotas if item['name'] == equipo_L)
                 
-                # Cálculo matemático de Poisson
-                prob_L_modelo, prob_E, prob_V = calcular_poisson(eq_L_stats, eq_V_stats, df)
-                
-                # Calcular probabilidad implícita de Betano
+                # Cálculos
+                prob_L_modelo, prob_E, prob_V, lam_L, lam_V = calcular_poisson(eq_L_stats, eq_V_stats, df_historico)
                 prob_L_betano = (1 / cuota_L) * 100
                 
-                # EL FILTRO DE VALOR: Tu predicción > Predicción de Betano
+                resumen_diario += f"⚽️ {equipo_L} vs {equipo_V}\n"
+                resumen_diario += f"🏠 Mi modelo (Local): {prob_L_modelo:.1f}% | Betano: {prob_L_betano:.1f}% (Cuota {cuota_L})\n"
+                
                 if prob_L_modelo > prob_L_betano:
                     ventaja = prob_L_modelo - prob_L_betano
-                    
-                    mensaje = (
-                        f"🚨 **ALERTA DE VALOR (BETANO)** 🚨\n\n"
-                        f"⚽️ {equipo_L} vs {equipo_V}\n\n"
-                        f"📊 **Análisis Local ({equipo_L}):**\n"
-                        f"🐙 Prob. Pulpo Paul: {prob_L_modelo:.1f}%\n"
-                        f"🏦 Prob. Betano: {prob_L_betano:.1f}% (Cuota {cuota_L})\n"
-                        f"🔥 **Ventaja Matemática (Edge): +{ventaja:.1f}%**"
-                    )
-                    
-                    requests.post(f"https://api.telegram.org/bot{TOKEN_TELEGRAM}/sendMessage", data={"chat_id": CHAT_ID, "text": mensaje, "parse_mode": "Markdown"})
-                    alertas_enviadas += 1
-            except Exception as e:
-                # Si Betano no ha publicado cuotas aún para ese partido
+                    resumen_diario += f"🔥 ¡VALUE BET DETECTADA! Ventaja: +{ventaja:.1f}%\n"
+                
+                resumen_diario += "-------------------\n"
+                partidos_analizados += 1
+            except Exception:
                 pass
 
-    if alertas_enviadas == 0:
-        print("🐙 El Pulpo analizó Betano. No hay apuestas de valor en este momento.")
+    if partidos_analizados > 0:
+        resumen_diario += f"\n📅 Analizado el {datetime.now().strftime('%d-%m-%Y')} a las 08:00 AM."
+    else:
+        resumen_diario = "🐙 El Pulpo revisó Betano hoy, pero no hay partidos de la Premier listos para analizar en este momento."
+
+    # Enviar reporte consolidado a Telegram
+    requests.post(f"https://api.telegram.org/bot{TOKEN_TELEGRAM}/sendMessage", data={"chat_id": CHAT_ID, "text": resumen_diario, "parse_mode": "Markdown"})
+    print("✅ ¡Reporte automatizado enviado con éxito a Telegram!")
 else:
-    print("❌ Error conectando con The Odds API. Revisa tu conexión.")
+    print("❌ Error al conectar con The Odds API.")
