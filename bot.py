@@ -1,97 +1,92 @@
-import pandas as pd
+import os
 import numpy as np
+import pandas as pd
 from scipy.stats import poisson
-import requests
-from datetime import datetime
 
-# 1. Tus Credenciales
-TOKEN_TELEGRAM = "8459090797:AAGFC4uO7gAi1oglp7uSEcpmWrJKWghl9sQ"
-CHAT_ID = "6738814628"
-API_KEY_ODDS = "87a957dd05a36893ddc6c0901b344cda"
+# 1. Cargar el histórico maestro global
+archivo_historico = "historico_maestro_global.csv"
 
-print("🐙 El Pulpo Paul ha despertado en la nube...")
+if not os.path.exists(archivo_historico):
+    print(f"⚠️ No se encuentra el archivo {archivo_historico}. Asegúrate de subirlo a la misma carpeta en GitHub.")
+    exit()
 
-# 2. Función de Poisson para calcular probabilidades
-def calcular_poisson(equipo_local, equipo_visita, df):
-    promedio_local = df['FTHG'].mean()
-    promedio_visita = df['FTAG'].mean()
-    fuerza_ataque_local = (df[df['HomeTeam'] == equipo_local]['FTHG'].mean()) / promedio_local
-    fuerza_defensa_local = (df[df['HomeTeam'] == equipo_local]['FTAG'].mean()) / promedio_visita
-    fuerza_ataque_visita = (df[df['AwayTeam'] == equipo_visita]['FTAG'].mean()) / promedio_visita
-    fuerza_defensa_visita = (df[df['AwayTeam'] == equipo_visita]['FTHG'].mean()) / promedio_local
-    
-    lambda_local = fuerza_ataque_local * fuerza_defensa_visita * promedio_local
-    lambda_visita = fuerza_ataque_visita * fuerza_defensa_local * promedio_visita
-    
-    prob_local, prob_empate, prob_visita = 0, 0, 0
-    for L in range(6):
-        for V in range(6):
-            prob = poisson.pmf(L, lambda_local) * poisson.pmf(V, lambda_visita)
-            if L > V: prob_local += prob
-            elif L == V: prob_empate += prob
-            else: prob_visita += prob
-            
-    return prob_local * 100, prob_empate * 100, prob_visita * 100, lambda_local, lambda_visita
+df = pd.read_csv(archivo_historico)
+df["Date"] = pd.to_datetime(df["Date"], errors="coerce")
 
-# 3. Descargar cuotas de Betano vía The Odds API
-url_odds = f"https://api.the-odds-api.com/v4/sports/soccer_epl/odds/?apiKey={API_KEY_ODDS}&regions=eu&markets=h2h&bookmakers=betano"
-respuesta_odds = requests.get(url_odds)
+# 2. Calcular los promedios globales de la liga/torneo para el modelo de Poisson
+goles_local_global = df["FTHG"].mean()
+goles_visita_global = df["FTAG"].mean()
 
-# 4. Cargar base de datos histórica actualizada (Temporada actual)
-url_csv = "https://www.football-data.co.uk/mmz4281/2526/E0.csv"
-df_historico = pd.read_csv(url_csv)
+print(f"📊 Promedio general de goles local: {goles_local_global:.2f}")
+print(f"📊 Promedio general de goles visita: {goles_visita_global:.2f}")
 
-# Diccionario para emparejar nombres de equipos
-diccionario_equipos = {
-    "Arsenal": "Arsenal", 
-    "Manchester City": "Man City", 
-    "Liverpool": "Liverpool",
-    "Chelsea": "Chelsea",
-    "Manchester United": "Man United",
-    "Tottenham Hotspur": "Tottenham"
-}
 
-resumen_diario = "🐙 **Reporte Diario del Pulpo Paul** 🐙\n\n"
-partidos_analizados = 0
+# 3. Función para calcular la fuerza de ataque y defensa de un equipo
+def obtener_fuerza_equipo(df, equipo):
+  # Partidos como local
+  casa = df[df["HomeTeam"] == equipo]
+  goles_a_favor_casa = casa["FTHG"].mean() if len(casa) > 0 else goles_local_global
+  goles_en_contra_casa = (
+      casa["FTAG"].mean() if len(casa) > 0 else goles_visita_global
+  )
 
-if respuesta_odds.status_code == 200:
-    partidos = respuesta_odds.json()
-    
-    for partido in partidos:
-        equipo_L = partido['home_team']
-        equipo_V = partido['away_team']
-        
-        if equipo_L in diccionario_equipos and equipo_V in diccionario_equipos:
-            eq_L_stats = diccionario_equipos[equipo_L]
-            eq_V_stats = diccionario_equipos[equipo_V]
-            
-            try:
-                cuotas = partido['bookmakers'][0]['markets'][0]['outcomes']
-                cuota_L = next(item['price'] for item in cuotas if item['name'] == equipo_L)
-                
-                # Cálculos
-                prob_L_modelo, prob_E, prob_V, lam_L, lam_V = calcular_poisson(eq_L_stats, eq_V_stats, df_historico)
-                prob_L_betano = (1 / cuota_L) * 100
-                
-                resumen_diario += f"⚽️ {equipo_L} vs {equipo_V}\n"
-                resumen_diario += f"🏠 Mi modelo (Local): {prob_L_modelo:.1f}% | Betano: {prob_L_betano:.1f}% (Cuota {cuota_L})\n"
-                
-                if prob_L_modelo > prob_L_betano:
-                    ventaja = prob_L_modelo - prob_L_betano
-                    resumen_diario += f"🔥 ¡VALUE BET DETECTADA! Ventaja: +{ventaja:.1f}%\n"
-                
-                resumen_diario += "-------------------\n"
-                partidos_analizados += 1
-            except Exception:
-                pass
+  # Partidos como visitante
+  fuera = df[df["AwayTeam"] == equipo]
+  goles_a_favor_fuera = (
+      fuera["FTAG"].mean() if len(fuera) > 0 else goles_visita_global
+  )
+  goles_en_contra_fuera = (
+      fuera["FTHG"].mean() if len(fuera) > 0 else goles_local_global
+  )
 
-    if partidos_analizados > 0:
-        resumen_diario += f"\n📅 Analizado el {datetime.now().strftime('%d-%m-%Y')} a las 08:00 AM."
-    else:
-        resumen_diario = "🐙 El Pulpo revisó Betano hoy, pero no hay partidos de la Premier listos para analizar en este momento."
+  # Índices de fuerza relativos al promedio global
+  ataque = (
+      (goles_a_favor_casa + goles_a_favor_fuera) / 2
+  ) / goles_local_global
+  defensa = (
+      (goles_en_contra_casa + goles_en_contra_fuera) / 2
+  ) / goles_visita_global
 
-    # Enviar reporte consolidado a Telegram
-    requests.post(f"https://api.telegram.org/bot{TOKEN_TELEGRAM}/sendMessage", data={"chat_id": CHAT_ID, "text": resumen_diario, "parse_mode": "Markdown"})
-    print("✅ ¡Reporte automatizado enviado con éxito a Telegram!")
-else:
-    print("❌ Error al conectar con The Odds API.")
+  return ataque, defensa
+
+
+# 4. Motor de predicción con Distribución de Poisson
+def predecir_partido(df, local, visita, max_goles=5):
+  atq_l, def_v = obtener_fuerza_equipo(df, local)
+  atq_v, def_l = obtener_fuerza_equipo(df, visita)
+
+  # Goles esperados (Expected Goals - xG)
+  lambda_local = atq_l * def_v * goles_local_global
+  lambda_visita = atq_v * def_l * goles_visita_global
+
+  # Matriz de probabilidades de goles
+  matriz_prob = np.outer(
+      poisson.pmf(np.arange(max_goles + 1), lambda_local),
+      poisson.pmf(np.arange(max_goles + 1), lambda_visita),
+  )
+
+  prob_local_gana = np.sum(np.tril(matriz_prob, -1))
+  prob_empate = np.sum(np.diag(matriz_prob))
+  prob_visita_gana = np.sum(np.triu(matriz_prob, 1))
+
+  # Probabilidad de Ambos Anotan (BTTS) y Más de 2.5 goles
+  prob_ambos_anotan = (1 - poisson.pmf(0, lambda_local)) * (
+      1 - poisson.pmf(0, lambda_visita)
+  )
+  prob_mas_2_5 = 1 - np.sum(matriz_prob[:3, :3])  # suma de estados con < 3 goles
+
+  print(f"\n⚽ ANÁLISIS: {local} vs {visita}")
+  print(f"   - Goles esperados xG: {local} ({lambda_local:.2f}) - {visita} ({lambda_visita:.2f})")
+  print(f"   - Prob. Victoria {local}: {prob_local_gana*100:.1f}%")
+  print(f"   - Prob. Empate: {prob_empate*100:.1f}%")
+  print(f"   - Prob. Victoria {visita}: {prob_visita_gana*100:.1f}%")
+  print(f"   - Prob. Ambos Anotan (BTTS): {prob_ambos_anotan*100:.1f}%")
+  print(f"   - Prob. Más de 2.5 Goles: {prob_mas_2_5*100:.1f}%")
+
+
+# Ejemplo de prueba manual con el histórico cargado (puedes cambiar los equipos según los partidos de hoy)
+# Si es una selección del Mundial (ej. Noruega vs Inglaterra), asegúrate de que los nombres coincidan con los de la base de selecciones.
+try:
+  predecir_partido(df, "Norway", "England")
+except Exception as e:
+  print(f"⚠️ Nota de ejecución de ejemplo: {e}")
