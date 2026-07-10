@@ -1,0 +1,26 @@
+name: Ejecutar Pulpo Paul Diario
+
+on:
+  schedule:
+    # Se ejecuta todos los días a las 12:00 PM UTC (8:00 AM hora de Chile)
+    - cron: '0 12 * * *'
+  workflow_dispatch: # Esto permite ejecutarlo manualmente con un botón
+
+jobs:
+  analizar-cuotas:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v3
+
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Instalar librerías necesarias
+        run: pip install -r requirements.txt
+
+      - name: Ejecutar el bot
+        run: python bot.py
