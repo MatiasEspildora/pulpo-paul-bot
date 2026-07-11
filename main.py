@@ -66,13 +66,12 @@ def normalizar_equipo(nombre, master_league_id, aliases_data, equipos_historicos
             
     return nombre
 
-def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_master, statuses, aliases, unmapped_log):
-    """Actualiza o inserta resultados finalizados filtrando por ligas mapeadas."""
+def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_master, statuses, aliases_data, unmapped_log):
+    """Actualiza o inserta resultados usando los nombres exactos de la cabecera histórica."""
     actualizados = 0
     agregados = 0
     equipos_historicos = set(df_hist["HomeTeam"].dropna().unique()).union(set(df_hist["AwayTeam"].dropna().unique()))
     
-    # Convertir a strings por seguridad al buscar en diccionarios JSON
     ligas_permitidas = list(api_to_master.keys())
     
     for match in partidos_lista:
@@ -80,15 +79,14 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_m
         
         if liga_id_raw in ligas_permitidas:
             status_short = match["fixture"]["status"]["short"]
-            master_league_id = api_to_master[liga_id_raw] # Ej: ARG_PB_METRO
+            master_league_id = api_to_master[liga_id_raw]
             
             if status_short in statuses["finished"]:
                 h_team_raw = match["teams"]["home"]["name"]
                 a_team_raw = match["teams"]["away"]["name"]
                 
-                # Pasamos el master_league_id a la función normalizadora
-                h_team = normalizar_equipo(h_team_raw, master_league_id, aliases, equipos_historicos, unmapped_log)
-                a_team = normalizar_equipo(a_team_raw, master_league_id, aliases, equipos_historicos, unmapped_log)
+                h_team = normalizar_equipo(h_team_raw, master_league_id, aliases_data, equipos_historicos, unmapped_log)
+                a_team = normalizar_equipo(a_team_raw, master_league_id, aliases_data, equipos_historicos, unmapped_log)
                 
                 h_score = match["goals"]["home"]
                 a_score = match["goals"]["away"]
