@@ -1,5 +1,5 @@
 import numpy as np
-import pandas as pd  # <--- ESTA LÍNEA ES LA QUE FALTA
+import pandas as pd
 from scipy.stats import poisson
 
 class MatchAnalyzer:
@@ -7,46 +7,41 @@ class MatchAnalyzer:
         self.df = df
         self.prom_goles_l = df["FTHG"].mean()
         self.prom_goles_v = df["FTAG"].mean()
-        # Cálculo seguro de promedios para evitar NaN globales
-        self.prom_corners = (df["HC"].mean() + df["AC"].mean()) / 2
-        self.prom_tarjetas = (df["HY"].mean() + df["AY"].mean()) / 2
-        self.prom_remates = (df["HS"].mean() + df["AS"].mean()) / 2
 
     def get_projections(self, local, visita):
         casa = self.df[self.df["HomeTeam"] == local]
         fuera = self.df[self.df["AwayTeam"] == visita]
-        # Ajuste de fuerza (Atq/Def)
+
+        # Fuerzas relativas (más preciso que promedios simples)
         atq_l = (casa["FTHG"].mean() / self.prom_goles_l) if not casa.empty else 1.0
-        def_v = (fuera["FTHG"].mean() / self.prom_goles_l) if not fuera.empty else 1.0
-        
+        def_v = (fuera["FTAG"].mean() / self.prom_goles_v) if not fuera.empty else 1.0
+        atq_v = (fuera["FTAG"].mean() / self.prom_goles_v) if not fuera.empty else 1.0
+        def_l = (casa["FTHG"].mean() / self.prom_goles_l) if not casa.empty else 1.0
+
         lambda_l = atq_l * def_v * self.prom_goles_l
-        lambda_v = (visita_atq := (fuera["FTAG"].mean() / self.prom_goles_v)) * \
-                   (local_def := (casa["FTAG"].mean() / self.prom_goles_v)) * self.prom_goles_v
+        lambda_v = atq_v * def_l * self.prom_goles_v
 
-        # 1. Resultados exactos (Matriz 3x3)
-        scoreline = {}
-        for L in range(3):
-            for V in range(3):
-                prob = poisson.pmf(L, lambda_l) * poisson.pmf(V, lambda_v)
-                scoreline[f"{L}-{V}"] = prob
-
-        # 2. Métricas de volumen
-        # Asumimos que corners/tarjetas dependen del ritmo del partido (goles proyectados)
-        ritmo = (lambda_l + lambda_v) / (self.prom_goles_l + self.prom_goles_v)
-
-        # PROTECCIÓN: Si es NaN, usamos el promedio de la liga
-        c_l = casa["HC"].mean() if "HC" in casa.columns and not pd.isna(casa["HC"].mean()) else self.prom_corners/2
-        c_v = fuera["AC"].mean() if "AC" in fuera.columns and not pd.isna(fuera["AC"].mean()) else self.prom_corners/2
+        # Matriz de 6x6 goles (más amplio que 3x3)
+        matriz = np.array([[poisson.pmf(i, lambda_l) * poisson.pmf(j, lambda_v) 
+                           for j in range(6)] for i in range(6)])
         
+        # Mercados probabilísticos
+        prob_l = np.sum(np.tril(matriz, -1))
+        prob_e = np.sum(np.diag(matriz))
+        prob_v = np.sum(np.triu(matriz, 1))
+        btts = (1 - poisson.pmf(0, lambda_l)) * (1 - poisson.pmf(0, lambda_v))
+        
+        # Encontrar resultados exactos más probables
+        indices = np.unravel_index(np.argsort(matriz.ravel())[-3:][::-1], matriz.shape)
+        scores = [f"{i}-{j}" for i, j in zip(indices[0], indices[1])]
+
         return {
             "local": local, "visita": visita,
-            "score_exacto": dict(sorted(scoreline.items(), key=lambda x: x[1], reverse=True)[:3]),
-            "corners_proy": round(c_l + c_v, 1), # Suma simple o ajustada
-            "tarjetas_proy": round(self.prom_tarjetas, 1), # Ajustar según histórico
-            "remates_proy": round(self.prom_remates, 1),
-            "mejor_apuesta": f"Result: {max(scoreline, key=scoreline.get)}",
-            "score": max(scoreline.values())
+            "probs": [prob_l, prob_e, prob_v],
+            "btts": btts,
+            "scores": scores,
+            "score_rank": max(prob_l, prob_v, btts) # Para ranking
         }
-        
+
     def get_top_by_league(self, projections, n=3):
-        return sorted(projections, key=lambda x: x['score'], reverse=True)[:n]
+        return sorted(projections, key=lambda x: x['score_rank'], reverse=True)[:n]
