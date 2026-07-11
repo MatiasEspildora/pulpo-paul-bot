@@ -36,11 +36,10 @@ def cargar_configuracion():
     return api_to_master, master_leagues_info, statuses, aliases_data
 
 def normalizar_equipo(nombre, master_league_id, aliases_data, equipos_historicos, unmapped_log):
-    """Homologa el equipo consultando primero conflictos de liga y luego el mapa global."""
+    """Homologa el equipo y omite la auditoría en ligas dinámicas como amistosos."""
     global_map = aliases_data.get("global_aliases", {})
     conflict_map = aliases_data.get("conflicting_aliases", {})
     
-    # 1. Revisar si pertenece a una liga con conflictos de nombres homónimos
     liga_conflicto = conflict_map.get(master_league_id, {})
     encontrado = False
     
@@ -50,7 +49,6 @@ def normalizar_equipo(nombre, master_league_id, aliases_data, equipos_historicos
             encontrado = True
             break
             
-    # 2. Si no es un conflicto, buscar en el diccionario global
     if not encontrado:
         for nombre_oficial, lista_variaciones in global_map.items():
             if nombre == nombre_oficial or nombre in lista_variaciones:
@@ -58,8 +56,10 @@ def normalizar_equipo(nombre, master_league_id, aliases_data, equipos_historicos
                 encontrado = True
                 break
     
-    # 3. Auditoría de huérfanos si no aparece en el histórico maestro
-    if nombre not in equipos_historicos and not encontrado:
+    # Omitir registro en log para amistosos u otros torneos abiertos donde los equipos rotan siempre
+    excluir_auditoria = master_league_id in ["WOR_FRIENDLIES_CLUBS", "WOR_FRIENDLY_INTERNATIONAL"]
+    
+    if nombre not in equipos_historicos and not encontrado and not excluir_auditoria:
         registro_log = {"team": nombre, "master_league": master_league_id}
         if registro_log not in unmapped_log:
             unmapped_log.append(registro_log)
