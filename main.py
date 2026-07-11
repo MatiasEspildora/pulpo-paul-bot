@@ -208,14 +208,14 @@ def main():
                     reporte_agrupado[liga_nombre] = []
                 reporte_agrupado[liga_nombre].append(proj)
 
-    # 4. Envío de reportes a Telegram con BANDERAS
+    # 4. Envío de reportes a Telegram con formato mejorado y validación de historial
     for liga, proyecciones in reporte_agrupado.items():
         if not proyecciones:
             continue
             
         top_3 = analyzer.get_top_by_league(proyecciones, n=3)
-        pais_liga = top_3[0]['pais'] # Sacamos el país de la primera proyección
-        bandera = BANDERAS.get(pais_liga, "🏴") # 🏴 por defecto si no lo encuentra en el diccionario
+        pais_liga = top_3[0].get('pais', 'World')
+        bandera = BANDERAS.get(pais_liga, "🏴")
         
         mensaje = f"🏆 {bandera} *TOP 3: {liga}*\n\n"
         
@@ -223,13 +223,22 @@ def main():
             s_l = analyzer.get_team_stats(p['local'])
             s_v = analyzer.get_team_stats(p['visita'])
             
-            mensaje += (f"🕒 Hora: `{p['hora']}` | ⚽ *{p['local']}* vs *{p['visita']}*\n"
-                        f"📊 Probabilidades: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
-                        f"🎯 Ambos anotan: {p['btts']:.0%} | Marcadores: {', '.join(p['scores'])}\n"
-                        f"📐 *Promedios últimos 5 partidos (Local | Visita):*\n"
-                        f"  🚩 Córners: `{s_l['corners']:.0f}` | `{s_v['corners']:.0f}`\n"
-                        f"  🟨 Tarjetas: `{s_l['tarjetas']:.0f}` | `{s_v['tarjetas']:.0f}`\n"
-                        f"  🥅 Remates: `{s_l['remates']:.0f}` | `{s_v['remates']:.0f}`\n\n")
+            # Cabecera con Hora y Equipos debajo ordenados claramente
+            mensaje += f"🕒 `{p['hora']}`\n⚽ *{p['local']}* vs *{p['visita']}*\n"
+            mensaje += (f"📊 Probabilidades: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
+                        f"🎯 Ambos anotan: {p['btts']:.0%} | Marcadores: {', '.join(p['scores'])}\n")
+            
+            # Validar si realmente tenemos historial registrado para ambos equipos
+            count_l = s_l.get('count', 0) if isinstance(s_l, dict) else 0
+            count_v = s_v.get('count', 0) if isinstance(s_v, dict) else 0
+            
+            if count_l > 0 and count_v > 0:
+                mensaje += (f"📐 *Promedios últimos partidos ({count_l}p | {count_v}p):*\n"
+                            f"  🚩 Córners: `{s_l['corners']:.0f}` | `{s_v['corners']:.0f}`\n"
+                            f"  🟨 Tarjetas: `{s_l['tarjetas']:.0f}` | `{s_v['tarjetas']:.0f}`\n"
+                            f"  🥅 Remates: `{s_l['remates']:.0f}` | `{s_v['remates']:.0f}`\n\n")
+            else:
+                mensaje += "⚠️ *Sin historial suficiente para promedios detallados.*\n\n"
         
         if TOKEN and CHAT_ID:
             requests.post(f"https://api.telegram.org/bot{TOKEN}/sendMessage", 
