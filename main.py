@@ -15,19 +15,26 @@ LIGAS_PERMITIDAS = [10, 242, 254, 292, 649, 660, 1031, 1232, 1, 2, 13, 39, 61, 7
 def main():
     df = pd.read_csv("historico_maestro_global.csv")
     analyzer = MatchAnalyzer(df)
-    api = FootballAPI(API_KEY)
     
     zona_chile = pytz.timezone('America/Santiago')
     fecha_hoy = datetime.now(zona_chile).strftime("%Y-%m-%d")
     fecha_str = datetime.now(zona_chile).strftime("%Y%m%d")
-    
-    if not os.path.exists("resultados"): os.makedirs("resultados")
-    
-    data = api.get_data("fixtures", {"date": fecha_hoy})
-    if not data: return
-    
-    with open(f"resultados/partidos_{fecha_str}.json", 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
+    archivo_local = f"resultados/partidos_{fecha_str}.json"
+
+    # CACHE: Si el archivo existe, no llamamos a la API
+    if os.path.exists(archivo_local):
+        print(f"📂 Usando archivo en caché: {archivo_local}")
+        with open(archivo_local, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    else:
+        print("🌐 Llamando a la API...")
+        api = FootballAPI(API_KEY)
+        data = api.get_data("fixtures", {"date": fecha_hoy})
+        if not data: return
+        
+        if not os.path.exists("resultados"): os.makedirs("resultados")
+        with open(archivo_local, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
     
     reporte_agrupado = {}
     for match in data.get("response", []):
