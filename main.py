@@ -24,32 +24,42 @@ def cargar_configuracion():
     """Carga de forma desacoplada los archivos de configuración."""
     with open("config/leagues.json", "r", encoding="utf-8") as f:
         config_leagues = json.load(f)
-        # Extraemos el mapeo de la API hacia el maestro
         api_to_master = config_leagues.get("api_football_to_master", {})
-        # También podemos extraer la data maestra si la necesitamos
         master_leagues_info = config_leagues.get("master_leagues", {})
         
     with open("config/statuses.json", "r", encoding="utf-8") as f:
         statuses = json.load(f)["active_providers"]["api_football"]
         
     with open("config/team_aliases.json", "r", encoding="utf-8") as f:
-        aliases = json.load(f)
+        aliases_data = json.load(f)
         
-    return api_to_master, master_leagues_info, statuses, aliases
+    return api_to_master, master_leagues_info, statuses, aliases_data
 
-def normalizar_equipo(nombre, master_league_id, aliases, equipos_historicos, unmapped_log):
-    """Homologa el nombre del equipo anidado por liga y registra los huérfanos."""
-    # Buscar dentro de la liga correspondiente
-    liga_aliases = aliases.get(master_league_id, {})
+def normalizar_equipo(nombre, master_league_id, aliases_data, equipos_historicos, unmapped_log):
+    """Homologa el equipo consultando primero conflictos de liga y luego el mapa global."""
+    global_map = aliases_data.get("global_aliases", {})
+    conflict_map = aliases_data.get("conflicting_aliases", {})
     
-    # Recorrer los alias para ver si el 'nombre' raw coincide con alguna variación
-    for nombre_oficial, lista_variaciones in liga_aliases.items():
+    # 1. Revisar si pertenece a una liga con conflictos de nombres homónimos
+    liga_conflicto = conflict_map.get(master_league_id, {})
+    encontrado = False
+    
+    for nombre_oficial, lista_variaciones in liga_conflicto.items():
         if nombre == nombre_oficial or nombre in lista_variaciones:
             nombre = nombre_oficial
+            encontrado = True
             break
+            
+    # 2. Si no es un conflicto, buscar en el diccionario global
+    if not encontrado:
+        for nombre_oficial, lista_variaciones in global_map.items():
+            if nombre == nombre_oficial or nombre in lista_variaciones:
+                nombre = nombre_oficial
+                encontrado = True
+                break
     
-    # Si no está en el histórico, lo registramos para auditoría con su liga
-    if nombre not in equipos_historicos:
+    # 3. Auditoría de huérfanos si no aparece en el histórico maestro
+    if nombre not in equipos_historicos and not encontrado:
         registro_log = {"team": nombre, "master_league": master_league_id}
         if registro_log not in unmapped_log:
             unmapped_log.append(registro_log)
