@@ -26,7 +26,7 @@ def enviar_mensaje_telegram(mensaje):
         print("⚠️ Faltan credenciales de Telegram (TOKEN o CHAT_ID).")
 
 def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer):
-    """Construye y envía el top de partidos por liga de manera limpia."""
+    """Construye y envía el top de partidos por liga con fecha y hora explícitas."""
     for liga, proyecciones in proyecciones_dict.items():
         if not proyecciones:
             continue
@@ -41,7 +41,8 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer):
         for p in top_items:
             s_l = analyzer.get_team_stats(p['local'])
             s_v = analyzer.get_team_stats(p['visita'])
-            mensaje += f"🕒 `{p['hora']}`\n⚽ *{p['local']}* vs *{p['visita']}*\n"
+            # Agregamos la fecha (fecha_str) y la hora (hora) de forma clara
+            mensaje += f"📅 `{p.get('fecha_str', '')}` 🕒 `{p['hora']}`\n⚽ *{p['local']}* vs *{p['visita']}*\n"
             mensaje += (f"📊 Probabilidades: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
                         f"🎯 Ambos anotan: {p['btts']:.0%} | Marcadores: {', '.join(p['scores'])}\n")
             
