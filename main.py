@@ -3,6 +3,7 @@ import pandas as pd
 from datetime import datetime
 import pytz
 import requests
+import json  # ¡Importante! Faltaba importar json
 from api_client import FootballAPI
 from analyzer import MatchAnalyzer
 
@@ -20,11 +21,20 @@ def main():
     
     # Fecha Chile
     zona_chile = pytz.timezone('America/Santiago')
-    fecha = datetime.now(zona_chile).strftime("%Y-%m-%d")
+    fecha_hoy = datetime.now(zona_chile).strftime("%Y-%m-%d")
+    fecha_str = datetime.now(zona_chile).strftime("%Y%m%d")
+    
+    # Asegurar carpeta de resultados
+    if not os.path.exists("resultados"):
+        os.makedirs("resultados")
     
     # 1. Obtener datos
-    data = api.get_data("fixtures", {"date": fecha})
+    data = api.get_data("fixtures", {"date": fecha_hoy})
     if not data: return
+    
+    # GUARDAR JSON (Aquí estaba la omisión)
+    with open(f"resultados/partidos_{fecha_str}.json", 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
     
     # 2. Procesar
     reporte_agrupado = {}
