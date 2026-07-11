@@ -1,56 +1,261 @@
 {
-    "api_football": {
-        "World Cup": 1,
-        "World Cup - Qualification": 2,
-        "Friendly International": 10,
-        "Premier League - Belarus": 116,
-        "1. Division - Belarus": 117,
-        "Primera B Metropolitana": 131,
-        "Super League - China": 169,
-        "Capital Territory NPL": 189,
-        "New South Wales NPL": 192,
-        "Victoria NPL": 195,
-        "Youth Championship - Russia": 238,
-        "Liga Pro": 242,
-        "Veikkausliiga": 244,
-        "Ykkönen": 245,
-        "Kakkonen - Lohko A": 247,
-        "Kakkonen - Lohko B": 248,
-        "Kakkonen - Lohko C": 249,
-        "Division Intermedia": 251,
-        "NWSL Women": 254,
-        "Primera B": 292,
-        "K League 2": 293,
-        "K3 League": 295,
-        "Meistriliiga": 329,
-        "Premier Division - Ireland": 357,
-        "First Division - Ireland": 358,
-        "1. Division - Kazakhstan": 388,
-        "Premier League - Lebanon": 390,
-        "Premier Soccer League - Zimbabwe": 401,
-        "Northern NSW NPL": 481,
-        "Queensland NPL": 482,
-        "Premier League - Kyrgyzstan": 569,
-        "Tasmania NPL": 648,
-        "Cup - Estonia": 657,
-        "Cup - Latvia": 658,
-        "WK-League": 660,
-        "Club Friendlies": 667,
-        "Friendly Clubs": 667,
-        "Queensland Premier League": 833,
-        "New South Wales NPL 2": 835,
-        "Victoria NPL 2": 836,
-        "Reserve League - Argentina": 906,
-        "UEFA U19 Championship - Women": 918,
-        "Torneo Promocional Amateur": 1067,
-        "Paulista - U20": 1086,
-        "Ykkösliiga": 1087,
-        "NNSW League 1": 1090,
-        "Tasmania Northern Championship": 1091,
-        "Tasmania Southern Championship": 1093,
-        "Mineiro U20": 1107,
-        "Cearense U20": 1112,
-        "Victoria Premier League 2": 1226,
-        "Copa De La Liga - Peru": 1232
+    "api_football_to_master": {
+        "116": "BEL_PREMIER_LEAGUE",
+        "117": "BEL_1_DIVISION",
+        "131": "ARG_PRIMERA_B_METROPOLITANA",
+        "169": "CHI_SUPER_LEAGUE",
+        "189": "AUS_CAPITAL_TERRITORY_NPL",
+        "192": "AUS_NEW_SOUTH_WALES_NPL",
+        "195": "AUS_VICTORIA_NPL",
+        "238": "RUS_YOUTH_CHAMPIONSHIP",
+        "244": "FIN_VEIKKAUSLIIGA",
+        "245": "FIN_YKKÖNEN",
+        "247": "FIN_KAKKONEN_LOHKO_A",
+        "248": "FIN_KAKKONEN_LOHKO_B",
+        "249": "FIN_KAKKONEN_LOHKO_C",
+        "251": "PAR_DIVISION_INTERMEDIA",
+        "293": "SOU_K_LEAGUE_2",
+        "295": "SOU_K3_LEAGUE",
+        "329": "EST_MEISTRILIIGA",
+        "357": "IRE_PREMIER_DIVISION",
+        "358": "IRE_FIRST_DIVISION",
+        "388": "KAZ_1_DIVISION",
+        "390": "LEB_PREMIER_LEAGUE",
+        "401": "ZIM_PREMIER_SOCCER_LEAGUE",
+        "481": "AUS_NORTHERN_NSW_NPL",
+        "482": "AUS_QUEENSLAND_NPL",
+        "569": "KYR_PREMIER_LEAGUE",
+        "648": "AUS_TASMANIA_NPL",
+        "657": "EST_CUP",
+        "658": "LAT_CUP",
+        "660": "SOU_WKLEAGUE",
+        "667": "WOR_FRIENDLIES_CLUBS",
+        "833": "AUS_QUEENSLAND_PREMIER_LEAGUE",
+        "835": "AUS_NEW_SOUTH_WALES_NPL_2",
+        "836": "AUS_VICTORIA_NPL_2",
+        "906": "ARG_RESERVE_LEAGUE",
+        "918": "WOR_UEFA_U19_CHAMPIONSHIP_WOMEN",
+        "1067": "ARG_TORNEO_PROMOCIONAL_AMATEUR",
+        "1086": "BRA_PAULISTA_U20",
+        "1087": "FIN_YKKÖSLIIGA",
+        "1090": "AUS_NNSW_LEAGUE_1",
+        "1091": "AUS_TASMANIA_NORTHERN_CHAMPIONSHIP",
+        "1093": "AUS_TASMANIA_SOUTHERN_CHAMPIONSHIP",
+        "1107": "BRA_MINEIRO_U20",
+        "1112": "BRA_CEARENSE_U20",
+        "1226": "AUS_VICTORIA_PREMIER_LEAGUE_2",
+        "1232": "PER_COPA_DE_LA_LIGA",
+        "1": "WOR_WORLD_CUP",
+        "2": "WOR_WORLD_CUP_QUALIFICATION",
+        "10": "WOR_FRIENDLY_INTERNATIONAL",
+        "242": "ECU_LIGA_PRO",
+        "254": "USA_NWSL_WOMEN",
+        "292": "CHI_PRIMERA_B"
+    },
+    "master_leagues": {
+        "BEL_PREMIER_LEAGUE": {
+            "name": "Premier League",
+            "country": "Belarus"
+        },
+        "BEL_1_DIVISION": {
+            "name": "1. Division",
+            "country": "Belarus"
+        },
+        "ARG_PRIMERA_B_METROPOLITANA": {
+            "name": "Primera B Metropolitana",
+            "country": "Argentina"
+        },
+        "CHI_SUPER_LEAGUE": {
+            "name": "Super League",
+            "country": "China"
+        },
+        "AUS_CAPITAL_TERRITORY_NPL": {
+            "name": "Capital Territory NPL",
+            "country": "Australia"
+        },
+        "AUS_NEW_SOUTH_WALES_NPL": {
+            "name": "New South Wales NPL",
+            "country": "Australia"
+        },
+        "AUS_VICTORIA_NPL": {
+            "name": "Victoria NPL",
+            "country": "Australia"
+        },
+        "RUS_YOUTH_CHAMPIONSHIP": {
+            "name": "Youth Championship",
+            "country": "Russia"
+        },
+        "FIN_VEIKKAUSLIIGA": {
+            "name": "Veikkausliiga",
+            "country": "Finland"
+        },
+        "FIN_YKKÖNEN": {
+            "name": "Ykkönen",
+            "country": "Finland"
+        },
+        "FIN_KAKKONEN_LOHKO_A": {
+            "name": "Kakkonen - Lohko A",
+            "country": "Finland"
+        },
+        "FIN_KAKKONEN_LOHKO_B": {
+            "name": "Kakkonen - Lohko B",
+            "country": "Finland"
+        },
+        "FIN_KAKKONEN_LOHKO_C": {
+            "name": "Kakkonen - Lohko C",
+            "country": "Finland"
+        },
+        "PAR_DIVISION_INTERMEDIA": {
+            "name": "Division Intermedia",
+            "country": "Paraguay"
+        },
+        "SOU_K_LEAGUE_2": {
+            "name": "K League 2",
+            "country": "South-Korea"
+        },
+        "SOU_K3_LEAGUE": {
+            "name": "K3 League",
+            "country": "South-Korea"
+        },
+        "EST_MEISTRILIIGA": {
+            "name": "Meistriliiga",
+            "country": "Estonia"
+        },
+        "IRE_PREMIER_DIVISION": {
+            "name": "Premier Division",
+            "country": "Ireland"
+        },
+        "IRE_FIRST_DIVISION": {
+            "name": "First Division",
+            "country": "Ireland"
+        },
+        "KAZ_1_DIVISION": {
+            "name": "1. Division",
+            "country": "Kazakhstan"
+        },
+        "LEB_PREMIER_LEAGUE": {
+            "name": "Premier League",
+            "country": "Lebanon"
+        },
+        "ZIM_PREMIER_SOCCER_LEAGUE": {
+            "name": "Premier Soccer League",
+            "country": "Zimbabwe"
+        },
+        "AUS_NORTHERN_NSW_NPL": {
+            "name": "Northern NSW NPL",
+            "country": "Australia"
+        },
+        "AUS_QUEENSLAND_NPL": {
+            "name": "Queensland NPL",
+            "country": "Australia"
+        },
+        "KYR_PREMIER_LEAGUE": {
+            "name": "Premier League",
+            "country": "Kyrgyzstan"
+        },
+        "AUS_TASMANIA_NPL": {
+            "name": "Tasmania NPL",
+            "country": "Australia"
+        },
+        "EST_CUP": {
+            "name": "Cup",
+            "country": "Estonia"
+        },
+        "LAT_CUP": {
+            "name": "Cup",
+            "country": "Latvia"
+        },
+        "SOU_WKLEAGUE": {
+            "name": "WK-League",
+            "country": "South-Korea"
+        },
+        "WOR_FRIENDLIES_CLUBS": {
+            "name": "Friendlies Clubs",
+            "country": "World"
+        },
+        "AUS_QUEENSLAND_PREMIER_LEAGUE": {
+            "name": "Queensland Premier League",
+            "country": "Australia"
+        },
+        "AUS_NEW_SOUTH_WALES_NPL_2": {
+            "name": "New South Wales NPL 2",
+            "country": "Australia"
+        },
+        "AUS_VICTORIA_NPL_2": {
+            "name": "Victoria NPL 2",
+            "country": "Australia"
+        },
+        "ARG_RESERVE_LEAGUE": {
+            "name": "Reserve League",
+            "country": "Argentina"
+        },
+        "WOR_UEFA_U19_CHAMPIONSHIP_WOMEN": {
+            "name": "UEFA U19 Championship - Women",
+            "country": "World"
+        },
+        "ARG_TORNEO_PROMOCIONAL_AMATEUR": {
+            "name": "Torneo Promocional Amateur",
+            "country": "Argentina"
+        },
+        "BRA_PAULISTA_U20": {
+            "name": "Paulista - U20",
+            "country": "Brazil"
+        },
+        "FIN_YKKÖSLIIGA": {
+            "name": "Ykkösliiga",
+            "country": "Finland"
+        },
+        "AUS_NNSW_LEAGUE_1": {
+            "name": "NNSW League 1",
+            "country": "Australia"
+        },
+        "AUS_TASMANIA_NORTHERN_CHAMPIONSHIP": {
+            "name": "Tasmania Northern Championship",
+            "country": "Australia"
+        },
+        "AUS_TASMANIA_SOUTHERN_CHAMPIONSHIP": {
+            "name": "Tasmania Southern Championship",
+            "country": "Australia"
+        },
+        "BRA_MINEIRO_U20": {
+            "name": "Mineiro U20",
+            "country": "Brazil"
+        },
+        "BRA_CEARENSE_U20": {
+            "name": "Cearense U20",
+            "country": "Brazil"
+        },
+        "AUS_VICTORIA_PREMIER_LEAGUE_2": {
+            "name": "Victoria Premier League 2",
+            "country": "Australia"
+        },
+        "PER_COPA_DE_LA_LIGA": {
+            "name": "Copa De La Liga",
+            "country": "Peru"
+        },
+        "WOR_WORLD_CUP": {
+            "name": "World Cup",
+            "country": "World"
+        },
+        "WOR_WORLD_CUP_QUALIFICATION": {
+            "name": "World Cup - Qualification",
+            "country": "World"
+        },
+        "WOR_FRIENDLY_INTERNATIONAL": {
+            "name": "Friendly International",
+            "country": "World"
+        },
+        "ECU_LIGA_PRO": {
+            "name": "Liga Pro",
+            "country": "Ecuador"
+        },
+        "USA_NWSL_WOMEN": {
+            "name": "NWSL Women",
+            "country": "USA"
+        },
+        "CHI_PRIMERA_B": {
+            "name": "Primera B",
+            "country": "Chile"
+        }
     }
 }
