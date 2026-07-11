@@ -26,7 +26,7 @@ def enviar_mensaje_telegram(mensaje):
         print("⚠️ Faltan credenciales de Telegram (TOKEN o CHAT_ID).")
 
 def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer):
-    """Construye y envía el top de partidos por liga con fecha y hora explícitas."""
+    """Construye y envía el top de partidos por liga incluyendo bandera y nombre del país."""
     for liga, proyecciones in proyecciones_dict.items():
         if not proyecciones:
             continue
@@ -36,12 +36,12 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer):
         bandera = BANDERAS.get(pais_liga, "🏴")
         
         sufijo = f" ({titulo_bloque})" if titulo_bloque else ""
-        mensaje = f"🏆 {bandera} *TOP ({len(top_items)}): {liga}{sufijo}*\n\n"
+        # Incluimos explícitamente el nombre del país junto a la bandera
+        mensaje = f"🏆 {bandera} *{pais_liga}* - *TOP ({len(top_items)}): {liga}{sufijo}*\n\n"
         
         for p in top_items:
             s_l = analyzer.get_team_stats(p['local'])
             s_v = analyzer.get_team_stats(p['visita'])
-            # Agregamos la fecha (fecha_str) y la hora (hora) de forma clara
             mensaje += f"📅 `{p.get('fecha_str', '')}` 🕒 `{p['hora']}`\n⚽ *{p['local']}* vs *{p['visita']}*\n"
             mensaje += (f"📊 Probabilidades: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
                         f"🎯 Ambos anotan: {p['btts']:.0%} | Marcadores: {', '.join(p['scores'])}\n")
