@@ -1,12 +1,13 @@
 import numpy as np
+import pandas as pd  # <--- ESTA LÍNEA ES LA QUE FALTA
 from scipy.stats import poisson
 
 class MatchAnalyzer:
     def __init__(self, df):
         self.df = df
-        # Calculamos los promedios globales de la liga para normalizar
         self.prom_goles_l = df["FTHG"].mean()
         self.prom_goles_v = df["FTAG"].mean()
+        # Cálculo seguro de promedios para evitar NaN globales
         self.prom_corners = (df["HC"].mean() + df["AC"].mean()) / 2
         self.prom_tarjetas = (df["HY"].mean() + df["AY"].mean()) / 2
         self.prom_remates = (df["HS"].mean() + df["AS"].mean()) / 2
@@ -14,7 +15,6 @@ class MatchAnalyzer:
     def get_projections(self, local, visita):
         casa = self.df[self.df["HomeTeam"] == local]
         fuera = self.df[self.df["AwayTeam"] == visita]
-
         # Ajuste de fuerza (Atq/Def)
         atq_l = (casa["FTHG"].mean() / self.prom_goles_l) if not casa.empty else 1.0
         def_v = (fuera["FTHG"].mean() / self.prom_goles_l) if not fuera.empty else 1.0
