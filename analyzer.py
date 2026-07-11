@@ -39,12 +39,12 @@ class MatchAnalyzer:
                 tarjetas.append(ay + ar)
                 remates.append(row["AS"] if pd.notna(row["AS"]) else 0)
                 
-          return {
-              "corners": float(np.nanmean(corners)) if corners else 0,
-              "tarjetas": float(np.nanmean(tarjetas)) if tarjetas else 0,
-              "remates": float(np.nanmean(remates)) if remates else 0,
-              "count": count,
-          }
+        return {
+            "corners": float(np.nanmean(corners)) if corners else 0,
+            "tarjetas": float(np.nanmean(tarjetas)) if tarjetas else 0,
+            "remates": float(np.nanmean(remates)) if remates else 0,
+            "count": count,
+        }
 
     def get_projections(self, home_team, away_team):
         # Obtener estadísticas recientes
