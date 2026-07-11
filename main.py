@@ -21,17 +21,14 @@ def main():
     fecha_str = datetime.now(zona_chile).strftime("%Y%m%d")
     archivo_local = f"resultados/partidos_{fecha_str}.json"
 
-    # CACHE: Si el archivo existe, no llamamos a la API
+    # Caché
     if os.path.exists(archivo_local):
-        print(f"📂 Usando archivo en caché: {archivo_local}")
         with open(archivo_local, 'r', encoding='utf-8') as f:
             data = json.load(f)
     else:
-        print("🌐 Llamando a la API...")
         api = FootballAPI(API_KEY)
         data = api.get_data("fixtures", {"date": fecha_hoy})
         if not data: return
-        
         if not os.path.exists("resultados"): os.makedirs("resultados")
         with open(archivo_local, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
@@ -41,8 +38,10 @@ def main():
         liga_id = match["league"]["id"]
         if liga_id in LIGAS_PERMITIDAS:
             liga_nombre = match["league"]["name"]
-            # Analizamos con la nueva lógica de mercados y métricas
-            proj = analyzer.get_projections(match["teams"]["home"]["name"], match["teams"]["away"]["name"])
+            home_name = match["teams"]["home"]["name"]
+            away_name = match["teams"]["away"]["name"]
+            
+            proj = analyzer.get_projections(home_name, away_name)
             
             if liga_nombre not in reporte_agrupado: reporte_agrupado[liga_nombre] = []
             reporte_agrupado[liga_nombre].append(proj)
@@ -51,12 +50,15 @@ def main():
         top_3 = analyzer.get_top_by_league(proyecciones, n=3)
         mensaje = f"🏆 *TOP 3: {liga}*\n\n"
         for p in top_3:
-            # Mostramos el desglose de métricas que calculamos en analyzer.py
-            score_txt = ", ".join(p['score_exacto'].keys())
+            s_l = analyzer.get_team_stats(p['local'])
+            s_v = analyzer.get_team_stats(p['visita'])
+            
             mensaje += (f"⚽ {p['local']} vs {p['visita']}\n"
-                        f"🎯 {p['mejor_apuesta']}\n"
-                        f"📊 Scores probables: {score_txt}\n"
-                        f"📐 C:{p['corners_proy']} | T:{p['tarjetas_proy']} | R:{p['remates_proy']}\n\n")
+                        f"📊 L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
+                        f"🎯 BTTS: {p['btts']:.0%} | Scores: {', '.join(p['scores'])}\n"
+                        f"📐 Prom. L5: C:{s_l['corners']:.0f}|{s_v['corners']:.0f} "
+                        f"T:{s_l['tarjetas']:.0f}|{s_v['tarjetas']:.0f} "
+                        f"R:{s_l['remates']:.0f}|{s_v['remates']:.0f}\n\n")
         
         requests.post(f"https://api.telegram.org/bot{TOKEN}/sendMessage", 
                       data={"chat_id": CHAT_ID, "text": mensaje, "parse_mode": "Markdown"})
