@@ -178,7 +178,7 @@ def main():
     analyzer = MatchAnalyzer(df)
 
     if unmapped_teams:
-        with open("logs/unmapped_teams.json", "w", encoding="utf-8") as f:
+        with open(f"logs/unmapped_teams_{fecha_hoy_file}.json", "w", encoding="utf-8") as f:
             json.dump(unmapped_teams, f, ensure_ascii=False, indent=4)
         print(f"⚠️ Alerta: Se detectaron {len(unmapped_teams)} equipos sin mapear en las ligas seguidas.")
     else:
