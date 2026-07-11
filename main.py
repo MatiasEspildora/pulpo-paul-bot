@@ -13,6 +13,10 @@ API_KEY = os.environ.get("API_FOOTBALL_KEY")
 LIGAS_PERMITIDAS = [10, 242, 254, 292, 649, 660, 1031, 1232, 1, 2, 13, 39, 61, 78, 135, 140, 265, 667]
 
 def main():
+    if not os.path.exists("historico_maestro_global.csv"):
+        print("❌ No se encontró el archivo historico_maestro_global.csv en la ruta esperada.")
+        return
+
     df = pd.read_csv("historico_maestro_global.csv")
     analyzer = MatchAnalyzer(df)
     
@@ -26,10 +30,15 @@ def main():
         with open(archivo_local, 'r', encoding='utf-8') as f:
             data = json.load(f)
     else:
+        if not API_KEY:
+            print("⚠️ Falta la clave API_FOOTBALL_KEY en el entorno.")
+            return
         api = FootballAPI(API_KEY)
         data = api.get_data("fixtures", {"date": fecha_hoy})
-        if not data: return
-        if not os.path.exists("resultados"): os.makedirs("resultados")
+        if not data: 
+            return
+        if not os.path.exists("resultados"): 
+            os.makedirs("resultados")
         with open(archivo_local, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
     
@@ -43,7 +52,8 @@ def main():
             
             proj = analyzer.get_projections(home_name, away_name)
             
-            if liga_nombre not in reporte_agrupado: reporte_agrupado[liga_nombre] = []
+            if liga_nombre not in reporte_agrupado: 
+                reporte_agrupado[liga_nombre] = []
             reporte_agrupado[liga_nombre].append(proj)
             
     for liga, proyecciones in reporte_agrupado.items():
@@ -60,8 +70,11 @@ def main():
                         f"T:{s_l['tarjetas']:.0f}|{s_v['tarjetas']:.0f} "
                         f"R:{s_l['remates']:.0f}|{s_v['remates']:.0f}\n\n")
         
-        requests.post(f"https://api.telegram.org/bot{TOKEN}/sendMessage", 
-                      data={"chat_id": CHAT_ID, "text": mensaje, "parse_mode": "Markdown"})
+        if TOKEN and CHAT_ID:
+            requests.post(f"https://api.telegram.org/bot{TOKEN}/sendMessage", 
+                        data={"chat_id": CHAT_ID, "text": mensaje, "parse_mode": "Markdown"})
+        else:
+            print(f"⚠️ Faltan credenciales de Telegram para enviar el reporte de {liga}.")
 
 if __name__ == "__main__":
     main()
