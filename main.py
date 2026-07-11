@@ -119,6 +119,12 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_m
                     
     return df_hist
 
+def enviar_mensaje_telegram(mensaje):
+    """Función auxiliar para disparar mensajes a Telegram de forma limpia."""
+    if TOKEN and CHAT_ID:
+        requests.post(f"https://api.telegram.org/bot{TOKEN}/sendMessage", 
+                      data={"chat_id": CHAT_ID, "text": mensaje, "parse_mode": "Markdown"})
+
 def main():
     csv_path = "historico_maestro_global.csv"
     if not os.path.exists(csv_path):
@@ -128,7 +134,6 @@ def main():
     os.makedirs("logs", exist_ok=True)
     os.makedirs("resultados", exist_ok=True)
     
-    # 1. Cargar nueva estructura
     api_to_master, master_leagues_info, statuses_map, team_aliases = cargar_configuracion()
     ligas_permitidas = list(api_to_master.keys())
     
@@ -145,14 +150,19 @@ def main():
     
     unmapped_teams = []
     
+    # Manejo de ventana operativa de fechas (Ayer, Hoy y Proyección Anticipada)
     fecha_ayer_dt = now_chile - timedelta(days=1)
     fecha_ayer_str = fecha_ayer_dt.strftime("%Y-%m-%d")
     fecha_ayer_file = fecha_ayer_dt.strftime("%Y%m%d")
     
     fecha_hoy_str = now_chile.strftime("%Y-%m-%d")
     fecha_hoy_file = now_chile.strftime("%Y%m%d")
+
+    fecha_mañana_dt = now_chile + timedelta(days=1)
+    fecha_mañana_str = fecha_mañana_dt.strftime("%Y-%m-%d")
+    fecha_mañana_file = fecha_mañana_dt.strftime("%Y%m%d")
     
-    # 1. Procesamiento de Ayer
+    # 1. Procesamiento de Ayer (Cierre de antecedentes)
     print(f"🔄 [Ayer] Consultando fixtures de la fecha {fecha_ayer_str}...")
     data_ayer = api.get_data("fixtures", {"date": fecha_ayer_str, "timezone": "America/Santiago"})
     if data_ayer and data_ayer.get("response"):
@@ -160,7 +170,7 @@ def main():
             json.dump(data_ayer, f, ensure_ascii=False, indent=4)
         df = actualizar_maestro_con_partidos(df, data_ayer.get("response"), fecha_ayer_str, api_to_master, statuses_map, team_aliases, unmapped_teams)
 
-    # 2. Procesamiento de Hoy
+    # 2. Procesamiento de Hoy (Actualización del día en curso)
     archivo_hoy_local = f"resultados/partidos_{fecha_hoy_file}.json"
     if os.path.exists(archivo_hoy_local):
         with open(archivo_hoy_local, 'r', encoding='utf-8') as f:
@@ -172,6 +182,15 @@ def main():
                 json.dump(data_hoy, f, ensure_ascii=False, indent=4)
 
     df = actualizar_maestro_con_partidos(df, data_hoy.get("response", []), fecha_hoy_str, api_to_master, statuses_map, team_aliases, unmapped_teams)
+    
+    # 2.1 Carga anticipada de Mañana (Para capturar partidos de la madrugada próxima si corre tarde)
+    archivo_mañana_local = f"resultados/partidos_{fecha_mañana_file}.json"
+    if not os.path.exists(archivo_mañana_local):
+        data_mañana = api.get_data("fixtures", {"date": fecha_mañana_str, "timezone": "America/Santiago"})
+        if data_mañana:
+            with open(archivo_mañana_local, 'w', encoding='utf-8') as f:
+                json.dump(data_mañana, f, ensure_ascii=False, indent=4)
+    
     df.to_csv(csv_path, index=False)
     analyzer = MatchAnalyzer(df)
 
@@ -183,7 +202,7 @@ def main():
         if os.path.exists("logs/unmapped_teams.json"):
             os.remove("logs/unmapped_teams.json")
 
-    # 3. Proyecciones del día
+    # 3. Proyecciones agrupadas (Construcción con soporte de datos parciales)
     reporte_agrupado = {}
     equipos_historicos = set(df["HomeTeam"].dropna().unique()).union(set(df["AwayTeam"].dropna().unique()))
 
@@ -202,7 +221,7 @@ def main():
             
             if status_short in statuses_map["upcoming"]:
                 liga_nombre = match["league"]["name"]
-                pais = match["league"]["country"] # Obtenemos el país para la bandera
+                pais = match["league"]["country"]
                 
                 home_name = normalizar_equipo(match["teams"]["home"]["name"], master_league_id, team_aliases, equipos_historicos, unmapped_teams)
                 away_name = normalizar_equipo(match["teams"]["away"]["name"], master_league_id, team_aliases, equipos_historicos, unmapped_teams)
@@ -210,33 +229,36 @@ def main():
                 
                 proj = analyzer.get_projections(home_name, away_name)
                 proj['hora'] = hora_formateada
-                proj['pais'] = pais # Guardamos el país
+                proj['pais'] = pais
                 
                 if liga_nombre not in reporte_agrupado:
                     reporte_agrupado[liga_nombre] = []
                 reporte_agrupado[liga_nombre].append(proj)
 
-    # 4. Envío de reportes a Telegram con formato mejorado y validación de historial
+    # 4. Envío de reportes a Telegram con Delimitadores (FIN DIA / INICIO DIA) y Top Dinámico
+    # Marcador de Cierre de Jornada Actual
+    enviar_mensaje_telegram(f"🏁 *FIN DIA: {fecha_hoy_str}*")
+
     for liga, proyecciones in reporte_agrupado.items():
         if not proyecciones:
             continue
             
-        top_3 = analyzer.get_top_by_league(proyecciones, n=3)
-        pais_liga = top_3[0].get('pais', 'World')
+        # Tomar hasta 3 o los que estén disponibles sin romper si hay menos
+        limite_dinamico = min(len(proyecciones), 3)
+        top_items = analyzer.get_top_by_league(proyecciones, n=limite_dinamico)
+        pais_liga = top_items[0].get('pais', 'World') if top_items else 'World'
         bandera = BANDERAS.get(pais_liga, "🏴")
         
-        mensaje = f"🏆 {bandera} *TOP 3: {liga}*\n\n"
+        mensaje = f"🏆 {bandera} *TOP ({len(top_items)}): {liga}*\n\n"
         
-        for p in top_3:
+        for p in top_items:
             s_l = analyzer.get_team_stats(p['local'])
             s_v = analyzer.get_team_stats(p['visita'])
             
-            # Cabecera con Hora y Equipos debajo ordenados claramente
             mensaje += f"🕒 `{p['hora']}`\n⚽ *{p['local']}* vs *{p['visita']}*\n"
             mensaje += (f"📊 Probabilidades: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
                         f"🎯 Ambos anotan: {p['btts']:.0%} | Marcadores: {', '.join(p['scores'])}\n")
             
-            # Validar si realmente tenemos historial registrado para ambos equipos
             count_l = s_l.get('count', 0) if isinstance(s_l, dict) else 0
             count_v = s_v.get('count', 0) if isinstance(s_v, dict) else 0
             
@@ -248,12 +270,11 @@ def main():
             else:
                 mensaje += "⚠️ *Sin historial suficiente para promedios detallados.*\n\n"
         
-        if TOKEN and CHAT_ID:
-            requests.post(f"https://api.telegram.org/bot{TOKEN}/sendMessage", 
-                          data={"chat_id": CHAT_ID, "text": mensaje, "parse_mode": "Markdown"})
-            print(f"✅ Reporte enviado a Telegram para {liga}")
-        else:
-            print(f"⚠️ Faltan credenciales de Telegram para {liga}")
+        enviar_mensaje_telegram(mensaje)
+        print(f"✅ Reporte enviado a Telegram para {liga}")
+
+    # Marcador de Apertura de la Siguiente Jornada / Madrugada
+    enviar_mensaje_telegram(f"🚀 *INICIO DIA: {fecha_mañana_str} (Ventana Anticipada)*")
 
 if __name__ == "__main__":
     main()
