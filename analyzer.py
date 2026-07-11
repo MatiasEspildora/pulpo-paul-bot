@@ -10,39 +10,41 @@ class MatchAnalyzer:
 
     def get_team_stats(self, team_name):
         # Filtramos los últimos 5 partidos del equipo donde hubo resultado real
-        matches = self.df[(self.df['HomeTeam'] == team_name) | (self.df['AwayTeam'] == team_name)]
-        matches = matches.dropna(subset=['FTHG', 'FTAG'])
-        matches = matches.sort_values(by='Date', ascending=False)
+        matches = self.df[
+            (self.df["HomeTeam"] == team_name) | (self.df["AwayTeam"] == team_name)
+        ]
+        matches = matches.dropna(subset=["FTHG", "FTAG"])
+        matches = matches.sort_values(by="Date", ascending=False)
         recent = matches.head(5)
 
-        if recent.empty:
-            return {'corners': 0, 'tarjetas': 0, 'remates': 0}
-
+        count = len(recent)
+        if recent.empty or count == 0:
+            return {"corners": 0, "tarjetas": 0, "remates": 0, "count": 0}
+            
         corners = []
         tarjetas = []
         remates = []
-
+        
         for _, row in recent.iterrows():
-            if row['HomeTeam'] == team_name:
-                corners.append(row['HC'] if pd.notna(row['HC']) else 0)
-                # Suma de Amarillas (HY) + Rojas (HR) para el local
-                hy = row['HY'] if pd.notna(row['HY']) else 0
-                hr = row['HR'] if pd.notna(row['HR']) else 0
+            if row["HomeTeam"] == team_name:
+                corners.append(row["HC"] if pd.notna(row["HC"]) else 0)
+                hy = row["HY"] if pd.notna(row["HY"]) else 0
+                hr = row["HR"] if pd.notna(row["HR"]) else 0
                 tarjetas.append(hy + hr)
-                remates.append(row['HS'] if pd.notna(row['HS']) else 0)
+                remates.append(row["HS"] if pd.notna(row["HS"]) else 0)
             else:
-                corners.append(row['AC'] if pd.notna(row['AC']) else 0)
-                # Suma de Amarillas (AY) + Rojas (AR) para la visita
-                ay = row['AY'] if pd.notna(row['AY']) else 0
+                corners.append(row["AC"] if pd.notna(row["AC"]) else 0)
+                ay = row["AY"] if pd.notna(row["AY"]) else 0
                 ar = row['AR'] if pd.notna(row['AR']) else 0
                 tarjetas.append(ay + ar)
-                remates.append(row['AS'] if pd.notna(row['AS']) else 0)
-
-        return {
-            'corners': np.nanmean(corners) if corners else 0,
-            'tarjetas': np.nanmean(tarjetas) if tarjetas else 0,
-            'remates': np.nanmean(remates) if remates else 0
-        }
+                remates.append(row["AS"] if pd.notna(row["AS"]) else 0)
+                
+          return {
+              "corners": float(np.nanmean(corners)) if corners else 0,
+              "tarjetas": float(np.nanmean(tarjetas)) if tarjetas else 0,
+              "remates": float(np.nanmean(remates)) if remates else 0,
+              "count": count,
+          }
 
     def get_projections(self, home_team, away_team):
         # Obtener estadísticas recientes
