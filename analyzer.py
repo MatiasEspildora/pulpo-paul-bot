@@ -33,16 +33,20 @@ class MatchAnalyzer:
         # 2. Métricas de volumen
         # Asumimos que corners/tarjetas dependen del ritmo del partido (goles proyectados)
         ritmo = (lambda_l + lambda_v) / (self.prom_goles_l + self.prom_goles_v)
+
+        # PROTECCIÓN: Si es NaN, usamos el promedio de la liga
+        c_l = casa["HC"].mean() if "HC" in casa.columns and not pd.isna(casa["HC"].mean()) else self.prom_corners/2
+        c_v = fuera["AC"].mean() if "AC" in fuera.columns and not pd.isna(fuera["AC"].mean()) else self.prom_corners/2
         
         return {
             "local": local, "visita": visita,
             "score_exacto": dict(sorted(scoreline.items(), key=lambda x: x[1], reverse=True)[:3]),
-            "corners_proy": round(self.prom_corners * ritmo, 1),
-            "tarjetas_proy": round(self.prom_tarjetas * ritmo, 1),
-            "remates_proy": round(self.prom_remates * ritmo, 1),
+            "corners_proy": round(c_l + c_v, 1), # Suma simple o ajustada
+            "tarjetas_proy": round(self.prom_tarjetas, 1), # Ajustar según histórico
+            "remates_proy": round(self.prom_remates, 1),
             "mejor_apuesta": f"Result: {max(scoreline, key=scoreline.get)}",
-            "score": max(scoreline.values()) # Ranking por probabilidad
+            "score": max(scoreline.values())
         }
-
+        
     def get_top_by_league(self, projections, n=3):
         return sorted(projections, key=lambda x: x['score'], reverse=True)[:n]
