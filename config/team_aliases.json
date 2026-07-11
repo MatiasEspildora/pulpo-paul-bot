@@ -1,5 +1,5 @@
 {
-    "WOR_FRIENDLIES_CLUBS": {
+    "global_aliases": {
         "Arges Pitesti": [],
         "CSM Ramnicu Valcea": [],
         "Botev Vratsa": [],
@@ -36,56 +36,6 @@
         "Huddersfield": [],
         "Holstein Kiel": [],
         "Sonderjyske": [],
-        "Radomiak Radom": [],
-        "Dynamo Kyiv": [],
-        "FC Nordsjaelland": [],
-        "Hradec Králové": [],
-        "Osters IF": [],
-        "Lyngby": [],
-        "FC WIL 1900": [],
-        "FC Luzern": [],
-        "AFC Bournemouth U21": [],
-        "Worthing": [],
-        "Farul Constanta": [],
-        "RED Star FC 93": [],
-        "Laval": [],
-        "Veres Rivne": [],
-        "Kolos Kovalivka": [],
-        "Guingamp": [],
-        "Ried": [],
-        "Chornomorets": [],
-        "Inhulets": [],
-        "Plzen": [],
-        "BSC Young Boys": [],
-        "SV Sandhausen": [],
-        "1. FC Kaiserslautern": [],
-        "Legia Warszawa": [],
-        "AS Trencin": [],
-        "Stoke City": [],
-        "SC Braga": [],
-        "Kudrivka": [],
-        "Rebel": [],
-        "Karviná": [],
-        "Považská Bystrica": [],
-        "Austria Lustenau": [],
-        "FC Aarau": [],
-        "Gornik Zabrze": [],
-        "Yantra 2019": [],
-        "Fratria": [],
-        "FC Zurich": [],
-        "Sochaux": [],
-        "SKU Amstetten": [],
-        "Znicz Pruszków": [],
-        "Chojniczanka Chojnice": [],
-        "FC Voluntari": [],
-        "Francs Borains": [],
-        "Crossing Schaerbeek": [],
-        "Sturm Graz II": [],
-        "Beltinci": [],
-        "Sparta Katowice": [],
-        "Frýdek-Místek": [],
-        "Teuta Durrës": [],
-        "Hanácká": [],
         "Radnicki NIS": [],
         "Neftchi Baku": [],
         "SCR Altach": [],
@@ -172,7 +122,8 @@
             "Almere City FC"
         ],
         "Go Ahead Eagles": [
-            "GO Ahead Eagles"
+            "GO Ahead Eagles",
+            "GA Eagles"
         ],
         "FSV Mainz 05 II": [],
         "Vilzing": [],
@@ -181,10 +132,12 @@
             "Bristol Rovers"
         ],
         "St Johnstone": [
-            "ST Johnstone"
+            "ST Johnstone",
+            "Saint Johnstone"
         ],
         "RAAL La Louviere": [
-            "RAAL La Louvière"
+            "RAAL La Louvière",
+            "RAAL Louviere"
         ],
         "Sheffield United": [
             "Sheffield Utd"
@@ -192,9 +145,7 @@
         "Fenerbahce": [
             "Fenerbahçe"
         ],
-        "Flamengo": []
-    },
-    "AUS_VICTORIA_NPL": {
+        "Flamengo": [],
         "Green Gully": [],
         "Altona Magic": [],
         "Dandenong City": [],
@@ -204,15 +155,11 @@
         "Preston Lions": [],
         "Hume City": [],
         "Melbourne City II": [],
-        "Heidelberg United": []
-    },
-    "AUS_QUEENSLAND_NPL": {
+        "Heidelberg United": [],
         "Peninsula Power": [],
         "WDSC Wolves": [],
         "Brisbane Roar II": [],
-        "Rochedale Rovers": []
-    },
-    "AUS_VICTORIA_PREMIER_LEAGUE_2": {
+        "Rochedale Rovers": [],
         "Eastern Lions": [],
         "Werribee City": [],
         "Essendon Royals SC": [],
@@ -224,9 +171,7 @@
         "Bayside Argonauts": [],
         "Altona City": [],
         "Keilor Park": [],
-        "Malvern": []
-    },
-    "AUS_NEW_SOUTH_WALES_NPL_2": {
+        "Malvern": [],
         "Macarthur Rams": [],
         "Bankstown City Lions": [],
         "Northern Tigers": [],
@@ -238,9 +183,7 @@
         "Inter Lions": [],
         "Hills Brumbies": [],
         "Canterbury Bankstown": [],
-        "Prospect United": []
-    },
-    "RUS_YOUTH_CHAMPIONSHIP": {
+        "Prospect United": [],
         "Lokomotiv Moskva U19": [],
         "Akademiya Konoplev U20": [],
         "Almaz Antey U19": [],
@@ -249,26 +192,20 @@
         "Dinamo Moskva U19": [],
         "Chertanovo U20": [],
         "Krasnodar U19": [],
-        "CSKA Moskva U19": [],
+        "CSK Moskva U19": [],
         "Zenit U19": [],
         "Nizhny Novgorod U19": [],
         "Dynamo Makhachkala U19": [],
         "Fakel U19": [],
         "Ural U20": [],
         "Rodina Moscow U19": [],
-        "Rostov U19": []
-    },
-    "SOU_K3_LEAGUE": {
+        "Rostov U19": [],
         "Ulsan Citizen": [],
-        "Yeoju Sejong": []
-    },
-    "SOU_WKLEAGUE": {
+        "Yeoju Sejong": [],
         "Gumi Sportstoto W": [],
         "Boeun Sangmu W": [],
         "Seoul W": [],
-        "Suwon FMC W": []
-    },
-    "AUS_TASMANIA_NPL": {
+        "Suwon FMC W": [],
         "Glenorchy Knights": [],
         "Kingborough Lions": [],
         "Launceston United": [],
@@ -278,15 +215,11 @@
         "Clarence Zebras": [],
         "Launceston City": [],
         "Devonport City": [],
-        "South East Utd.": []
-    },
-    "SOU_K_LEAGUE_2": {
+        "South East Utd.": [],
         "Cheonan City": [],
         "Gimhae City": [],
         "Suwon City FC": [],
-        "Jeonnam Dragons": []
-    },
-    "AUS_VICTORIA_NPL_2": {
+        "Jeonnam Dragons": [],
         "Northcote City": [],
         "Melbourne Knights": [],
         "Langwarrin": [],
@@ -296,19 +229,13 @@
         "Port Melbourne": [],
         "North Sunshine Eagles": [],
         "Eltham Redbacks FC": [],
-        "North Geelong Warriors": []
-    },
-    "AUS_QUEENSLAND_PREMIER_LEAGUE": {
+        "North Geelong Warriors": [],
         "Holland Park Hawks": [],
         "North Star": [],
         "St George Willawong": [],
-        "Robina City": []
-    },
-    "CHI_SUPER_LEAGUE": {
+        "Robina City": [],
         "Shandong Luneng": [],
-        "Yunnan Yukun": []
-    },
-    "KAZ_1_DIVISION": {
+        "Yunnan Yukun": [],
         "Ekibastuz": [],
         "Sport Academy Kairat": [],
         "Kaspij Aktau 2": [],
@@ -316,17 +243,11 @@
         "Yelimay Semey 2": [],
         "Astana II": [],
         "Shakhter Karagandy": [],
-        "Turan Turkistan": []
-    },
-    "ZIM_PREMIER_SOCCER_LEAGUE": {
+        "Turan Turkistan": [],
         "Scotland Mabvuku": [],
-        "TelOne": []
-    },
-    "LEB_PREMIER_LEAGUE": {
+        "TelOne": [],
         "Racing": [],
-        "Tadamon Sour": []
-    },
-    "KYR_PREMIER_LEAGUE": {
+        "Tadamon Sour": [],
         "Alay": [],
         "Toktogul": [],
         "Asiagoal": [],
@@ -334,64 +255,35 @@
         "Ilbirs": [],
         "Ozgon": [],
         "Bishkek City": [],
-        "Muras United": []
-    },
-    "ARG_TORNEO_PROMOCIONAL_AMATEUR": {
+        "Muras United": [],
         "Nautico Hacoaj": [],
-        "Defensores Glew": []
-    },
-    "FIN_YKKÖNEN": {
+        "Defensores Glew": [],
         "Inter Turku II": [],
         "Rops": [],
         "Tampere United": [],
-        "SalPa": []
-    },
-    "BEL_1_DIVISION": {
+        "SalPa": [],
         "Slonim": [],
         "Niva": [],
         "Ostrovets FC": [],
         "FC Energetik-Bgu Minsk": [],
-        "RAAL La Louviere": [
-            "RAAL La Louvière",
-            "RAAL Louviere"
-        ],
-        "Club Brugge": [
-            "Club Brugge KV"
-        ]
-    },
-    "ARG_RESERVE_LEAGUE": {
         "River Plate Res.": [],
-        "Racing Club Res.": []
-    },
-    "FIN_YKKÖSLIIGA": {
+        "Racing Club Res.": [],
         "Kooteepee": [],
         "JäPS": [],
         "PK-35": [],
-        "KäPa": []
-    },
-    "BEL_PREMIER_LEAGUE": {
+        "KäPa": [],
         "FC Dnepr Mogilev": [],
-        "FC Minsk": []
-    },
-    "FIN_KAKKONEN_LOHKO_B": {
+        "FC Minsk": [],
         "ÅIFK": [],
-        "Ilves II": []
-    },
-    "FIN_KAKKONEN_LOHKO_C": {
+        "Ilves II": [],
         "GBK": [],
-        "JBK": []
-    },
-    "LAT_CUP": {
+        "JBK": [],
         "Metta / LU": [],
         "Spēks": [],
         "Leevon / PPK": [],
-        "Riga": []
-    },
-    "FIN_VEIKKAUSLIIGA": {
+        "Riga": [],
         "VPS": [],
-        "SJK": []
-    },
-    "ARG_PRIMERA_B_METROPOLITANA": {
+        "SJK": [],
         "Real Pilar": [],
         "Deportivo Camioneros": [],
         "Villa San Carlos": [],
@@ -414,28 +306,14 @@
         "Deportivo Merlo": [],
         "Villa Dalmine": [],
         "Dock Sud": [],
-        "Defensores de Belgrano": [
-            "Def Belgrano",
-            "Def. de Belgrano"
-        ]
-    },
-    "EST_MEISTRILIIGA": {
         "Laagri": [],
-        "Trans Narva": []
-    },
-    "EST_CUP": {
+        "Trans Narva": [],
         "Lahte United": [],
-        "Tabasalu Ulasabat": []
-    },
-    "WOR_UEFA_U19_CHAMPIONSHIP_WOMEN": {
+        "Tabasalu Ulasabat": [],
         "Germany U19 W": [],
-        "Spain U19 W": []
-    },
-    "FIN_KAKKONEN_LOHKO_A": {
+        "Spain U19 W": [],
         "Atlantis": [],
-        "Kiffen": []
-    },
-    "BRA_PAULISTA_U20": {
+        "Kiffen": [],
         "Botafogo SP U20": [],
         "SC Paulinense SP U20": [],
         "Juventus U20": [],
@@ -457,35 +335,25 @@
         "União São João U20": [],
         "Aguai U20": [],
         "Velo Clube U20": [],
-        "São Caetano U20": []
-    },
-    "BRA_CEARENSE_U20": {
+        "São Caetano U20": [],
         "Floresta CE U20": [],
-        "Horizonte U20": []
-    },
-    "PER_COPA_DE_LA_LIGA": {
+        "Horizonte U20": [],
         "Cienciano": [],
         "ADT": [],
         "Sport Huancayo": [],
-        "Club Deportivo Los Chankas": []
-    },
-    "BRA_MINEIRO_U20": {
+        "Club Deportivo Los Chankas": [],
         "Inter de Minas U20": [],
         "Villa Real U20": [],
         "América Mineiro U20": [],
         "Athletic Club MG U20": [],
         "Nacional de Muriae U20": [],
-        "Coimbra U20": []
-    },
-    "PAR_DIVISION_INTERMEDIA": {
+        "Coimbra U20": [],
         "Resistencia": [],
         "Sportivo Carapeguá": [],
         "General Caballero": [],
         "Encarnacion": [
             "Encarnación"
-        ]
-    },
-    "IRE_PREMIER_DIVISION": {
+        ],
         "Dundalk": [],
         "Drogheda United": [],
         "Dundalk FC": [
@@ -493,13 +361,9 @@
         ],
         "Drogheda Utd": [
             "Drogheda United"
-        ]
-    },
-    "IRE_FIRST_DIVISION": {
+        ],
         "Athlone Town": [],
-        "Cobh Ramblers": []
-    },
-    "AUS_NORTHERN_NSW_NPL": {
+        "Cobh Ramblers": [],
         "Weston Bears": [],
         "Lambton Jaffas": [],
         "Edgeworth Eagles": [],
@@ -507,25 +371,19 @@
         "Maitland": [],
         "Adamstown Rosebuds": [],
         "Cooks Hill United": [],
-        "Charlestown City Blues": []
-    },
-    "AUS_NNSW_LEAGUE_1": {
+        "Charlestown City Blues": [],
         "Singleton Strikers": [],
         "South Cardiff": [],
         "Cessnock City Hornets": [],
         "Dudley Redhead United": [],
         "Newcastle Croatia FC": [],
-        "Lake Macquarie": []
-    },
-    "AUS_TASMANIA_SOUTHERN_CHAMPIONSHIP": {
+        "Lake Macquarie": [],
         "University of Tasmania": [],
         "South East Utd. U21": [],
         "Hobart Utd.": [],
         "Hobart City": [],
         "Clarence Zebras II": [],
-        "Taroona": []
-    },
-    "AUS_TASMANIA_NORTHERN_CHAMPIONSHIP": {
+        "Taroona": [],
         "Northern Rangers": [],
         "Launceston U21": [],
         "Somerset": [],
@@ -533,9 +391,7 @@
         "Launceston United U21": [],
         "Burnie Utd.": [],
         "Devonport U21": [],
-        "Ulverstone U21": []
-    },
-    "AUS_CAPITAL_TERRITORY_NPL": {
+        "Ulverstone U21": [],
         "Canberra Olympic": [],
         "Canberra White Eagles": [],
         "Canberra FC": [],
@@ -543,71 +399,29 @@
         "Tuggeranong United": [],
         "Belconnen United": [],
         "Canberra Juventus": [],
-        "O'Connor Knights": []
-    },
-    "AUS_NEW_SOUTH_WALES_NPL": {
+        "O'Connor Knights": [],
         "Sydney Olympic": [],
         "Wollongong Wolves": [],
         "Manly United": [],
         "Sutherland Sharks": [],
         "SD Raiders": [],
-        "Blacktown City": []
-    },
-    "CHI_PRIMERA_B": {
-        "Universidad Católica": [
-            "U. Catolica",
-            "Univ Catolica"
-        ]
-    },
-    "SCO_PREMIERSHIP": {
-        "St Johnstone": [
-            "ST Johnstone",
-            "Saint Johnstone"
-        ],
+        "Blacktown City": [],
         "St Mirren": [
             "ST Mirren"
         ],
         "Airdrie Utd": [
             "Airdrie United"
-        ]
-    },
-    "NED_EREDIVISIE": {
-        "Go Ahead Eagles": [
-            "GO Ahead Eagles",
-            "GA Eagles"
         ],
-        "Almere City": [
-            "Almere City FC"
-        ]
-    },
-    "FRA_LIGUE_2": {
-        "Pau FC": [
-            "PAU"
-        ]
-    },
-    "TUR_SUPER_LIG": {
-        "Fenerbahce": [
-            "Fenerbahçe"
-        ]
-    },
-    "ENG_CHAMPIONSHIP": {
-        "Sheffield United": [
-            "Sheffield Utd"
-        ]
-    },
-    "ENG_LEAGUE_ONE": {
-        "Bristol Rvs": [
-            "Bristol Rovers"
-        ]
-    },
-    "BUL_FIRST_LEAGUE": {
-        "Ludogorets Razgrad": [
-            "Ludogorets"
-        ]
-    },
-    "ECU_LIGA_PRO": {
         "Técnico Universitario": [
             "Tecnico Universitario"
         ]
+    },
+    "conflicting_aliases": {
+        "CHI_PRIMERA_B": {
+            "Universidad Católica": [
+                "U. Catolica",
+                "Univ Catolica"
+            ]
+        }
     }
 }
