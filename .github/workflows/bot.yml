@@ -1,29 +1,41 @@
-name: Pulpo Paul Daily Bot
+name: Pulpo Paul Diario
 
 on:
-  schedule:
-    # Corre todos los días a las 23:00 hrs de Chile (03:00 UTC)
-    - cron: '0 3 * * *'
-  workflow_dispatch: # Permite correrlo manualmente desde GitHub cuando quieras
+  workflow_dispatch:
+  # schedule:
+  #   - cron: "0 3 * * *"
 
 jobs:
-  run-bot:
+  analizar_partidos:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+    permissions:
+      contents: write  # ¡IMPORTANTE! Esto le da permiso al bot para guardar archivos en tu repo
+
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v3
+
+      - name: Instalar Python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - name: Install dependencies
-        run: |
-          pip install pandas numpy scipy requests
+      - name: Instalar librerías
+        run: pip install pandas numpy requests scipy
 
-      - name: Run prediction script
+      - name: Ejecutar el Pulpo Paul
         env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+        run: python bot.py
+
+      # EL PASO NUEVO QUE GUARDA EL ARCHIVO
+      - name: Guardar resultados en GitHub
         run: |
-          python bot.py
+          git config --global user.name "Pulpo Paul Bot"
+          git config --global user.email "acciones@github.com"
+          git add resultados/
+          git commit -m "🐙 Pulpo Paul: Guardando JSON de partidos" || echo "No hay cambios"
+          git push
