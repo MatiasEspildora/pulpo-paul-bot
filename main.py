@@ -150,7 +150,6 @@ def main():
     
     unmapped_teams = []
     
-    # Manejo de ventana operativa de fechas (Ayer, Hoy y Proyección Anticipada)
     fecha_ayer_dt = now_chile - timedelta(days=1)
     fecha_ayer_str = fecha_ayer_dt.strftime("%Y-%m-%d")
     fecha_ayer_file = fecha_ayer_dt.strftime("%Y%m%d")
@@ -162,7 +161,7 @@ def main():
     fecha_mañana_str = fecha_mañana_dt.strftime("%Y-%m-%d")
     fecha_mañana_file = fecha_mañana_dt.strftime("%Y%m%d")
     
-    # 1. Procesamiento de Ayer (Cierre de antecedentes)
+    # 1. Procesamiento de Ayer
     print(f"🔄 [Ayer] Consultando fixtures de la fecha {fecha_ayer_str}...")
     data_ayer = api.get_data("fixtures", {"date": fecha_ayer_str, "timezone": "America/Santiago"})
     if data_ayer and data_ayer.get("response"):
@@ -170,7 +169,7 @@ def main():
             json.dump(data_ayer, f, ensure_ascii=False, indent=4)
         df = actualizar_maestro_con_partidos(df, data_ayer.get("response"), fecha_ayer_str, api_to_master, statuses_map, team_aliases, unmapped_teams)
 
-    # 2. Procesamiento de Hoy (Actualización del día en curso)
+    # 2. Procesamiento de Hoy
     archivo_hoy_local = f"resultados/partidos_{fecha_hoy_file}.json"
     if os.path.exists(archivo_hoy_local):
         with open(archivo_hoy_local, 'r', encoding='utf-8') as f:
@@ -183,9 +182,12 @@ def main():
 
     df = actualizar_maestro_con_partidos(df, data_hoy.get("response", []), fecha_hoy_str, api_to_master, statuses_map, team_aliases, unmapped_teams)
     
-    # 2.1 Carga anticipada de Mañana (Para capturar partidos de la madrugada próxima si corre tarde)
+    # 2.1 Carga anticipada de Mañana (Madrugada)
     archivo_mañana_local = f"resultados/partidos_{fecha_mañana_file}.json"
-    if not os.path.exists(archivo_mañana_local):
+    if os.path.exists(archivo_mañana_local):
+        with open(archivo_mañana_local, 'r', encoding='utf-8') as f:
+            data_mañana = json.load(f)
+    else:
         data_mañana = api.get_data("fixtures", {"date": fecha_mañana_str, "timezone": "America/Santiago"})
         if data_mañana:
             with open(archivo_mañana_local, 'w', encoding='utf-8') as f:
@@ -202,66 +204,73 @@ def main():
         if os.path.exists("logs/unmapped_teams.json"):
             os.remove("logs/unmapped_teams.json")
 
-    # 3. Proyecciones agrupadas (Construcción con soporte de datos parciales)
-    reporte_agrupado = {}
-    equipos_historicos = set(df["HomeTeam"].dropna().unique()).union(set(df["AwayTeam"].dropna().unique()))
+    # 3. Procesar proyecciones separando por fecha local de cada partido
+    proyecciones_hoy = {}
+    proyecciones_mañana = {}
 
-    for match in data_hoy.get("response", []):
-        liga_id_raw = str(match["league"]["id"])
-        
-        if liga_id_raw in ligas_permitidas:
-            status_short = match["fixture"]["status"]["short"]
-            master_league_id = api_to_master[liga_id_raw]
-            
-            if status_short in statuses_map["excluded"]:
-                continue
+    def procesar_lote_partidos(lista_partidos, destino_dict):
+        equipos_h = set(df["HomeTeam"].dropna().unique()).union(set(df["AwayTeam"].dropna().unique()))
+        for match in lista_partidos:
+            liga_id_raw = str(match["league"]["id"])
+            if liga_id_raw in ligas_permitidas:
+                status_short = match["fixture"]["status"]["short"]
+                master_league_id = api_to_master[liga_id_raw]
                 
-            fixture_date_utc = datetime.fromisoformat(match["fixture"]["date"].replace("Z", "+00:00"))
-            match_local = fixture_date_utc.astimezone(zona_chile)
-            
-            if status_short in statuses_map["upcoming"]:
-                liga_nombre = match["league"]["name"]
-                pais = match["league"]["country"]
+                if status_short in statuses_map["excluded"]:
+                    continue
+                    
+                fixture_date_utc = datetime.fromisoformat(match["fixture"]["date"].replace("Z", "+00:00"))
+                match_local = fixture_date_utc.astimezone(zona_chile)
+                match_date_str = match_local.strftime("%Y-%m-%d")
                 
-                home_name = normalizar_equipo(match["teams"]["home"]["name"], master_league_id, team_aliases, equipos_historicos, unmapped_teams)
-                away_name = normalizar_equipo(match["teams"]["away"]["name"], master_league_id, team_aliases, equipos_historicos, unmapped_teams)
-                hora_formateada = match_local.strftime("%H:%M")
-                
-                proj = analyzer.get_projections(home_name, away_name)
-                proj['hora'] = hora_formateada
-                proj['pais'] = pais
-                
-                if liga_nombre not in reporte_agrupado:
-                    reporte_agrupado[liga_nombre] = []
-                reporte_agrupado[liga_nombre].append(proj)
+                if status_short in statuses_map["upcoming"]:
+                    liga_nombre = match["league"]["name"]
+                    pais = match["league"]["country"]
+                    
+                    home_name = normalizar_equipo(match["teams"]["home"]["name"], master_league_id, team_aliases, equipos_h, unmapped_teams)
+                    away_name = normalizar_equipo(match["teams"]["away"]["name"], master_league_id, team_aliases, equipos_h, unmapped_teams)
+                    hora_formateada = match_local.strftime("%H:%M")
+                    
+                    proj = analyzer.get_projections(home_name, away_name)
+                    proj['hora'] = hora_formateada
+                    proj['pais'] = pais
+                    proj['fecha_str'] = match_date_str
+                    
+                    target_dict = destino_dict if match_date_str == fecha_hoy_str else proyecciones_mañana
+                    if match_date_str == fecha_mañana_str:
+                        target_dict = proyecciones_mañana
+                    else:
+                        target_dict = proyecciones_hoy
+                        
+                    if liga_nombre not in target_dict:
+                        target_dict[liga_nombre] = []
+                    target_dict[liga_nombre].append(proj)
 
-    # 4. Envío de reportes a Telegram con Delimitadores (FIN DIA / INICIO DIA) y Top Dinámico
-    # Marcador de Cierre de Jornada Actual
+    procesar_lote_partidos(data_hoy.get("response", []), proyecciones_hoy)
+    if data_mañana and data_mañana.get("response"):
+        procesar_lote_partidos(data_mañana.get("response", []), proyecciones_mañana)
+
+    # 4. Envío ordenado a Telegram con delimitadores correctos
     enviar_mensaje_telegram(f"🏁 *FIN DIA: {fecha_hoy_str}*")
 
-    for liga, proyecciones in reporte_agrupado.items():
+    for liga, proyecciones in proyecciones_hoy.items():
         if not proyecciones:
             continue
-            
-        # Tomar hasta 3 o los que estén disponibles sin romper si hay menos
         limite_dinamico = min(len(proyecciones), 3)
         top_items = analyzer.get_top_by_league(proyecciones, n=limite_dinamico)
         pais_liga = top_items[0].get('pais', 'World') if top_items else 'World'
         bandera = BANDERAS.get(pais_liga, "🏴")
         
         mensaje = f"🏆 {bandera} *TOP ({len(top_items)}): {liga}*\n\n"
-        
         for p in top_items:
             s_l = analyzer.get_team_stats(p['local'])
             s_v = analyzer.get_team_stats(p['visita'])
-            
             mensaje += f"🕒 `{p['hora']}`\n⚽ *{p['local']}* vs *{p['visita']}*\n"
             mensaje += (f"📊 Probabilidades: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
                         f"🎯 Ambos anotan: {p['btts']:.0%} | Marcadores: {', '.join(p['scores'])}\n")
             
             count_l = s_l.get('count', 0) if isinstance(s_l, dict) else 0
             count_v = s_v.get('count', 0) if isinstance(s_v, dict) else 0
-            
             if count_l > 0 and count_v > 0:
                 mensaje += (f"📐 *Promedios últimos partidos ({count_l}p | {count_v}p):*\n"
                             f"  🚩 Córners: `{s_l['corners']:.0f}` | `{s_v['corners']:.0f}`\n"
@@ -269,12 +278,36 @@ def main():
                             f"  🥅 Remates: `{s_l['remates']:.0f}` | `{s_v['remates']:.0f}`\n\n")
             else:
                 mensaje += "⚠️ *Sin historial suficiente para promedios detallados.*\n\n"
-        
         enviar_mensaje_telegram(mensaje)
-        print(f"✅ Reporte enviado a Telegram para {liga}")
 
-    # Marcador de Apertura de la Siguiente Jornada / Madrugada
-    enviar_mensaje_telegram(f"🚀 *INICIO DIA: {fecha_mañana_str} (Ventana Anticipada)*")
+    if proyecciones_mañana:
+        enviar_mensaje_telegram(f"🚀 *INICIO DIA: {fecha_mañana_str} (Ventana Anticipada)*")
+        for liga, proyecciones in proyecciones_mañana.items():
+            if not proyecciones:
+                continue
+            limite_dinamico = min(len(proyecciones), 3)
+            top_items = analyzer.get_top_by_league(proyecciones, n=limite_dinamico)
+            pais_liga = top_items[0].get('pais', 'World') if top_items else 'World'
+            bandera = BANDERAS.get(pais_liga, "🏴")
+            
+            mensaje = f"🏆 {bandera} *TOP ({len(top_items)}): {liga} (Madrugada)*\n\n"
+            for p in top_items:
+                s_l = analyzer.get_team_stats(p['local'])
+                s_v = analyzer.get_team_stats(p['visita'])
+                mensaje += f"🕒 `{p['hora']}`\n⚽ *{p['local']}* vs *{p['visita']}*\n"
+                mensaje += (f"📊 Probabilidades: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
+                            f"🎯 Ambos anotan: {p['btts']:.0%} | Marcadores: {', '.join(p['scores'])}\n")
+                
+                count_l = s_l.get('count', 0) if isinstance(s_l, dict) else 0
+                count_v = s_v.get('count', 0) if isinstance(s_v, dict) else 0
+                if count_l > 0 and count_v > 0:
+                    mensaje += (f"📐 *Promedios últimos partidos ({count_l}p | {count_v}p):*\n"
+                                f"  🚩 Córners: `{s_l['corners']:.0f}` | `{s_v['corners']:.0f}`\n"
+                                f"  🟨 Tarjetas: `{s_l['tarjetas']:.0f}` | `{s_v['tarjetas']:.0f}`\n"
+                                f"  🥅 Remates: `{s_l['remates']:.0f}` | `{s_v['remates']:.0f}`\n\n")
+                else:
+                    mensaje += "⚠️ *Sin historial suficiente para promedios detallados.*\n\n"
+            enviar_mensaje_telegram(mensaje)
 
 if __name__ == "__main__":
     main()
