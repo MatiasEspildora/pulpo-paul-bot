@@ -63,12 +63,14 @@ def main():
             s_l = analyzer.get_team_stats(p['local'])
             s_v = analyzer.get_team_stats(p['visita'])
             
-            mensaje += (f"⚽ {p['local']} vs {p['visita']}\n"
-                        f"📊 L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
-                        f"🎯 BTTS: {p['btts']:.0%} | Scores: {', '.join(p['scores'])}\n"
-                        f"📐 Prom. L5: C:{s_l['corners']:.0f}|{s_v['corners']:.0f} "
-                        f"T:{s_l['tarjetas']:.0f}|{s_v['tarjetas']:.0f} "
-                        f"R:{s_l['remates']:.0f}|{s_v['remates']:.0f}\n\n")
+            # Formato más explícito y legible con emojis
+            mensaje += (f"⚽ *{p['local']}* vs *{p['visita']}*\n"
+                        f"📊 Probabilidades: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
+                        f"🎯 Ambos anotan: {p['btts']:.0%} | Marcadores: {', '.join(p['scores'])}\n"
+                        f"📐 *Promedios últimos 5 partidos (Local | Visita):*\n"
+                        f"  🚩 Córners: `{s_l['corners']:.0f}` | `{s_v['corners']:.0f}`\n"
+                        f"  🟨 Tarjetas: `{s_l['tarjetas']:.0f}` | `{s_v['tarjetas']:.0f}`\n"
+                        f"  🥅 Remates: `{s_l['remates']:.0f}` | `{s_v['remates']:.0f}`\n\n")
         
         if TOKEN and CHAT_ID:
             requests.post(f"https://api.telegram.org/bot{TOKEN}/sendMessage", 
