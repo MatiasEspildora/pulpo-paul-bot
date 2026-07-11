@@ -32,50 +32,52 @@ def normalizar_equipo(nombre, aliases, equipos_historicos, unmapped_log):
             
     return nombre
 
-def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses, aliases, unmapped_log):
-    """Actualiza o inserta los resultados finalizados utilizando el mapeo dinámico."""
+def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, ligas_permitidas, statuses, aliases, unmapped_log):
+    """Actualiza o inserta resultados finalizados filtrando estrictamente por las ligas permitidas."""
     actualizados = 0
     agregados = 0
     equipos_historicos = set(df_hist["HomeTeam"].dropna().unique()).union(set(df_hist["AwayTeam"].dropna().unique()))
     
     for match in partidos_lista:
-        status_short = match["fixture"]["status"]["short"]
-        if status_short in statuses["finished"]:
-            h_team_raw = match["teams"]["home"]["name"]
-            a_team_raw = match["teams"]["away"]["name"]
-            
-            h_team = normalizar_equipo(h_team_raw, aliases, equipos_historicos, unmapped_log)
-            a_team = normalizar_equipo(a_team_raw, aliases, equipos_historicos, unmapped_log)
-            
-            h_score = match["goals"]["home"]
-            a_score = match["goals"]["away"]
-            liga_nombre = match["league"]["name"]
-            
-            mask = (df_hist["Date"] == fecha_str) & \
-                   (df_hist["HomeTeam"] == h_team) & \
-                   (df_hist["AwayTeam"] == a_team)
-                   
-            if mask.any():
-                idx = df_hist[mask].index[0]
-                df_hist.at[idx, "FTHG"] = h_score
-                df_hist.at[idx, "FTAG"] = a_score
-                actualizados += 1
-            else:
-                nuevo_row = {
-                    "League": liga_nombre,
-                    "Date": fecha_str,
-                    "HomeTeam": h_team,
-                    "AwayTeam": a_team,
-                    "FTHG": h_score,
-                    "FTAG": a_score,
-                    "HC": None, "AC": None,
-                    "HY": None, "AY": None,
-                    "HR": None, "AR": None,
-                    "HS": None, "AS": None
-                }
-                df_hist = pd.concat([df_hist, pd.DataFrame([nuevo_row])], ignore_index=True)
-                agregados += 1
+        liga_id = match["league"]["id"]
+        if liga_id in ligas_permitidas:
+            status_short = match["fixture"]["status"]["short"]
+            if status_short in statuses["finished"]:
+                h_team_raw = match["teams"]["home"]["name"]
+                a_team_raw = match["teams"]["away"]["name"]
                 
+                h_team = normalizar_equipo(h_team_raw, aliases, equipos_historicos, unmapped_log)
+                a_team = normalizar_equipo(a_team_raw, aliases, equipos_historicos, unmapped_log)
+                
+                h_score = match["goals"]["home"]
+                a_score = match["goals"]["away"]
+                liga_nombre = match["league"]["name"]
+                
+                mask = (df_hist["Date"] == fecha_str) & \
+                       (df_hist["HomeTeam"] == h_team) & \
+                       (df_hist["AwayTeam"] == a_team)
+                       
+                if mask.any():
+                    idx = df_hist[mask].index[0]
+                    df_hist.at[idx, "FTHG"] = h_score
+                    df_hist.at[idx, "FTAG"] = a_score
+                    actualizados += 1
+                else:
+                    nuevo_row = {
+                        "League": liga_nombre,
+                        "Date": fecha_str,
+                        "HomeTeam": h_team,
+                        "AwayTeam": a_team,
+                        "FTHG": h_score,
+                        "FTAG": a_score,
+                        "HC": None, "AC": None,
+                        "HY": None, "AY": None,
+                        "HR": None, "AR": None,
+                        "HS": None, "AS": None
+                    }
+                    df_hist = pd.concat([df_hist, pd.DataFrame([nuevo_row])], ignore_index=True)
+                    agregados += 1
+                    
     return df_hist
 
 def main():
@@ -116,7 +118,7 @@ def main():
     if data_ayer and data_ayer.get("response"):
         with open(f"resultados/partidos_{fecha_ayer_file}.json", 'w', encoding='utf-8') as f:
             json.dump(data_ayer, f, ensure_ascii=False, indent=4)
-        df = actualizar_maestro_con_partidos(df, data_ayer.get("response"), fecha_ayer_str, statuses_map, team_aliases, unmapped_teams)
+        df = actualizar_maestro_con_partidos(df, data_ayer.get("response"), fecha_ayer_str, ligas_permitidas, statuses_map, team_aliases, unmapped_teams)
 
     # 2. Procesamiento de Hoy
     archivo_hoy_local = f"resultados/partidos_{fecha_hoy_file}.json"
@@ -129,15 +131,19 @@ def main():
             with open(archivo_hoy_local, 'w', encoding='utf-8') as f:
                 json.dump(data_hoy, f, ensure_ascii=False, indent=4)
 
-    df = actualizar_maestro_con_partidos(df, data_hoy.get("response", []), fecha_hoy_str, statuses_map, team_aliases, unmapped_teams)
+    df = actualizar_maestro_con_partidos(df, data_hoy.get("response", []), fecha_hoy_str, ligas_permitidas, statuses_map, team_aliases, unmapped_teams)
     df.to_csv(csv_path, index=False)
     analyzer = MatchAnalyzer(df)
 
-    # Registrar alertas si existen equipos sin mapear
+    # Registrar alertas solo si existen equipos sin mapear de las ligas permitidas
     if unmapped_teams:
         with open("logs/unmapped_teams.json", "w", encoding="utf-8") as f:
             json.dump(unmapped_teams, f, ensure_ascii=False, indent=4)
-        print(f"⚠️ Alerta: Se detectaron {len(unmapped_teams)} equipos sin mapear y se guardaron en logs/unmapped_teams.json")
+        print(f"⚠️ Alerta: Se detectaron {len(unmapped_teams)} equipos sin mapear en las ligas seguidas.")
+    else:
+        # Limpiar log anterior si no hay nuevos errores hoy
+        if os.path.exists("logs/unmapped_teams.json"):
+            os.remove("logs/unmapped_teams.json")
 
     # 3. Proyecciones del día
     reporte_agrupado = {}
@@ -167,7 +173,30 @@ def main():
                     reporte_agrupado[liga_nombre] = []
                 reporte_agrupado[liga_nombre].append(proj)
 
-    # Envío de reportes a Telegram...
+    # 4. Envío de reportes a Telegram
+    for liga, proyecciones in reporte_agrupado.items():
+        if not proyecciones:
+            continue
+        top_3 = analyzer.get_top_by_league(proyecciones, n=3)
+        mensaje = f"🏆 *TOP 3: {liga}*\n\n"
+        for p in top_3:
+            s_l = analyzer.get_team_stats(p['local'])
+            s_v = analyzer.get_team_stats(p['visita'])
+            
+            mensaje += (f"🕒 Hora: `{p['hora']}` | ⚽ *{p['local']}* vs *{p['visita']}*\n"
+                        f"📊 Probabilidades: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
+                        f"🎯 Ambos anotan: {p['btts']:.0%} | Marcadores: {', '.join(p['scores'])}\n"
+                        f"📐 *Promedios últimos 5 partidos (Local | Visita):*\n"
+                        f"  🚩 Córners: `{s_l['corners']:.0f}` | `{s_v['corners']:.0f}`\n"
+                        f"  🟨 Tarjetas: `{s_l['tarjetas']:.0f}` | `{s_v['tarjetas']:.0f}`\n"
+                        f"  🥅 Remates: `{s_l['remates']:.0f}` | `{s_v['remates']:.0f}`\n\n")
+        
+        if TOKEN and CHAT_ID:
+            requests.post(f"https://api.telegram.org/bot{TOKEN}/sendMessage", 
+                          data={"chat_id": CHAT_ID, "text": mensaje, "parse_mode": "Markdown"})
+            print(f"✅ Reporte enviado a Telegram para {liga}")
+        else:
+            print(f"⚠️ Faltan credenciales de Telegram para {liga}")
 
 if __name__ == "__main__":
     main()
