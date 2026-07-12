@@ -13,21 +13,27 @@ li_bk = [pd.read_csv(filename) for filename in all_files_bk]
 df_completo_bk = pd.concat(li_bk, axis=0, ignore_index=True) if li_bk else pd.DataFrame()
 
 def main():
-    print("--- 🚀 INICIANDO CICLO DE PROCESAMIENTO GLOBAL ---")
+    print("\n" + "=" * 55)
+    print("🚀  INICIANDO CICLO DE PROCESAMIENTO GLOBAL")
+    print("=" * 55)
     
     try:
-        print("--- 🚀 INICIANDO CICLO DE PROCESAMIENTO FOOTBALL ---")
+        print("\n⚽ [FOOTBALL] Iniciando procesamiento...")
         football.run_process(df_completo_fb)
+        print("   ↳ ⚽ [FOOTBALL] Finalizado con éxito.")
     except Exception as e:
-        print(f"❌ Error en el proceso de Fútbol: {e}")
-        
+        print(f"❌ [FOOTBALL] Error crítico: {e}")
+    
     try:
-        print("--- 🚀 INICIANDO CICLO DE PROCESAMIENTO BASKET ---")
+        print("\n🏀 [BASKET] Iniciando procesamiento...")
         basketball.run_process(df_completo_bk)
+        print("   ↳ 🏀 [BASKET] Finalizado con éxito.")
     except Exception as e:
-        print(f"❌ Error en el proceso de Basketball: {e}")
-
-    print("✅ Ciclo de ejecución finalizado.")
+        print(f"❌ [BASKET] Error crítico: {e}")
+    
+    print("\n" + "=" * 55)
+    print("✅  CICLO DE EJECUCIÓN GLOBAL FINALIZADO")
+    print("=" * 55 + "\n")
 
 if __name__ == "__main__":
     main()
