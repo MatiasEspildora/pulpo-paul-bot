@@ -109,6 +109,7 @@ def run_process(df_externo=None):
     ligas_permitidas = list(api_to_master.keys())
     
     df = df_externo if df_externo is not None else cargar_historico_mensual_basket()
+    print(API_KEY)
     api = BasketballAPI(API_KEY)
     zona = pytz.timezone('America/Santiago')
     now = datetime.now(zona)
@@ -130,7 +131,7 @@ def run_process(df_externo=None):
         f_dt = now + timedelta(days=i)
         meses_afectados.add(pd.Period(f_dt.strftime("%Y-%m"), 'M'))
         f_str = f_dt.strftime("%Y-%m-%d")
-        data = api.get_data("fixtures", {"date": f_str, "timezone": "America/Santiago"})
+        data = api.get_data("games", {"date": f_str, "timezone": "America/Santiago"})
         if data and data.get("response"):
             df = actualizar_maestro_con_partidos(df, data["response"], f_str, api_to_master, statuses_map, team_aliases, unmapped_teams)
 
