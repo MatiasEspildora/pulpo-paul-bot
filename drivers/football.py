@@ -28,14 +28,28 @@ def normalizar_equipo(nombre, master_league_id, aliases_data, equipos_historicos
     conflict_map = aliases_data.get("conflicting_aliases", {})
     liga_conflicto = conflict_map.get(master_league_id, {})
     
+    # 1. Intentar mapear
     for n_oficial, variaciones in {**liga_conflicto, **global_map}.items():
         if nombre == n_oficial or nombre in variaciones:
             return n_oficial
             
-    if nombre not in equipos_historicos and master_league_id not in ["WOR_FRIENDLIES_CLUBS", "WOR_FRIENDLY_INTERNATIONAL"]:
-        registro = {"team": nombre, "master_league": master_league_id}
-        if registro not in unmapped_log: unmapped_log.append(registro)
+    # 2. Si no se mapeó, clasificar el error
+    if master_league_id not in ["WOR_FRIENDLIES_CLUBS", "WOR_FRIENDLY_INTERNATIONAL"]:
+        existe_en_historico = nombre in equipos_historicos
+        
+        estado = "EQUIPO_NUEVO" if not existe_en_historico else "ERROR_MAPEO"
+        
+        registro = {
+            "team": nombre, 
+            "master_league": master_league_id,
+            "status": estado
+        }
+        
+        if registro not in unmapped_log: 
+            unmapped_log.append(registro)
+            
     return nombre
+
 
 def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_master, statuses, aliases_data, unmapped_log):
     equipos_historicos = set(df_hist["HomeTeam"].dropna().unique()).union(set(df_hist["AwayTeam"].dropna().unique()))
