@@ -38,7 +38,9 @@ jobs:
         run: |
           git config --global user.name "Pulpo Paul Bot"
           git config --global user.email "acciones@github.com"
-          git add resultados/ historico_maestro_global.csv logs/
-          # Intentamos hacer commit; si no hay archivos nuevos, el script no falla
+          # El '|| true' hace que git ignore errores si la carpeta no existe
+          git add resultados/ historico_maestro_global.csv logs/ || true
           git commit -m "🐙 Pulpo Paul: Actualizando histórico, JSON y logs" || echo "No hay cambios para guardar"
           git push
+
+      
