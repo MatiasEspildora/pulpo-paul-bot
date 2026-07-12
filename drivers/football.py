@@ -33,17 +33,20 @@ def cargar_historico_mensual():
     df['Date'] = pd.to_datetime(df['Date'], format='mixed').dt.strftime('%Y-%m-%d')
     return df
 
-def guardar_historico_mensual(df):
+def guardar_historico_mensual(df, meses_a_actualizar=None):
     os.makedirs("historico_mensual", exist_ok=True)
     df_temp = df.copy()
     df_temp['Date_dt'] = pd.to_datetime(df_temp['Date'], format='mixed')
     df_temp['year_month'] = df_temp['Date_dt'].dt.to_period('M')
     
     for period, group in df_temp.groupby('year_month'):
-        filename = f'historico_mensual/historico_{period.year}_{period.month:02d}.csv'
-        g_clean = group.drop(columns=['Date_dt', 'year_month'], errors='ignore')
-        g_clean.sort_values(by='Date', ascending=False).to_csv(filename, index=False)
-
+        # Si se especificó una lista de meses permitidos a actualizar, filtramos.
+        # Si no, guardamos los periodos que hayan cambiado o todos los involucrados.
+        if meses_a_actualizar is None or period in meses_a_actualizar:
+            filename = f'historico_mensual/historico_{period.year}_{period.month:02d}.csv'
+            g_clean = group.drop(columns=['Date_dt', 'year_month'], errors='ignore')
+            g_clean.sort_values(by='Date', ascending=False).to_csv(filename, index=False)
+            
 def normalizar_equipo(nombre, master_league_id, aliases_data, equipos_historicos, unmapped_log):
     global_map = aliases_data.get("global_aliases", {})
     conflict_map = aliases_data.get("conflicting_aliases", {})
@@ -113,10 +116,20 @@ def run_process(df_externo=None):
         data = api.get_data("fixtures", {"date": f_str, "timezone": "America/Santiago"})
         if data and data.get("response"):
             df = actualizar_maestro_con_partidos(df, data["response"], f_str, api_to_master, statuses_map, team_aliases, unmapped_teams)
+
+    # Rango de fechas procesadas (ayer, hoy, mañana)
+    meses_afectados = set()
+    for i in range(-1, 2):
+        f_dt = now + timedelta(days=i)
+        meses_afectados.add(pd.Period(f_dt.strftime("%Y-%m"), 'M'))
+        f_str = f_dt.strftime("%Y-%m-%d")
+        data = api.get_data("fixtures", {"date": f_str, "timezone": "America/Santiago"})
+        if data and data.get("response"):
+            df = actualizar_maestro_con_partidos(df, data["response"], f_str, api_to_master, statuses_map, team_aliases, unmapped_teams)
     
-    # Guardar particionado por mes
-    guardar_historico_mensual(df)
-    
+    # Guardar únicamente los meses que sufrieron cambios en esta ejecución (ej. julio y agosto)
+    guardar_historico_mensual(df, meses_afectados)
+       
     analyzer = MatchAnalyzer(df)
     
     # Proyecciones
