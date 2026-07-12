@@ -15,11 +15,11 @@ df_completo_bk = pd.concat(li_bk, axis=0, ignore_index=True) if li_bk else pd.Da
 def main():
     print("--- 🚀 INICIANDO CICLO DE PROCESAMIENTO GLOBAL ---")
     
-    #try:
-    #    print("--- 🚀 INICIANDO CICLO DE PROCESAMIENTO FOOTBALL ---")
-    #    football.run_process(df_completo_fb)
-    #except Exception as e:
-    #    print(f"❌ Error en el proceso de Fútbol: {e}")
+    try:
+        print("--- 🚀 INICIANDO CICLO DE PROCESAMIENTO FOOTBALL ---")
+        football.run_process(df_completo_fb)
+    except Exception as e:
+        print(f"❌ Error en el proceso de Fútbol: {e}")
         
     try:
         print("--- 🚀 INICIANDO CICLO DE PROCESAMIENTO BASKET ---")
