@@ -115,17 +115,38 @@ def run_process(df_externo=None):
     fecha_hoy_str = now.strftime("%Y-%m-%d")
     fecha_mañana_str = (now + timedelta(days=1)).strftime("%Y-%m-%d")
     
-    # Procesamiento unificado de días y registro de meses afectados
+    # Almacén temporal en memoria para optimizar y no reconsultar
+    datos_fechas = {}
+    
+    # Procesamiento inteligente con caché estricto para días pasados
     meses_afectados = set()
     for i in range(-1, 2):
         f_dt = now + timedelta(days=i)
         meses_afectados.add(pd.Period(f_dt.strftime("%Y-%m"), 'M'))
         f_str = f_dt.strftime("%Y-%m-%d")
         
-        data = api.get_data("games", {"date": f_str})
-        if data and data.get("response"):
-            df = actualizar_maestro_con_partidos(df, data["response"], f_str, api_to_master, statuses_map, team_aliases, unmapped_teams)
-        time.sleep(1)
+        file_path = f"resultados/basketball/basket_partidos_{f_str}.json"
+        partidos_del_dia = None
+        
+        es_dia_pasado = f_str < fecha_hoy_str
+        if es_dia_pasado and os.path.exists(file_path):
+            try:
+                with open(file_path, "r", encoding="utf-8") as f:
+                    partidos_del_dia = json.load(f)
+            except Exception:
+                pass
+                
+        if not partidos_del_dia:
+            data = api.get_data("games", {"date": f_str})
+            if data and data.get("response"):
+                partidos_del_dia = data["response"]
+                with open(file_path, "w", encoding="utf-8") as f:
+                    json.dump(partidos_del_dia, f, ensure_ascii=False, indent=4)
+            time.sleep(1)
+            
+        if partidos_del_dia:
+            datos_fechas[f_str] = partidos_del_dia
+            df = actualizar_maestro_con_partidos(df, partidos_del_dia, f_str, api_to_master, statuses_map, team_aliases, unmapped_teams)
 
     guardar_historico_mensual_basket(df, meses_afectados)
     analyzer = MatchAnalyzer(df)
@@ -151,14 +172,10 @@ def run_process(df_externo=None):
                 target = proyecciones_mañana if proj['fecha_str'] == fecha_mañana_str else proyecciones_hoy
                 target.setdefault(match["league"]["name"], []).append(proj)
 
-    hoy_data = api.get_data("games", {"date": fecha_hoy_str})
-    if hoy_data and hoy_data.get("response"):
-        procesar_lote_partidos(hoy_data["response"])
-        
-    manana_data = api.get_data("games", {"date": fecha_mañana_str})
-    if manana_data and manana_data.get("response"):
-        procesar_lote_partidos(manana_data["response"])
-        
+    # Reutilizamos los datos que ya están en memoria (hoy y mañana)
+    procesar_lote_partidos(datos_fechas.get(fecha_hoy_str, []))
+    procesar_lote_partidos(datos_fechas.get(fecha_mañana_str, []))
+    
     if unmapped_teams:
         with open(f"logs/basketball/unmapped_basket_teams_{now.strftime('%Y%m%d')}.json", "w", encoding="utf-8") as f:
             json.dump(unmapped_teams, f, ensure_ascii=False, indent=4)
