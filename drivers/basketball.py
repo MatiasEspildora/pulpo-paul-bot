@@ -12,7 +12,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from api_client import BasketballAPI
 from analyzer import MatchAnalyzer
-from notifier import enviar_mensaje_telegram, enviar_bloque_reportes
+from notifier import enviar_mensaje_telegram, enviar_bloque_reportes_basket
 
 def cargar_configuracion_basket():
     with open("config/basketball/leagues.json", "r", encoding="utf-8") as f:
@@ -164,9 +164,9 @@ def run_process(df_externo=None):
             json.dump(unmapped_teams, f, ensure_ascii=False, indent=4)
             
     enviar_mensaje_telegram(f"🏀 *FIN DIA BASKET: {fecha_hoy_str}*", TOKEN_BASKET)
-    enviar_bloque_reportes(proyecciones_hoy, "", analyzer, TOKEN_BASKET)
+    enviar_bloque_reportes_basket(proyecciones_hoy, "", analyzer, TOKEN_BASKET)
     if proyecciones_mañana:
         enviar_mensaje_telegram(f"🚀 *INICIO DIA BASKET: {fecha_mañana_str} (Ventana Anticipada)*", TOKEN_BASKET)
-        enviar_bloque_reportes(proyecciones_mañana, "Madrugada", analyzer, TOKEN_BASKET)
+        enviar_bloque_reportes_basket(proyecciones_mañana, "Madrugada", analyzer, TOKEN_BASKET)
         
     print("✅ Proceso de Basketball completo.")

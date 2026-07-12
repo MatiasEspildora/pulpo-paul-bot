@@ -101,10 +101,10 @@ class MatchAnalyzer:
             "count": count,
         }
 
-    def get_basketball_projections(self, home_team, away_team):
+    def get_basketball_projections(self, home_team, away_team, match_data=None):
         """
         Modelo predictivo para básquetbol basado en la expectativa de anotación combinada.
-        Calcula probabilidades de victoria directa (sin empate) y estimación de línea de puntos total.
+        Incluye detección opcional de tiempo extra si se pasa el objeto del partido.
         """
         home_matches = self.df[self.df['HomeTeam'] == home_team].dropna(subset=['FTHG', 'FTAG'])
         away_matches = self.df[self.df['AwayTeam'] == away_team].dropna(subset=['FTHG', 'FTAG'])
@@ -112,24 +112,31 @@ class MatchAnalyzer:
         home_avg_scored = home_matches['FTHG'].mean() if not home_matches.empty else 105.0
         home_avg_conceded = home_matches['FTAG'].mean() if not home_matches.empty else 102.0
         away_avg_scored = away_matches['FTAG'].mean() if not away_matches.empty else 103.0
-        away_avg_conceded = away_matches['FTHG'].mean() if not away_avg_scored else 104.0
+        away_avg_conceded = away_matches['FTHG'].mean() if not away_matches.empty else 104.0
 
-        # Expectativa ofensiva vs defensiva
         exp_home_score = (home_avg_scored + away_avg_conceded) / 2
         exp_away_score = (away_avg_scored + home_avg_conceded) / 2
         total_projected_points = exp_home_score + exp_away_score
 
-        # Estimación simple de probabilidad basada en la diferencia de expectativas de anotación
         diff = exp_home_score - exp_away_score
-        prob_home = 1 / (1 + np.exp(-diff / 10))  # función sigmoidea ajustada para margen de básquetbol
+        prob_home = 1 / (1 + np.exp(-diff / 10))
         prob_away = 1 - prob_home
+
+        # Detección segura de OT si viene el JSON del partido
+        has_overtime = False
+        if match_data:
+            ot_home = match_data.get("scores", {}).get("home", {}).get("over_time")
+            ot_away = match_data.get("scores", {}).get("away", {}).get("over_time")
+            has_overtime = (ot_home is not None and ot_home > 0) or (ot_away is not None and ot_away > 0)
 
         return {
             'local': home_team,
             'visita': away_team,
             'prob_home': prob_home,
             'prob_away': prob_away,
+            'probs': [prob_home, 0.0, prob_away],
             'puntos_proyectados': total_projected_points,
+            'has_overtime': has_overtime,
             'score_value': max(prob_home, prob_away)
         }
 
