@@ -4,7 +4,7 @@ import json
 import pandas as pd
 
 # 1. Cargar el archivo JSON
-with open('../resultados/football/partidos_2026-07-13.json', 'r', encoding='utf-8') as f:
+with open('../resultados/football/partidos_2026-07-12.json', 'r', encoding='utf-8') as f:
     data = json.load(f)
 
 if isinstance(data, dict) and 'response' in data:
@@ -70,7 +70,7 @@ else:
             g_clean = group.drop(columns=['Date_dt', 'year_month'], errors='ignore')
             
             # --- ORDENACIÓN DESCENDENTE APLICADA ---
-            g_clean.sort_values(by='Date', ascending=False).to_csv(filename, index=False)
+            g_clean.sort_values(by=['Date', 'League', 'HomeTeam', 'AwayTeam'], ascending=[False, True, True, True]).to_csv(filename, index=False)
             print(f"Archivo guardado ordenado (descendente) y limpio: {filename}")
 
     print("Carga manual completada con éxito.")

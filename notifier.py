@@ -31,7 +31,7 @@ def enviar_mensaje_telegram(mensaje, token_override=None):
         print("⚠️ Faltan credenciales de Telegram (TOKEN o CHAT_ID).")
 
 def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
-    """Reportes estándar para Fútbol."""
+    """Reportes estándar para Fútbol con métricas flexibles (detalles avanzados o promedio de goles)."""
     for liga, proyecciones in proyecciones_dict.items():
         if not proyecciones:
             continue
@@ -52,18 +52,26 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
             
             count_l = s_l.get('count', 0) if isinstance(s_l, dict) else 0
             count_v = s_v.get('count', 0) if isinstance(s_v, dict) else 0
+            
             if count_l > 0 and count_v > 0:
-                mensaje += (f"📐 *Promedios últimos partidos ({count_l}p | {count_v}p):*\n"
-                            f"  🚩 Córners: `{s_l['corners']:.0f}` | `{s_v['corners']:.0f}`\n"
-                            f"  🟨 Tarjetas: `{s_l['tarjetas']:.0f}` | `{s_v['tarjetas']:.0f}`\n"
-                            f"  🥅 Remates: `{s_l['remates']:.0f}` | `{s_v['remates']:.0f}`\n\n")
+                # 1. Siempre mostramos el promedio de goles
+                mensaje += (f"📐 *Promedio de goles ({count_l}p | {count_v}p):*\n"
+                            f"  ⚽ Goles a favor: `{s_l['goles_favor']:.1f}` | `{s_v['goles_favor']:.1f}`\n"
+                            f"  🛡️ Goles en contra: `{s_l['goles_contra']:.1f}` | `{s_v['goles_contra']:.1f}`\n\n")
+                
+                # 2. Si además existen estadísticas detalladas, agregamos el segundo bloque abajito
+                if s_l.get("has_details") and s_v.get("has_details"):
+                    mensaje += (f"📊 *Estadísticas avanzadas:*\n"
+                                f"  🚩 Córners: `{s_l['corners']:.0f}` | `{s_v['corners']:.0f}`\n"
+                                f"  🟨 Tarjetas: `{s_l['tarjetas']:.0f}` | `{s_v['tarjetas']:.0f}`\n"
+                                f"  🥅 Remates: `{s_l['remates']:.0f}` | `{s_v['remates']:.0f}`\n\n")
             else:
                 mensaje += "⚠️ *Sin historial suficiente para promedios detallados.*\n\n"
-                
+                            
         enviar_mensaje_telegram(mensaje, token_override=token_override)
 
 def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
-    """Construye y envía el reporte específico para Basketball (sin córners ni tarjetas)."""
+    """Construye y envía el reporte específico para Basketball incluyendo datos de Overtime."""
     for liga, proyecciones in proyecciones_dict.items():
         if not proyecciones:
             continue
@@ -78,16 +86,30 @@ def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, to
         for p in top_items:
             s_l = analyzer.get_basketball_team_stats(p['local'])
             s_v = analyzer.get_basketball_team_stats(p['visita'])
+            
+            # Llamamos a nuestro nuevo método de overtime por equipo
+            ot_l = analyzer.get_basketball_overtime_stats(p['local'])
+            ot_v = analyzer.get_basketball_overtime_stats(p['visita'])
+            
             mensaje += f"📅 `{p.get('fecha_str', '')}` 🕒 `{p['hora']}`\n🏀 *{p['local']}* vs *{p['visita']}*\n"
             mensaje += (f"📊 Victoria Proyectada: L:{p['prob_home']:.0%} | V:{p['prob_away']:.0%}\n"
                         f"🎯 Puntos Proyectados en el Partido: `{p['puntos_proyectados']:.1f}` pts\n")
             
             count_l = s_l.get('count', 0) if isinstance(s_l, dict) else 0
             count_v = s_v.get('count', 0) if isinstance(s_v, dict) else 0
+            
             if count_l > 0 and count_v > 0:
                 mensaje += (f"📐 *Promedios últimos partidos ({count_l}p | {count_v}p):*\n"
                             f"  pts a favor: `{s_l['puntos_favor']:.1f}` | `{s_v['puntos_favor']:.1f}`\n"
-                            f"  pts en contra: `{s_l['puntos_contra']:.1f}` | `{s_v['puntos_contra']:.1f}`\n\n")
+                            f"  pts en contra: `{s_l['puntos_contra']:.1f}` | `{s_v['puntos_contra']:.1f}`\n")
+                
+                # Bloque adicional de Overtime si registraron prórrogas en sus últimos juegos
+                if ot_l.get('partidos_ot', 0) > 0 or ot_v.get('partidos_ot', 0) > 0:
+                    mensaje += (f"⏱️ *Tendencia a Prórroga (OT):*\n"
+                                f"  partidos con OT (últimos 5): `{ot_l['partidos_ot']}/5` | `{ot_v['partidos_ot']}/5`\n"
+                                f"  puntos extra prom: `{ot_l['promedio_puntos_ot']:.1f}` | `{ot_v['promedio_puntos_ot']:.1f}`\n\n")
+                else:
+                    mensaje += "\n"
             else:
                 mensaje += "⚠️ *Sin historial suficiente para promedios de anotación.*\n\n"
                 

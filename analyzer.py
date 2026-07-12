@@ -9,7 +9,11 @@ class MatchAnalyzer:
             self.df['Date'] = pd.to_datetime(self.df['Date'], errors='coerce')
 
     def get_team_stats(self, team_name):
-        # Mantiene la lógica de fútbol existente si se llama desde el driver de football
+        """
+        Calcula estadísticas de forma flexible. 
+        Si hay datos estadísticos detallados (córners, tarjetas, remates), los retorna.
+        Si están vacíos (NaN), calcula el promedio de goles a favor y en contra recientes.
+        """
         matches = self.df[(self.df["HomeTeam"] == team_name) | (self.df["AwayTeam"] == team_name)]
         matches = matches.dropna(subset=["FTHG", "FTAG"])
         matches = matches.sort_values(by="Date", ascending=False)
@@ -17,25 +21,54 @@ class MatchAnalyzer:
 
         count = len(recent)
         if recent.empty or count == 0:
-            return {"corners": 0, "tarjetas": 0, "remates": 0, "count": 0}
+            return {"has_details": False, "goles_favor": 0.0, "goles_contra": 0.0, "count": 0}
             
-        corners, tarjetas, remates = [], [], []
-        for _, row in recent.iterrows():
-            if row["HomeTeam"] == team_name:
-                corners.append(row["HC"] if pd.notna(row["HC"]) else 0)
-                tarjetas.append((row["HY"] if pd.notna(row["HY"]) else 0) + (row["HR"] if pd.notna(row["HR"]) else 0))
-                remates.append(row["HS"] if pd.notna(row["HS"]) else 0)
-            else:
-                corners.append(row["AC"] if pd.notna(row["AC"]) else 0)
-                tarjetas.append((row["AY"] if pd.notna(row["AY"]) else 0) + (row["AR"] if pd.notna(row["AR"]) else 0))
-                remates.append(row["AS"] if pd.notna(row["AS"]) else 0)
-                
-        return {
-            "corners": float(np.nanmean(corners)) if corners else 0,
-            "tarjetas": float(np.nanmean(tarjetas)) if tarjetas else 0,
-            "remates": float(np.nanmean(remates)) if remates else 0,
-            "count": count,
-        }
+        # Verificamos si la primera fila reciente tiene datos reales de córners (HC/AC)
+        primer_row = recent.iloc[0]
+        tiene_detalles = False
+        if primer_row["HomeTeam"] == team_name:
+            if pd.notna(primer_row.get("HC")) or pd.notna(primer_row.get("HS")):
+                tiene_detalles = True
+        else:
+            if pd.notna(primer_row.get("AC")) or pd.notna(primer_row.get("AS")):
+                tiene_detalles = True
+
+        if tiene_detalles:
+            corners, tarjetas, remates = [], [], []
+            for _, row in recent.iterrows():
+                if row["HomeTeam"] == team_name:
+                    corners.append(row["HC"] if pd.notna(row["HC"]) else 0)
+                    tarjetas.append((row["HY"] if pd.notna(row["HY"]) else 0) + (row["HR"] if pd.notna(row["HR"]) else 0))
+                    remates.append(row["HS"] if pd.notna(row["HS"]) else 0)
+                else:
+                    corners.append(row["AC"] if pd.notna(row["AC"]) else 0)
+                    tarjetas.append((row["AY"] if pd.notna(row["AY"]) else 0) + (row["AR"] if pd.notna(row["AR"]) else 0))
+                    remates.append(row["AS"] if pd.notna(row["AS"]) else 0)
+                    
+            return {
+                "has_details": True,
+                "corners": float(np.nanmean(corners)) if corners else 0.0,
+                "tarjetas": float(np.nanmean(tarjetas)) if tarjetas else 0.0,
+                "remates": float(np.nanmean(remates)) if remates else 0.0,
+                "count": count,
+            }
+        else:
+            # Modo alternativo: promedio de goles si no hay estadísticas avanzadas
+            goles_favor, goles_contra = [], []
+            for _, row in recent.iterrows():
+                if row["HomeTeam"] == team_name:
+                    goles_favor.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
+                    goles_contra.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
+                else:
+                    goles_favor.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
+                    goles_contra.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
+                    
+            return {
+                "has_details": False,
+                "goles_favor": float(np.nanmean(goles_favor)) if goles_favor else 0.0,
+                "goles_contra": float(np.nanmean(goles_contra)) if goles_contra else 0.0,
+                "count": count,
+            }
 
     def get_projections(self, home_team, away_team):
         home_matches = self.df[self.df['HomeTeam'] == home_team].dropna(subset=['FTHG', 'FTAG'])
@@ -138,6 +171,37 @@ class MatchAnalyzer:
             'puntos_proyectados': total_projected_points,
             'has_overtime': has_overtime,
             'score_value': max(prob_home, prob_away)
+        }
+
+    def get_basketball_overtime_stats(self, team_name):
+        """Analiza la frecuencia de overtimes y puntos en tiempo extra en los últimos 5 partidos."""
+        matches = self.df[(self.df["HomeTeam"] == team_name) | (self.df["AwayTeam"] == team_name)]
+        matches = matches.sort_values(by="Date", ascending=False)
+        recent = matches.head(5)
+
+        count = len(recent)
+        if recent.empty or count == 0:
+            return {"partidos_ot": 0, "promedio_puntos_ot": 0.0, "total_partidos": 0}
+
+        partidos_ot = 0
+        puntos_ot_lista = []
+        
+        for _, row in recent.iterrows():
+            # Suponiendo que manejas una columna o indicador de prórroga, 
+            # o si viene el dato crudo en el objeto de la API almacenado.
+            # Verificamos si el estatus o marcador indica tiempo extra:
+            is_ot = row.get("Status") == "AOT" if "Status" in row else False
+            if is_ot:
+                partidos_ot += 1
+                # Si tienes el registro de puntos en OT, lo sumamos; si no, contamos la frecuencia
+                pts_extra = row.get("ExtraPoints", 0.0)
+                if pd.notna(pts_extra):
+                    puntos_ot_lista.append(float(pts_extra))
+
+        return {
+            "partidos_ot": partidos_ot,
+            "promedio_puntos_ot": float(np.nanmean(puntos_ot_lista)) if puntos_ot_lista else 0.0,
+            "total_partidos": count
         }
 
     def get_top_by_league(self, proyecciones, n=3):

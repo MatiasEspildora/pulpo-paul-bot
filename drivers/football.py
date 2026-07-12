@@ -44,7 +44,7 @@ def guardar_historico_mensual(df, meses_a_actualizar=None):
         if meses_a_actualizar is None or period in meses_a_actualizar:
             filename = f'historico_mensual/football/historico_{period.year}_{period.month:02d}.csv'
             g_clean = group.drop(columns=['Date_dt', 'year_month'], errors='ignore')
-            g_clean.sort_values(by='Date', ascending=False).to_csv(filename, index=False)
+            g_clean.sort_values(by=['Date', 'League', 'HomeTeam', 'AwayTeam'], ascending=[False, True, True, True]).to_csv(filename, index=False)
             
 def normalizar_equipo(nombre, master_league_id, aliases_data, equipos_historicos, unmapped_log):
     global_map = aliases_data.get("global_aliases", {})
