@@ -92,8 +92,8 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_m
     return df_hist
 
 def run_process(df_externo=None):
-    os.makedirs("logs", exist_ok=True)
-    os.makedirs("resultados", exist_ok=True)
+    os.makedirs("logs/football", exist_ok=True)
+    os.makedirs("resultados/football", exist_ok=True)
     
     API_KEY = os.environ.get("API_FOOTBALL_KEY")
     api_to_master, _, statuses_map, team_aliases = cargar_configuracion()
@@ -116,7 +116,8 @@ def run_process(df_externo=None):
         data = api.get_data("fixtures", {"date": f_str, "timezone": "America/Santiago"})
         if data and data.get("response"):
             df = actualizar_maestro_con_partidos(df, data["response"], f_str, api_to_master, statuses_map, team_aliases, unmapped_teams)
-
+        time.sleep(1)
+        
     # Rango de fechas procesadas (ayer, hoy, mañana)
     meses_afectados = set()
     for i in range(-1, 2):
