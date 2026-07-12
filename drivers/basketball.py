@@ -104,13 +104,12 @@ def run_process(df_externo=None):
     # Manejo independiente del token de Basketball
     TOKEN_BASKET = os.environ.get("TELEGRAM_BOT_TOKEN_BASKET")
     API_KEY = os.environ.get("API_BASKETBALL_KEY")
-    API_KEY_2 = os.environ.get("API_FOOTBALL_KEY")
+    
     api_to_master, _, statuses_map, team_aliases = cargar_configuracion_basket()
     ligas_permitidas = list(api_to_master.keys())
     
     df = df_externo if df_externo is not None else cargar_historico_mensual_basket()
-    print(API_KEY)
-    print(API_KEY_2)
+    
     api = BasketballAPI(API_KEY)
     zona = pytz.timezone('America/Santiago')
     now = datetime.now(zona)
