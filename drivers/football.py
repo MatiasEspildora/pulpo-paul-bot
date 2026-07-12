@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 import pytz
 import sys
 import time
+
 # Ajuste para importar módulos de la raíz
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -40,8 +41,6 @@ def guardar_historico_mensual(df, meses_a_actualizar=None):
     df_temp['year_month'] = df_temp['Date_dt'].dt.to_period('M')
     
     for period, group in df_temp.groupby('year_month'):
-        # Si se especificó una lista de meses permitidos a actualizar, filtramos.
-        # Si no, guardamos los periodos que hayan cambiado o todos los involucrados.
         if meses_a_actualizar is None or period in meses_a_actualizar:
             filename = f'historico_mensual/football/historico_{period.year}_{period.month:02d}.csv'
             g_clean = group.drop(columns=['Date_dt', 'year_month'], errors='ignore')
@@ -60,7 +59,6 @@ def normalizar_equipo(nombre, master_league_id, aliases_data, equipos_historicos
     # 2. Si no se mapeó, clasificar el error
     if master_league_id not in ["WOR_FRIENDLIES_CLUBS", "WOR_FRIENDLY_INTERNATIONAL"]:
         existe_en_historico = nombre in equipos_historicos
-        
         estado = "EQUIPO_NUEVO" if not existe_en_historico else "ERROR_MAPEO"
         
         registro = {
@@ -69,26 +67,29 @@ def normalizar_equipo(nombre, master_league_id, aliases_data, equipos_historicos
             "status": estado
         }
         
-        if registro not in unmapped_log: 
+        ya_registrado = any(r.get("team") == nombre and r.get("master_league") == master_league_id for r in unmapped_log)
+        if not ya_registrado: 
             unmapped_log.append(registro)
             
     return nombre
 
 def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_master, statuses, aliases_data, unmapped_log):
-    equipos_historicos = set(df_hist["HomeTeam"].dropna().unique()).union(set(df_hist["AwayTeam"].dropna().unique()))
+    equipos_historicos = set(df_hist["HomeTeam"].dropna().unique()).union(set(df_hist["AwayTeam"].dropna().unique())) if not df_hist.empty else set()
     for match in partidos_lista:
         liga_id = str(match["league"]["id"])
         if liga_id in api_to_master and match["fixture"]["status"]["short"] in statuses["finished"]:
             h_team = normalizar_equipo(match["teams"]["home"]["name"], api_to_master[liga_id], aliases_data, equipos_historicos, unmapped_log)
             a_team = normalizar_equipo(match["teams"]["away"]["name"], api_to_master[liga_id], aliases_data, equipos_historicos, unmapped_log)
             
-            mask = (df_hist["Date"] == fecha_str) & (df_hist["HomeTeam"] == h_team) & (df_hist["AwayTeam"] == a_team)
-            if mask.any():
-                idx = df_hist[mask].index[0]
-                df_hist.at[idx, "FTHG"], df_hist.at[idx, "FTAG"] = match["goals"]["home"], match["goals"]["away"]
-            else:
-                nuevo = {"League": match["league"]["name"], "Date": fecha_str, "HomeTeam": h_team, "AwayTeam": a_team, "FTHG": match["goals"]["home"], "FTAG": match["goals"]["away"]}
-                df_hist = pd.concat([df_hist, pd.DataFrame([nuevo])], ignore_index=True)
+            if not df_hist.empty and "HomeTeam" in df_hist.columns:
+                mask = (df_hist["Date"] == fecha_str) & (df_hist["HomeTeam"] == h_team) & (df_hist["AwayTeam"] == a_team)
+                if mask.any():
+                    idx = df_hist[mask].index[0]
+                    df_hist.at[idx, "FTHG"], df_hist.at[idx, "FTAG"] = match["goals"]["home"], match["goals"]["away"]
+                    continue
+                    
+            nuevo = {"League": match["league"]["name"], "Date": fecha_str, "HomeTeam": h_team, "AwayTeam": a_team, "FTHG": match["goals"]["home"], "FTAG": match["goals"]["away"]}
+            df_hist = pd.concat([df_hist, pd.DataFrame([nuevo])], ignore_index=True)
     return df_hist
 
 def run_process(df_externo=None):
@@ -110,25 +111,19 @@ def run_process(df_externo=None):
     fecha_hoy_str = now.strftime("%Y-%m-%d")
     fecha_mañana_str = (now + timedelta(days=1)).strftime("%Y-%m-%d")
     
-    # Procesar resultados
-    for i in range(-1, 2):
-        f_str = (now + timedelta(days=i)).strftime("%Y-%m-%d")
-        data = api.get_data("fixtures", {"date": f_str, "timezone": "America/Santiago"})
-        if data and data.get("response"):
-            df = actualizar_maestro_con_partidos(df, data["response"], f_str, api_to_master, statuses_map, team_aliases, unmapped_teams)
-        time.sleep(1)
-
-    # Rango de fechas procesadas (ayer, hoy, mañana)
+    # Procesamiento unificado de días y registro de meses afectados
     meses_afectados = set()
     for i in range(-1, 2):
         f_dt = now + timedelta(days=i)
         meses_afectados.add(pd.Period(f_dt.strftime("%Y-%m"), 'M'))
         f_str = f_dt.strftime("%Y-%m-%d")
+        
         data = api.get_data("fixtures", {"date": f_str, "timezone": "America/Santiago"})
         if data and data.get("response"):
             df = actualizar_maestro_con_partidos(df, data["response"], f_str, api_to_master, statuses_map, team_aliases, unmapped_teams)
+        time.sleep(1)
     
-    # Guardar únicamente los meses que sufrieron cambios en esta ejecución (ej. julio y agosto)
+    # Guardar únicamente los meses que sufrieron cambios en esta ejecución
     guardar_historico_mensual(df, meses_afectados)
        
     analyzer = MatchAnalyzer(df)

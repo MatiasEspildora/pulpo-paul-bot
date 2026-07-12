@@ -43,10 +43,8 @@ def guardar_historico_mensual_basket(df, meses_a_actualizar=None):
     df_temp['year_month'] = df_temp['Date_dt'].dt.to_period('M')
     
     for period, group in df_temp.groupby('year_month'):
-        # Si se especificó una lista de meses permitidos a actualizar, filtramos.
-        # Si no, guardamos los periodos que hayan cambiado o todos los involucrados.
         if meses_a_actualizar is None or period in meses_a_actualizar:
-            filename = f'historico_mensual/football/historico_{period.year}_{period.month:02d}.csv'
+            filename = f'historico_mensual/basketball/historico_{period.year}_{period.month:02d}.csv'
             g_clean = group.drop(columns=['Date_dt', 'year_month'], errors='ignore')
             g_clean.sort_values(by='Date', ascending=False).to_csv(filename, index=False)
 
@@ -67,7 +65,8 @@ def normalizar_equipo(nombre, master_league_id, aliases_data, equipos_historicos
             "master_league": master_league_id,
             "status": estado
         }
-        if registro not in unmapped_log: 
+        ya_registrado = any(r.get("team") == nombre and r.get("master_league") == master_league_id for r in unmapped_log)
+        if not ya_registrado: 
             unmapped_log.append(registro)
     return nombre
 
@@ -101,7 +100,6 @@ def run_process(df_externo=None):
     os.makedirs("logs/basketball", exist_ok=True)
     os.makedirs("resultados/basketball", exist_ok=True)
     
-    # Manejo independiente del token de Basketball
     TOKEN_BASKET = os.environ.get("TELEGRAM_BOT_TOKEN_BASKET")
     API_KEY = os.environ.get("API_BASKETBALL_KEY")
     
@@ -109,7 +107,6 @@ def run_process(df_externo=None):
     ligas_permitidas = list(api_to_master.keys())
     
     df = df_externo if df_externo is not None else cargar_historico_mensual_basket()
-    
     api = BasketballAPI(API_KEY)
     zona = pytz.timezone('America/Santiago')
     now = datetime.now(zona)
@@ -118,22 +115,17 @@ def run_process(df_externo=None):
     fecha_hoy_str = now.strftime("%Y-%m-%d")
     fecha_mañana_str = (now + timedelta(days=1)).strftime("%Y-%m-%d")
     
-    for i in range(-1, 2):
-        f_str = (now + timedelta(days=i)).strftime("%Y-%m-%d")
-        data = api.get_data("games", {"date": f_str})
-        if data and data.get("response"):
-            df = actualizar_maestro_con_partidos(df, data["response"], f_str, api_to_master, statuses_map, team_aliases, unmapped_teams)
-        time.sleep(1)
-
-    # Rango de fechas procesadas (ayer, hoy, mañana)
+    # Procesamiento unificado de días y registro de meses afectados
     meses_afectados = set()
     for i in range(-1, 2):
         f_dt = now + timedelta(days=i)
         meses_afectados.add(pd.Period(f_dt.strftime("%Y-%m"), 'M'))
         f_str = f_dt.strftime("%Y-%m-%d")
-        data = api.get_data("games", {"date": f_str, "timezone": "America/Santiago"})
+        
+        data = api.get_data("games", {"date": f_str})
         if data and data.get("response"):
             df = actualizar_maestro_con_partidos(df, data["response"], f_str, api_to_master, statuses_map, team_aliases, unmapped_teams)
+        time.sleep(1)
 
     guardar_historico_mensual_basket(df, meses_afectados)
     analyzer = MatchAnalyzer(df)
@@ -171,12 +163,10 @@ def run_process(df_externo=None):
         with open(f"logs/basketball/unmapped_basket_teams_{now.strftime('%Y%m%d')}.json", "w", encoding="utf-8") as f:
             json.dump(unmapped_teams, f, ensure_ascii=False, indent=4)
             
-    # Nota: Si tus funciones de notificación soportan el token por parámetro, pásalo aquí; 
-    # de lo contrario, asegúrate de que el notifier lea TELEGRAM_BOT_TOKEN_BASKET si corresponde.
     enviar_mensaje_telegram(f"🏀 *FIN DIA BASKET: {fecha_hoy_str}*", TOKEN_BASKET)
     enviar_bloque_reportes(proyecciones_hoy, "", analyzer, TOKEN_BASKET)
     if proyecciones_mañana:
-        enviar_mensaje_telegram(f"🚀 *INICIO DIA BASKET: {fecha_mañana_str} (Ventana Anticipada)*")
+        enviar_mensaje_telegram(f"🚀 *INICIO DIA BASKET: {fecha_mañana_str} (Ventana Anticipada)*", TOKEN_BASKET)
         enviar_bloque_reportes(proyecciones_mañana, "Madrugada", analyzer, TOKEN_BASKET)
         
     print("✅ Proceso de Basketball completo.")
