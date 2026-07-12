@@ -43,7 +43,7 @@ jobs:
 
       - name: Registrar y subir cambios
         run: |
-          git add historico_mensual/ logs/
+          git add historico_mensual/ logs/ resultados/
           git status
           # Verificamos si hay cambios pendientes para commitear
           if git diff --staged --quiet; then
