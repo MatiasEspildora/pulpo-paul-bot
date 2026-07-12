@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   schedule:
     # Corre todos los días a las 03:00 UTC (23:00 de Chile)
-    - cron: "0 3 * * *"
+    - cron: "5 4 * * *"
 
 jobs:
   analizar_partidos:
