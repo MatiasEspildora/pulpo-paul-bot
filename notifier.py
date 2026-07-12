@@ -9,7 +9,8 @@ BANDERAS = {
     "Belarus": "🇧🇾", "Ecuador": "🇪🇨", "USA": "🇺🇸", "Russia": "🇷🇺",
     "Finland": "🇫🇮", "Paraguay": "🇵🇾", "South-Korea": "🇰🇷", "Estonia": "🇪🇪",
     "Ireland": "🇮🇪", "Kazakhstan": "🇰🇿", "Lebanon": "🇱🇧", "Zimbabwe": "🇿🇼",
-    "Kyrgyzstan": "🇰🇬", "Latvia": "🇱🇻", "Brazil": "🇧🇷", "Peru": "🇵🇪", "China": "🇨🇳"
+    "Kyrgyzstan": "🇰🇬", "Latvia": "🇱🇻", "Brazil": "🇧🇷", "Peru": "🇵🇪", "China": "🇨🇳",
+    "Canada": "🇨🇦", "Puerto Rico": "🇵🇷", "New Zealand": "🇳🇿"
 }
 
 def enviar_mensaje_telegram(mensaje, token_override=None):
