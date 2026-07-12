@@ -5,7 +5,7 @@ import glob
 from datetime import datetime, timedelta
 import pytz
 import sys
-
+import time
 # Ajuste para importar módulos de la raíz
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -117,7 +117,7 @@ def run_process(df_externo=None):
         if data and data.get("response"):
             df = actualizar_maestro_con_partidos(df, data["response"], f_str, api_to_master, statuses_map, team_aliases, unmapped_teams)
         time.sleep(1)
-        
+
     # Rango de fechas procesadas (ayer, hoy, mañana)
     meses_afectados = set()
     for i in range(-1, 2):

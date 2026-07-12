@@ -172,10 +172,10 @@ def run_process(df_externo=None):
             
     # Nota: Si tus funciones de notificación soportan el token por parámetro, pásalo aquí; 
     # de lo contrario, asegúrate de que el notifier lea TELEGRAM_BOT_TOKEN_BASKET si corresponde.
-    enviar_mensaje_telegram(f"🏀 *FIN DIA BASKET: {fecha_hoy_str}*")
-    enviar_bloque_reportes(proyecciones_hoy, "", analyzer)
+    enviar_mensaje_telegram(f"🏀 *FIN DIA BASKET: {fecha_hoy_str}*", TOKEN_BASKET)
+    enviar_bloque_reportes(proyecciones_hoy, "", analyzer, TOKEN_BASKET)
     if proyecciones_mañana:
         enviar_mensaje_telegram(f"🚀 *INICIO DIA BASKET: {fecha_mañana_str} (Ventana Anticipada)*")
-        enviar_bloque_reportes(proyecciones_mañana, "Madrugada", analyzer)
+        enviar_bloque_reportes(proyecciones_mañana, "Madrugada", analyzer, TOKEN_BASKET)
         
     print("✅ Proceso de Basketball completo.")

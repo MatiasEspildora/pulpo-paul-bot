@@ -26,10 +26,10 @@ class FootballAPI(DataClient):
             
 class BasketballAPI(DataClient):
     def __init__(self, key):
-        self.base_url = "https://api-basketball.p.rapidapi.com"
+        self.base_url = "https://v1.basketball.api-sports.io"
         self.headers = {
             "x-rapidapi-key": key,
-            "x-rapidapi-host": "api-basketball.p.rapidapi.com"
+            "x-rapidapi-host": "v1.basketball.api-sports.io"
         }
 
     def get_data(self, endpoint, params):
