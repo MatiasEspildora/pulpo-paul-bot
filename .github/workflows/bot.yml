@@ -34,13 +34,20 @@ jobs:
           API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
         run: python main.py
 
-      - name: Guardar resultados en GitHub
+      - name: Configurar Git
         run: |
           git config --global user.name "Pulpo Paul Bot"
-          git config --global user.email "acciones@github.com"
-          # El '|| true' hace que git ignore errores si la carpeta no existe
-          git add resultados/ historico_maestro_global.csv logs/ || true
-          git commit -m "🐙 Pulpo Paul: Actualizando histórico, JSON y logs" || echo "No hay cambios para guardar"
-          git push
+          git config --global user.email "bot@users.noreply.github.com"
 
+      - name: Registrar y subir cambios
+        run: |
+          git add historico_mensual/ logs/
+          git status
+          # Verificamos si hay cambios pendientes para commitear
+          if git diff --staged --quiet; then
+            echo "No hay cambios para guardar."
+          else
+            git commit -m "🤖 Actualización automática de resultados y proyecciones [skip ci]"
+            git push
+          fi
       
