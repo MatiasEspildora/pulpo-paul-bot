@@ -23,3 +23,20 @@ class FootballAPI(DataClient):
         except requests.exceptions.RequestException as e:
             print(f"❌ Error conectando a API Football: {e}")
             return None
+            
+class BasketballAPI(DataClient):
+    def __init__(self, key):
+        self.base_url = "https://api-basketball.p.rapidapi.com"
+        self.headers = {
+            "x-rapidapi-key": key,
+            "x-rapidapi-host": "api-basketball.p.rapidapi.com"
+        }
+
+    def get_data(self, endpoint, params):
+        try:
+            response = requests.get(f"{self.base_url}/{endpoint}", headers=self.headers, params=params)
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            print(f"❌ Error conectando a API Basketball: {e}")
+            return None

@@ -1,30 +1,29 @@
 import pandas as pd
 import glob
 from drivers import football
-# Cuando tengas el de tenis listo, simplemente descomentarás la línea de abajo:
-# from drivers import tennis 
+from drivers import basketball
 
-# Carga todos los archivos CSV de la carpeta al inicio
-all_files = glob.glob("historico_mensual/historico_*.csv")
-li = [pd.read_csv(filename) for filename in all_files]
-df_completo = pd.concat(li, axis=0, ignore_index=True)
-# Ahora tienes tu dataframe maestro consolidado en RAM para analizar
+# Carga de históricos segmentados por subcarpetas
+all_files_fb = glob.glob("historico_mensual/football/historico_*.csv")
+li_fb = [pd.read_csv(filename) for filename in all_files_fb]
+df_completo_fb = pd.concat(li_fb, axis=0, ignore_index=True) if li_fb else pd.DataFrame()
 
+all_files_bk = glob.glob("historico_mensual/basketball/historico_*.csv")
+li_bk = [pd.read_csv(filename) for filename in all_files_bk]
+df_completo_bk = pd.concat(li_bk, axis=0, ignore_index=True) if li_bk else pd.DataFrame()
 
 def main():
     print("--- 🚀 INICIANDO CICLO DE PROCESAMIENTO GLOBAL ---")
     
-    # 1. Ejecución del proceso de Fútbol
     try:
-        football.run_process(df_completo)
+        football.run_process(df_completo_fb)
     except Exception as e:
         print(f"❌ Error en el proceso de Fútbol: {e}")
         
-    # 2. Aquí ejecutaremos el tenis más adelante
-    # try:
-    #     tennis.run_process()
-    # except Exception as e:
-    #     print(f"❌ Error en el proceso de Tenis: {e}")
+    try:
+        basketball.run_process(df_completo_bk)
+    except Exception as e:
+        print(f"❌ Error en el proceso de Basketball: {e}")
 
     print("✅ Ciclo de ejecución finalizado.")
 

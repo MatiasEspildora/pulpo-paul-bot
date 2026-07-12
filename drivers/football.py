@@ -14,18 +14,18 @@ from analyzer import MatchAnalyzer
 from notifier import enviar_mensaje_telegram, enviar_bloque_reportes
 
 def cargar_configuracion():
-    with open("config/leagues.json", "r", encoding="utf-8") as f:
+    with open("config/football/leagues.json", "r", encoding="utf-8") as f:
         data = json.load(f)
         api_to_master = data.get("api_football_to_master", {})
         master_leagues_info = data.get("master_leagues", {})
-    with open("config/statuses.json", "r", encoding="utf-8") as f:
+    with open("config/football/statuses.json", "r", encoding="utf-8") as f:
         statuses = json.load(f)["active_providers"]["api_football"]
-    with open("config/team_aliases.json", "r", encoding="utf-8") as f:
+    with open("config/football/team_aliases.json", "r", encoding="utf-8") as f:
         aliases_data = json.load(f)
     return api_to_master, master_leagues_info, statuses, aliases_data
 
 def cargar_historico_mensual():
-    all_files = glob.glob("historico_mensual/historico_*.csv")
+    all_files = glob.glob("historico_mensual/football/historico_*.csv")
     if not all_files:
         return pd.DataFrame(columns=['League', 'Date', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR', 'HS', 'AS'])
     li = [pd.read_csv(filename) for filename in all_files]
@@ -34,13 +34,13 @@ def cargar_historico_mensual():
     return df
 
 def guardar_historico_mensual(df):
-    os.makedirs("historico_mensual", exist_ok=True)
+    os.makedirs("historico_mensual/football", exist_ok=True)
     df_temp = df.copy()
     df_temp['Date_dt'] = pd.to_datetime(df_temp['Date'], format='mixed')
     df_temp['year_month'] = df_temp['Date_dt'].dt.to_period('M')
     
     for period, group in df_temp.groupby('year_month'):
-        filename = f'historico_mensual/historico_{period.year}_{period.month:02d}.csv'
+        filename = f'historico_mensual/football/historico_{period.year}_{period.month:02d}.csv'
         g_clean = group.drop(columns=['Date_dt', 'year_month'], errors='ignore')
         g_clean.sort_values(by='Date', ascending=False).to_csv(filename, index=False)
 
@@ -140,7 +140,7 @@ def run_process(df_externo=None):
     procesar_lote_partidos(api.get_data("fixtures", {"date": fecha_mañana_str}).get("response", []))
     
     if unmapped_teams:
-        with open(f"logs/unmapped_teams_{now.strftime('%Y%m%d')}.json", "w", encoding="utf-8") as f:
+        with open(f"logs/football/unmapped_teams_{now.strftime('%Y%m%d')}.json", "w", encoding="utf-8") as f:
             json.dump(unmapped_teams, f, ensure_ascii=False, indent=4)
             
     enviar_mensaje_telegram(f"🏁 *FIN DIA: {fecha_hoy_str}*")

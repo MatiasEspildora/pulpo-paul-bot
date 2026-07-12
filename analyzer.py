@@ -9,10 +9,8 @@ class MatchAnalyzer:
             self.df['Date'] = pd.to_datetime(self.df['Date'], errors='coerce')
 
     def get_team_stats(self, team_name):
-        # Filtramos los últimos 5 partidos del equipo donde hubo resultado real
-        matches = self.df[
-            (self.df["HomeTeam"] == team_name) | (self.df["AwayTeam"] == team_name)
-        ]
+        # Mantiene la lógica de fútbol existente si se llama desde el driver de football
+        matches = self.df[(self.df["HomeTeam"] == team_name) | (self.df["AwayTeam"] == team_name)]
         matches = matches.dropna(subset=["FTHG", "FTAG"])
         matches = matches.sort_values(by="Date", ascending=False)
         recent = matches.head(5)
@@ -21,22 +19,15 @@ class MatchAnalyzer:
         if recent.empty or count == 0:
             return {"corners": 0, "tarjetas": 0, "remates": 0, "count": 0}
             
-        corners = []
-        tarjetas = []
-        remates = []
-        
+        corners, tarjetas, remates = [], [], []
         for _, row in recent.iterrows():
             if row["HomeTeam"] == team_name:
                 corners.append(row["HC"] if pd.notna(row["HC"]) else 0)
-                hy = row["HY"] if pd.notna(row["HY"]) else 0
-                hr = row["HR"] if pd.notna(row["HR"]) else 0
-                tarjetas.append(hy + hr)
+                tarjetas.append((row["HY"] if pd.notna(row["HY"]) else 0) + (row["HR"] if pd.notna(row["HR"]) else 0))
                 remates.append(row["HS"] if pd.notna(row["HS"]) else 0)
             else:
                 corners.append(row["AC"] if pd.notna(row["AC"]) else 0)
-                ay = row["AY"] if pd.notna(row["AY"]) else 0
-                ar = row['AR'] if pd.notna(row['AR']) else 0
-                tarjetas.append(ay + ar)
+                tarjetas.append((row["AY"] if pd.notna(row["AY"]) else 0) + (row["AR"] if pd.notna(row["AR"]) else 0))
                 remates.append(row["AS"] if pd.notna(row["AS"]) else 0)
                 
         return {
@@ -47,7 +38,6 @@ class MatchAnalyzer:
         }
 
     def get_projections(self, home_team, away_team):
-        # Obtener estadísticas recientes
         home_matches = self.df[self.df['HomeTeam'] == home_team].dropna(subset=['FTHG', 'FTAG'])
         away_matches = self.df[self.df['AwayTeam'] == away_team].dropna(subset=['FTHG', 'FTAG'])
 
@@ -66,7 +56,6 @@ class MatchAnalyzer:
         prob_home = sum(p_home[i] * p_away[j] for i in range(max_goals + 1) for j in range(max_goals + 1) if i > j)
         prob_draw = sum(p_home[i] * p_away[j] for i in range(max_goals + 1) for j in range(max_goals + 1) if i == j)
         prob_away = sum(p_home[i] * p_away[j] for i in range(max_goals + 1) for j in range(max_goals + 1) if i < j)
-
         btts = (1 - p_home[0]) * (1 - p_away[0])
 
         score_probs = []
@@ -83,6 +72,65 @@ class MatchAnalyzer:
             'btts': btts,
             'scores': top_scores,
             'score_value': max(prob_home, prob_draw, prob_away)
+        }
+
+    # --- MODELO PREDICTIVO ESPECÍFICO PARA BASKETBALL ---
+    def get_basketball_team_stats(self, team_name):
+        """Calcula promedios de puntos anotados y recibidos en los últimos 5 partidos de básquetbol."""
+        matches = self.df[(self.df["HomeTeam"] == team_name) | (self.df["AwayTeam"] == team_name)]
+        matches = matches.dropna(subset=["FTHG", "FTAG"]) # FTHG = Puntos Local, FTAG = Puntos Visita
+        matches = matches.sort_values(by="Date", ascending=False)
+        recent = matches.head(5)
+
+        count = len(recent)
+        if recent.empty or count == 0:
+            return {"puntos_favor": 0, "puntos_contra": 0, "count": 0}
+            
+        puntos_favor, puntos_contra = [], []
+        for _, row in recent.iterrows():
+            if row["HomeTeam"] == team_name:
+                puntos_favor.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0)
+                puntos_contra.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0)
+            else:
+                puntos_favor.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0)
+                puntos_contra.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0)
+                
+        return {
+            "puntos_favor": float(np.nanmean(puntos_favor)) if puntos_favor else 0,
+            "puntos_contra": float(np.nanmean(puntos_contra)) if puntos_contra else 0,
+            "count": count,
+        }
+
+    def get_basketball_projections(self, home_team, away_team):
+        """
+        Modelo predictivo para básquetbol basado en la expectativa de anotación combinada.
+        Calcula probabilidades de victoria directa (sin empate) y estimación de línea de puntos total.
+        """
+        home_matches = self.df[self.df['HomeTeam'] == home_team].dropna(subset=['FTHG', 'FTAG'])
+        away_matches = self.df[self.df['AwayTeam'] == away_team].dropna(subset=['FTHG', 'FTAG'])
+
+        home_avg_scored = home_matches['FTHG'].mean() if not home_matches.empty else 105.0
+        home_avg_conceded = home_matches['FTAG'].mean() if not home_matches.empty else 102.0
+        away_avg_scored = away_matches['FTAG'].mean() if not away_matches.empty else 103.0
+        away_avg_conceded = away_matches['FTHG'].mean() if not away_avg_scored else 104.0
+
+        # Expectativa ofensiva vs defensiva
+        exp_home_score = (home_avg_scored + away_avg_conceded) / 2
+        exp_away_score = (away_avg_scored + home_avg_conceded) / 2
+        total_projected_points = exp_home_score + exp_away_score
+
+        # Estimación simple de probabilidad basada en la diferencia de expectativas de anotación
+        diff = exp_home_score - exp_away_score
+        prob_home = 1 / (1 + np.exp(-diff / 10))  # función sigmoidea ajustada para margen de básquetbol
+        prob_away = 1 - prob_home
+
+        return {
+            'local': home_team,
+            'visita': away_team,
+            'prob_home': prob_home,
+            'prob_away': prob_away,
+            'puntos_proyectados': total_projected_points,
+            'score_value': max(prob_home, prob_away)
         }
 
     def get_top_by_league(self, proyecciones, n=3):
