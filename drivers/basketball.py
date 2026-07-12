@@ -72,6 +72,12 @@ def normalizar_equipo(nombre, master_league_id, aliases_data, equipos_historicos
 
 def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_master, statuses, aliases_data, unmapped_log):
     equipos_historicos = set(df_hist["HomeTeam"].dropna().unique()).union(set(df_hist["AwayTeam"].dropna().unique())) if not df_hist.empty else set()
+    
+    # Asegurar que las columnas de OT existan en el DataFrame histórico
+    for col in ["HasOT", "Home_OT", "Away_OT"]:
+        if col not in df_hist.columns:
+            df_hist[col] = False if col == "HasOT" else 0
+
     for match in partidos_lista:
         liga_id = str(match["league"]["id"])
         status_short = match.get("status", {}).get("short", "")
@@ -81,19 +87,39 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_m
             h_team = normalizar_equipo(h_name, api_to_master[liga_id], aliases_data, equipos_historicos, unmapped_log)
             a_team = normalizar_equipo(a_name, api_to_master[liga_id], aliases_data, equipos_historicos, unmapped_log)
             
-            scores = match.get("scores", {}).get("total", {})
-            h_score = scores.get("home", 0)
-            a_score = scores.get("away", 0)
+            # EXTRACCIÓN CORRECTA DE BÁSQUETBOL
+            scores = match.get("scores", {})
+            h_score = scores.get("home", {}).get("total", 0)
+            a_score = scores.get("away", {}).get("total", 0)
+            
+            h_ot = scores.get("home", {}).get("over_time") or 0
+            a_ot = scores.get("away", {}).get("over_time") or 0
+            has_ot = bool(h_ot > 0 or a_ot > 0)
             
             if not df_hist.empty and "HomeTeam" in df_hist.columns:
                 mask = (df_hist["Date"] == fecha_str) & (df_hist["HomeTeam"] == h_team) & (df_hist["AwayTeam"] == a_team)
                 if mask.any():
                     idx = df_hist[mask].index[0]
-                    df_hist.at[idx, "FTHG"], df_hist.at[idx, "FTAG"] = h_score, a_score
+                    df_hist.at[idx, "FTHG"] = h_score
+                    df_hist.at[idx, "FTAG"] = a_score
+                    df_hist.at[idx, "HasOT"] = has_ot
+                    df_hist.at[idx, "Home_OT"] = h_ot
+                    df_hist.at[idx, "Away_OT"] = a_ot
                     continue
             
-            nuevo = {"League": match["league"]["name"], "Date": fecha_str, "HomeTeam": h_team, "AwayTeam": a_team, "FTHG": h_score, "FTAG": a_score}
+            nuevo = {
+                "League": match["league"]["name"], 
+                "Date": fecha_str, 
+                "HomeTeam": h_team, 
+                "AwayTeam": a_team, 
+                "FTHG": h_score, 
+                "FTAG": a_score,
+                "HasOT": has_ot,
+                "Home_OT": h_ot,
+                "Away_OT": a_ot
+            }
             df_hist = pd.concat([df_hist, pd.DataFrame([nuevo])], ignore_index=True)
+            
     return df_hist
 
 def run_process(df_externo=None):
