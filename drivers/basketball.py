@@ -146,7 +146,7 @@ def run_process(df_externo=None):
                 game_date = match.get("date", datetime.now().isoformat())
                 proj['fecha_str'] = datetime.fromisoformat(game_date.replace("Z", "+00:00")).astimezone(zona).strftime("%Y-%m-%d")
                 proj['hora'] = datetime.fromisoformat(game_date.replace("Z", "+00:00")).astimezone(zona).strftime("%H:%M")
-                proj['pais'] = match.get("country", "")
+                proj['pais'] = match.get("country", {}).get("name", "World")
                 
                 target = proyecciones_mañana if proj['fecha_str'] == fecha_mañana_str else proyecciones_hoy
                 target.setdefault(match["league"]["name"], []).append(proj)
