@@ -1,6 +1,7 @@
 import os
 import json
 import pandas as pd
+import glob
 from datetime import datetime, timedelta
 import pytz
 import sys
@@ -22,6 +23,26 @@ def cargar_configuracion():
     with open("config/team_aliases.json", "r", encoding="utf-8") as f:
         aliases_data = json.load(f)
     return api_to_master, master_leagues_info, statuses, aliases_data
+
+def cargar_historico_mensual():
+    all_files = glob.glob("historico_mensual/historico_*.csv")
+    if not all_files:
+        return pd.DataFrame(columns=['League', 'Date', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR', 'HS', 'AS'])
+    li = [pd.read_csv(filename) for filename in all_files]
+    df = pd.concat(li, axis=0, ignore_index=True)
+    df['Date'] = pd.to_datetime(df['Date'], format='mixed').dt.strftime('%Y-%m-%d')
+    return df
+
+def guardar_historico_mensual(df):
+    os.makedirs("historico_mensual", exist_ok=True)
+    df_temp = df.copy()
+    df_temp['Date_dt'] = pd.to_datetime(df_temp['Date'], format='mixed')
+    df_temp['year_month'] = df_temp['Date_dt'].dt.to_period('M')
+    
+    for period, group in df_temp.groupby('year_month'):
+        filename = f'historico_mensual/historico_{period.year}_{period.month:02d}.csv'
+        g_clean = group.drop(columns=['Date_dt', 'year_month'], errors='ignore')
+        g_clean.sort_values(by='Date', ascending=False).to_csv(filename, index=False)
 
 def normalizar_equipo(nombre, master_league_id, aliases_data, equipos_historicos, unmapped_log):
     global_map = aliases_data.get("global_aliases", {})
@@ -50,7 +71,6 @@ def normalizar_equipo(nombre, master_league_id, aliases_data, equipos_historicos
             
     return nombre
 
-
 def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_master, statuses, aliases_data, unmapped_log):
     equipos_historicos = set(df_hist["HomeTeam"].dropna().unique()).union(set(df_hist["AwayTeam"].dropna().unique()))
     for match in partidos_lista:
@@ -68,14 +88,17 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_m
                 df_hist = pd.concat([df_hist, pd.DataFrame([nuevo])], ignore_index=True)
     return df_hist
 
-def run_process():
+def run_process(df_externo=None):
     os.makedirs("logs", exist_ok=True)
     os.makedirs("resultados", exist_ok=True)
     
     API_KEY = os.environ.get("API_FOOTBALL_KEY")
     api_to_master, _, statuses_map, team_aliases = cargar_configuracion()
     ligas_permitidas = list(api_to_master.keys())
-    df = pd.read_csv("historico_maestro_global.csv")
+    
+    # Cargar histórico desde la carpeta modular mensual
+    df = df_externo if df_externo is not None else cargar_historico_mensual()
+    
     api = FootballAPI(API_KEY)
     zona = pytz.timezone('America/Santiago')
     now = datetime.now(zona)
@@ -91,7 +114,9 @@ def run_process():
         if data and data.get("response"):
             df = actualizar_maestro_con_partidos(df, data["response"], f_str, api_to_master, statuses_map, team_aliases, unmapped_teams)
     
-    df.to_csv("historico_maestro_global.csv", index=False)
+    # Guardar particionado por mes
+    guardar_historico_mensual(df)
+    
     analyzer = MatchAnalyzer(df)
     
     # Proyecciones
@@ -104,6 +129,7 @@ def run_process():
                 a_name = normalizar_equipo(match["teams"]["away"]["name"], api_to_master[str(match["league"]["id"])], team_aliases, set(), [])
                 
                 proj = analyzer.get_projections(h_name, a_name)
+                proj['fecha_str'] = datetime.fromisoformat(match["fixture"]["date"].replace("Z", "+00:00")).astimezone(zona).strftime("%Y-%m-%d")
                 proj['hora'] = datetime.fromisoformat(match["fixture"]["date"].replace("Z", "+00:00")).astimezone(zona).strftime("%H:%M")
                 proj['pais'] = match["league"]["country"]
                 
@@ -122,5 +148,5 @@ def run_process():
     if proyecciones_mañana:
         enviar_mensaje_telegram(f"🚀 *INICIO DIA: {fecha_mañana_str} (Ventana Anticipada)*")
         enviar_bloque_reportes(proyecciones_mañana, "Madrugada", analyzer)
-    
+        
     print("✅ Proceso completo.")
