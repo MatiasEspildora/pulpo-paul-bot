@@ -647,8 +647,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Half Time",
-            "short": "HT",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -680,18 +680,18 @@
             "home": {
                 "quarter_1": 21,
                 "quarter_2": 21,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_3": 37,
+                "quarter_4": 11,
                 "over_time": null,
-                "total": 42
+                "total": 90
             },
             "away": {
                 "quarter_1": 18,
                 "quarter_2": 35,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_3": 40,
+                "quarter_4": 29,
                 "over_time": null,
-                "total": 53
+                "total": 122
             }
         }
     },
@@ -705,9 +705,9 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Quarter 1",
-            "short": "Q1",
-            "timer": "3"
+            "long": "Quarter 3",
+            "short": "Q3",
+            "timer": "6"
         },
         "league": {
             "id": 329,
@@ -736,20 +736,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": 6,
-                "quarter_2": null,
-                "quarter_3": null,
+                "quarter_1": 17,
+                "quarter_2": 8,
+                "quarter_3": 11,
                 "quarter_4": null,
                 "over_time": null,
-                "total": 6
+                "total": 36
             },
             "away": {
-                "quarter_1": 0,
-                "quarter_2": null,
-                "quarter_3": null,
+                "quarter_1": 12,
+                "quarter_2": 18,
+                "quarter_3": 8,
                 "quarter_4": null,
                 "over_time": null,
-                "total": 0
+                "total": 38
             }
         }
     },
@@ -763,9 +763,9 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
-            "timer": null
+            "long": "Halftime",
+            "short": "HT",
+            "timer": "0"
         },
         "league": {
             "id": 329,
@@ -794,20 +794,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
+                "quarter_1": 18,
+                "quarter_2": 22,
                 "quarter_3": null,
                 "quarter_4": null,
                 "over_time": null,
-                "total": null
+                "total": 40
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
+                "quarter_1": 17,
+                "quarter_2": 20,
                 "quarter_3": null,
                 "quarter_4": null,
                 "over_time": null,
-                "total": null
+                "total": 37
             }
         }
     },
