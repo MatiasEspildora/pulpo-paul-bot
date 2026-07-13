@@ -39,7 +39,7 @@ class MatchAnalyzer:
             if row["HomeTeam"] == team_name:
                     goles_favor.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
                     goles_contra.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
-                else:
+            else:
                     goles_favor.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
                     goles_contra.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
 
