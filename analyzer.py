@@ -10,9 +10,8 @@ class MatchAnalyzer:
 
     def get_team_stats(self, team_name):
         """
-        Calcula estadísticas de forma flexible. 
+        Calcula estadísticas de forma flexible (Momentum puro para visualización). 
         Si hay datos estadísticos detallados (córners, tarjetas, remates), los retorna.
-        Si están vacíos (NaN), calcula el promedio de goles a favor y en contra recientes.
         """
         matches = self.df[(self.df["HomeTeam"] == team_name) | (self.df["AwayTeam"] == team_name)]
         matches = matches.dropna(subset=["FTHG", "FTAG"])
@@ -22,7 +21,7 @@ class MatchAnalyzer:
         count = len(recent)
         if recent.empty or count == 0:
             return {"has_details": False, "goles_favor": 0.0, "goles_contra": 0.0, "count": 0}
-            
+
         # Verificamos si la primera fila reciente tiene datos reales de córners (HC/AC)
         primer_row = recent.iloc[0]
         tiene_detalles = False
@@ -33,18 +32,18 @@ class MatchAnalyzer:
             if pd.notna(primer_row.get("AC")) or pd.notna(primer_row.get("AS")):
                 tiene_detalles = True
 
-
         goles_favor, goles_contra = [], []
+        corners, tarjetas, remates = [], [], []
+
         for _, row in recent.iterrows():
             if row["HomeTeam"] == team_name:
-                    goles_favor.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
-                    goles_contra.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
+                goles_favor.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
+                goles_contra.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
             else:
-                    goles_favor.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
-                    goles_contra.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
+                goles_favor.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
+                goles_contra.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
 
         if tiene_detalles:
-            corners, tarjetas, remates = [], [], []
             for _, row in recent.iterrows():
                 if row["HomeTeam"] == team_name:
                     corners.append(row["HC"] if pd.notna(row["HC"]) else 0)
@@ -54,18 +53,19 @@ class MatchAnalyzer:
                     corners.append(row["AC"] if pd.notna(row["AC"]) else 0)
                     tarjetas.append((row["AY"] if pd.notna(row["AY"]) else 0) + (row["AR"] if pd.notna(row["AR"]) else 0))
                     remates.append(row["AS"] if pd.notna(row["AS"]) else 0)
-                    
-         return {
-                "has_details": tiene_detalles,
-                "goles_favor": float(np.nanmean(goles_favor)) if goles_favor else 0.0,
-                "goles_contra": float(np.nanmean(goles_contra)) if goles_contra else 0.0,
-                "corners": float(np.nanmean(corners)) if corners else 0.0,
-                "tarjetas": float(np.nanmean(tarjetas)) if tarjetas else 0.0,
-                "remates": float(np.nanmean(remates)) if remates else 0.0,
-                "count": count,
-            }        
+            
+        return {
+            "has_details": tiene_detalles,
+            "goles_favor": float(np.nanmean(goles_favor)) if goles_favor else 0.0,
+            "goles_contra": float(np.nanmean(goles_contra)) if goles_contra else 0.0,
+            "corners": float(np.nanmean(corners)) if corners else 0.0,
+            "tarjetas": float(np.nanmean(tarjetas)) if tarjetas else 0.0,
+            "remates": float(np.nanmean(remates)) if remates else 0.0,
+            "count": count,
+        }
 
     def get_projections(self, home_team, away_team):
+        """Modelo predictivo para fútbol usando Doble Métrica (Momentum + Localía)."""
         # --- FUNCIÓN AUXILIAR PARA CALCULAR PROMEDIOS ---
         def get_avg_goals(df_subset, team_name):
             if df_subset.empty: return 1.2, 1.2 # Valores por defecto si no hay datos
@@ -80,10 +80,9 @@ class MatchAnalyzer:
             return float(np.nanmean(goles_f)), float(np.nanmean(goles_c))
 
         # --- 1. MOMENTUM GLOBAL (Estado de forma actual) ---
-        # Últimos 5 partidos sin importar dónde se jugaron
         home_global = self.df[(self.df['HomeTeam'] == home_team) | (self.df['AwayTeam'] == home_team)]
         home_global = home_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
-        
+
         away_global = self.df[(self.df['HomeTeam'] == away_team) | (self.df['AwayTeam'] == away_team)]
         away_global = away_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
 
@@ -91,7 +90,6 @@ class MatchAnalyzer:
         ag_f_glob, ag_c_glob = get_avg_goals(away_global, away_team)
 
         # --- 2. FACTOR LOCALÍA (Rendimiento en el estadio) ---
-        # Últimos 5 partidos estrictamente como Local o Visita
         home_venue = self.df[self.df['HomeTeam'] == home_team].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
         away_venue = self.df[self.df['AwayTeam'] == away_team].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
 
@@ -99,10 +97,9 @@ class MatchAnalyzer:
         ag_f_ven, ag_c_ven = get_avg_goals(away_venue, away_team)
 
         # --- 3. COMBINACIÓN DE DOBLE MÉTRICA ---
-        # Promediamos el estado de forma actual con el rendimiento histórico en esa condición
         home_scored_avg = (hg_f_glob + hg_f_ven) / 2
         home_concede_avg = (hg_c_glob + hg_c_ven) / 2
-        
+
         away_scored_avg = (ag_f_glob + ag_f_ven) / 2
         away_concede_avg = (ag_c_glob + ag_c_ven) / 2
 
@@ -135,14 +132,35 @@ class MatchAnalyzer:
             'score_value': max(prob_home, prob_draw, prob_away)
         }
 
-
-
     # --- MODELO PREDICTIVO ESPECÍFICO PARA BASKETBALL ---
+    def get_basketball_team_stats(self, team_name):
+        """Calcula promedios de puntos anotados y recibidos en los últimos 5 partidos de básquetbol."""
+        matches = self.df[(self.df["HomeTeam"] == team_name) | (self.df["AwayTeam"] == team_name)]
+        matches = matches.dropna(subset=["FTHG", "FTAG"]) 
+        matches = matches.sort_values(by="Date", ascending=False)
+        recent = matches.head(5)
+
+        count = len(recent)
+        if recent.empty or count == 0:
+            return {"puntos_favor": 0, "puntos_contra": 0, "count": 0}
+
+        puntos_favor, puntos_contra = [], []
+        for _, row in recent.iterrows():
+            if row["HomeTeam"] == team_name:
+                puntos_favor.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0)
+                puntos_contra.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0)
+            else:
+                puntos_favor.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0)
+                puntos_contra.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0)
+
+        return {
+            "puntos_favor": float(np.nanmean(puntos_favor)) if puntos_favor else 0,
+            "puntos_contra": float(np.nanmean(puntos_contra)) if puntos_contra else 0,
+            "count": count,
+        }
+
     def get_basketball_projections(self, home_team, away_team, match_data=None):
-        """
-        Modelo predictivo para básquetbol usando Doble Métrica:
-        Promedia el Momentum Global (últimos 5) con el Factor Localía (últimos 5 en casa/visita).
-        """
+        """Modelo predictivo para básquetbol usando Doble Métrica (Momentum + Localía)."""
         # --- FUNCIÓN AUXILIAR PARA CALCULAR PROMEDIOS DE PUNTOS ---
         def get_avg_points(df_subset, team_name):
             if df_subset.empty: return 105.0, 105.0 # Valores por defecto
@@ -207,7 +225,6 @@ class MatchAnalyzer:
             'score_value': max(prob_home, prob_away)
         }
 
-
     def get_basketball_overtime_stats(self, team_name):
         """Analiza la frecuencia de overtimes y puntos en tiempo extra en los últimos 5 partidos."""
         matches = self.df[(self.df["HomeTeam"] == team_name) | (self.df["AwayTeam"] == team_name)]
@@ -220,15 +237,11 @@ class MatchAnalyzer:
 
         partidos_ot = 0
         puntos_ot_lista = []
-        
+
         for _, row in recent.iterrows():
-            # Suponiendo que manejas una columna o indicador de prórroga, 
-            # o si viene el dato crudo en el objeto de la API almacenado.
-            # Verificamos si el estatus o marcador indica tiempo extra:
             is_ot = row.get("Status") == "AOT" if "Status" in row else False
             if is_ot:
                 partidos_ot += 1
-                # Si tienes el registro de puntos en OT, lo sumamos; si no, contamos la frecuencia
                 pts_extra = row.get("ExtraPoints", 0.0)
                 if pd.notna(pts_extra):
                     puntos_ot_lista.append(float(pts_extra))
