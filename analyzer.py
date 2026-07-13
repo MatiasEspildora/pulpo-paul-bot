@@ -55,8 +55,8 @@ class MatchAnalyzer:
                     tarjetas.append((row["AY"] if pd.notna(row["AY"]) else 0) + (row["AR"] if pd.notna(row["AR"]) else 0))
                     remates.append(row["AS"] if pd.notna(row["AS"]) else 0)
                     
-            return {
-                "has_details": True,
+         return {
+                "has_details": tiene_detalles,
                 "goles_favor": float(np.nanmean(goles_favor)) if goles_favor else 0.0,
                 "goles_contra": float(np.nanmean(goles_contra)) if goles_contra else 0.0,
                 "corners": float(np.nanmean(corners)) if corners else 0.0,
