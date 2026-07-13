@@ -52,8 +52,8 @@
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "fulltime": {
                 "home": 2,
@@ -296,10 +296,10 @@
                 "city": "Ningbo"
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 74,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 5
             }
         },
         "league": {
@@ -336,8 +336,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -777,7 +777,7 @@
             "date": "2026-07-13T09:00:00-04:00",
             "timestamp": 1783947600,
             "periods": {
-                "first": null,
+                "first": 1783947600,
                 "second": null
             },
             "venue": {
@@ -786,9 +786,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 14,
                 "extra": null
             }
         },
@@ -817,13 +817,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
