@@ -175,10 +175,18 @@ def run_process(df_externo=None):
         with open(f"logs/football/unmapped_teams_{now.strftime('%Y%m%d')}.json", "w", encoding="utf-8") as f:
             json.dump(unmapped_teams, f, ensure_ascii=False, indent=4)
             
-    enviar_mensaje_telegram(f"🏁 *FIN DIA: {fecha_hoy_str}*")
+     # Título dinámico dependiendo de la hora (si es antes de las 12:00, es Inicio de Día)
+    if now.hour < 12:
+        titulo_hoy = f"🌅 *INICIO DIA: {fecha_hoy_str}*"
+    else:
+        titulo_hoy = f"🏁 *FIN DIA: {fecha_hoy_str}*"
+
+    enviar_mensaje_telegram(titulo_hoy)
     enviar_bloque_reportes(proyecciones_hoy, "", analyzer)
-    if proyecciones_mañana:
+    
+    # Solo envía la ventana anticipada en la ejecución nocturna (ej. a partir de las 22:00)
+    if proyecciones_mañana and now.hour >= 22:
         enviar_mensaje_telegram(f"🚀 *INICIO DIA: {fecha_mañana_str} (Ventana Anticipada)*")
         enviar_bloque_reportes(proyecciones_mañana, "Madrugada", analyzer)
-        
+
     print("✅ Proceso completo.")
