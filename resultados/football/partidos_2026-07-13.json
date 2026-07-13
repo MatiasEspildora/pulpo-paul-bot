@@ -4,11 +4,11 @@
             "id": 1583651,
             "referee": null,
             "timezone": "America/Santiago",
-            "date": "2026-07-13T04:00:00-04:00",
-            "timestamp": 1783929600,
+            "date": "2026-07-13T03:00:00-04:00",
+            "timestamp": 1783926000,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1783926000,
+                "second": 1783929600
             },
             "venue": {
                 "id": null,
@@ -16,9 +16,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -37,18 +37,18 @@
                 "id": 1542,
                 "name": "Vietnam",
                 "logo": "https://media.api-sports.io/football/teams/1542.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 2746,
                 "name": "Gangwon FC",
                 "logo": "https://media.api-sports.io/football/teams/2746.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 2,
+            "away": 1
         },
         "score": {
             "halftime": {
@@ -56,8 +56,8 @@
                 "away": null
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -156,10 +156,10 @@
                 "city": null
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 47,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 12
             }
         },
         "league": {
@@ -187,7 +187,7 @@
             }
         },
         "goals": {
-            "home": 2,
+            "home": 3,
             "away": 1
         },
         "score": {
@@ -196,8 +196,8 @@
                 "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -218,7 +218,7 @@
             "timestamp": 1783938600,
             "periods": {
                 "first": 1783938600,
-                "second": null
+                "second": 1783942200
             },
             "venue": {
                 "id": 0,
@@ -226,9 +226,9 @@
                 "city": null
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 42,
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 84,
                 "extra": null
             }
         },
@@ -288,7 +288,7 @@
             "timestamp": 1783940400,
             "periods": {
                 "first": 1783940400,
-                "second": null
+                "second": 1783944000
             },
             "venue": {
                 "id": null,
@@ -296,9 +296,9 @@
                 "city": "Ningbo"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 11,
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 52,
                 "extra": null
             }
         },
@@ -317,22 +317,22 @@
                 "id": 27556,
                 "name": "Ningbo Professional",
                 "logo": "https://media.api-sports.io/football/teams/27556.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 17263,
                 "name": "Dongguan United",
                 "logo": "https://media.api-sports.io/football/teams/17263.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": 0,
+            "home": 1,
             "away": 0
         },
         "score": {
             "halftime": {
-                "home": 0,
+                "home": 1,
                 "away": 0
             },
             "fulltime": {
@@ -366,9 +366,9 @@
                 "city": null
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 53,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -387,18 +387,18 @@
                 "id": 19007,
                 "name": "Ugyen Academy",
                 "logo": "https://media.api-sports.io/football/teams/19007.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 5593,
                 "name": "Transport United",
                 "logo": "https://media.api-sports.io/football/teams/5593.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
             "home": 0,
-            "away": 0
+            "away": 1
         },
         "score": {
             "halftime": {
@@ -406,8 +406,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -463,76 +463,6 @@
                 "id": 785,
                 "name": "Karlsruher SC",
                 "logo": "https://media.api-sports.io/football/teams/785.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1583299,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-07-13T08:00:00-04:00",
-            "timestamp": 1783944000,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 667,
-            "name": "Friendlies Clubs",
-            "country": "World",
-            "logo": "https://media.api-sports.io/football/leagues/667.png",
-            "flag": null,
-            "season": 2026,
-            "round": "Club Friendlies",
-            "standings": false
-        },
-        "teams": {
-            "home": {
-                "id": 1068,
-                "name": "HNK Gorica",
-                "logo": "https://media.api-sports.io/football/teams/1068.png",
-                "winner": null
-            },
-            "away": {
-                "id": 994,
-                "name": "Göztepe",
-                "logo": "https://media.api-sports.io/football/teams/994.png",
                 "winner": null
             }
         },
@@ -1373,6 +1303,76 @@
                 "id": 9209,
                 "name": "HJS Akatemia",
                 "logo": "https://media.api-sports.io/football/teams/9209.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1583299,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-07-13T11:30:00-04:00",
+            "timestamp": 1783956600,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 667,
+            "name": "Friendlies Clubs",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/667.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Club Friendlies",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 1068,
+                "name": "HNK Gorica",
+                "logo": "https://media.api-sports.io/football/teams/1068.png",
+                "winner": null
+            },
+            "away": {
+                "id": 994,
+                "name": "Göztepe",
+                "logo": "https://media.api-sports.io/football/teams/994.png",
                 "winner": null
             }
         },
