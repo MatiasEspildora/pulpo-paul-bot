@@ -138,45 +138,49 @@ class MatchAnalyzer:
 
 
     # --- MODELO PREDICTIVO ESPECÍFICO PARA BASKETBALL ---
-    def get_basketball_team_stats(self, team_name):
-        """Calcula promedios de puntos anotados y recibidos en los últimos 5 partidos de básquetbol."""
-        matches = self.df[(self.df["HomeTeam"] == team_name) | (self.df["AwayTeam"] == team_name)]
-        matches = matches.dropna(subset=["FTHG", "FTAG"]) # FTHG = Puntos Local, FTAG = Puntos Visita
-        matches = matches.sort_values(by="Date", ascending=False)
-        recent = matches.head(5)
-
-        count = len(recent)
-        if recent.empty or count == 0:
-            return {"puntos_favor": 0, "puntos_contra": 0, "count": 0}
-            
-        puntos_favor, puntos_contra = [], []
-        for _, row in recent.iterrows():
-            if row["HomeTeam"] == team_name:
-                puntos_favor.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0)
-                puntos_contra.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0)
-            else:
-                puntos_favor.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0)
-                puntos_contra.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0)
-                
-        return {
-            "puntos_favor": float(np.nanmean(puntos_favor)) if puntos_favor else 0,
-            "puntos_contra": float(np.nanmean(puntos_contra)) if puntos_contra else 0,
-            "count": count,
-        }
-
     def get_basketball_projections(self, home_team, away_team, match_data=None):
         """
-        Modelo predictivo para básquetbol basado en la expectativa de anotación combinada.
-        Incluye detección opcional de tiempo extra si se pasa el objeto del partido.
+        Modelo predictivo para básquetbol usando Doble Métrica:
+        Promedia el Momentum Global (últimos 5) con el Factor Localía (últimos 5 en casa/visita).
         """
-        home_matches = self.df[self.df['HomeTeam'] == home_team].dropna(subset=['FTHG', 'FTAG'])
-        away_matches = self.df[self.df['AwayTeam'] == away_team].dropna(subset=['FTHG', 'FTAG'])
+        # --- FUNCIÓN AUXILIAR PARA CALCULAR PROMEDIOS DE PUNTOS ---
+        def get_avg_points(df_subset, team_name):
+            if df_subset.empty: return 105.0, 105.0 # Valores por defecto
+            pts_f, pts_c = [], []
+            for _, row in df_subset.iterrows():
+                if row["HomeTeam"] == team_name:
+                    pts_f.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
+                    pts_c.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
+                else:
+                    pts_f.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
+                    pts_c.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
+            return float(np.nanmean(pts_f)), float(np.nanmean(pts_c))
 
-        home_avg_scored = home_matches['FTHG'].mean() if not home_matches.empty else 105.0
-        home_avg_conceded = home_matches['FTAG'].mean() if not home_matches.empty else 102.0
-        away_avg_scored = away_matches['FTAG'].mean() if not away_matches.empty else 103.0
-        away_avg_conceded = away_matches['FTHG'].mean() if not away_matches.empty else 104.0
+        # --- 1. MOMENTUM GLOBAL (Estado de forma actual) ---
+        home_global = self.df[(self.df['HomeTeam'] == home_team) | (self.df['AwayTeam'] == home_team)]
+        home_global = home_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
+        
+        away_global = self.df[(self.df['HomeTeam'] == away_team) | (self.df['AwayTeam'] == away_team)]
+        away_global = away_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
 
+        hg_f_glob, hg_c_glob = get_avg_points(home_global, home_team)
+        ag_f_glob, ag_c_glob = get_avg_points(away_global, away_team)
+
+        # --- 2. FACTOR LOCALÍA (Rendimiento en el estadio) ---
+        home_venue = self.df[self.df['HomeTeam'] == home_team].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
+        away_venue = self.df[self.df['AwayTeam'] == away_team].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
+
+        hg_f_ven, hg_c_ven = get_avg_points(home_venue, home_team)
+        ag_f_ven, ag_c_ven = get_avg_points(away_venue, away_team)
+
+        # --- 3. COMBINACIÓN DE DOBLE MÉTRICA ---
+        home_avg_scored = (hg_f_glob + hg_f_ven) / 2
+        home_avg_conceded = (hg_c_glob + hg_c_ven) / 2
+        
+        away_avg_scored = (ag_f_glob + ag_f_ven) / 2
+        away_avg_conceded = (ag_c_glob + ag_c_ven) / 2
+
+        # --- 4. CÁLCULO DE EXPECTATIVA ---
         exp_home_score = (home_avg_scored + away_avg_conceded) / 2
         exp_away_score = (away_avg_scored + home_avg_conceded) / 2
         total_projected_points = exp_home_score + exp_away_score
@@ -202,6 +206,7 @@ class MatchAnalyzer:
             'has_overtime': has_overtime,
             'score_value': max(prob_home, prob_away)
         }
+
 
     def get_basketball_overtime_stats(self, team_name):
         """Analiza la frecuencia de overtimes y puntos en tiempo extra en los últimos 5 partidos."""
