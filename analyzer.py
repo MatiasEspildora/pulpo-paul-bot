@@ -33,6 +33,16 @@ class MatchAnalyzer:
             if pd.notna(primer_row.get("AC")) or pd.notna(primer_row.get("AS")):
                 tiene_detalles = True
 
+
+        goles_favor, goles_contra = [], []
+        for _, row in recent.iterrows():
+            if row["HomeTeam"] == team_name:
+                    goles_favor.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
+                    goles_contra.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
+                else:
+                    goles_favor.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
+                    goles_contra.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
+
         if tiene_detalles:
             corners, tarjetas, remates = [], [], []
             for _, row in recent.iterrows():
@@ -47,28 +57,13 @@ class MatchAnalyzer:
                     
             return {
                 "has_details": True,
+                "goles_favor": float(np.nanmean(goles_favor)) if goles_favor else 0.0,
+                "goles_contra": float(np.nanmean(goles_contra)) if goles_contra else 0.0,
                 "corners": float(np.nanmean(corners)) if corners else 0.0,
                 "tarjetas": float(np.nanmean(tarjetas)) if tarjetas else 0.0,
                 "remates": float(np.nanmean(remates)) if remates else 0.0,
                 "count": count,
-            }
-        else:
-            # Modo alternativo: promedio de goles si no hay estadísticas avanzadas
-            goles_favor, goles_contra = [], []
-            for _, row in recent.iterrows():
-                if row["HomeTeam"] == team_name:
-                    goles_favor.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
-                    goles_contra.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
-                else:
-                    goles_favor.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
-                    goles_contra.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
-                    
-            return {
-                "has_details": False,
-                "goles_favor": float(np.nanmean(goles_favor)) if goles_favor else 0.0,
-                "goles_contra": float(np.nanmean(goles_contra)) if goles_contra else 0.0,
-                "count": count,
-            }
+            }        
 
     def get_projections(self, home_team, away_team):
         home_matches = self.df[self.df['HomeTeam'] == home_team].dropna(subset=['FTHG', 'FTAG'])
