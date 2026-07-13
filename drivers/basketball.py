@@ -206,10 +206,18 @@ def run_process(df_externo=None):
         with open(f"logs/basketball/unmapped_basket_teams_{now.strftime('%Y%m%d')}.json", "w", encoding="utf-8") as f:
             json.dump(unmapped_teams, f, ensure_ascii=False, indent=4)
             
-    enviar_mensaje_telegram(f"🏀 *FIN DIA BASKET: {fecha_hoy_str}*", TOKEN_BASKET)
+    # Título dinámico dependiendo de la hora
+    if now.hour < 12:
+        titulo_hoy = f"🌅 *INICIO DIA BASKET: {fecha_hoy_str}*"
+    else:
+        titulo_hoy = f"🏁 *FIN DIA BASKET: {fecha_hoy_str}*"
+
+    enviar_mensaje_telegram(titulo_hoy, TOKEN_BASKET)
     enviar_bloque_reportes_basket(proyecciones_hoy, "", analyzer, TOKEN_BASKET)
-    if proyecciones_mañana:
+    
+    # Solo envía la ventana anticipada en la ejecución nocturna
+    if proyecciones_mañana and now.hour >= 22:
         enviar_mensaje_telegram(f"🚀 *INICIO DIA BASKET: {fecha_mañana_str} (Ventana Anticipada)*", TOKEN_BASKET)
         enviar_bloque_reportes_basket(proyecciones_mañana, "Madrugada", analyzer, TOKEN_BASKET)
-        
+
     print("✅ Proceso de Basketball completo.")
