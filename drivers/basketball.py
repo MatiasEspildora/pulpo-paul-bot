@@ -49,25 +49,25 @@ def guardar_historico_mensual_basket(df, meses_a_actualizar=None):
             g_clean.sort_values(by=['Date', 'League', 'HomeTeam', 'AwayTeam'], ascending=[False, True, True, True]).to_csv(filename, index=False)
 
 def normalizar_equipo(nombre, master_league_id, aliases_data, equipos_historicos, unmapped_log):
-    global_map = aliases_data.get("global_aliases", {})
-    conflict_map = aliases_data.get("conflicting_aliases", {})
-    liga_conflicto = conflict_map.get(master_league_id, {})
+    #global_map = aliases_data.get("global_aliases", {})
+    #conflict_map = aliases_data.get("conflicting_aliases", {})
+    #liga_conflicto = conflict_map.get(master_league_id, {})
     
-    for n_oficial, variaciones in {**liga_conflicto, **global_map}.items():
-        if nombre == n_oficial or nombre in variaciones:
-            return n_oficial
+    #for n_oficial, variaciones in {**liga_conflicto, **global_map}.items():
+    #    if nombre == n_oficial or nombre in variaciones:
+    #        return n_oficial
             
-    if master_league_id not in ["WOR_FRIENDLIES_CLUBS", "WOR_FRIENDLY_INTERNATIONAL"]:
-        existe_en_historico = nombre in equipos_historicos
-        estado = "EQUIPO_NUEVO" if not existe_en_historico else "ERROR_MAPEO"
-        registro = {
-            "team": nombre, 
-            "master_league": master_league_id,
-            "status": estado
-        }
-        ya_registrado = any(r.get("team") == nombre and r.get("master_league") == master_league_id for r in unmapped_log)
-        if not ya_registrado: 
-            unmapped_log.append(registro)
+    #if master_league_id not in ["WOR_FRIENDLIES_CLUBS", "WOR_FRIENDLY_INTERNATIONAL"]:
+    #    existe_en_historico = nombre in equipos_historicos
+    #    estado = "EQUIPO_NUEVO" if not existe_en_historico else "ERROR_MAPEO"
+    #    registro = {
+    #        "team": nombre, 
+    #        "master_league": master_league_id,
+    #        "status": estado
+    #    }
+    #    ya_registrado = any(r.get("team") == nombre and r.get("master_league") == master_league_id for r in unmapped_log)
+    #    if not ya_registrado: 
+    #        unmapped_log.append(registro)
     return nombre
 
 def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_master, statuses, aliases_data, unmapped_log):
