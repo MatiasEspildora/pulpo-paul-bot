@@ -66,14 +66,47 @@ class MatchAnalyzer:
             }        
 
     def get_projections(self, home_team, away_team):
-        home_matches = self.df[self.df['HomeTeam'] == home_team].dropna(subset=['FTHG', 'FTAG'])
-        away_matches = self.df[self.df['AwayTeam'] == away_team].dropna(subset=['FTHG', 'FTAG'])
+        # --- FUNCIÓN AUXILIAR PARA CALCULAR PROMEDIOS ---
+        def get_avg_goals(df_subset, team_name):
+            if df_subset.empty: return 1.2, 1.2 # Valores por defecto si no hay datos
+            goles_f, goles_c = [], []
+            for _, row in df_subset.iterrows():
+                if row["HomeTeam"] == team_name:
+                    goles_f.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
+                    goles_c.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
+                else:
+                    goles_f.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
+                    goles_c.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
+            return float(np.nanmean(goles_f)), float(np.nanmean(goles_c))
 
-        home_scored_avg = home_matches['FTHG'].mean() if not home_matches.empty else 1.2
-        home_concede_avg = home_matches['FTAG'].mean() if not home_matches.empty else 1.0
-        away_scored_avg = away_matches['FTAG'].mean() if not away_matches.empty else 1.1
-        away_concede_avg = away_matches['FTHG'].mean() if not away_matches.empty else 1.2
+        # --- 1. MOMENTUM GLOBAL (Estado de forma actual) ---
+        # Últimos 5 partidos sin importar dónde se jugaron
+        home_global = self.df[(self.df['HomeTeam'] == home_team) | (self.df['AwayTeam'] == home_team)]
+        home_global = home_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
+        
+        away_global = self.df[(self.df['HomeTeam'] == away_team) | (self.df['AwayTeam'] == away_team)]
+        away_global = away_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
 
+        hg_f_glob, hg_c_glob = get_avg_goals(home_global, home_team)
+        ag_f_glob, ag_c_glob = get_avg_goals(away_global, away_team)
+
+        # --- 2. FACTOR LOCALÍA (Rendimiento en el estadio) ---
+        # Últimos 5 partidos estrictamente como Local o Visita
+        home_venue = self.df[self.df['HomeTeam'] == home_team].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
+        away_venue = self.df[self.df['AwayTeam'] == away_team].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
+
+        hg_f_ven, hg_c_ven = get_avg_goals(home_venue, home_team)
+        ag_f_ven, ag_c_ven = get_avg_goals(away_venue, away_team)
+
+        # --- 3. COMBINACIÓN DE DOBLE MÉTRICA ---
+        # Promediamos el estado de forma actual con el rendimiento histórico en esa condición
+        home_scored_avg = (hg_f_glob + hg_f_ven) / 2
+        home_concede_avg = (hg_c_glob + hg_c_ven) / 2
+        
+        away_scored_avg = (ag_f_glob + ag_f_ven) / 2
+        away_concede_avg = (ag_c_glob + ag_c_ven) / 2
+
+        # --- 4. CÁLCULO DE POISSON ---
         lambda_home = (home_scored_avg + away_concede_avg) / 2
         lambda_away = (away_scored_avg + home_concede_avg) / 2
 
@@ -101,6 +134,8 @@ class MatchAnalyzer:
             'scores': top_scores,
             'score_value': max(prob_home, prob_draw, prob_away)
         }
+
+
 
     # --- MODELO PREDICTIVO ESPECÍFICO PARA BASKETBALL ---
     def get_basketball_team_stats(self, team_name):
