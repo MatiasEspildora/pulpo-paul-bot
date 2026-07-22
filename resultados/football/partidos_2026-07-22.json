@@ -71,6 +71,76 @@
     },
     {
         "fixture": {
+            "id": 1523790,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-07-22T05:00:00-04:00",
+            "timestamp": 1784710800,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": 0,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 481,
+            "name": "Northern NSW NPL",
+            "country": "Australia",
+            "logo": "https://media.api-sports.io/football/leagues/481.png",
+            "flag": "https://media.api-sports.io/flags/au.svg",
+            "season": 2026,
+            "round": "Regular Season - 19",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 10205,
+                "name": "Hamilton Olympic",
+                "logo": "https://media.api-sports.io/football/teams/10205.png",
+                "winner": null
+            },
+            "away": {
+                "id": 23500,
+                "name": "Belmont Swansea",
+                "logo": "https://media.api-sports.io/football/teams/23500.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1558468,
             "referee": null,
             "timezone": "America/Santiago",
@@ -1261,7 +1331,7 @@
     },
     {
         "fixture": {
-            "id": 1562954,
+            "id": 1567361,
             "referee": null,
             "timezone": "America/Santiago",
             "date": "2026-07-22T08:00:00-04:00",
@@ -1271,9 +1341,9 @@
                 "second": null
             },
             "venue": {
-                "id": null,
-                "name": null,
-                "city": null
+                "id": 21687,
+                "name": "Lanzhou Olympic Center Stadium",
+                "city": "Lanzhou"
             },
             "status": {
                 "long": "Not Started",
@@ -1283,26 +1353,26 @@
             }
         },
         "league": {
-            "id": 667,
-            "name": "Friendlies Clubs",
-            "country": "World",
-            "logo": "https://media.api-sports.io/football/leagues/667.png",
-            "flag": null,
+            "id": 171,
+            "name": "FA Cup",
+            "country": "China",
+            "logo": "https://media.api-sports.io/football/leagues/171.png",
+            "flag": "https://media.api-sports.io/flags/cn.svg",
             "season": 2026,
-            "round": "Club Friendlies",
+            "round": "Round of 16",
             "standings": false
         },
         "teams": {
             "home": {
-                "id": 433,
-                "name": "Laval",
-                "logo": "https://media.api-sports.io/football/teams/433.png",
+                "id": 21328,
+                "name": "Rizhao Yuqi",
+                "logo": "https://media.api-sports.io/football/teams/21328.png",
                 "winner": null
             },
             "away": {
-                "id": 1303,
-                "name": "Avranches",
-                "logo": "https://media.api-sports.io/football/teams/1303.png",
+                "id": 23286,
+                "name": "Shaanxi Union",
+                "logo": "https://media.api-sports.io/football/teams/23286.png",
                 "winner": null
             }
         },
@@ -1513,76 +1583,6 @@
                 "id": 810,
                 "name": "Vizela",
                 "logo": "https://media.api-sports.io/football/teams/810.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1567699,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-07-22T08:00:00-04:00",
-            "timestamp": 1784721600,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 667,
-            "name": "Friendlies Clubs",
-            "country": "World",
-            "logo": "https://media.api-sports.io/football/leagues/667.png",
-            "flag": null,
-            "season": 2026,
-            "round": "Club Friendlies",
-            "standings": false
-        },
-        "teams": {
-            "home": {
-                "id": 6943,
-                "name": "KSZO 1929",
-                "logo": "https://media.api-sports.io/football/teams/6943.png",
-                "winner": null
-            },
-            "away": {
-                "id": 19654,
-                "name": "Bochnia",
-                "logo": "https://media.api-sports.io/football/teams/19654.png",
                 "winner": null
             }
         },
@@ -1863,76 +1863,6 @@
                 "id": 12829,
                 "name": "Pelikan Łowicz",
                 "logo": "https://media.api-sports.io/football/teams/12829.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1583652,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-07-22T08:00:00-04:00",
-            "timestamp": 1784721600,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 10,
-            "name": "Friendlies",
-            "country": "World",
-            "logo": "https://media.api-sports.io/football/leagues/10.png",
-            "flag": null,
-            "season": 2026,
-            "round": "Friendly International",
-            "standings": false
-        },
-        "teams": {
-            "home": {
-                "id": 16269,
-                "name": "Podlasie Biała Podlaska",
-                "logo": "https://media.api-sports.io/football/teams/16269.png",
-                "winner": null
-            },
-            "away": {
-                "id": 5526,
-                "name": "Antigua and Barbuda",
-                "logo": "https://media.api-sports.io/football/teams/5526.png",
                 "winner": null
             }
         },
@@ -4621,6 +4551,76 @@
     },
     {
         "fixture": {
+            "id": 1567699,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-07-22T11:30:00-04:00",
+            "timestamp": 1784734200,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 667,
+            "name": "Friendlies Clubs",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/667.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Club Friendlies",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 6943,
+                "name": "KSZO 1929",
+                "logo": "https://media.api-sports.io/football/teams/6943.png",
+                "winner": null
+            },
+            "away": {
+                "id": 19654,
+                "name": "Bochnia",
+                "logo": "https://media.api-sports.io/football/teams/19654.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1567703,
             "referee": null,
             "timezone": "America/Santiago",
@@ -5601,76 +5601,6 @@
     },
     {
         "fixture": {
-            "id": 1560786,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-07-22T12:00:00-04:00",
-            "timestamp": 1784736000,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 667,
-            "name": "Friendlies Clubs",
-            "country": "World",
-            "logo": "https://media.api-sports.io/football/leagues/667.png",
-            "flag": null,
-            "season": 2026,
-            "round": "Club Friendlies",
-            "standings": false
-        },
-        "teams": {
-            "home": {
-                "id": 14812,
-                "name": "VfL Halle",
-                "logo": "https://media.api-sports.io/football/teams/14812.png",
-                "winner": null
-            },
-            "away": {
-                "id": 12735,
-                "name": "Barockstadt Fulda-Lehn.",
-                "logo": "https://media.api-sports.io/football/teams/12735.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
             "id": 1560787,
             "referee": null,
             "timezone": "America/Santiago",
@@ -5713,6 +5643,76 @@
                 "id": 1650,
                 "name": "SV Rodinghausen",
                 "logo": "https://media.api-sports.io/football/teams/1650.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1583652,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-07-22T12:00:00-04:00",
+            "timestamp": 1784736000,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 10,
+            "name": "Friendlies",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/10.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Friendly International",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 16269,
+                "name": "Podlasie Biała Podlaska",
+                "logo": "https://media.api-sports.io/football/teams/16269.png",
+                "winner": null
+            },
+            "away": {
+                "id": 5526,
+                "name": "Antigua and Barbuda",
+                "logo": "https://media.api-sports.io/football/teams/5526.png",
                 "winner": null
             }
         },
@@ -6022,7 +6022,7 @@
     {
         "fixture": {
             "id": 1595191,
-            "referee": null,
+            "referee": "K. Fellas",
             "timezone": "America/Santiago",
             "date": "2026-07-22T12:00:00-04:00",
             "timestamp": 1784736000,
@@ -6413,6 +6413,76 @@
                 "id": 13825,
                 "name": "Keila",
                 "logo": "https://media.api-sports.io/football/teams/13825.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1560786,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-07-22T12:30:00-04:00",
+            "timestamp": 1784737800,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 667,
+            "name": "Friendlies Clubs",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/667.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Club Friendlies",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 14812,
+                "name": "VfL Halle",
+                "logo": "https://media.api-sports.io/football/teams/14812.png",
+                "winner": null
+            },
+            "away": {
+                "id": 12735,
+                "name": "Barockstadt Fulda-Lehn.",
+                "logo": "https://media.api-sports.io/football/teams/12735.png",
                 "winner": null
             }
         },
@@ -7043,6 +7113,76 @@
                 "id": 19475,
                 "name": "Schöningen",
                 "logo": "https://media.api-sports.io/football/teams/19475.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1562954,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-07-22T13:00:00-04:00",
+            "timestamp": 1784739600,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 667,
+            "name": "Friendlies Clubs",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/667.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Club Friendlies",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 433,
+                "name": "Laval",
+                "logo": "https://media.api-sports.io/football/teams/433.png",
+                "winner": null
+            },
+            "away": {
+                "id": 1303,
+                "name": "Avranches",
+                "logo": "https://media.api-sports.io/football/teams/1303.png",
                 "winner": null
             }
         },
@@ -7982,7 +8122,7 @@
     {
         "fixture": {
             "id": 1591936,
-            "referee": null,
+            "referee": "G. Correia",
             "timezone": "America/Santiago",
             "date": "2026-07-22T13:00:00-04:00",
             "timestamp": 1784739600,
@@ -8052,7 +8192,7 @@
     {
         "fixture": {
             "id": 1593479,
-            "referee": null,
+            "referee": "J. Semler",
             "timezone": "America/Santiago",
             "date": "2026-07-22T13:00:00-04:00",
             "timestamp": 1784739600,
@@ -8261,76 +8401,6 @@
     },
     {
         "fixture": {
-            "id": 1567706,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-07-22T13:30:00-04:00",
-            "timestamp": 1784741400,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 667,
-            "name": "Friendlies Clubs",
-            "country": "World",
-            "logo": "https://media.api-sports.io/football/leagues/667.png",
-            "flag": null,
-            "season": 2026,
-            "round": "Club Friendlies",
-            "standings": false
-        },
-        "teams": {
-            "home": {
-                "id": 658,
-                "name": "Progres Niederkorn",
-                "logo": "https://media.api-sports.io/football/teams/658.png",
-                "winner": null
-            },
-            "away": {
-                "id": 3245,
-                "name": "APM Metz",
-                "logo": "https://media.api-sports.io/football/teams/3245.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
             "id": 1584933,
             "referee": null,
             "timezone": "America/Santiago",
@@ -8472,7 +8542,7 @@
     {
         "fixture": {
             "id": 1591935,
-            "referee": null,
+            "referee": "A. Ladeback",
             "timezone": "America/Santiago",
             "date": "2026-07-22T13:30:00-04:00",
             "timestamp": 1784741400,
@@ -8892,7 +8962,7 @@
     {
         "fixture": {
             "id": 1593477,
-            "referee": null,
+            "referee": "J. Martinez",
             "timezone": "America/Santiago",
             "date": "2026-07-22T13:45:00-04:00",
             "timestamp": 1784742300,
@@ -10081,6 +10151,76 @@
     },
     {
         "fixture": {
+            "id": 1567706,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-07-22T14:00:00-04:00",
+            "timestamp": 1784743200,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 667,
+            "name": "Friendlies Clubs",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/667.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Club Friendlies",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 658,
+                "name": "Progres Niederkorn",
+                "logo": "https://media.api-sports.io/football/teams/658.png",
+                "winner": null
+            },
+            "away": {
+                "id": 3245,
+                "name": "APM Metz",
+                "logo": "https://media.api-sports.io/football/teams/3245.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1576841,
             "referee": null,
             "timezone": "America/Santiago",
@@ -10502,7 +10642,7 @@
     {
         "fixture": {
             "id": 1589430,
-            "referee": null,
+            "referee": "P. Farrugia",
             "timezone": "America/Santiago",
             "date": "2026-07-22T14:00:00-04:00",
             "timestamp": 1784743200,
@@ -10512,8 +10652,8 @@
             },
             "venue": {
                 "id": null,
-                "name": null,
-                "city": null
+                "name": "Gradski Park",
+                "city": "Skopje"
             },
             "status": {
                 "long": "Not Started",
@@ -10922,7 +11062,7 @@
     {
         "fixture": {
             "id": 1556521,
-            "referee": null,
+            "referee": "M. Vernice",
             "timezone": "America/Santiago",
             "date": "2026-07-22T14:30:00-04:00",
             "timestamp": 1784745000,
@@ -11552,7 +11692,7 @@
     {
         "fixture": {
             "id": 1556524,
-            "referee": null,
+            "referee": "M. Turkmen",
             "timezone": "America/Santiago",
             "date": "2026-07-22T15:00:00-04:00",
             "timestamp": 1784746800,
@@ -11762,7 +11902,7 @@
     {
         "fixture": {
             "id": 1591933,
-            "referee": null,
+            "referee": "A. Karaoglan",
             "timezone": "America/Santiago",
             "date": "2026-07-22T15:00:00-04:00",
             "timestamp": 1784746800,
@@ -11943,6 +12083,76 @@
                 "id": 27738,
                 "name": "Araioses",
                 "logo": "https://media.api-sports.io/football/teams/27738.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1576840,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-07-22T16:00:00-04:00",
+            "timestamp": 1784750400,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 906,
+            "name": "Reserve League",
+            "country": "Argentina",
+            "logo": "https://media.api-sports.io/football/leagues/906.png",
+            "flag": "https://media.api-sports.io/flags/ar.svg",
+            "season": 2026,
+            "round": "Clausura - 2",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 18682,
+                "name": "Central Córdoba SdE Res.",
+                "logo": "https://media.api-sports.io/football/teams/18682.png",
+                "winner": null
+            },
+            "away": {
+                "id": 18693,
+                "name": "Platense Res.",
+                "logo": "https://media.api-sports.io/football/teams/18693.png",
                 "winner": null
             }
         },
@@ -12462,7 +12672,7 @@
     {
         "fixture": {
             "id": 1492294,
-            "referee": null,
+            "referee": "A. Daronco",
             "timezone": "America/Santiago",
             "date": "2026-07-22T18:30:00-04:00",
             "timestamp": 1784759400,
@@ -13791,76 +14001,6 @@
     },
     {
         "fixture": {
-            "id": 1490337,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-07-22T20:30:00-04:00",
-            "timestamp": 1784766600,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": "Q2 Stadium",
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 253,
-            "name": "Major League Soccer",
-            "country": "USA",
-            "logo": "https://media.api-sports.io/football/leagues/253.png",
-            "flag": "https://media.api-sports.io/flags/us.svg",
-            "season": 2026,
-            "round": "Regular Season - 18",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 16489,
-                "name": "Austin",
-                "logo": "https://media.api-sports.io/football/teams/16489.png",
-                "winner": null
-            },
-            "away": {
-                "id": 1595,
-                "name": "Seattle Sounders",
-                "logo": "https://media.api-sports.io/football/teams/1595.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
             "id": 1490338,
             "referee": null,
             "timezone": "America/Santiago",
@@ -14072,7 +14212,7 @@
     {
         "fixture": {
             "id": 1492292,
-            "referee": null,
+            "referee": "R. Klein",
             "timezone": "America/Santiago",
             "date": "2026-07-22T20:30:00-04:00",
             "timestamp": 1784766600,
@@ -14142,7 +14282,7 @@
     {
         "fixture": {
             "id": 1492296,
-            "referee": null,
+            "referee": "F. Rodrigues",
             "timezone": "America/Santiago",
             "date": "2026-07-22T20:30:00-04:00",
             "timestamp": 1784766600,
@@ -14212,7 +14352,7 @@
     {
         "fixture": {
             "id": 1492298,
-            "referee": null,
+            "referee": "A. Gomes Stefano",
             "timezone": "America/Santiago",
             "date": "2026-07-22T20:30:00-04:00",
             "timestamp": 1784766600,
@@ -14813,6 +14953,76 @@
                 "id": 25900,
                 "name": "Ottawa Rapid W",
                 "logo": "https://media.api-sports.io/football/teams/25900.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1490337,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-07-22T21:30:00-04:00",
+            "timestamp": 1784770200,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": "Q2 Stadium",
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 253,
+            "name": "Major League Soccer",
+            "country": "USA",
+            "logo": "https://media.api-sports.io/football/leagues/253.png",
+            "flag": "https://media.api-sports.io/flags/us.svg",
+            "season": 2026,
+            "round": "Regular Season - 18",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 16489,
+                "name": "Austin",
+                "logo": "https://media.api-sports.io/football/teams/16489.png",
+                "winner": null
+            },
+            "away": {
+                "id": 1595,
+                "name": "Seattle Sounders",
+                "logo": "https://media.api-sports.io/football/teams/1595.png",
                 "winner": null
             }
         },

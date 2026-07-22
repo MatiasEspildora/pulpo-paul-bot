@@ -9,8 +9,8 @@
         "week": null,
         "venue": "WinSport Arena",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -40,20 +40,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 25,
+                "quarter_2": 17,
+                "quarter_3": 24,
+                "quarter_4": 27,
                 "over_time": null,
-                "total": null
+                "total": 93
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 18,
+                "quarter_2": 23,
+                "quarter_3": 26,
+                "quarter_4": 19,
                 "over_time": null,
-                "total": null
+                "total": 86
             }
         }
     },
@@ -67,8 +67,8 @@
         "week": null,
         "venue": "SaskTel Centre",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -98,20 +98,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 32,
+                "quarter_2": 18,
+                "quarter_3": 14,
+                "quarter_4": 32,
                 "over_time": null,
-                "total": null
+                "total": 96
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 29,
+                "quarter_2": 21,
+                "quarter_3": 23,
+                "quarter_4": 21,
                 "over_time": null,
-                "total": null
+                "total": 94
             }
         }
     },
@@ -674,6 +674,64 @@
                 "id": 4793,
                 "name": "Gibraltar U18",
                 "logo": "https://media.api-sports.io/basketball/teams/4793.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            },
+            "away": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            }
+        }
+    },
+    {
+        "id": 505746,
+        "date": "2026-07-22T18:30:00+00:00",
+        "time": "18:30",
+        "timestamp": 1784745000,
+        "timezone": "UTC",
+        "stage": null,
+        "week": "Division 1 - Final",
+        "venue": null,
+        "status": {
+            "long": "Not Started",
+            "short": "NS",
+            "timer": null
+        },
+        "league": {
+            "id": 409,
+            "name": "Division 1",
+            "type": "League",
+            "season": "2025-2026",
+            "logo": "https://media.api-sports.io/basketball/leagues/409.png"
+        },
+        "country": {
+            "id": 77,
+            "name": "Lebanon",
+            "code": "LB",
+            "flag": "https://media.api-sports.io/flags/lb.svg"
+        },
+        "teams": {
+            "home": {
+                "id": 4418,
+                "name": "Al-Riyadi",
+                "logo": "https://media.api-sports.io/basketball/teams/4418.png"
+            },
+            "away": {
+                "id": 6465,
+                "name": "Sagesse Beirut",
+                "logo": "https://media.api-sports.io/basketball/teams/6465.png"
             }
         },
         "scores": {
