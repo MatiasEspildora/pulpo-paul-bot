@@ -9,8 +9,8 @@
         "week": "BSN - Semi-finals",
         "venue": "Coliseo Roger Mendoza",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -40,20 +40,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 20,
+                "quarter_2": 21,
+                "quarter_3": 27,
+                "quarter_4": 20,
                 "over_time": null,
-                "total": null
+                "total": 88
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 27,
+                "quarter_2": 11,
+                "quarter_3": 11,
+                "quarter_4": 20,
                 "over_time": null,
-                "total": null
+                "total": 69
             }
         }
     },
@@ -67,8 +67,8 @@
         "week": null,
         "venue": "Gimnasio Monumental Maria Gallardo",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -98,20 +98,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 25,
+                "quarter_2": 29,
+                "quarter_3": 15,
+                "quarter_4": 18,
                 "over_time": null,
-                "total": null
+                "total": 87
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 20,
+                "quarter_2": 17,
+                "quarter_3": 22,
+                "quarter_4": 17,
                 "over_time": null,
-                "total": null
+                "total": 76
             }
         }
     },
@@ -125,8 +125,8 @@
         "week": null,
         "venue": "Coliseo Municipal Antonio Azurmendy Riveros",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -156,20 +156,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 24,
+                "quarter_2": 31,
+                "quarter_3": 27,
+                "quarter_4": 18,
                 "over_time": null,
-                "total": null
+                "total": 100
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 13,
+                "quarter_2": 16,
+                "quarter_3": 17,
+                "quarter_4": 25,
                 "over_time": null,
-                "total": null
+                "total": 71
             }
         }
     },
@@ -210,6 +210,64 @@
                 "id": 7883,
                 "name": "Valenzuela City Darkhorse",
                 "logo": "https://media.api-sports.io/basketball/teams/7883.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            },
+            "away": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            }
+        }
+    },
+    {
+        "id": 500375,
+        "date": "2026-07-27T09:00:00+00:00",
+        "time": "09:00",
+        "timestamp": 1785142800,
+        "timezone": "UTC",
+        "stage": null,
+        "week": null,
+        "venue": null,
+        "status": {
+            "long": "Not Started",
+            "short": "NS",
+            "timer": null
+        },
+        "league": {
+            "id": 426,
+            "name": "MPBL",
+            "type": "League",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/426.png"
+        },
+        "country": {
+            "id": 60,
+            "name": "Philippines",
+            "code": "PH",
+            "flag": "https://media.api-sports.io/flags/ph.svg"
+        },
+        "teams": {
+            "home": {
+                "id": 7882,
+                "name": "Meycauayan",
+                "logo": "https://media.api-sports.io/basketball/teams/7882.png"
+            },
+            "away": {
+                "id": 7362,
+                "name": "Mindoro Tamaraws",
+                "logo": "https://media.api-sports.io/basketball/teams/7362.png"
             }
         },
         "scores": {
