@@ -241,9 +241,9 @@
         "week": null,
         "venue": "Crypto.com Arena",
         "status": {
-            "long": "Quarter 4",
-            "short": "Q4",
-            "timer": "10"
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
         },
         "league": {
             "id": 13,
@@ -299,9 +299,9 @@
         "week": "12",
         "venue": "Arena Astros",
         "status": {
-            "long": "Quarter 4",
-            "short": "Q4",
-            "timer": "10"
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
         },
         "league": {
             "id": 63,
@@ -348,75 +348,17 @@
         }
     },
     {
-        "id": 506743,
+        "id": 500381,
         "date": "2026-07-29T07:00:00+00:00",
         "time": "07:00",
         "timestamp": 1785308400,
         "timezone": "UTC",
         "stage": null,
-        "week": "NBL - Quarter-finals",
-        "venue": "Stadium Southland",
-        "status": {
-            "long": "Not Started",
-            "short": "NS",
-            "timer": null
-        },
-        "league": {
-            "id": 66,
-            "name": "NBL",
-            "type": "League",
-            "season": 2026,
-            "logo": "https://media.api-sports.io/basketball/leagues/66.png"
-        },
-        "country": {
-            "id": 31,
-            "name": "New Zealand",
-            "code": "NZ",
-            "flag": "https://media.api-sports.io/flags/nz.svg"
-        },
-        "teams": {
-            "home": {
-                "id": 858,
-                "name": "Southland Sharks",
-                "logo": "https://media.api-sports.io/basketball/teams/858.png"
-            },
-            "away": {
-                "id": 6301,
-                "name": "Tauranga Whai",
-                "logo": "https://media.api-sports.io/basketball/teams/6301.png"
-            }
-        },
-        "scores": {
-            "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": null
-            },
-            "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": null
-            }
-        }
-    },
-    {
-        "id": 500381,
-        "date": "2026-07-29T08:00:00+00:00",
-        "time": "08:00",
-        "timestamp": 1785312000,
-        "timezone": "UTC",
-        "stage": null,
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -446,20 +388,78 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 25,
+                "quarter_2": 16,
+                "quarter_3": 21,
+                "quarter_4": 25,
                 "over_time": null,
-                "total": null
+                "total": 87
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 27,
+                "quarter_2": 35,
+                "quarter_3": 32,
+                "quarter_4": 26,
                 "over_time": null,
-                "total": null
+                "total": 120
+            }
+        }
+    },
+    {
+        "id": 506743,
+        "date": "2026-07-29T07:00:00+00:00",
+        "time": "07:00",
+        "timestamp": 1785308400,
+        "timezone": "UTC",
+        "stage": null,
+        "week": "NBL - Quarter-finals",
+        "venue": "Stadium Southland",
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 66,
+            "name": "NBL",
+            "type": "League",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/66.png"
+        },
+        "country": {
+            "id": 31,
+            "name": "New Zealand",
+            "code": "NZ",
+            "flag": "https://media.api-sports.io/flags/nz.svg"
+        },
+        "teams": {
+            "home": {
+                "id": 858,
+                "name": "Southland Sharks",
+                "logo": "https://media.api-sports.io/basketball/teams/858.png"
+            },
+            "away": {
+                "id": 6301,
+                "name": "Tauranga Whai",
+                "logo": "https://media.api-sports.io/basketball/teams/6301.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 22,
+                "quarter_2": 20,
+                "quarter_3": 30,
+                "quarter_4": 24,
+                "over_time": null,
+                "total": 96
+            },
+            "away": {
+                "quarter_1": 29,
+                "quarter_2": 24,
+                "quarter_3": 15,
+                "quarter_4": 13,
+                "over_time": null,
+                "total": 81
             }
         }
     },
@@ -473,8 +473,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -504,20 +504,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 18,
+                "quarter_2": 12,
+                "quarter_3": 20,
+                "quarter_4": 19,
                 "over_time": null,
-                "total": null
+                "total": 69
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 21,
+                "quarter_2": 10,
+                "quarter_3": 12,
+                "quarter_4": 17,
                 "over_time": null,
-                "total": null
+                "total": 60
             }
         }
     },
@@ -531,8 +531,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -562,93 +562,35 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 23,
+                "quarter_2": 21,
+                "quarter_3": 22,
+                "quarter_4": 19,
                 "over_time": null,
-                "total": null
+                "total": 85
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 18,
+                "quarter_2": 16,
+                "quarter_3": 13,
+                "quarter_4": 18,
                 "over_time": null,
-                "total": null
-            }
-        }
-    },
-    {
-        "id": 502602,
-        "date": "2026-07-29T09:15:00+00:00",
-        "time": "09:15",
-        "timestamp": 1785316500,
-        "timezone": "UTC",
-        "stage": null,
-        "week": null,
-        "venue": null,
-        "status": {
-            "long": "Not Started",
-            "short": "NS",
-            "timer": null
-        },
-        "league": {
-            "id": 152,
-            "name": "Governors Cup",
-            "type": "cup",
-            "season": 2025,
-            "logo": "https://media.api-sports.io/basketball/leagues/152.png"
-        },
-        "country": {
-            "id": 60,
-            "name": "Philippines",
-            "code": "PH",
-            "flag": "https://media.api-sports.io/flags/ph.svg"
-        },
-        "teams": {
-            "home": {
-                "id": 2777,
-                "name": "Terrafirma Dyip",
-                "logo": "https://media.api-sports.io/basketball/teams/2777.png"
-            },
-            "away": {
-                "id": 79,
-                "name": "Macau Black Bears",
-                "logo": "https://media.api-sports.io/basketball/teams/79.png"
-            }
-        },
-        "scores": {
-            "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": null
-            },
-            "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": null
+                "total": 65
             }
         }
     },
     {
         "id": 500382,
-        "date": "2026-07-29T10:00:00+00:00",
-        "time": "10:00",
-        "timestamp": 1785319200,
+        "date": "2026-07-29T09:00:00+00:00",
+        "time": "09:00",
+        "timestamp": 1785315600,
         "timezone": "UTC",
         "stage": null,
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -678,20 +620,78 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 14,
+                "quarter_2": 22,
+                "quarter_3": 10,
+                "quarter_4": 30,
                 "over_time": null,
-                "total": null
+                "total": 76
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 44,
+                "quarter_2": 27,
+                "quarter_3": 28,
+                "quarter_4": 31,
                 "over_time": null,
-                "total": null
+                "total": 130
+            }
+        }
+    },
+    {
+        "id": 502602,
+        "date": "2026-07-29T09:15:00+00:00",
+        "time": "09:15",
+        "timestamp": 1785316500,
+        "timezone": "UTC",
+        "stage": null,
+        "week": null,
+        "venue": null,
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 152,
+            "name": "Governors Cup",
+            "type": "cup",
+            "season": 2025,
+            "logo": "https://media.api-sports.io/basketball/leagues/152.png"
+        },
+        "country": {
+            "id": 60,
+            "name": "Philippines",
+            "code": "PH",
+            "flag": "https://media.api-sports.io/flags/ph.svg"
+        },
+        "teams": {
+            "home": {
+                "id": 2777,
+                "name": "Terrafirma Dyip",
+                "logo": "https://media.api-sports.io/basketball/teams/2777.png"
+            },
+            "away": {
+                "id": 79,
+                "name": "Macau Black Bears",
+                "logo": "https://media.api-sports.io/basketball/teams/79.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 28,
+                "quarter_2": 26,
+                "quarter_3": 14,
+                "quarter_4": 24,
+                "over_time": null,
+                "total": 92
+            },
+            "away": {
+                "quarter_1": 19,
+                "quarter_2": 24,
+                "quarter_3": 29,
+                "quarter_4": 24,
+                "over_time": null,
+                "total": 96
             }
         }
     },
@@ -705,8 +705,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -736,20 +736,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 17,
+                "quarter_2": 12,
+                "quarter_3": 17,
+                "quarter_4": 17,
                 "over_time": null,
-                "total": null
+                "total": 63
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 13,
+                "quarter_2": 19,
+                "quarter_3": 19,
+                "quarter_4": 15,
                 "over_time": null,
-                "total": null
+                "total": 66
             }
         }
     },
@@ -763,8 +763,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -794,209 +794,35 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 16,
+                "quarter_2": 13,
+                "quarter_3": 25,
+                "quarter_4": 17,
                 "over_time": null,
-                "total": null
+                "total": 71
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 19,
+                "quarter_2": 33,
+                "quarter_3": 24,
+                "quarter_4": 19,
                 "over_time": null,
-                "total": null
-            }
-        }
-    },
-    {
-        "id": 506872,
-        "date": "2026-07-29T11:00:00+00:00",
-        "time": "11:00",
-        "timestamp": 1785322800,
-        "timezone": "UTC",
-        "stage": null,
-        "week": null,
-        "venue": null,
-        "status": {
-            "long": "Not Started",
-            "short": "NS",
-            "timer": null
-        },
-        "league": {
-            "id": 335,
-            "name": "EuroBasket U18",
-            "type": "cup",
-            "season": 2026,
-            "logo": "https://media.api-sports.io/basketball/leagues/335.png"
-        },
-        "country": {
-            "id": 55,
-            "name": "Europe",
-            "code": " ",
-            "flag": "https://media.api-sports.io/flags/ .svg"
-        },
-        "teams": {
-            "home": {
-                "id": 4158,
-                "name": "France U18",
-                "logo": "https://media.api-sports.io/basketball/teams/4158.png"
-            },
-            "away": {
-                "id": 4631,
-                "name": "Slovakia U18",
-                "logo": "https://media.api-sports.io/basketball/teams/4631.png"
-            }
-        },
-        "scores": {
-            "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": null
-            },
-            "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": null
-            }
-        }
-    },
-    {
-        "id": 506873,
-        "date": "2026-07-29T11:00:00+00:00",
-        "time": "11:00",
-        "timestamp": 1785322800,
-        "timezone": "UTC",
-        "stage": null,
-        "week": null,
-        "venue": null,
-        "status": {
-            "long": "Not Started",
-            "short": "NS",
-            "timer": null
-        },
-        "league": {
-            "id": 335,
-            "name": "EuroBasket U18",
-            "type": "cup",
-            "season": 2026,
-            "logo": "https://media.api-sports.io/basketball/leagues/335.png"
-        },
-        "country": {
-            "id": 55,
-            "name": "Europe",
-            "code": " ",
-            "flag": "https://media.api-sports.io/flags/ .svg"
-        },
-        "teams": {
-            "home": {
-                "id": 4160,
-                "name": "Israel U18",
-                "logo": "https://media.api-sports.io/basketball/teams/4160.png"
-            },
-            "away": {
-                "id": 4660,
-                "name": "Denmark U18",
-                "logo": "https://media.api-sports.io/basketball/teams/4660.png"
-            }
-        },
-        "scores": {
-            "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": null
-            },
-            "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": null
-            }
-        }
-    },
-    {
-        "id": 502603,
-        "date": "2026-07-29T11:30:00+00:00",
-        "time": "11:30",
-        "timestamp": 1785324600,
-        "timezone": "UTC",
-        "stage": null,
-        "week": null,
-        "venue": null,
-        "status": {
-            "long": "Not Started",
-            "short": "NS",
-            "timer": null
-        },
-        "league": {
-            "id": 152,
-            "name": "Governors Cup",
-            "type": "cup",
-            "season": 2025,
-            "logo": "https://media.api-sports.io/basketball/leagues/152.png"
-        },
-        "country": {
-            "id": 60,
-            "name": "Philippines",
-            "code": "PH",
-            "flag": "https://media.api-sports.io/flags/ph.svg"
-        },
-        "teams": {
-            "home": {
-                "id": 2775,
-                "name": "San Miguel Beermen",
-                "logo": "https://media.api-sports.io/basketball/teams/2775.png"
-            },
-            "away": {
-                "id": 7853,
-                "name": "Titan Ultra Giant Risers",
-                "logo": "https://media.api-sports.io/basketball/teams/7853.png"
-            }
-        },
-        "scores": {
-            "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": null
-            },
-            "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": null
+                "total": 95
             }
         }
     },
     {
         "id": 500383,
-        "date": "2026-07-29T12:00:00+00:00",
-        "time": "12:00",
-        "timestamp": 1785326400,
+        "date": "2026-07-29T11:00:00+00:00",
+        "time": "11:00",
+        "timestamp": 1785322800,
         "timezone": "UTC",
         "stage": null,
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -1026,20 +852,194 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 25,
+                "quarter_2": 18,
+                "quarter_3": 22,
+                "quarter_4": 16,
                 "over_time": null,
-                "total": null
+                "total": 81
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 18,
+                "quarter_2": 13,
+                "quarter_3": 17,
+                "quarter_4": 23,
                 "over_time": null,
-                "total": null
+                "total": 71
+            }
+        }
+    },
+    {
+        "id": 506872,
+        "date": "2026-07-29T11:00:00+00:00",
+        "time": "11:00",
+        "timestamp": 1785322800,
+        "timezone": "UTC",
+        "stage": null,
+        "week": null,
+        "venue": null,
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 335,
+            "name": "EuroBasket U18",
+            "type": "cup",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/335.png"
+        },
+        "country": {
+            "id": 55,
+            "name": "Europe",
+            "code": " ",
+            "flag": "https://media.api-sports.io/flags/ .svg"
+        },
+        "teams": {
+            "home": {
+                "id": 4158,
+                "name": "France U18",
+                "logo": "https://media.api-sports.io/basketball/teams/4158.png"
+            },
+            "away": {
+                "id": 4631,
+                "name": "Slovakia U18",
+                "logo": "https://media.api-sports.io/basketball/teams/4631.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 14,
+                "quarter_2": 23,
+                "quarter_3": 13,
+                "quarter_4": 22,
+                "over_time": null,
+                "total": 72
+            },
+            "away": {
+                "quarter_1": 13,
+                "quarter_2": 15,
+                "quarter_3": 18,
+                "quarter_4": 14,
+                "over_time": null,
+                "total": 60
+            }
+        }
+    },
+    {
+        "id": 506873,
+        "date": "2026-07-29T11:00:00+00:00",
+        "time": "11:00",
+        "timestamp": 1785322800,
+        "timezone": "UTC",
+        "stage": null,
+        "week": null,
+        "venue": null,
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 335,
+            "name": "EuroBasket U18",
+            "type": "cup",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/335.png"
+        },
+        "country": {
+            "id": 55,
+            "name": "Europe",
+            "code": " ",
+            "flag": "https://media.api-sports.io/flags/ .svg"
+        },
+        "teams": {
+            "home": {
+                "id": 4160,
+                "name": "Israel U18",
+                "logo": "https://media.api-sports.io/basketball/teams/4160.png"
+            },
+            "away": {
+                "id": 4660,
+                "name": "Denmark U18",
+                "logo": "https://media.api-sports.io/basketball/teams/4660.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 26,
+                "quarter_2": 24,
+                "quarter_3": 28,
+                "quarter_4": 22,
+                "over_time": null,
+                "total": 100
+            },
+            "away": {
+                "quarter_1": 20,
+                "quarter_2": 20,
+                "quarter_3": 16,
+                "quarter_4": 30,
+                "over_time": null,
+                "total": 86
+            }
+        }
+    },
+    {
+        "id": 502603,
+        "date": "2026-07-29T11:30:00+00:00",
+        "time": "11:30",
+        "timestamp": 1785324600,
+        "timezone": "UTC",
+        "stage": null,
+        "week": null,
+        "venue": null,
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 152,
+            "name": "Governors Cup",
+            "type": "cup",
+            "season": 2025,
+            "logo": "https://media.api-sports.io/basketball/leagues/152.png"
+        },
+        "country": {
+            "id": 60,
+            "name": "Philippines",
+            "code": "PH",
+            "flag": "https://media.api-sports.io/flags/ph.svg"
+        },
+        "teams": {
+            "home": {
+                "id": 2775,
+                "name": "San Miguel Beermen",
+                "logo": "https://media.api-sports.io/basketball/teams/2775.png"
+            },
+            "away": {
+                "id": 7853,
+                "name": "Titan Ultra Giant Risers",
+                "logo": "https://media.api-sports.io/basketball/teams/7853.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 38,
+                "quarter_2": 23,
+                "quarter_3": 49,
+                "quarter_4": 33,
+                "over_time": null,
+                "total": 143
+            },
+            "away": {
+                "quarter_1": 31,
+                "quarter_2": 27,
+                "quarter_3": 23,
+                "quarter_4": 24,
+                "over_time": null,
+                "total": 105
             }
         }
     },
@@ -1053,8 +1053,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -1084,20 +1084,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 23,
+                "quarter_2": 13,
+                "quarter_3": 12,
+                "quarter_4": 25,
                 "over_time": null,
-                "total": null
+                "total": 73
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 24,
+                "quarter_2": 23,
+                "quarter_3": 19,
+                "quarter_4": 12,
                 "over_time": null,
-                "total": null
+                "total": 78
             }
         }
     },
@@ -1111,8 +1111,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -1142,20 +1142,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 14,
+                "quarter_2": 10,
+                "quarter_3": 22,
+                "quarter_4": 22,
                 "over_time": null,
-                "total": null
+                "total": 68
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 19,
+                "quarter_2": 23,
+                "quarter_3": 24,
+                "quarter_4": 25,
                 "over_time": null,
-                "total": null
+                "total": 91
             }
         }
     },
@@ -1169,8 +1169,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -1200,20 +1200,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 21,
+                "quarter_2": 19,
+                "quarter_3": 27,
+                "quarter_4": 18,
                 "over_time": null,
-                "total": null
+                "total": 85
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 18,
+                "quarter_2": 15,
+                "quarter_3": 16,
+                "quarter_4": 22,
                 "over_time": null,
-                "total": null
+                "total": 71
             }
         }
     },
@@ -1227,8 +1227,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -1258,20 +1258,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 23,
+                "quarter_2": 22,
+                "quarter_3": 14,
+                "quarter_4": 27,
                 "over_time": null,
-                "total": null
+                "total": 86
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 15,
+                "quarter_2": 22,
+                "quarter_3": 28,
+                "quarter_4": 11,
                 "over_time": null,
-                "total": null
+                "total": 76
             }
         }
     },
@@ -1285,8 +1285,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -1316,20 +1316,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 7,
+                "quarter_2": 14,
+                "quarter_3": 11,
+                "quarter_4": 14,
                 "over_time": null,
-                "total": null
+                "total": 46
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 25,
+                "quarter_2": 13,
+                "quarter_3": 20,
+                "quarter_4": 16,
                 "over_time": null,
-                "total": null
+                "total": 74
             }
         }
     },
@@ -1343,8 +1343,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -1374,20 +1374,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 24,
+                "quarter_2": 14,
+                "quarter_3": 9,
+                "quarter_4": 21,
                 "over_time": null,
-                "total": null
+                "total": 68
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 15,
+                "quarter_2": 11,
+                "quarter_3": 19,
+                "quarter_4": 17,
                 "over_time": null,
-                "total": null
+                "total": 62
             }
         }
     },
@@ -1401,8 +1401,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -1432,20 +1432,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 30,
+                "quarter_2": 17,
+                "quarter_3": 15,
+                "quarter_4": 21,
                 "over_time": null,
-                "total": null
+                "total": 83
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 20,
+                "quarter_2": 20,
+                "quarter_3": 16,
+                "quarter_4": 15,
                 "over_time": null,
-                "total": null
+                "total": 71
             }
         }
     },
@@ -1459,8 +1459,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -1490,20 +1490,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 22,
+                "quarter_2": 16,
+                "quarter_3": 22,
+                "quarter_4": 17,
                 "over_time": null,
-                "total": null
+                "total": 77
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 13,
+                "quarter_2": 17,
+                "quarter_3": 28,
+                "quarter_4": 20,
                 "over_time": null,
-                "total": null
+                "total": 78
             }
         }
     },
@@ -1517,8 +1517,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -1548,20 +1548,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 17,
+                "quarter_2": 23,
+                "quarter_3": 13,
+                "quarter_4": 14,
                 "over_time": null,
-                "total": null
+                "total": 67
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 26,
+                "quarter_2": 19,
+                "quarter_3": 24,
+                "quarter_4": 20,
                 "over_time": null,
-                "total": null
+                "total": 89
             }
         }
     },
@@ -1575,8 +1575,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -1606,20 +1606,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 15,
+                "quarter_2": 17,
+                "quarter_3": 8,
+                "quarter_4": 19,
                 "over_time": null,
-                "total": null
+                "total": 59
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 17,
+                "quarter_2": 13,
+                "quarter_3": 18,
+                "quarter_4": 20,
                 "over_time": null,
-                "total": null
+                "total": 68
             }
         }
     },
@@ -1633,8 +1633,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -1664,20 +1664,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 23,
+                "quarter_2": 26,
+                "quarter_3": 22,
+                "quarter_4": 28,
                 "over_time": null,
-                "total": null
+                "total": 99
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 18,
+                "quarter_2": 15,
+                "quarter_3": 20,
+                "quarter_4": 13,
                 "over_time": null,
-                "total": null
+                "total": 66
             }
         }
     },
@@ -1691,8 +1691,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -1722,20 +1722,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 21,
+                "quarter_2": 22,
+                "quarter_3": 22,
+                "quarter_4": 25,
                 "over_time": null,
-                "total": null
+                "total": 90
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 17,
+                "quarter_2": 13,
+                "quarter_3": 13,
+                "quarter_4": 21,
                 "over_time": null,
-                "total": null
+                "total": 64
             }
         }
     }

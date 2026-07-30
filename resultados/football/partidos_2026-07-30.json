@@ -296,8 +296,8 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
+                "long": "Technical loss",
+                "short": "AWD",
                 "elapsed": null,
                 "extra": null
             }
@@ -327,8 +327,8 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
@@ -533,76 +533,6 @@
                 "id": 27635,
                 "name": "Yelimay Semey 2",
                 "logo": "https://media.api-sports.io/football/teams/27635.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1534812,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-07-30T08:00:00-04:00",
-            "timestamp": 1785412800,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": "Central Stadium",
-                "city": "Taraz"
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 388,
-            "name": "1. Division",
-            "country": "Kazakhstan",
-            "logo": "https://media.api-sports.io/football/leagues/388.png",
-            "flag": "https://media.api-sports.io/flags/kz.svg",
-            "season": 2026,
-            "round": "Regular Season - 16",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 4559,
-                "name": "Taraz",
-                "logo": "https://media.api-sports.io/football/teams/4559.png",
-                "winner": null
-            },
-            "away": {
-                "id": 4545,
-                "name": "Akademiya Ontustik",
-                "logo": "https://media.api-sports.io/football/teams/4545.png",
                 "winner": null
             }
         },
@@ -883,6 +813,76 @@
                 "id": 4546,
                 "name": "Aktobe Jas",
                 "logo": "https://media.api-sports.io/football/teams/4546.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1534812,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-07-30T09:00:00-04:00",
+            "timestamp": 1785416400,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": "Central Stadium",
+                "city": "Taraz"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 388,
+            "name": "1. Division",
+            "country": "Kazakhstan",
+            "logo": "https://media.api-sports.io/football/leagues/388.png",
+            "flag": "https://media.api-sports.io/flags/kz.svg",
+            "season": 2026,
+            "round": "Regular Season - 16",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 4559,
+                "name": "Taraz",
+                "logo": "https://media.api-sports.io/football/teams/4559.png",
+                "winner": null
+            },
+            "away": {
+                "id": 4545,
+                "name": "Akademiya Ontustik",
+                "logo": "https://media.api-sports.io/football/teams/4545.png",
                 "winner": null
             }
         },
@@ -1541,6 +1541,76 @@
     },
     {
         "fixture": {
+            "id": 1546421,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-07-30T11:00:00-04:00",
+            "timestamp": 1785423600,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 823,
+            "name": "Nasjonal U19 Champions League",
+            "country": "Norway",
+            "logo": "https://media.api-sports.io/football/leagues/823.png",
+            "flag": "https://media.api-sports.io/flags/no.svg",
+            "season": 2026,
+            "round": "Round of 16",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 7962,
+                "name": "Molde U19",
+                "logo": "https://media.api-sports.io/football/teams/7962.png",
+                "winner": null
+            },
+            "away": {
+                "id": 16395,
+                "name": "Rosenborg U19",
+                "logo": "https://media.api-sports.io/football/teams/16395.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1583495,
             "referee": null,
             "timezone": "America/Santiago",
@@ -2003,76 +2073,6 @@
                 "id": 18758,
                 "name": "KuPS Akatemia",
                 "logo": "https://media.api-sports.io/football/teams/18758.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1546421,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-07-30T12:00:00-04:00",
-            "timestamp": 1785427200,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 823,
-            "name": "Nasjonal U19 Champions League",
-            "country": "Norway",
-            "logo": "https://media.api-sports.io/football/leagues/823.png",
-            "flag": "https://media.api-sports.io/flags/no.svg",
-            "season": 2026,
-            "round": "Round of 16",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 7962,
-                "name": "Molde U19",
-                "logo": "https://media.api-sports.io/football/teams/7962.png",
-                "winner": null
-            },
-            "away": {
-                "id": 16395,
-                "name": "Rosenborg U19",
-                "logo": "https://media.api-sports.io/football/teams/16395.png",
                 "winner": null
             }
         },
@@ -2872,7 +2872,7 @@
     {
         "fixture": {
             "id": 1593526,
-            "referee": null,
+            "referee": "M. Redder",
             "timezone": "America/Santiago",
             "date": "2026-07-30T12:00:00-04:00",
             "timestamp": 1785427200,
@@ -3432,7 +3432,7 @@
     {
         "fixture": {
             "id": 1556549,
-            "referee": null,
+            "referee": "J. Brooks",
             "timezone": "America/Santiago",
             "date": "2026-07-30T13:00:00-04:00",
             "timestamp": 1785430800,
@@ -3502,7 +3502,7 @@
     {
         "fixture": {
             "id": 1556550,
-            "referee": null,
+            "referee": "N. Dabanovic",
             "timezone": "America/Santiago",
             "date": "2026-07-30T13:00:00-04:00",
             "timestamp": 1785430800,
@@ -4062,7 +4062,7 @@
     {
         "fixture": {
             "id": 1593527,
-            "referee": null,
+            "referee": "P. Raczkowski",
             "timezone": "America/Santiago",
             "date": "2026-07-30T13:00:00-04:00",
             "timestamp": 1785430800,
@@ -4173,6 +4173,76 @@
                 "id": 2270,
                 "name": "Neftchi Baku",
                 "logo": "https://media.api-sports.io/football/teams/2270.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1598562,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-07-30T13:00:00-04:00",
+            "timestamp": 1785430800,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 667,
+            "name": "Friendlies Clubs",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/667.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Club Friendlies",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 535,
+                "name": "Malaga",
+                "logo": "https://media.api-sports.io/football/teams/535.png",
+                "winner": null
+            },
+            "away": {
+                "id": 2938,
+                "name": "Al-Ittihad FC",
+                "logo": "https://media.api-sports.io/football/teams/2938.png",
                 "winner": null
             }
         },
@@ -5252,7 +5322,7 @@
     {
         "fixture": {
             "id": 1593524,
-            "referee": null,
+            "referee": "B. Van Driessche",
             "timezone": "America/Santiago",
             "date": "2026-07-30T14:00:00-04:00",
             "timestamp": 1785434400,
@@ -5293,76 +5363,6 @@
                 "id": 556,
                 "name": "Qarabag",
                 "logo": "https://media.api-sports.io/football/teams/556.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1598562,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-07-30T14:00:00-04:00",
-            "timestamp": 1785434400,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 667,
-            "name": "Friendlies Clubs",
-            "country": "World",
-            "logo": "https://media.api-sports.io/football/leagues/667.png",
-            "flag": null,
-            "season": 2026,
-            "round": "Club Friendlies",
-            "standings": false
-        },
-        "teams": {
-            "home": {
-                "id": 535,
-                "name": "Malaga",
-                "logo": "https://media.api-sports.io/football/teams/535.png",
-                "winner": null
-            },
-            "away": {
-                "id": 2938,
-                "name": "Al-Ittihad FC",
-                "logo": "https://media.api-sports.io/football/teams/2938.png",
                 "winner": null
             }
         },
@@ -5812,7 +5812,7 @@
     {
         "fixture": {
             "id": 1556547,
-            "referee": null,
+            "referee": "D. Nikolic",
             "timezone": "America/Santiago",
             "date": "2026-07-30T14:30:00-04:00",
             "timestamp": 1785436200,
@@ -6092,7 +6092,7 @@
     {
         "fixture": {
             "id": 1593525,
-            "referee": null,
+            "referee": "V. Kopiyevsky",
             "timezone": "America/Santiago",
             "date": "2026-07-30T14:30:00-04:00",
             "timestamp": 1785436200,
@@ -6372,7 +6372,7 @@
     {
         "fixture": {
             "id": 1556548,
-            "referee": null,
+            "referee": "F. Badstubner",
             "timezone": "America/Santiago",
             "date": "2026-07-30T15:00:00-04:00",
             "timestamp": 1785438000,
@@ -6442,7 +6442,7 @@
     {
         "fixture": {
             "id": 1584342,
-            "referee": null,
+            "referee": "D. Benitez",
             "timezone": "America/Santiago",
             "date": "2026-07-30T15:00:00-04:00",
             "timestamp": 1785438000,
@@ -6931,6 +6931,146 @@
     },
     {
         "fixture": {
+            "id": 1606340,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-07-30T16:00:00-04:00",
+            "timestamp": 1785441600,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": 0,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 1016,
+            "name": "CAC Games",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/1016.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 1",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 17878,
+                "name": "Panama U23",
+                "logo": "https://media.api-sports.io/football/teams/17878.png",
+                "winner": null
+            },
+            "away": {
+                "id": 10188,
+                "name": "Colombia U23",
+                "logo": "https://media.api-sports.io/football/teams/10188.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1606341,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-07-30T16:00:00-04:00",
+            "timestamp": 1785441600,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": 0,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 1016,
+            "name": "CAC Games",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/1016.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 2",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 10178,
+                "name": "Mexico U23",
+                "logo": "https://media.api-sports.io/football/teams/10178.png",
+                "winner": null
+            },
+            "away": {
+                "id": 18983,
+                "name": "Venezuela U23",
+                "logo": "https://media.api-sports.io/football/teams/18983.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1526584,
             "referee": null,
             "timezone": "America/Santiago",
@@ -7141,8 +7281,78 @@
     },
     {
         "fixture": {
-            "id": 1584343,
+            "id": 1606976,
             "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-07-30T16:30:00-04:00",
+            "timestamp": 1785443400,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 940,
+            "name": "COTIF Tournament",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/940.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Final",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 11038,
+                "name": "Mauritania U20",
+                "logo": "https://media.api-sports.io/football/teams/11038.png",
+                "winner": null
+            },
+            "away": {
+                "id": 11039,
+                "name": "Morocco U20",
+                "logo": "https://media.api-sports.io/football/teams/11039.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1584343,
+            "referee": "D. Ojeda",
             "timezone": "America/Santiago",
             "date": "2026-07-30T17:30:00-04:00",
             "timestamp": 1785447000,
@@ -7282,7 +7492,7 @@
     {
         "fixture": {
             "id": 1493025,
-            "referee": null,
+            "referee": "P. Dovalo",
             "timezone": "America/Santiago",
             "date": "2026-07-30T18:00:00-04:00",
             "timestamp": 1785448800,
@@ -7352,7 +7562,7 @@
     {
         "fixture": {
             "id": 1493029,
-            "referee": null,
+            "referee": "N. Arasa",
             "timezone": "America/Santiago",
             "date": "2026-07-30T18:00:00-04:00",
             "timestamp": 1785448800,
@@ -7702,7 +7912,7 @@
     {
         "fixture": {
             "id": 1492313,
-            "referee": null,
+            "referee": "P. Zanovelli",
             "timezone": "America/Santiago",
             "date": "2026-07-30T18:30:00-04:00",
             "timestamp": 1785450600,
@@ -7743,6 +7953,146 @@
                 "id": 134,
                 "name": "Atletico Paranaense",
                 "logo": "https://media.api-sports.io/football/teams/134.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1606342,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-07-30T19:00:00-04:00",
+            "timestamp": 1785452400,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": 0,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 1016,
+            "name": "CAC Games",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/1016.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 1",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 17869,
+                "name": "Cuba U23",
+                "logo": "https://media.api-sports.io/football/teams/17869.png",
+                "winner": null
+            },
+            "away": {
+                "id": 17868,
+                "name": "Costa Rica U23",
+                "logo": "https://media.api-sports.io/football/teams/17868.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1606343,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-07-30T19:00:00-04:00",
+            "timestamp": 1785452400,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": 0,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 1016,
+            "name": "CAC Games",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/1016.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 2",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 17874,
+                "name": "Guatemala U23",
+                "logo": "https://media.api-sports.io/football/teams/17874.png",
+                "winner": null
+            },
+            "away": {
+                "id": 17871,
+                "name": "Dominican Republic U23",
+                "logo": "https://media.api-sports.io/football/teams/17871.png",
                 "winner": null
             }
         },
@@ -7912,7 +8262,7 @@
     {
         "fixture": {
             "id": 1493021,
-            "referee": null,
+            "referee": "A. Merlos",
             "timezone": "America/Santiago",
             "date": "2026-07-30T20:15:00-04:00",
             "timestamp": 1785456900,
@@ -7982,7 +8332,7 @@
     {
         "fixture": {
             "id": 1493024,
-            "referee": null,
+            "referee": "P. Echavarria",
             "timezone": "America/Santiago",
             "date": "2026-07-30T20:15:00-04:00",
             "timestamp": 1785456900,
@@ -8052,7 +8402,7 @@
     {
         "fixture": {
             "id": 1492314,
-            "referee": null,
+            "referee": "W. do Nascimento",
             "timezone": "America/Santiago",
             "date": "2026-07-30T20:30:00-04:00",
             "timestamp": 1785457800,
