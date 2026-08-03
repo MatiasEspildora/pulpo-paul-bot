@@ -9,8 +9,8 @@
         "week": null,
         "venue": "Gimnasio Municipal Puerto Montt",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -40,20 +40,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 27,
+                "quarter_2": 23,
+                "quarter_3": 11,
+                "quarter_4": 19,
                 "over_time": null,
-                "total": null
+                "total": 80
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 16,
+                "quarter_2": 16,
+                "quarter_3": 14,
+                "quarter_4": 13,
                 "over_time": null,
-                "total": null
+                "total": 59
             }
         }
     },
@@ -67,8 +67,8 @@
         "week": "BSN - Semi-finals",
         "venue": "Coliseo de Multiusos Ismael Delgado",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -98,20 +98,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 13,
+                "quarter_2": 23,
+                "quarter_3": 30,
+                "quarter_4": 19,
                 "over_time": null,
-                "total": null
+                "total": 105
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 19,
+                "quarter_2": 19,
+                "quarter_3": 21,
+                "quarter_4": 26,
                 "over_time": null,
-                "total": null
+                "total": 106
             }
         }
     },
@@ -125,8 +125,8 @@
         "week": null,
         "venue": "Chase Center",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -156,20 +156,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 25,
+                "quarter_2": 19,
+                "quarter_3": 23,
+                "quarter_4": 29,
                 "over_time": null,
-                "total": null
+                "total": 96
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 20,
+                "quarter_2": 23,
+                "quarter_3": 18,
+                "quarter_4": 18,
                 "over_time": null,
-                "total": null
+                "total": 79
             }
         }
     },
@@ -183,8 +183,8 @@
         "week": null,
         "venue": "Gimnasio Fiscal de Ancud",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -214,20 +214,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 17,
+                "quarter_2": 9,
+                "quarter_3": 22,
+                "quarter_4": 16,
                 "over_time": null,
-                "total": null
+                "total": 64
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 25,
+                "quarter_2": 21,
+                "quarter_3": 20,
+                "quarter_4": 20,
                 "over_time": null,
-                "total": null
+                "total": 86
             }
         }
     },
@@ -384,6 +384,64 @@
                 "id": 7370,
                 "name": "Quezon City",
                 "logo": "https://media.api-sports.io/basketball/teams/7370.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            },
+            "away": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            }
+        }
+    },
+    {
+        "id": 509256,
+        "date": "2026-08-03T18:30:00+00:00",
+        "time": "18:30",
+        "timestamp": 1785781800,
+        "timezone": "UTC",
+        "stage": null,
+        "week": "Division 1 - Final",
+        "venue": null,
+        "status": {
+            "long": "Not Started",
+            "short": "NS",
+            "timer": null
+        },
+        "league": {
+            "id": 409,
+            "name": "Division 1",
+            "type": "League",
+            "season": "2025-2026",
+            "logo": "https://media.api-sports.io/basketball/leagues/409.png"
+        },
+        "country": {
+            "id": 77,
+            "name": "Lebanon",
+            "code": "LB",
+            "flag": "https://media.api-sports.io/flags/lb.svg"
+        },
+        "teams": {
+            "home": {
+                "id": 4418,
+                "name": "Al-Riyadi",
+                "logo": "https://media.api-sports.io/basketball/teams/4418.png"
+            },
+            "away": {
+                "id": 6465,
+                "name": "Sagesse Beirut",
+                "logo": "https://media.api-sports.io/basketball/teams/6465.png"
             }
         },
         "scores": {
