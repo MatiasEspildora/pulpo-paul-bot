@@ -1,5 +1,63 @@
 [
     {
+        "id": 509267,
+        "date": "2026-08-05T00:00:00+00:00",
+        "time": "00:00",
+        "timestamp": 1785888000,
+        "timezone": "UTC",
+        "stage": null,
+        "week": "BSN - Semi-finals",
+        "venue": "Auditorio Juan Pachín Vicéns",
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 76,
+            "name": "BSN",
+            "type": "League",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/76.png"
+        },
+        "country": {
+            "id": 36,
+            "name": "Puerto Rico",
+            "code": "PR",
+            "flag": "https://media.api-sports.io/flags/pr.svg"
+        },
+        "teams": {
+            "home": {
+                "id": 955,
+                "name": "Leones De Ponce",
+                "logo": "https://media.api-sports.io/basketball/teams/955.png"
+            },
+            "away": {
+                "id": 950,
+                "name": "Aguada Santeros",
+                "logo": "https://media.api-sports.io/basketball/teams/950.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 20,
+                "quarter_2": 28,
+                "quarter_3": 20,
+                "quarter_4": 21,
+                "over_time": null,
+                "total": 89
+            },
+            "away": {
+                "quarter_1": 24,
+                "quarter_2": 22,
+                "quarter_3": 26,
+                "quarter_4": 23,
+                "over_time": null,
+                "total": 95
+            }
+        }
+    },
+    {
         "id": 494998,
         "date": "2026-08-05T02:00:00+00:00",
         "time": "02:00",
@@ -9,9 +67,9 @@
         "week": null,
         "venue": "Chase Center",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
-            "timer": null
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": "10"
         },
         "league": {
             "id": 13,
@@ -40,20 +98,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 25,
+                "quarter_2": 16,
+                "quarter_3": 31,
+                "quarter_4": 20,
                 "over_time": null,
-                "total": null
+                "total": 92
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 24,
+                "quarter_2": 18,
+                "quarter_3": 26,
+                "quarter_4": 14,
                 "over_time": null,
-                "total": null
+                "total": 82
             }
         }
     },

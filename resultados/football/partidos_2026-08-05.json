@@ -7187,8 +7187,8 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
@@ -7196,8 +7196,8 @@
                 "away": null
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -7366,8 +7366,8 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
+                "long": "Match Postponed",
+                "short": "PST",
                 "elapsed": null,
                 "extra": null
             }
@@ -8402,7 +8402,7 @@
     {
         "fixture": {
             "id": 1607163,
-            "referee": null,
+            "referee": "R. Obrenovic",
             "timezone": "America/Santiago",
             "date": "2026-08-05T12:30:00-04:00",
             "timestamp": 1785947400,
@@ -10291,6 +10291,76 @@
     },
     {
         "fixture": {
+            "id": 1605332,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-05T13:30:00-04:00",
+            "timestamp": 1785951000,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 657,
+            "name": "Cup",
+            "country": "Estonia",
+            "logo": "https://media.api-sports.io/football/leagues/657.png",
+            "flag": "https://media.api-sports.io/flags/ee.svg",
+            "season": 2026,
+            "round": "Round of 32",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 14327,
+                "name": "Rumori Calcio",
+                "logo": "https://media.api-sports.io/football/teams/14327.png",
+                "winner": null
+            },
+            "away": {
+                "id": 3530,
+                "name": "Tammeka",
+                "logo": "https://media.api-sports.io/football/teams/3530.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1547833,
             "referee": null,
             "timezone": "America/Santiago",
@@ -11622,7 +11692,7 @@
     {
         "fixture": {
             "id": 1607165,
-            "referee": null,
+            "referee": "C. Kavanagh",
             "timezone": "America/Santiago",
             "date": "2026-08-05T14:00:00-04:00",
             "timestamp": 1785952800,
@@ -14253,6 +14323,76 @@
                 "id": 11004,
                 "name": "Jamaica U20",
                 "logo": "https://media.api-sports.io/football/teams/11004.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1610925,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-05T18:30:00-04:00",
+            "timestamp": 1785969000,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": 0,
+                "name": "Estadio Olimpico de la UCV",
+                "city": "Caracas"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 299,
+            "name": "Primera División",
+            "country": "Venezuela",
+            "logo": "https://media.api-sports.io/football/leagues/299.png",
+            "flag": "https://media.api-sports.io/flags/ve.svg",
+            "season": 2026,
+            "round": "Clausura - 2",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 2813,
+                "name": "Deportivo La Guaira",
+                "logo": "https://media.api-sports.io/football/teams/2813.png",
+                "winner": null
+            },
+            "away": {
+                "id": 2825,
+                "name": "Metropolitanos FC",
+                "logo": "https://media.api-sports.io/football/teams/2825.png",
                 "winner": null
             }
         },
