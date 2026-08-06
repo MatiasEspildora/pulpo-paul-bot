@@ -1,6 +1,76 @@
 [
     {
         "fixture": {
+            "id": 1611279,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-06T04:00:00-04:00",
+            "timestamp": 1786003200,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": 0,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 924,
+            "name": "Piala Presiden",
+            "country": "Indonesia",
+            "logo": "https://media.api-sports.io/football/leagues/924.png",
+            "flag": "https://media.api-sports.io/flags/id.svg",
+            "season": 2026,
+            "round": "Third runner",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 10134,
+                "name": "Persija",
+                "logo": "https://media.api-sports.io/football/teams/10134.png",
+                "winner": null
+            },
+            "away": {
+                "id": 2438,
+                "name": "Arema FC",
+                "logo": "https://media.api-sports.io/football/teams/2438.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1527348,
             "referee": null,
             "timezone": "America/Santiago",
@@ -323,76 +393,6 @@
                 "id": 16552,
                 "name": "Aalesunds U19",
                 "logo": "https://media.api-sports.io/football/teams/16552.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1506643,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-08-06T09:00:00-04:00",
-            "timestamp": 1786021200,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 366,
-            "name": "1. Deild",
-            "country": "Faroe-Islands",
-            "logo": "https://media.api-sports.io/football/leagues/366.png",
-            "flag": "https://media.api-sports.io/flags/fo.svg",
-            "season": 2026,
-            "round": "Regular Season - 18",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 4179,
-                "name": "HB II",
-                "logo": "https://media.api-sports.io/football/teams/4179.png",
-                "winner": null
-            },
-            "away": {
-                "id": 4185,
-                "name": "B36 II",
-                "logo": "https://media.api-sports.io/football/teams/4185.png",
                 "winner": null
             }
         },
@@ -1121,6 +1121,76 @@
     },
     {
         "fixture": {
+            "id": 1611280,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-06T09:00:00-04:00",
+            "timestamp": 1786021200,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": 0,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 924,
+            "name": "Piala Presiden",
+            "country": "Indonesia",
+            "logo": "https://media.api-sports.io/football/leagues/924.png",
+            "flag": "https://media.api-sports.io/flags/id.svg",
+            "season": 2026,
+            "round": "Final",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 2445,
+                "name": "Persib Bandung",
+                "logo": "https://media.api-sports.io/football/teams/2445.png",
+                "winner": null
+            },
+            "away": {
+                "id": 2446,
+                "name": "Persebaya Surabaya",
+                "logo": "https://media.api-sports.io/football/teams/2446.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1516094,
             "referee": null,
             "timezone": "America/Santiago",
@@ -1303,6 +1373,146 @@
                 "id": 7802,
                 "name": "Bumprom",
                 "logo": "https://media.api-sports.io/football/teams/7802.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1611320,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-06T10:30:00-04:00",
+            "timestamp": 1786026600,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": 0,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 569,
+            "name": "Premier League",
+            "country": "Kyrgyzstan",
+            "logo": "https://media.api-sports.io/football/leagues/569.png",
+            "flag": "https://media.api-sports.io/flags/kg.svg",
+            "season": 2026,
+            "round": "Regular Season - 18",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 21167,
+                "name": "Muras United",
+                "logo": "https://media.api-sports.io/football/teams/21167.png",
+                "winner": null
+            },
+            "away": {
+                "id": 27432,
+                "name": "Asia Talas",
+                "logo": "https://media.api-sports.io/football/teams/27432.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1611321,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-06T10:30:00-04:00",
+            "timestamp": 1786026600,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": 0,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 569,
+            "name": "Premier League",
+            "country": "Kyrgyzstan",
+            "logo": "https://media.api-sports.io/football/leagues/569.png",
+            "flag": "https://media.api-sports.io/flags/kg.svg",
+            "season": 2026,
+            "round": "Regular Season - 18",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 25766,
+                "name": "Bishkek City",
+                "logo": "https://media.api-sports.io/football/teams/25766.png",
+                "winner": null
+            },
+            "away": {
+                "id": 25764,
+                "name": "Asiagoal",
+                "logo": "https://media.api-sports.io/football/teams/25764.png",
                 "winner": null
             }
         },
@@ -4551,6 +4761,76 @@
     },
     {
         "fixture": {
+            "id": 1506643,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-06T14:00:00-04:00",
+            "timestamp": 1786039200,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 366,
+            "name": "1. Deild",
+            "country": "Faroe-Islands",
+            "logo": "https://media.api-sports.io/football/leagues/366.png",
+            "flag": "https://media.api-sports.io/flags/fo.svg",
+            "season": 2026,
+            "round": "Regular Season - 18",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 4179,
+                "name": "HB II",
+                "logo": "https://media.api-sports.io/football/teams/4179.png",
+                "winner": null
+            },
+            "away": {
+                "id": 4185,
+                "name": "B36 II",
+                "logo": "https://media.api-sports.io/football/teams/4185.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1547397,
             "referee": null,
             "timezone": "America/Santiago",
@@ -6232,7 +6512,7 @@
     {
         "fixture": {
             "id": 1567390,
-            "referee": null,
+            "referee": "J. Miles",
             "timezone": "America/Santiago",
             "date": "2026-08-06T14:45:00-04:00",
             "timestamp": 1786041900,
@@ -6442,7 +6722,7 @@
     {
         "fixture": {
             "id": 1545397,
-            "referee": null,
+            "referee": "I. N. Mendez Chavez",
             "timezone": "America/Santiago",
             "date": "2026-08-06T15:00:00-04:00",
             "timestamp": 1786042800,
@@ -7771,6 +8051,76 @@
     },
     {
         "fixture": {
+            "id": 1526591,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-06T17:30:00-04:00",
+            "timestamp": 1786051800,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": "Quito"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 243,
+            "name": "Liga Pro Serie B",
+            "country": "Ecuador",
+            "logo": "https://media.api-sports.io/football/leagues/243.png",
+            "flag": "https://media.api-sports.io/flags/ec.svg",
+            "season": 2026,
+            "round": "Regular Season - 20",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 1150,
+                "name": "El Nacional",
+                "logo": "https://media.api-sports.io/football/teams/1150.png",
+                "winner": null
+            },
+            "away": {
+                "id": 10111,
+                "name": "9 de Octubre",
+                "logo": "https://media.api-sports.io/football/teams/10111.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1549580,
             "referee": null,
             "timezone": "America/Santiago",
@@ -7842,7 +8192,7 @@
     {
         "fixture": {
             "id": 1493031,
-            "referee": null,
+            "referee": "N. Lamolina",
             "timezone": "America/Santiago",
             "date": "2026-08-06T18:00:00-04:00",
             "timestamp": 1786053600,
@@ -8402,7 +8752,7 @@
     {
         "fixture": {
             "id": 1545396,
-            "referee": null,
+            "referee": "D. Rodriguez",
             "timezone": "America/Santiago",
             "date": "2026-08-06T19:30:00-04:00",
             "timestamp": 1786059000,
@@ -8443,76 +8793,6 @@
                 "id": 3700,
                 "name": "Always Ready",
                 "logo": "https://media.api-sports.io/football/teams/3700.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1526591,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-08-06T20:00:00-04:00",
-            "timestamp": 1786060800,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": "Quito"
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 243,
-            "name": "Liga Pro Serie B",
-            "country": "Ecuador",
-            "logo": "https://media.api-sports.io/football/leagues/243.png",
-            "flag": "https://media.api-sports.io/flags/ec.svg",
-            "season": 2026,
-            "round": "Regular Season - 20",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 1150,
-                "name": "El Nacional",
-                "logo": "https://media.api-sports.io/football/teams/1150.png",
-                "winner": null
-            },
-            "away": {
-                "id": 10111,
-                "name": "9 de Octubre",
-                "logo": "https://media.api-sports.io/football/teams/10111.png",
                 "winner": null
             }
         },
