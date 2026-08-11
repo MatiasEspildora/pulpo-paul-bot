@@ -14,6 +14,7 @@ from api_client import FootballAPI
 from analyzer import MatchAnalyzer
 from notifier import enviar_mensaje_telegram, enviar_bloque_reportes
 
+
 def cargar_configuracion():
     with open("config/football/leagues.json", "r", encoding="utf-8") as f:
         data = json.load(f)
@@ -25,14 +26,23 @@ def cargar_configuracion():
         aliases_data = json.load(f)
     return api_to_master, master_leagues_info, statuses, aliases_data
 
+
 def cargar_historico_mensual():
     all_files = glob.glob("historico_mensual/football/historico_*.csv")
+    default_cols = ['League', 'Country', 'Date', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR', 'HS', 'AS']
     if not all_files:
-        return pd.DataFrame(columns=['League', 'Date', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR', 'HS', 'AS'])
+        return pd.DataFrame(columns=default_cols)
     li = [pd.read_csv(filename) for filename in all_files]
     df = pd.concat(li, axis=0, ignore_index=True)
+    # Asegurar que la columna Country exista en historiales antiguos
+    if 'Country' not in df.columns:
+        df['Country'] = ''
     df['Date'] = pd.to_datetime(df['Date'], format='mixed').dt.strftime('%Y-%m-%d')
+    # Reordenar columnas para consistencia
+    cols_present = [c for c in default_cols if c in df.columns]
+    df = df[cols_present + [c for c in df.columns if c not in cols_present]]
     return df
+
 
 def guardar_historico_mensual(df, meses_a_actualizar=None):
     os.makedirs("historico_mensual/football", exist_ok=True)
@@ -44,8 +54,16 @@ def guardar_historico_mensual(df, meses_a_actualizar=None):
         if meses_a_actualizar is None or period in meses_a_actualizar:
             filename = f'historico_mensual/football/historico_{period.year}_{period.month:02d}.csv'
             g_clean = group.drop(columns=['Date_dt', 'year_month'], errors='ignore')
-            g_clean.sort_values(by=['Date', 'League', 'HomeTeam', 'AwayTeam'], ascending=[False, True, True, True]).to_csv(filename, index=False)
+            # Ordenar incluyendo Country para evitar colisiones de ligas con mismo nombre en distintos paises
+            sort_cols = ['Date']
+            if 'Country' in g_clean.columns:
+                sort_cols.append('Country')
+            if 'League' in g_clean.columns:
+                sort_cols.append('League')
+            sort_cols.extend(['HomeTeam', 'AwayTeam'])
+            g_clean.sort_values(by=sort_cols, ascending=[False] + [True]*(len(sort_cols)-1)).to_csv(filename, index=False)
             
+
 def normalizar_equipo(nombre, master_league_id, aliases_data, equipos_historicos, unmapped_log):
     """
     Normaliza el nombre del equipo usando aliases cuando exista master_league_id.
@@ -80,6 +98,7 @@ def normalizar_equipo(nombre, master_league_id, aliases_data, equipos_historicos
 
     return nombre
 
+
 def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_master, statuses, aliases_data, unmapped_teams, unmapped_leagues):
     """
     Ahora guarda TODOS los partidos finalizados independientemente de si la liga está mapeada.
@@ -99,16 +118,38 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_m
             h_team = normalizar_equipo(match.get("teams", {}).get("home", {}).get("name"), master_league, aliases_data, equipos_historicos, unmapped_teams)
             a_team = normalizar_equipo(match.get("teams", {}).get("away", {}).get("name"), master_league, aliases_data, equipos_historicos, unmapped_teams)
 
+            league_name = match.get("league", {}).get("name")
+            league_country = match.get("league", {}).get("country")
+
             if not df_hist.empty and "HomeTeam" in df_hist.columns:
-                mask = (df_hist["Date"] == fecha_str) & (df_hist["HomeTeam"] == h_team) & (df_hist["AwayTeam"] == a_team)
+                # Preparar columnas de League/Country si no existen para comparación
+                league_col = df_hist["League"] if "League" in df_hist.columns else pd.Series([""] * len(df_hist))
+                country_col = df_hist["Country"] if "Country" in df_hist.columns else pd.Series([""] * len(df_hist))
+
+                mask = (
+                    (df_hist["Date"] == fecha_str) &
+                    (df_hist["HomeTeam"] == h_team) &
+                    (df_hist["AwayTeam"] == a_team) &
+                    (league_col == league_name) &
+                    (country_col == league_country)
+                )
                 if mask.any():
                     idx = df_hist[mask].index[0]
                     df_hist.at[idx, "FTHG"], df_hist.at[idx, "FTAG"] = match.get("goals", {}).get("home"), match.get("goals", {}).get("away")
                     continue
 
-            nuevo = {"League": match.get("league", {}).get("name"), "Date": fecha_str, "HomeTeam": h_team, "AwayTeam": a_team, "FTHG": match.get("goals", {}).get("home"), "FTAG": match.get("goals", {}).get("away")}
+            nuevo = {
+                "League": league_name,
+                "Country": league_country,
+                "Date": fecha_str,
+                "HomeTeam": h_team,
+                "AwayTeam": a_team,
+                "FTHG": match.get("goals", {}).get("home"),
+                "FTAG": match.get("goals", {}).get("away")
+            }
             df_hist = pd.concat([df_hist, pd.DataFrame([nuevo])], ignore_index=True)
     return df_hist
+
 
 def run_process(df_externo=None):
     os.makedirs("logs/football", exist_ok=True)
