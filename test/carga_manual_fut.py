@@ -8,24 +8,30 @@ import pandas as pd
 import sys
 
 # Asegurar que la raíz del repo esté en sys.path para que 'from drivers import football' funcione
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(REPO_ROOT)
+# Cambiar cwd a la raíz del repo para asegurar rutas relativas consistentes en CI
+os.chdir(REPO_ROOT)
 
 # Script de recarga manual
-# - Por defecto procesa TODOS los JSON en ../resultados/football/partidos_*.json
+# - Por defecto procesa TODOS los JSON en resultados/football/partidos_*.json
 # - Se puede pasar una lista de archivos con --files file1 file2 ...
 # - Se puede pasar --all explícito para procesar todo.
 
 from drivers import football
 
-
 def gather_files(files_list, all_flag):
     if files_list:
-        return [f for f in files_list if os.path.exists(f)]
-    if all_flag:
-        return sorted(glob.glob('../resultados/football/partidos_*.json'))
-    # default: same as --all
-    return sorted(glob.glob('../resultados/football/partidos_*.json'))
-
+        # Normalizar rutas relativas y filtrar los que existan
+        normalized = []
+        for f in files_list:
+            if not os.path.isabs(f):
+                f = os.path.join(REPO_ROOT, f)
+            if os.path.exists(f):
+                normalized.append(f)
+        return normalized
+    pattern = os.path.join('resultados', 'football', 'partidos_*.json')
+    return sorted(glob.glob(pattern))
 
 def main(args=None):
     parser = argparse.ArgumentParser(description='Recarga historicos desde JSONs en resultados/football')
@@ -38,7 +44,7 @@ def main(args=None):
         print('No se encontraron archivos a procesar. Usa --all o pasa --files <paths>')
         return
 
-    os.makedirs('logs/football', exist_ok=True)
+    os.makedirs(os.path.join('logs', 'football'), exist_ok=True)
 
     api_to_master, master_leagues, statuses, aliases = football.cargar_configuracion()
     df_hist = football.cargar_historico_mensual()
@@ -102,18 +108,17 @@ def main(args=None):
     # Escribir logs
     now = datetime.now().strftime('%Y%m%d')
     if unmapped_teams:
-        with open(f'logs/football/unmapped_teams_backfill_{now}.json', 'w', encoding='utf-8') as f:
+        with open(os.path.join('logs', 'football', f'unmapped_teams_backfill_{now}.json'), 'w', encoding='utf-8') as f:
             json.dump(unmapped_teams, f, ensure_ascii=False, indent=4)
         print(f'Se generó logs/football/unmapped_teams_backfill_{now}.json')
 
     if unmapped_leagues:
         ul = [{"id": lid, "name": name} for lid, name in sorted(unmapped_leagues, key=lambda x:int(x[0]) if str(x[0]).isdigit() else x[0])]
-        with open(f'logs/football/unmapped_leagues_backfill_{now}.json', 'w', encoding='utf-8') as f:
+        with open(os.path.join('logs', 'football', f'unmapped_leagues_backfill_{now}.json'), 'w', encoding='utf-8') as f:
             json.dump(ul, f, ensure_ascii=False, indent=4)
         print(f'Se generó logs/football/unmapped_leagues_backfill_{now}.json')
 
     print('Backfill completo. Revisa historico_mensual/football y logs/football.')
-
 
 if __name__ == '__main__':
     main()
