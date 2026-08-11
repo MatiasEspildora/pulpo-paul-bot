@@ -1,6 +1,76 @@
 [
     {
         "fixture": {
+            "id": 1603948,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-10T05:30:00-04:00",
+            "timestamp": 1786354200,
+            "periods": {
+                "first": 1786354200,
+                "second": 1786357800
+            },
+            "venue": {
+                "id": 0,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 1020,
+            "name": "Calcutta Premier Division",
+            "country": "India",
+            "logo": "https://media.api-sports.io/football/leagues/1020.png",
+            "flag": "https://media.api-sports.io/flags/in.svg",
+            "season": 2026,
+            "round": "Regular season",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 21597,
+                "name": "BSS Sporting",
+                "logo": "https://media.api-sports.io/football/teams/21597.png",
+                "winner": false
+            },
+            "away": {
+                "id": 21609,
+                "name": "Railway",
+                "logo": "https://media.api-sports.io/football/teams/21609.png",
+                "winner": true
+            }
+        },
+        "goals": {
+            "home": 0,
+            "away": 2
+        },
+        "score": {
+            "halftime": {
+                "home": 0,
+                "away": 1
+            },
+            "fulltime": {
+                "home": 0,
+                "away": 2
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1530985,
             "referee": null,
             "timezone": "America/Santiago",
@@ -72,7 +142,7 @@
     {
         "fixture": {
             "id": 1565447,
-            "referee": "V. Kopiyevsky",
+            "referee": "Viktor Kopievskiy, Ukraine",
             "timezone": "America/Santiago",
             "date": "2026-08-10T08:30:00-04:00",
             "timestamp": 1786365000,
@@ -1052,7 +1122,7 @@
     {
         "fixture": {
             "id": 1565445,
-            "referee": "O. Omelchenko",
+            "referee": "Oleksandr Omelchenko, Ukraine",
             "timezone": "America/Santiago",
             "date": "2026-08-10T11:00:00-04:00",
             "timestamp": 1786374000,
@@ -1063,7 +1133,7 @@
             "venue": {
                 "id": null,
                 "name": "Ukraina Stadium",
-                "city": "Lviv"
+                "city": "L'viv"
             },
             "status": {
                 "long": "Match Finished",
@@ -1197,8 +1267,8 @@
             "date": "2026-08-10T11:00:00-04:00",
             "timestamp": 1786374000,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1786374000,
+                "second": 1786377600
             },
             "venue": {
                 "id": null,
@@ -1332,7 +1402,7 @@
     {
         "fixture": {
             "id": 1565210,
-            "referee": "R. M. Petrescu",
+            "referee": "Radu Marian Petrescu, Romania",
             "timezone": "America/Santiago",
             "date": "2026-08-10T11:30:00-04:00",
             "timestamp": 1786375800,
@@ -1962,7 +2032,7 @@
     {
         "fixture": {
             "id": 1551069,
-            "referee": "G. Dimitrov",
+            "referee": "Georgi Dimitrov, Bulgaria",
             "timezone": "America/Santiago",
             "date": "2026-08-10T12:00:00-04:00",
             "timestamp": 1786377600,
@@ -1973,7 +2043,7 @@
             "venue": {
                 "id": null,
                 "name": "Hristo Botev Stadium",
-                "city": "Vraca"
+                "city": "Vratsa"
             },
             "status": {
                 "long": "Match Finished",
@@ -2522,7 +2592,7 @@
     {
         "fixture": {
             "id": 1561348,
-            "referee": "A. Sukhoy",
+            "referee": "Aleksei Suchkov, Russia",
             "timezone": "America/Santiago",
             "date": "2026-08-10T12:30:00-04:00",
             "timestamp": 1786379400,
@@ -2592,7 +2662,7 @@
     {
         "fixture": {
             "id": 1494239,
-            "referee": "V. Wolf",
+            "referee": "Victor Wolf, Sweden",
             "timezone": "America/Santiago",
             "date": "2026-08-10T13:00:00-04:00",
             "timestamp": 1786381200,
@@ -2662,7 +2732,7 @@
     {
         "fixture": {
             "id": 1494240,
-            "referee": "M. Al-Hakim",
+            "referee": "Mohammed Al-Hakim, Sweden",
             "timezone": "America/Santiago",
             "date": "2026-08-10T13:00:00-04:00",
             "timestamp": 1786381200,
@@ -3082,7 +3152,7 @@
     {
         "fixture": {
             "id": 1497652,
-            "referee": "R. Sundell",
+            "referee": "Richard Sundell, Sweden",
             "timezone": "America/Santiago",
             "date": "2026-08-10T13:00:00-04:00",
             "timestamp": 1786381200,
@@ -3152,7 +3222,7 @@
     {
         "fixture": {
             "id": 1548989,
-            "referee": "S. Funder",
+            "referee": "Svend Funder, Denmark",
             "timezone": "America/Santiago",
             "date": "2026-08-10T13:00:00-04:00",
             "timestamp": 1786381200,
@@ -3432,7 +3502,7 @@
     {
         "fixture": {
             "id": 1576444,
-            "referee": "A. Rodrigues",
+            "referee": "Anzhony Rodrigues, Portugal",
             "timezone": "America/Santiago",
             "date": "2026-08-10T13:00:00-04:00",
             "timestamp": 1786381200,
@@ -5111,78 +5181,8 @@
     },
     {
         "fixture": {
-            "id": 1549594,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-08-10T15:00:00-04:00",
-            "timestamp": 1786388400,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": "Estadio Metropolitano de Techo",
-                "city": null
-            },
-            "status": {
-                "long": "Match Postponed",
-                "short": "PST",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 240,
-            "name": "Primera B",
-            "country": "Colombia",
-            "logo": "https://media.api-sports.io/football/leagues/240.png",
-            "flag": "https://media.api-sports.io/flags/co.svg",
-            "season": 2026,
-            "round": "Clausura - 4",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 1145,
-                "name": "Tigres FC",
-                "logo": "https://media.api-sports.io/football/teams/1145.png",
-                "winner": null
-            },
-            "away": {
-                "id": 1129,
-                "name": "Envigado",
-                "logo": "https://media.api-sports.io/football/teams/1129.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
             "id": 1567409,
-            "referee": "D. Whitestone",
+            "referee": "Dean Whitestone, England",
             "timezone": "America/Santiago",
             "date": "2026-08-10T15:00:00-04:00",
             "timestamp": 1786388400,
@@ -5532,7 +5532,7 @@
     {
         "fixture": {
             "id": 1575453,
-            "referee": "H. Carvalho",
+            "referee": "Helder Filipe Claudio Carvalho, Portugal",
             "timezone": "America/Santiago",
             "date": "2026-08-10T15:15:00-04:00",
             "timestamp": 1786389300,
@@ -5817,8 +5817,8 @@
             "date": "2026-08-10T17:00:00-04:00",
             "timestamp": 1786395600,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1786395600,
+                "second": 1786399200
             },
             "venue": {
                 "id": 0,
@@ -5868,76 +5868,6 @@
             "fulltime": {
                 "home": 1,
                 "away": 2
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1549713,
-            "referee": "C. Marquez",
-            "timezone": "America/Santiago",
-            "date": "2026-08-10T17:00:00-04:00",
-            "timestamp": 1786395600,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": "Estadio Cincuentenario",
-                "city": null
-            },
-            "status": {
-                "long": "Match Postponed",
-                "short": "PST",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 239,
-            "name": "Primera A",
-            "country": "Colombia",
-            "logo": "https://media.api-sports.io/football/leagues/239.png",
-            "flag": "https://media.api-sports.io/flags/co.svg",
-            "season": 2026,
-            "round": "Clausura - 4",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 1144,
-                "name": "Águilas Doradas",
-                "logo": "https://media.api-sports.io/football/teams/1144.png",
-                "winner": null
-            },
-            "away": {
-                "id": 1464,
-                "name": "Llaneros",
-                "logo": "https://media.api-sports.io/football/teams/1464.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
             },
             "extratime": {
                 "home": null,
@@ -6702,8 +6632,8 @@
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 3
             },
             "fulltime": {
                 "home": 1,
@@ -6763,76 +6693,6 @@
                 "id": 22099,
                 "name": "Real Soacha",
                 "logo": "https://media.api-sports.io/football/teams/22099.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1549719,
-            "referee": "J. A. Mayorga Londono",
-            "timezone": "America/Santiago",
-            "date": "2026-08-10T19:00:00-04:00",
-            "timestamp": 1786402800,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": "Estadio Atanasio Girardot",
-                "city": null
-            },
-            "status": {
-                "long": "Match Postponed",
-                "short": "PST",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 239,
-            "name": "Primera A",
-            "country": "Colombia",
-            "logo": "https://media.api-sports.io/football/leagues/239.png",
-            "flag": "https://media.api-sports.io/flags/co.svg",
-            "season": 2026,
-            "round": "Clausura - 4",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 1128,
-                "name": "Independiente Medellin",
-                "logo": "https://media.api-sports.io/football/teams/1128.png",
-                "winner": null
-            },
-            "away": {
-                "id": 1125,
-                "name": "Millonarios",
-                "logo": "https://media.api-sports.io/football/teams/1125.png",
                 "winner": null
             }
         },
@@ -7007,8 +6867,8 @@
             "date": "2026-08-10T20:00:00-04:00",
             "timestamp": 1786406400,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1786406400,
+                "second": 1786410000
             },
             "venue": {
                 "id": 0,
@@ -7016,9 +6876,9 @@
                 "city": "Betim"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -7037,18 +6897,18 @@
                 "id": 1802,
                 "name": "America Mineiro W",
                 "logo": "https://media.api-sports.io/football/teams/1802.png",
-                "winner": true
+                "winner": null
             },
             "away": {
                 "id": 1794,
                 "name": "Flamengo W",
                 "logo": "https://media.api-sports.io/football/teams/1794.png",
-                "winner": false
+                "winner": null
             }
         },
         "goals": {
             "home": 1,
-            "away": 0
+            "away": 1
         },
         "score": {
             "halftime": {
@@ -7056,8 +6916,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -7436,10 +7296,10 @@
                 "city": null
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
+                "long": "Match Finished",
+                "short": "FT",
                 "elapsed": 90,
-                "extra": 5
+                "extra": 11
             }
         },
         "league": {
@@ -7457,18 +7317,18 @@
                 "id": 14877,
                 "name": "León W",
                 "logo": "https://media.api-sports.io/football/teams/14877.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 14884,
                 "name": "Tigres UANL W",
                 "logo": "https://media.api-sports.io/football/teams/14884.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
             "home": 1,
-            "away": 1
+            "away": 2
         },
         "score": {
             "halftime": {
@@ -7476,8 +7336,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -7498,7 +7358,7 @@
             "timestamp": 1786417200,
             "periods": {
                 "first": 1786417200,
-                "second": null
+                "second": 1786420800
             },
             "venue": {
                 "id": null,
@@ -7506,9 +7366,9 @@
                 "city": "Ulaanbaatar"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 3,
+                "long": "Match Finished",
+                "short": "PEN",
+                "elapsed": 120,
                 "extra": null
             }
         },
@@ -7527,18 +7387,18 @@
                 "id": 22067,
                 "name": "Central Stallions",
                 "logo": "https://media.api-sports.io/football/teams/22067.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 12543,
                 "name": "Tainan City",
                 "logo": "https://media.api-sports.io/football/teams/12543.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": 0,
-            "away": 0
+            "home": 2,
+            "away": 2
         },
         "score": {
             "halftime": {
@@ -7546,16 +7406,16 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 2
             },
             "extratime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "penalty": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 5
             }
         }
     }
