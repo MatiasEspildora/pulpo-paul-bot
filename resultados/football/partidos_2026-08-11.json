@@ -701,6 +701,76 @@
     },
     {
         "fixture": {
+            "id": 1527115,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-11T06:30:00-04:00",
+            "timestamp": 1786444200,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": "Karinya Reserve",
+                "city": null
+            },
+            "status": {
+                "long": "Match Suspended",
+                "short": "SUSP",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 194,
+            "name": "South Australia NPL",
+            "country": "Australia",
+            "logo": "https://media.api-sports.io/football/leagues/194.png",
+            "flag": "https://media.api-sports.io/flags/au.svg",
+            "season": 2026,
+            "round": "Regular Season - 20",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 12866,
+                "name": "Sturt Lions",
+                "logo": "https://media.api-sports.io/football/teams/12866.png",
+                "winner": null
+            },
+            "away": {
+                "id": 3786,
+                "name": "Adelaide Comets",
+                "logo": "https://media.api-sports.io/football/teams/3786.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": 0,
+            "away": 0
+        },
+        "score": {
+            "halftime": {
+                "home": 0,
+                "away": 0
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1567328,
             "referee": null,
             "timezone": "America/Santiago",
@@ -1612,7 +1682,7 @@
     {
         "fixture": {
             "id": 1607170,
-            "referee": null,
+            "referee": "D. Siebert",
             "timezone": "America/Santiago",
             "date": "2026-08-11T11:00:00-04:00",
             "timestamp": 1786460400,
@@ -2592,7 +2662,7 @@
     {
         "fixture": {
             "id": 1598827,
-            "referee": null,
+            "referee": "I. Kovacs",
             "timezone": "America/Santiago",
             "date": "2026-08-11T12:00:00-04:00",
             "timestamp": 1786464000,
@@ -2872,7 +2942,7 @@
     {
         "fixture": {
             "id": 1607172,
-            "referee": null,
+            "referee": "W. Delajod",
             "timezone": "America/Santiago",
             "date": "2026-08-11T12:00:00-04:00",
             "timestamp": 1786464000,
@@ -4272,7 +4342,7 @@
     {
         "fixture": {
             "id": 1607171,
-            "referee": null,
+            "referee": "D. Massa",
             "timezone": "America/Santiago",
             "date": "2026-08-11T13:00:00-04:00",
             "timestamp": 1786467600,
@@ -4342,7 +4412,7 @@
     {
         "fixture": {
             "id": 1607601,
-            "referee": null,
+            "referee": "R. Harvey",
             "timezone": "America/Santiago",
             "date": "2026-08-11T13:00:00-04:00",
             "timestamp": 1786467600,
@@ -5322,7 +5392,7 @@
     {
         "fixture": {
             "id": 1598829,
-            "referee": null,
+            "referee": "M. Mariani",
             "timezone": "America/Santiago",
             "date": "2026-08-11T13:30:00-04:00",
             "timestamp": 1786469400,
@@ -5672,7 +5742,7 @@
     {
         "fixture": {
             "id": 1607603,
-            "referee": null,
+            "referee": "J. Vergoote",
             "timezone": "America/Santiago",
             "date": "2026-08-11T13:30:00-04:00",
             "timestamp": 1786469400,
@@ -7422,7 +7492,7 @@
     {
         "fixture": {
             "id": 1607169,
-            "referee": null,
+            "referee": "G. Nyberg",
             "timezone": "America/Santiago",
             "date": "2026-08-11T14:00:00-04:00",
             "timestamp": 1786471200,
@@ -7982,7 +8052,7 @@
     {
         "fixture": {
             "id": 1605371,
-            "referee": null,
+            "referee": "M. Guida",
             "timezone": "America/Santiago",
             "date": "2026-08-11T14:15:00-04:00",
             "timestamp": 1786472100,
@@ -8052,7 +8122,7 @@
     {
         "fixture": {
             "id": 1607173,
-            "referee": null,
+            "referee": "M. Oliver",
             "timezone": "America/Santiago",
             "date": "2026-08-11T14:15:00-04:00",
             "timestamp": 1786472100,
@@ -8192,7 +8262,7 @@
     {
         "fixture": {
             "id": 1607174,
-            "referee": null,
+            "referee": "A. Hernandez",
             "timezone": "America/Santiago",
             "date": "2026-08-11T14:30:00-04:00",
             "timestamp": 1786473000,
@@ -13022,7 +13092,7 @@
     {
         "fixture": {
             "id": 1598828,
-            "referee": null,
+            "referee": "S. Marciniak",
             "timezone": "America/Santiago",
             "date": "2026-08-11T15:00:00-04:00",
             "timestamp": 1786474800,
@@ -13063,76 +13133,6 @@
                 "id": 628,
                 "name": "Sparta Praha",
                 "logo": "https://media.api-sports.io/football/teams/628.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1598637,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-08-11T15:15:00-04:00",
-            "timestamp": 1786475700,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 701,
-            "name": "Liga Revelação U23",
-            "country": "Portugal",
-            "logo": "https://media.api-sports.io/football/leagues/701.png",
-            "flag": "https://media.api-sports.io/flags/pt.svg",
-            "season": 2026,
-            "round": "Regular Season - 1",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 15465,
-                "name": "Leixões U23",
-                "logo": "https://media.api-sports.io/football/teams/15465.png",
-                "winner": null
-            },
-            "away": {
-                "id": 17475,
-                "name": "Vizela U23",
-                "logo": "https://media.api-sports.io/football/teams/17475.png",
                 "winner": null
             }
         },
@@ -13582,7 +13582,7 @@
     {
         "fixture": {
             "id": 1607648,
-            "referee": null,
+            "referee": "P. Maza",
             "timezone": "America/Santiago",
             "date": "2026-08-11T18:00:00-04:00",
             "timestamp": 1786485600,
@@ -13722,7 +13722,7 @@
     {
         "fixture": {
             "id": 1520801,
-            "referee": null,
+            "referee": "A. Gomes Stefano",
             "timezone": "America/Santiago",
             "date": "2026-08-11T18:30:00-04:00",
             "timestamp": 1786487400,
@@ -13763,6 +13763,76 @@
                 "id": 146,
                 "name": "CRB",
                 "logo": "https://media.api-sports.io/football/teams/146.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1546095,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-11T18:30:00-04:00",
+            "timestamp": 1786487400,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": "Estadio Bento de Abreu",
+                "city": "Sao Paulo"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 742,
+            "name": "Copa Paulista",
+            "country": "Brazil",
+            "logo": "https://media.api-sports.io/football/leagues/742.png",
+            "flag": "https://media.api-sports.io/flags/br.svg",
+            "season": 2026,
+            "round": "Group Stage - 4",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 10035,
+                "name": "Marília",
+                "logo": "https://media.api-sports.io/football/teams/10035.png",
+                "winner": null
+            },
+            "away": {
+                "id": 15621,
+                "name": "Bandeirante SP",
+                "logo": "https://media.api-sports.io/football/teams/15621.png",
                 "winner": null
             }
         },
