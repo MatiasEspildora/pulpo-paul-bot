@@ -26,24 +26,31 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip install pandas pytz
+          if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi
+          python -m pip install pandas pytz
 
       - name: Run backfill (process all JSONs)
         run: |
-          python3 test/carga_manual_fut.py --all
+          python test/carga_manual_fut.py --all
 
       - name: Commit historico_mensual/ and logs/ if changed
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          BRANCH_NAME=${GITHUB_REF#refs/heads/}
-          git add historico_mensual/football logs/football || true
+
+          # Resolve branch name robustly (workflow_dispatch may provide different refs)
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          BRANCH_NAME="${GITHUB_REF_NAME:-$BRANCH_NAME}"
+          BRANCH_NAME="${GITHUB_HEAD_REF:-$BRANCH_NAME}"
+          BRANCH_NAME="${BRANCH_NAME:-main}"
+
+          # Add only if the directories exist
+          [ -d historico_mensual/football ] && git add historico_mensual/football
+          [ -d logs/football ] && git add logs/football
+
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
             git commit -m "ci(backfill): update historico_mensual and logs via manual workflow"
-            git push origin HEAD:$BRANCH_NAME
+            git push origin HEAD:"$BRANCH_NAME"
           fi
