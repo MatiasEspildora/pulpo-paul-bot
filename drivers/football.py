@@ -211,23 +211,31 @@ def run_process(df_externo=None):
         file_path = f"resultados/football/partidos_{f_str}.json"
         partidos_del_dia = None
         
-        # Usamos caché estricto solo para días pasados
-        es_dia_pasado = f_str < fecha_hoy_str
-        if es_dia_pasado and os.path.exists(file_path):
-            try:
-                with open(file_path, "r", encoding="utf-8") as f:
-                    partidos_del_dia = json.load(f)
-            except Exception:
-                pass
-                
-        # Consultar a la API si es hoy/mañana o si no existe el archivo anterior
-        if not partidos_del_dia:
+        # Always attempt to fetch fresh data from the API for the daily process.
+        # If API returns valid response, overwrite cache; otherwise fall back to cached file if present.
+        try:
             data = api.get_data("fixtures", {"date": f_str, "timezone": "America/Santiago"})
-            if data and data.get("response"):
-                partidos_del_dia = data["response"]
+        except Exception:
+            data = None
+
+        if data and data.get("response"):
+            partidos_del_dia = data["response"]
+            try:
                 with open(file_path, "w", encoding="utf-8") as f:
                     json.dump(partidos_del_dia, f, ensure_ascii=False, indent=4)
-            time.sleep(1)
+            except Exception:
+                # If we fail to write cache, continue — we still have the data in memory
+                pass
+        else:
+            # fallback to cache if API failed or returned no response
+            if os.path.exists(file_path):
+                try:
+                    with open(file_path, "r", encoding="utf-8") as f:
+                        partidos_del_dia = json.load(f)
+                except Exception:
+                    partidos_del_dia = None
+            else:
+                partidos_del_dia = None
             
         if partidos_del_dia:
             datos_fechas[f_str] = partidos_del_dia
@@ -252,3 +260,38 @@ def run_process(df_externo=None):
                 
                 proj = analyzer.get_projections(h_name, a_name)
                 proj['fecha_str'] = datetime.fromisoformat(match.get("fixture", {}).get("date")).replace("Z", "+00:00").astimezone(zona).strftime("%Y-%m-%d")
+                proj['hora'] = datetime.fromisoformat(match.get("fixture", {}).get("date")).replace("Z", "+00:00").astimezone(zona).strftime("%H:%M")
+                proj['pais'] = match.get("league", {}).get("country")
+                
+                target = proyecciones_mañana if match.get("fixture", {}).get("date") > fecha_mañana_str else proyecciones_hoy
+                target.setdefault(match.get("league", {}).get("name"), []).append(proj)
+
+    procesar_lote_partidos(datos_fechas.get(fecha_hoy_str, []))
+    procesar_lote_partidos(datos_fechas.get(fecha_mañana_str, []))
+    
+    # Guardar logs de elementos no mapeados para revisión
+    if unmapped_teams:
+        with open(f"logs/football/unmapped_teams_{now.strftime('%Y%m%d')}.json", "w", encoding="utf-8") as f:
+            json.dump(unmapped_teams, f, ensure_ascii=False, indent=4)
+
+    if unmapped_leagues:
+        # Convertir set de tuplas a lista de dicts
+        ul = [{"id": lid, "name": name} for lid, name in sorted(unmapped_leagues, key=lambda x:int(x[0]) if x[0].isdigit() else x[0])]
+        with open(f"logs/football/unmapped_leagues_{now.strftime('%Y%m%d')}.json", "w", encoding="utf-8") as f:
+            json.dump(ul, f, ensure_ascii=False, indent=4)
+            
+     # Título dinámico dependiendo de la hora (si es antes de las 12:00, es Inicio de Día)
+    if now.hour < 12:
+        titulo_hoy = f"🌅 *INICIO DIA: {fecha_hoy_str}*"
+    else:
+        titulo_hoy = f"🏁 *FIN DIA: {fecha_hoy_str}*"
+
+    enviar_mensaje_telegram(titulo_hoy)
+    enviar_bloque_reportes(proyecciones_hoy, "", analyzer)
+    
+    # Solo envía la ventana anticipada en la ejecución nocturna (ej. a partir de las 22:00)
+    if proyecciones_mañana and now.hour >= 22:
+        enviar_mensaje_telegram(f"🚀 *INICIO DIA: {fecha_mañana_str} (Ventana Anticipada)*")
+        enviar_bloque_reportes(proyecciones_mañana, "Madrugada", analyzer)
+
+    print("✅ Proceso completo.")
