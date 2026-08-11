@@ -1,0 +1,49 @@
+name: Manual backfill: process resultados/football JSONs
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    name: Run backfill (manual)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pandas pytz
+
+      - name: Run backfill (process all JSONs)
+        run: |
+          python3 test/carga_manual_fut.py --all
+
+      - name: Commit historico_mensual/ and logs/ if changed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          git add historico_mensual/football logs/football || true
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "ci(backfill): update historico_mensual and logs via manual workflow"
+            git push origin HEAD:$BRANCH_NAME
+          fi

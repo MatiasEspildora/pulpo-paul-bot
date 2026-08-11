@@ -47,48 +47,66 @@ def guardar_historico_mensual(df, meses_a_actualizar=None):
             g_clean.sort_values(by=['Date', 'League', 'HomeTeam', 'AwayTeam'], ascending=[False, True, True, True]).to_csv(filename, index=False)
             
 def normalizar_equipo(nombre, master_league_id, aliases_data, equipos_historicos, unmapped_log):
-    #global_map = aliases_data.get("global_aliases", {})
-    #conflict_map = aliases_data.get("conflicting_aliases", {})
-    #liga_conflicto = conflict_map.get(master_league_id, {})
-    
-    # 1. Intentar mapear
-    #for n_oficial, variaciones in {**liga_conflicto, **global_map}.items():
-    #    if nombre == n_oficial or nombre in variaciones:
-    #        return n_oficial
-            
-    # 2. Si no se mapeó, clasificar el error
-    #if master_league_id not in ["WOR_FRIENDLIES_CLUBS", "WOR_FRIENDLY_INTERNATIONAL"]:
-    #    existe_en_historico = nombre in equipos_historicos
-    #    estado = "EQUIPO_NUEVO" if not existe_en_historico else "ERROR_MAPEO"
-        
-    #    registro = {
-    #        "team": nombre, 
-    #        "master_league": master_league_id,
-    #        "status": estado
-    #    }
-        
-    #    ya_registrado = any(r.get("team") == nombre and r.get("master_league") == master_league_id for r in unmapped_log)
-    #    if not ya_registrado: 
-    #        unmapped_log.append(registro)
-            
+    """
+    Normaliza el nombre del equipo usando aliases cuando exista master_league_id.
+    Si master_league_id es None, devolvemos el nombre tal cual (guardamos igualmente para histórico).
+    """
+    # Si no hay mapeo de liga, no intentamos normalizar
+    if not master_league_id:
+        return nombre
+
+    # Intento de mapear usando datos de aliases (mantengo comportamiento simple)
+    global_map = aliases_data.get("global_aliases", {})
+    conflict_map = aliases_data.get("conflicting_aliases", {})
+    liga_conflicto = conflict_map.get(master_league_id, {})
+
+    for n_oficial, variaciones in {**liga_conflicto, **global_map}.items():
+        if nombre == n_oficial or nombre in variaciones:
+            return n_oficial
+
+    # Si no se mapeó, registramos en el log de equipos no mapeados
+    existe_en_historico = nombre in equipos_historicos
+    estado = "EQUIPO_NUEVO" if not existe_en_historico else "ERROR_MAPEO"
+
+    registro = {
+        "team": nombre,
+        "master_league": master_league_id,
+        "status": estado
+    }
+
+    ya_registrado = any(r.get("team") == nombre and r.get("master_league") == master_league_id for r in unmapped_log)
+    if not ya_registrado:
+        unmapped_log.append(registro)
+
     return nombre
 
-def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_master, statuses, aliases_data, unmapped_log):
+def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_master, statuses, aliases_data, unmapped_teams, unmapped_leagues):
+    """
+    Ahora guarda TODOS los partidos finalizados independientemente de si la liga está mapeada.
+    Si la liga no está en api_to_master, se agrega a unmapped_leagues para revisión.
+    """
     equipos_historicos = set(df_hist["HomeTeam"].dropna().unique()).union(set(df_hist["AwayTeam"].dropna().unique())) if not df_hist.empty else set()
     for match in partidos_lista:
-        liga_id = str(match["league"]["id"])
-        if liga_id in api_to_master and match["fixture"]["status"]["short"] in statuses["finished"]:
-            h_team = normalizar_equipo(match["teams"]["home"]["name"], api_to_master[liga_id], aliases_data, equipos_historicos, unmapped_log)
-            a_team = normalizar_equipo(match["teams"]["away"]["name"], api_to_master[liga_id], aliases_data, equipos_historicos, unmapped_log)
-            
+        liga_id = str(match.get("league", {}).get("id")) if match.get("league") else None
+        master_league = api_to_master.get(liga_id) if liga_id else None
+
+        # Si el partido está finalizado, lo guardamos siempre
+        if match.get("fixture", {}).get("status", {}).get("short") in statuses["finished"]:
+            # Registrar liga no mapeada
+            if liga_id and not master_league:
+                unmapped_leagues.add((liga_id, match.get("league", {}).get("name")))
+
+            h_team = normalizar_equipo(match.get("teams", {}).get("home", {}).get("name"), master_league, aliases_data, equipos_historicos, unmapped_teams)
+            a_team = normalizar_equipo(match.get("teams", {}).get("away", {}).get("name"), master_league, aliases_data, equipos_historicos, unmapped_teams)
+
             if not df_hist.empty and "HomeTeam" in df_hist.columns:
                 mask = (df_hist["Date"] == fecha_str) & (df_hist["HomeTeam"] == h_team) & (df_hist["AwayTeam"] == a_team)
                 if mask.any():
                     idx = df_hist[mask].index[0]
-                    df_hist.at[idx, "FTHG"], df_hist.at[idx, "FTAG"] = match["goals"]["home"], match["goals"]["away"]
+                    df_hist.at[idx, "FTHG"], df_hist.at[idx, "FTAG"] = match.get("goals", {}).get("home"), match.get("goals", {}).get("away")
                     continue
-                    
-            nuevo = {"League": match["league"]["name"], "Date": fecha_str, "HomeTeam": h_team, "AwayTeam": a_team, "FTHG": match["goals"]["home"], "FTAG": match["goals"]["away"]}
+
+            nuevo = {"League": match.get("league", {}).get("name"), "Date": fecha_str, "HomeTeam": h_team, "AwayTeam": a_team, "FTHG": match.get("goals", {}).get("home"), "FTAG": match.get("goals", {}).get("away")}
             df_hist = pd.concat([df_hist, pd.DataFrame([nuevo])], ignore_index=True)
     return df_hist
 
@@ -107,6 +125,7 @@ def run_process(df_externo=None):
     zona = pytz.timezone('America/Santiago')
     now = datetime.now(zona)
     unmapped_teams = []
+    unmapped_leagues = set()
     
     fecha_hoy_str = now.strftime("%Y-%m-%d")
     fecha_mañana_str = (now + timedelta(days=1)).strftime("%Y-%m-%d")
@@ -144,7 +163,7 @@ def run_process(df_externo=None):
             
         if partidos_del_dia:
             datos_fechas[f_str] = partidos_del_dia
-            df = actualizar_maestro_con_partidos(df, partidos_del_dia, f_str, api_to_master, statuses_map, team_aliases, unmapped_teams)
+            df = actualizar_maestro_con_partidos(df, partidos_del_dia, f_str, api_to_master, statuses_map, team_aliases, unmapped_teams, unmapped_leagues)
     
     # Guardar únicamente los meses que sufrieron cambios en esta ejecución
     guardar_historico_mensual(df, meses_afectados)
@@ -156,24 +175,34 @@ def run_process(df_externo=None):
     
     def procesar_lote_partidos(lista_partidos):
         for match in lista_partidos:
-            if str(match["league"]["id"]) in ligas_permitidas and match["fixture"]["status"]["short"] in statuses_map["upcoming"]:
-                h_name = normalizar_equipo(match["teams"]["home"]["name"], api_to_master[str(match["league"]["id"])], team_aliases, set(), [])
-                a_name = normalizar_equipo(match["teams"]["away"]["name"], api_to_master[str(match["league"]["id"])], team_aliases, set(), [])
+            # Procesar proyecciones para todas las ligas, usando normalización cuando exista el mapeo
+            liga_id = str(match.get("league", {}).get("id")) if match.get("league") else None
+            master = api_to_master.get(liga_id)
+            if match.get("fixture", {}).get("status", {}).get("short") in statuses_map["upcoming"]:
+                h_name = normalizar_equipo(match.get("teams", {}).get("home", {}).get("name"), master, team_aliases, set(), [])
+                a_name = normalizar_equipo(match.get("teams", {}).get("away", {}).get("name"), master, team_aliases, set(), [])
                 
                 proj = analyzer.get_projections(h_name, a_name)
-                proj['fecha_str'] = datetime.fromisoformat(match["fixture"]["date"].replace("Z", "+00:00")).astimezone(zona).strftime("%Y-%m-%d")
-                proj['hora'] = datetime.fromisoformat(match["fixture"]["date"].replace("Z", "+00:00")).astimezone(zona).strftime("%H:%M")
-                proj['pais'] = match["league"]["country"]
+                proj['fecha_str'] = datetime.fromisoformat(match.get("fixture", {}).get("date").replace("Z", "+00:00")).astimezone(zona).strftime("%Y-%m-%d")
+                proj['hora'] = datetime.fromisoformat(match.get("fixture", {}).get("date").replace("Z", "+00:00")).astimezone(zona).strftime("%H:%M")
+                proj['pais'] = match.get("league", {}).get("country")
                 
-                target = proyecciones_mañana if match["fixture"]["date"] > fecha_mañana_str else proyecciones_hoy
-                target.setdefault(match["league"]["name"], []).append(proj)
+                target = proyecciones_mañana if match.get("fixture", {}).get("date") > fecha_mañana_str else proyecciones_hoy
+                target.setdefault(match.get("league", {}).get("name"), []).append(proj)
 
     procesar_lote_partidos(datos_fechas.get(fecha_hoy_str, []))
     procesar_lote_partidos(datos_fechas.get(fecha_mañana_str, []))
     
+    # Guardar logs de elementos no mapeados para revisión
     if unmapped_teams:
         with open(f"logs/football/unmapped_teams_{now.strftime('%Y%m%d')}.json", "w", encoding="utf-8") as f:
             json.dump(unmapped_teams, f, ensure_ascii=False, indent=4)
+
+    if unmapped_leagues:
+        # Convertir set de tuplas a lista de dicts
+        ul = [{"id": lid, "name": name} for lid, name in sorted(unmapped_leagues, key=lambda x:int(x[0]) if x[0].isdigit() else x[0])]
+        with open(f"logs/football/unmapped_leagues_{now.strftime('%Y%m%d')}.json", "w", encoding="utf-8") as f:
+            json.dump(ul, f, ensure_ascii=False, indent=4)
             
      # Título dinámico dependiendo de la hora (si es antes de las 12:00, es Inicio de Día)
     if now.hour < 12:
