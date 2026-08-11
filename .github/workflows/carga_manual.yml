@@ -17,7 +17,10 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: true
-
+      - name: Debug - listar resultados/football 
+        run: | 
+          echo "Ref: $GITHUB_REF" echo "SHA: $GITHUB_SHA" echo "PWD: $(pwd)" echo "Files in repo root:" ls -la echo "Files in resultados/football:" ls -la resultados/football || true echo "Git tracked files matching pattern:" git ls-files 'resultados/football/partidos_*.json' || true
+      
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
