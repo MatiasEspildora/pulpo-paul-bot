@@ -5,6 +5,10 @@ import json
 import argparse
 from datetime import datetime
 import pandas as pd
+import sys
+
+# Asegurar que la raíz del repo esté en sys.path para que 'from drivers import football' funcione
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Script de recarga manual
 # - Por defecto procesa TODOS los JSON en ../resultados/football/partidos_*.json
