@@ -29,14 +29,16 @@ def cargar_configuracion():
 
 def cargar_historico_mensual():
     all_files = glob.glob("historico_mensual/football/historico_*.csv")
-    default_cols = ['League', 'Country', 'Date', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR', 'HS', 'AS']
+    default_cols = ['League', 'LeagueId', 'Country', 'Date', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR', 'HS', 'AS']
     if not all_files:
         return pd.DataFrame(columns=default_cols)
     li = [pd.read_csv(filename) for filename in all_files]
     df = pd.concat(li, axis=0, ignore_index=True)
-    # Asegurar que la columna Country exista en historiales antiguos
+    # Asegurar que las columnas existan en historiales antiguos
     if 'Country' not in df.columns:
         df['Country'] = ''
+    if 'LeagueId' not in df.columns:
+        df['LeagueId'] = ''
     df['Date'] = pd.to_datetime(df['Date'], format='mixed').dt.strftime('%Y-%m-%d')
     # Reordenar columnas para consistencia
     cols_present = [c for c in default_cols if c in df.columns]
@@ -106,40 +108,65 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_m
     """
     equipos_historicos = set(df_hist["HomeTeam"].dropna().unique()).union(set(df_hist["AwayTeam"].dropna().unique())) if not df_hist.empty else set()
     for match in partidos_lista:
-        liga_id = str(match.get("league", {}).get("id")) if match.get("league") else None
-        master_league = api_to_master.get(liga_id) if liga_id else None
+        liga = match.get("league") or {}
+        liga_id = liga.get("id") if liga else None
+        liga_id_str = str(liga_id) if liga_id is not None else None
+        master_league = api_to_master.get(str(liga_id)) if liga_id else None
 
         # Si el partido está finalizado, lo guardamos siempre
         if match.get("fixture", {}).get("status", {}).get("short") in statuses["finished"]:
             # Registrar liga no mapeada
             if liga_id and not master_league:
-                unmapped_leagues.add((liga_id, match.get("league", {}).get("name")))
+                unmapped_leagues.add((str(liga_id), liga.get("name")))
 
             h_team = normalizar_equipo(match.get("teams", {}).get("home", {}).get("name"), master_league, aliases_data, equipos_historicos, unmapped_teams)
             a_team = normalizar_equipo(match.get("teams", {}).get("away", {}).get("name"), master_league, aliases_data, equipos_historicos, unmapped_teams)
 
-            league_name = match.get("league", {}).get("name")
-            league_country = match.get("league", {}).get("country")
+            league_name = liga.get("name")
+            league_country = liga.get("country")
 
+            # Intento de emparejamiento jerárquico para evitar duplicados
             if not df_hist.empty and "HomeTeam" in df_hist.columns:
-                # Preparar columnas de League/Country si no existen para comparación
-                league_col = df_hist["League"] if "League" in df_hist.columns else pd.Series([""] * len(df_hist))
-                country_col = df_hist["Country"] if "Country" in df_hist.columns else pd.Series([""] * len(df_hist))
-
-                mask = (
+                base_mask = (
                     (df_hist["Date"] == fecha_str) &
                     (df_hist["HomeTeam"] == h_team) &
-                    (df_hist["AwayTeam"] == a_team) &
-                    (league_col == league_name) &
-                    (country_col == league_country)
+                    (df_hist["AwayTeam"] == a_team)
                 )
-                if mask.any():
-                    idx = df_hist[mask].index[0]
-                    df_hist.at[idx, "FTHG"], df_hist.at[idx, "FTAG"] = match.get("goals", {}).get("home"), match.get("goals", {}).get("away")
-                    continue
 
+                # 1) por LeagueId (si está disponible y existe columna)
+                if liga_id_str is not None and "LeagueId" in df_hist.columns:
+                    try:
+                        mask = base_mask & (df_hist.get("LeagueId", pd.Series([""] * len(df_hist))).astype(str) == liga_id_str)
+                    except Exception:
+                        mask = base_mask & (df_hist.get("LeagueId", pd.Series([""] * len(df_hist))) == liga_id_str)
+                    if mask.any():
+                        idx = df_hist[mask].index[0]
+                        df_hist.at[idx, "FTHG"], df_hist.at[idx, "FTAG"] = match.get("goals", {}).get("home"), match.get("goals", {}).get("away")
+                        continue
+
+                # 2) por Country + League
+                if league_country and league_name:
+                    country_col = df_hist.get("Country", pd.Series([""] * len(df_hist)))
+                    league_col = df_hist.get("League", pd.Series([""] * len(df_hist)))
+                    mask = base_mask & (country_col == league_country) & (league_col == league_name)
+                    if mask.any():
+                        idx = df_hist[mask].index[0]
+                        df_hist.at[idx, "FTHG"], df_hist.at[idx, "FTAG"] = match.get("goals", {}).get("home"), match.get("goals", {}).get("away")
+                        continue
+
+                # 3) fallback por nombre de liga
+                if league_name:
+                    league_col = df_hist.get("League", pd.Series([""] * len(df_hist)))
+                    mask = base_mask & (league_col == league_name)
+                    if mask.any():
+                        idx = df_hist[mask].index[0]
+                        df_hist.at[idx, "FTHG"], df_hist.at[idx, "FTAG"] = match.get("goals", {}).get("home"), match.get("goals", {}).get("away")
+                        continue
+
+            # Si no había match, insertamos nueva fila
             nuevo = {
                 "League": league_name,
+                "LeagueId": liga_id_str,
                 "Country": league_country,
                 "Date": fecha_str,
                 "HomeTeam": h_team,
@@ -224,39 +251,4 @@ def run_process(df_externo=None):
                 a_name = normalizar_equipo(match.get("teams", {}).get("away", {}).get("name"), master, team_aliases, set(), [])
                 
                 proj = analyzer.get_projections(h_name, a_name)
-                proj['fecha_str'] = datetime.fromisoformat(match.get("fixture", {}).get("date").replace("Z", "+00:00")).astimezone(zona).strftime("%Y-%m-%d")
-                proj['hora'] = datetime.fromisoformat(match.get("fixture", {}).get("date").replace("Z", "+00:00")).astimezone(zona).strftime("%H:%M")
-                proj['pais'] = match.get("league", {}).get("country")
-                
-                target = proyecciones_mañana if match.get("fixture", {}).get("date") > fecha_mañana_str else proyecciones_hoy
-                target.setdefault(match.get("league", {}).get("name"), []).append(proj)
-
-    procesar_lote_partidos(datos_fechas.get(fecha_hoy_str, []))
-    procesar_lote_partidos(datos_fechas.get(fecha_mañana_str, []))
-    
-    # Guardar logs de elementos no mapeados para revisión
-    if unmapped_teams:
-        with open(f"logs/football/unmapped_teams_{now.strftime('%Y%m%d')}.json", "w", encoding="utf-8") as f:
-            json.dump(unmapped_teams, f, ensure_ascii=False, indent=4)
-
-    if unmapped_leagues:
-        # Convertir set de tuplas a lista de dicts
-        ul = [{"id": lid, "name": name} for lid, name in sorted(unmapped_leagues, key=lambda x:int(x[0]) if x[0].isdigit() else x[0])]
-        with open(f"logs/football/unmapped_leagues_{now.strftime('%Y%m%d')}.json", "w", encoding="utf-8") as f:
-            json.dump(ul, f, ensure_ascii=False, indent=4)
-            
-     # Título dinámico dependiendo de la hora (si es antes de las 12:00, es Inicio de Día)
-    if now.hour < 12:
-        titulo_hoy = f"🌅 *INICIO DIA: {fecha_hoy_str}*"
-    else:
-        titulo_hoy = f"🏁 *FIN DIA: {fecha_hoy_str}*"
-
-    enviar_mensaje_telegram(titulo_hoy)
-    enviar_bloque_reportes(proyecciones_hoy, "", analyzer)
-    
-    # Solo envía la ventana anticipada en la ejecución nocturna (ej. a partir de las 22:00)
-    if proyecciones_mañana and now.hour >= 22:
-        enviar_mensaje_telegram(f"🚀 *INICIO DIA: {fecha_mañana_str} (Ventana Anticipada)*")
-        enviar_bloque_reportes(proyecciones_mañana, "Madrugada", analyzer)
-
-    print("✅ Proceso completo.")
+                proj['fecha_str'] = datetime.fromisoformat(match.get("fixture", {}).get("date")).replace("Z", "+00:00").astimezone(zona).strftime("%Y-%m-%d")
