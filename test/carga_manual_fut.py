@@ -1,76 +1,115 @@
+#!/usr/bin/env python3
 import os
 import glob
 import json
+import argparse
+from datetime import datetime
 import pandas as pd
 
-# 1. Cargar el archivo JSON
-with open('../resultados/football/partidos_2026-07-12.json', 'r', encoding='utf-8') as f:
-    data = json.load(f)
+# Script de recarga manual
+# - Por defecto procesa TODOS los JSON en ../resultados/football/partidos_*.json
+# - Se puede pasar una lista de archivos con --files file1 file2 ...
+# - Se puede pasar --all explícito para procesar todo.
 
-if isinstance(data, dict) and 'response' in data:
-    lista_partidos = data['response']
-else:
-    lista_partidos = data
+from drivers import football
 
-estados_finalizados = ['FT', 'AET', 'PEN']
 
-# 2. Extraer y aplanar los datos respetando el esquema
-rows = []
-for match in lista_partidos:
-    estado_actual = match.get('fixture', {}).get('status', {}).get('short')
-    
-    if estado_actual in estados_finalizados:
-        rows.append({
-            'League': match.get('league', {}).get('name'),
-            'Date': match.get('fixture', {}).get('date', '')[:10],
-            'HomeTeam': match.get('teams', {}).get('home', {}).get('name'),
-            'AwayTeam': match.get('teams', {}).get('away', {}).get('name'),
-            'FTHG': match.get('goals', {}).get('home'),
-            'FTAG': match.get('goals', {}).get('away'),
-            'HC': None, 'AC': None, 'HY': None, 'AY': None, 
-            'HR': None, 'AR': None, 'HS': None, 'AS': None
-        })
+def gather_files(files_list, all_flag):
+    if files_list:
+        return [f for f in files_list if os.path.exists(f)]
+    if all_flag:
+        return sorted(glob.glob('../resultados/football/partidos_*.json'))
+    # default: same as --all
+    return sorted(glob.glob('../resultados/football/partidos_*.json'))
 
-if not rows:
-    print("No se encontraron partidos finalizados en el JSON. No hay datos para actualizar.")
-else:
-    df_nuevos = pd.DataFrame(rows)
-    df_nuevos['FTHG'] = pd.to_numeric(df_nuevos['FTHG'], errors='coerce')
-    df_nuevos['FTAG'] = pd.to_numeric(df_nuevos['FTAG'], errors='coerce')
 
-    # 3. Cargar el histórico mensual existente
-    os.makedirs("../historico_mensual/football", exist_ok=True)
-    all_files = glob.glob("../historico_mensual/football/historico_*.csv")
-    
-    columnas_ordenadas = ['League', 'Date', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR', 'HS', 'AS']
-    
-    if all_files:
-        li = [pd.read_csv(filename) for filename in all_files]
-        df_historico = pd.concat(li, axis=0, ignore_index=True)
-    else:
-        df_historico = pd.DataFrame(columns=columnas_ordenadas)
+def main(args=None):
+    parser = argparse.ArgumentParser(description='Recarga historicos desde JSONs en resultados/football')
+    parser.add_argument('--files', nargs='+', help='Archivos JSON concretos a procesar')
+    parser.add_argument('--all', action='store_true', help='Procesar todos los JSON en resultados/football')
+    parsed = parser.parse_args(args=args)
 
-    # 4. Unir y limpiar duplicados
-    df_actualizado = pd.concat([df_historico, df_nuevos], ignore_index=True)
-    df_actualizado['Date'] = pd.to_datetime(df_actualizado['Date'], format='mixed').dt.strftime('%Y-%m-%d')
-    df_actualizado = df_actualizado.drop_duplicates(subset=['Date', 'HomeTeam', 'AwayTeam'], keep='last')
-    
-    # Asegurar el esquema exacto de columnas
-    df_actualizado = df_actualizado[columnas_ordenadas]
+    files = gather_files(parsed.files, parsed.all)
+    if not files:
+        print('No se encontraron archivos a procesar. Usa --all o pasa --files <paths>')
+        return
 
-    # 5. Guardar particionado por mes ordenado de forma descendente por fecha
-    df_actualizado['Date_dt'] = pd.to_datetime(df_actualizado['Date'], format='mixed')
-    df_actualizado['year_month'] = df_actualizado['Date_dt'].dt.to_period('M')
-    
-    meses_afectados = df_nuevos['Date'].apply(lambda x: pd.Period(x[:7], 'M')).unique()
-    
-    for period, group in df_actualizado.groupby('year_month'):
-        if period in meses_afectados:
-            filename = f'../historico_mensual/football/historico_{period.year}_{period.month:02d}.csv'
-            g_clean = group.drop(columns=['Date_dt', 'year_month'], errors='ignore')
-            
-            # --- ORDENACIÓN DESCENDENTE APLICADA ---
-            g_clean.sort_values(by=['Date', 'League', 'HomeTeam', 'AwayTeam'], ascending=[False, True, True, True]).to_csv(filename, index=False)
-            print(f"Archivo guardado ordenado (descendente) y limpio: {filename}")
+    os.makedirs('logs/football', exist_ok=True)
 
-    print("Carga manual completada con éxito.")
+    api_to_master, master_leagues, statuses, aliases = football.cargar_configuracion()
+    df_hist = football.cargar_historico_mensual()
+
+    unmapped_teams = []
+    unmapped_leagues = set()
+    meses_afectados = set()
+
+    lista_partidos = []
+    for fp in files:
+        try:
+            with open(fp, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+        except Exception as e:
+            print(f"⚠️ No pude leer {fp}: {e} — se salta.")
+            continue
+
+        if isinstance(data, dict) and 'response' in data:
+            lista = data['response']
+        else:
+            lista = data
+
+        if isinstance(lista, list):
+            lista_partidos.extend(lista)
+        else:
+            print(f"⚠️ Formato inesperado en {fp} — se salta.")
+
+    if not lista_partidos:
+        print('No se encontraron partidos finalizados en los JSON proporcionados.')
+        return
+
+    estados_finalizados = ['FT', 'AET', 'PEN']
+
+    # Procesar partidos usando la lógica del driver (normalización, logs, etc.)
+    for match in lista_partidos:
+        estado_actual = match.get('fixture', {}).get('status', {}).get('short')
+        if estado_actual in estados_finalizados:
+            # Extraer fecha
+            fecha_str = ''
+            try:
+                fecha_str = pd.to_datetime(match.get('fixture', {}).get('date')).strftime('%Y-%m-%d')
+            except Exception:
+                # fallback: intentar extraer de filename si existe
+                fecha_str = datetime.now().strftime('%Y-%m-%d')
+
+            # Llamamos a la función del driver para insertar/actualizar
+            df_hist = football.actualizar_maestro_con_partidos(df_hist, [match], fecha_str, api_to_master, statuses, aliases, unmapped_teams, unmapped_leagues)
+            try:
+                period = pd.Period(fecha_str[:7], 'M')
+                meses_afectados.add(period)
+            except Exception:
+                pass
+
+    # Guardar históricos por mes solo para los meses afectados
+    if not meses_afectados:
+        # si no se detectaron meses, guardar todos para ser seguro
+        meses_afectados = None
+
+    football.guardar_historico_mensual(df_hist, meses_afectados)
+
+    # Escribir logs
+    now = datetime.now().strftime('%Y%m%d')
+    if unmapped_teams:
+        with open(f'logs/football/unmapped_teams_backfill_{now}.json', 'w', encoding='utf-8') as f:
+            json.dump(unmapped_teams, f, ensure_ascii=False, indent=4)
+        print(f'Se generó logs/football/unmapped_teams_backfill_{now}.json')
+
+    if unmapped_leagues:
+        ul = [{"id": lid, "name": name} for lid, name in sorted(unmapped_leagues, key=lambda x:int(x[0]) if str(x[0]).isdigit() else x[0])]
+        with open(f'logs/football/unmapped_leagues_backfill_{now}.json', 'w', encoding='utf-8') as f:
+            json.dump(ul, f, ensure_ascii=False, indent=4)
+        print(f'Se generó logs/football/unmapped_leagues_backfill_{now}.json')
+
+    print('Backfill completo. Revisa historico_mensual/football y logs/football.')
+
+
+if __name__ == '__main__':
+    main()
