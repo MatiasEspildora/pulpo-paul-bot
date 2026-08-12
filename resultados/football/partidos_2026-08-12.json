@@ -1696,8 +1696,8 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
+                "long": "Match Cancelled",
+                "short": "CANC",
                 "elapsed": null,
                 "extra": null
             }
@@ -1863,76 +1863,6 @@
                 "id": 23075,
                 "name": "Kolos Kovalivka U19",
                 "logo": "https://media.api-sports.io/football/teams/23075.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1618920,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-08-12T08:00:00-04:00",
-            "timestamp": 1786536000,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 667,
-            "name": "Friendlies Clubs",
-            "country": "World",
-            "logo": "https://media.api-sports.io/football/leagues/667.png",
-            "flag": null,
-            "season": 2026,
-            "round": "Club Friendlies",
-            "standings": false
-        },
-        "teams": {
-            "home": {
-                "id": 9724,
-                "name": "Atlético Tordesillas",
-                "logo": "https://media.api-sports.io/football/teams/9724.png",
-                "winner": null
-            },
-            "away": {
-                "id": 9736,
-                "name": "Real Ávila",
-                "logo": "https://media.api-sports.io/football/teams/9736.png",
                 "winner": null
             }
         },
@@ -5997,8 +5927,8 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
@@ -6006,8 +5936,8 @@
                 "away": null
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 3
             },
             "extratime": {
                 "home": null,
@@ -6067,8 +5997,8 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
@@ -6076,8 +6006,8 @@
                 "away": null
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -9731,6 +9661,76 @@
     },
     {
         "fixture": {
+            "id": 1618920,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-12T11:30:00-04:00",
+            "timestamp": 1786548600,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 667,
+            "name": "Friendlies Clubs",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/667.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Club Friendlies",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 9724,
+                "name": "Atlético Tordesillas",
+                "logo": "https://media.api-sports.io/football/teams/9724.png",
+                "winner": null
+            },
+            "away": {
+                "id": 9736,
+                "name": "Real Ávila",
+                "logo": "https://media.api-sports.io/football/teams/9736.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1618923,
             "referee": null,
             "timezone": "America/Santiago",
@@ -10096,8 +10096,8 @@
                 "city": "Tallinn"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
+                "long": "Match Postponed",
+                "short": "PST",
                 "elapsed": null,
                 "extra": null
             }
@@ -13101,9 +13101,9 @@
                 "second": null
             },
             "venue": {
-                "id": null,
-                "name": null,
-                "city": null
+                "id": 1223,
+                "name": "Estadio Gunther Vogel",
+                "city": "San Lorenzo"
             },
             "status": {
                 "long": "Not Started",
@@ -14012,8 +14012,8 @@
             },
             "venue": {
                 "id": null,
-                "name": null,
-                "city": null
+                "name": "Richards Bay Stadium",
+                "city": "Richards Bay"
             },
             "status": {
                 "long": "Not Started",
@@ -18986,8 +18986,8 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
+                "long": "Match Postponed",
+                "short": "PST",
                 "elapsed": null,
                 "extra": null
             }
@@ -19196,8 +19196,8 @@
                 "city": "Palmira"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
+                "long": "Match Postponed",
+                "short": "PST",
                 "elapsed": null,
                 "extra": null
             }
