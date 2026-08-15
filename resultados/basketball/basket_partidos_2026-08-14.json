@@ -183,9 +183,9 @@
         "week": null,
         "venue": "Michelob Ultra Arena",
         "status": {
-            "long": "Quarter 3",
-            "short": "Q3",
-            "timer": "7"
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
         },
         "league": {
             "id": 13,
@@ -216,18 +216,18 @@
             "home": {
                 "quarter_1": 25,
                 "quarter_2": 13,
-                "quarter_3": 9,
-                "quarter_4": null,
+                "quarter_3": 20,
+                "quarter_4": 25,
                 "over_time": null,
-                "total": 47
+                "total": 83
             },
             "away": {
                 "quarter_1": 16,
                 "quarter_2": 16,
-                "quarter_3": 13,
-                "quarter_4": null,
+                "quarter_3": 23,
+                "quarter_4": 21,
                 "over_time": null,
-                "total": 45
+                "total": 76
             }
         }
     },
@@ -241,8 +241,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Postponed",
+            "short": "POST",
             "timer": null
         },
         "league": {
@@ -299,8 +299,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Postponed",
+            "short": "POST",
             "timer": null
         },
         "league": {
@@ -357,8 +357,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -388,20 +388,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 22,
+                "quarter_2": 29,
+                "quarter_3": 23,
+                "quarter_4": 38,
                 "over_time": null,
-                "total": null
+                "total": 112
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 30,
+                "quarter_2": 21,
+                "quarter_3": 28,
+                "quarter_4": 31,
                 "over_time": null,
-                "total": null
+                "total": 110
             }
         }
     },
@@ -415,8 +415,8 @@
         "week": "EuroBasket U16 - Semi-finals",
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -446,20 +446,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 28,
+                "quarter_2": 18,
+                "quarter_3": 16,
+                "quarter_4": 29,
                 "over_time": null,
-                "total": null
+                "total": 91
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 21,
+                "quarter_2": 18,
+                "quarter_3": 15,
+                "quarter_4": 18,
                 "over_time": null,
-                "total": null
+                "total": 72
             }
         }
     },
@@ -473,8 +473,8 @@
         "week": "EuroBasket U16 - Semi-finals",
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -504,20 +504,78 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 23,
+                "quarter_2": 19,
+                "quarter_3": 30,
+                "quarter_4": 12,
                 "over_time": null,
-                "total": null
+                "total": 84
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 18,
+                "quarter_2": 29,
+                "quarter_3": 28,
+                "quarter_4": 27,
                 "over_time": null,
-                "total": null
+                "total": 102
+            }
+        }
+    },
+    {
+        "id": 513428,
+        "date": "2026-08-14T10:00:00+00:00",
+        "time": "10:00",
+        "timestamp": 1786701600,
+        "timezone": "UTC",
+        "stage": null,
+        "week": null,
+        "venue": null,
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 290,
+            "name": "Friendly International Women",
+            "type": "League",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/290.png"
+        },
+        "country": {
+            "id": 62,
+            "name": "World",
+            "code": " ",
+            "flag": "https://media.api-sports.io/flags/ .svg"
+        },
+        "teams": {
+            "home": {
+                "id": 3042,
+                "name": "Japan W",
+                "logo": "https://media.api-sports.io/basketball/teams/3042.png"
+            },
+            "away": {
+                "id": 3047,
+                "name": "South Korea W",
+                "logo": "https://media.api-sports.io/basketball/teams/3047.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 9,
+                "quarter_2": 26,
+                "quarter_3": 19,
+                "quarter_4": 24,
+                "over_time": null,
+                "total": 78
+            },
+            "away": {
+                "quarter_1": 22,
+                "quarter_2": 23,
+                "quarter_3": 16,
+                "quarter_4": 16,
+                "over_time": null,
+                "total": 77
             }
         }
     },
@@ -531,8 +589,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Postponed",
+            "short": "POST",
             "timer": null
         },
         "league": {
@@ -589,8 +647,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -620,20 +678,136 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 21,
+                "quarter_2": 28,
+                "quarter_3": 20,
+                "quarter_4": 28,
                 "over_time": null,
-                "total": null
+                "total": 97
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 20,
+                "quarter_2": 21,
+                "quarter_3": 20,
+                "quarter_4": 27,
                 "over_time": null,
-                "total": null
+                "total": 88
+            }
+        }
+    },
+    {
+        "id": 513430,
+        "date": "2026-08-14T11:30:00+00:00",
+        "time": "11:30",
+        "timestamp": 1786707000,
+        "timezone": "UTC",
+        "stage": null,
+        "week": "EuroBasket U16 B - Semi-finals",
+        "venue": null,
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 341,
+            "name": "EuroBasket U16 B",
+            "type": "cup",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/341.png"
+        },
+        "country": {
+            "id": 55,
+            "name": "Europe",
+            "code": " ",
+            "flag": "https://media.api-sports.io/flags/ .svg"
+        },
+        "teams": {
+            "home": {
+                "id": 4650,
+                "name": "Montenegro U16",
+                "logo": "https://media.api-sports.io/basketball/teams/4650.png"
+            },
+            "away": {
+                "id": 4754,
+                "name": "Great Britain U16",
+                "logo": "https://media.api-sports.io/basketball/teams/4754.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 20,
+                "quarter_2": 20,
+                "quarter_3": 25,
+                "quarter_4": 18,
+                "over_time": null,
+                "total": 83
+            },
+            "away": {
+                "quarter_1": 27,
+                "quarter_2": 14,
+                "quarter_3": 14,
+                "quarter_4": 16,
+                "over_time": null,
+                "total": 71
+            }
+        }
+    },
+    {
+        "id": 513431,
+        "date": "2026-08-14T11:30:00+00:00",
+        "time": "11:30",
+        "timestamp": 1786707000,
+        "timezone": "UTC",
+        "stage": null,
+        "week": "EuroBasket U16 B - Semi-finals",
+        "venue": null,
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 341,
+            "name": "EuroBasket U16 B",
+            "type": "cup",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/341.png"
+        },
+        "country": {
+            "id": 55,
+            "name": "Europe",
+            "code": " ",
+            "flag": "https://media.api-sports.io/flags/ .svg"
+        },
+        "teams": {
+            "home": {
+                "id": 4764,
+                "name": "Ukraine U16",
+                "logo": "https://media.api-sports.io/basketball/teams/4764.png"
+            },
+            "away": {
+                "id": 4750,
+                "name": "Bulgaria U16",
+                "logo": "https://media.api-sports.io/basketball/teams/4750.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 22,
+                "quarter_2": 12,
+                "quarter_3": 15,
+                "quarter_4": 24,
+                "over_time": null,
+                "total": 73
+            },
+            "away": {
+                "quarter_1": 13,
+                "quarter_2": 25,
+                "quarter_3": 22,
+                "quarter_4": 18,
+                "over_time": null,
+                "total": 78
             }
         }
     },
@@ -647,8 +821,8 @@
         "week": null,
         "venue": "Tay Ho District Gymnasium",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -678,20 +852,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 26,
+                "quarter_2": 24,
+                "quarter_3": 25,
+                "quarter_4": 16,
                 "over_time": null,
-                "total": null
+                "total": 91
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 21,
+                "quarter_2": 18,
+                "quarter_3": 16,
+                "quarter_4": 18,
                 "over_time": null,
-                "total": null
+                "total": 73
             }
         }
     },
@@ -705,8 +879,8 @@
         "week": "EuroBasket U16 - Semi-finals",
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -736,20 +910,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 19,
+                "quarter_2": 18,
+                "quarter_3": 30,
+                "quarter_4": 18,
                 "over_time": null,
-                "total": null
+                "total": 85
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 21,
+                "quarter_2": 22,
+                "quarter_3": 23,
+                "quarter_4": 16,
                 "over_time": null,
-                "total": null
+                "total": 82
             }
         }
     },
@@ -763,8 +937,8 @@
         "week": "EuroBasket U16 - Semi-finals",
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -794,20 +968,136 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 18,
+                "quarter_2": 23,
+                "quarter_3": 19,
+                "quarter_4": 19,
                 "over_time": null,
-                "total": null
+                "total": 79
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 11,
+                "quarter_2": 13,
+                "quarter_3": 16,
+                "quarter_4": 12,
                 "over_time": null,
-                "total": null
+                "total": 52
+            }
+        }
+    },
+    {
+        "id": 513432,
+        "date": "2026-08-14T14:00:00+00:00",
+        "time": "14:00",
+        "timestamp": 1786716000,
+        "timezone": "UTC",
+        "stage": null,
+        "week": "EuroBasket U16 B - Semi-finals",
+        "venue": null,
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 341,
+            "name": "EuroBasket U16 B",
+            "type": "cup",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/341.png"
+        },
+        "country": {
+            "id": 55,
+            "name": "Europe",
+            "code": " ",
+            "flag": "https://media.api-sports.io/flags/ .svg"
+        },
+        "teams": {
+            "home": {
+                "id": 4651,
+                "name": "Netherlands U16",
+                "logo": "https://media.api-sports.io/basketball/teams/4651.png"
+            },
+            "away": {
+                "id": 4653,
+                "name": "Sweden U16",
+                "logo": "https://media.api-sports.io/basketball/teams/4653.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 29,
+                "quarter_2": 11,
+                "quarter_3": 15,
+                "quarter_4": 21,
+                "over_time": null,
+                "total": 76
+            },
+            "away": {
+                "quarter_1": 24,
+                "quarter_2": 8,
+                "quarter_3": 18,
+                "quarter_4": 16,
+                "over_time": null,
+                "total": 66
+            }
+        }
+    },
+    {
+        "id": 513433,
+        "date": "2026-08-14T14:00:00+00:00",
+        "time": "14:00",
+        "timestamp": 1786716000,
+        "timezone": "UTC",
+        "stage": null,
+        "week": "EuroBasket U16 B - Semi-finals",
+        "venue": null,
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 341,
+            "name": "EuroBasket U16 B",
+            "type": "cup",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/341.png"
+        },
+        "country": {
+            "id": 55,
+            "name": "Europe",
+            "code": " ",
+            "flag": "https://media.api-sports.io/flags/ .svg"
+        },
+        "teams": {
+            "home": {
+                "id": 4643,
+                "name": "North Macedonia U16",
+                "logo": "https://media.api-sports.io/basketball/teams/4643.png"
+            },
+            "away": {
+                "id": 4755,
+                "name": "Hungary U16",
+                "logo": "https://media.api-sports.io/basketball/teams/4755.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 17,
+                "quarter_2": 19,
+                "quarter_3": 33,
+                "quarter_4": 26,
+                "over_time": null,
+                "total": 95
+            },
+            "away": {
+                "quarter_1": 21,
+                "quarter_2": 32,
+                "quarter_3": 15,
+                "quarter_4": 8,
+                "over_time": null,
+                "total": 76
             }
         }
     },
@@ -821,8 +1111,8 @@
         "week": "EuroBasket U16 - Semi-finals",
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -852,20 +1142,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 8,
+                "quarter_2": 19,
+                "quarter_3": 15,
+                "quarter_4": 18,
                 "over_time": null,
-                "total": null
+                "total": 60
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 12,
+                "quarter_2": 23,
+                "quarter_3": 27,
+                "quarter_4": 20,
                 "over_time": null,
-                "total": null
+                "total": 82
             }
         }
     },
@@ -879,8 +1169,8 @@
         "week": "EuroBasket U16 - Semi-finals",
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -910,20 +1200,78 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 17,
+                "quarter_2": 20,
+                "quarter_3": 33,
+                "quarter_4": 12,
                 "over_time": null,
-                "total": null
+                "total": 82
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 26,
+                "quarter_2": 21,
+                "quarter_3": 22,
+                "quarter_4": 23,
                 "over_time": null,
-                "total": null
+                "total": 92
+            }
+        }
+    },
+    {
+        "id": 513429,
+        "date": "2026-08-14T16:00:00+00:00",
+        "time": "16:00",
+        "timestamp": 1786723200,
+        "timezone": "UTC",
+        "stage": null,
+        "week": null,
+        "venue": null,
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 290,
+            "name": "Friendly International Women",
+            "type": "League",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/290.png"
+        },
+        "country": {
+            "id": 62,
+            "name": "World",
+            "code": " ",
+            "flag": "https://media.api-sports.io/flags/ .svg"
+        },
+        "teams": {
+            "home": {
+                "id": 4019,
+                "name": "Turkey W",
+                "logo": "https://media.api-sports.io/basketball/teams/4019.png"
+            },
+            "away": {
+                "id": 4183,
+                "name": "Portugal W",
+                "logo": "https://media.api-sports.io/basketball/teams/4183.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 17,
+                "quarter_2": 15,
+                "quarter_3": 16,
+                "quarter_4": 15,
+                "over_time": null,
+                "total": 63
+            },
+            "away": {
+                "quarter_1": 6,
+                "quarter_2": 14,
+                "quarter_3": 10,
+                "quarter_4": 21,
+                "over_time": null,
+                "total": 51
             }
         }
     },
@@ -937,8 +1285,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -968,20 +1316,136 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 15,
+                "quarter_2": 18,
+                "quarter_3": 18,
+                "quarter_4": 24,
                 "over_time": null,
-                "total": null
+                "total": 75
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 13,
+                "quarter_2": 16,
+                "quarter_3": 16,
+                "quarter_4": 21,
                 "over_time": null,
-                "total": null
+                "total": 66
+            }
+        }
+    },
+    {
+        "id": 513434,
+        "date": "2026-08-14T16:30:00+00:00",
+        "time": "16:30",
+        "timestamp": 1786725000,
+        "timezone": "UTC",
+        "stage": null,
+        "week": "EuroBasket U16 B - Semi-finals",
+        "venue": null,
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 341,
+            "name": "EuroBasket U16 B",
+            "type": "cup",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/341.png"
+        },
+        "country": {
+            "id": 55,
+            "name": "Europe",
+            "code": " ",
+            "flag": "https://media.api-sports.io/flags/ .svg"
+        },
+        "teams": {
+            "home": {
+                "id": 4756,
+                "name": "Iceland U16",
+                "logo": "https://media.api-sports.io/basketball/teams/4756.png"
+            },
+            "away": {
+                "id": 4633,
+                "name": "Bosnia & Herzegovina U16",
+                "logo": "https://media.api-sports.io/basketball/teams/4633.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 29,
+                "quarter_2": 18,
+                "quarter_3": 22,
+                "quarter_4": 26,
+                "over_time": null,
+                "total": 95
+            },
+            "away": {
+                "quarter_1": 15,
+                "quarter_2": 15,
+                "quarter_3": 6,
+                "quarter_4": 15,
+                "over_time": null,
+                "total": 51
+            }
+        }
+    },
+    {
+        "id": 513435,
+        "date": "2026-08-14T16:30:00+00:00",
+        "time": "16:30",
+        "timestamp": 1786725000,
+        "timezone": "UTC",
+        "stage": null,
+        "week": "EuroBasket U16 B - Semi-finals",
+        "venue": null,
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 341,
+            "name": "EuroBasket U16 B",
+            "type": "cup",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/341.png"
+        },
+        "country": {
+            "id": 55,
+            "name": "Europe",
+            "code": " ",
+            "flag": "https://media.api-sports.io/flags/ .svg"
+        },
+        "teams": {
+            "home": {
+                "id": 4762,
+                "name": "Slovakia U16",
+                "logo": "https://media.api-sports.io/basketball/teams/4762.png"
+            },
+            "away": {
+                "id": 4747,
+                "name": "Austria U16",
+                "logo": "https://media.api-sports.io/basketball/teams/4747.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 19,
+                "quarter_2": 23,
+                "quarter_3": 24,
+                "quarter_4": 7,
+                "over_time": null,
+                "total": 73
+            },
+            "away": {
+                "quarter_1": 10,
+                "quarter_2": 11,
+                "quarter_3": 9,
+                "quarter_4": 19,
+                "over_time": null,
+                "total": 49
             }
         }
     },
@@ -995,8 +1459,8 @@
         "week": "EuroBasket U16 - Semi-finals",
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -1026,20 +1490,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 13,
+                "quarter_2": 17,
+                "quarter_3": 12,
+                "quarter_4": 21,
                 "over_time": null,
-                "total": null
+                "total": 63
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 23,
+                "quarter_2": 20,
+                "quarter_3": 30,
+                "quarter_4": 22,
                 "over_time": null,
-                "total": null
+                "total": 95
             }
         }
     },
@@ -1053,8 +1517,8 @@
         "week": "EuroBasket U16 - Semi-finals",
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -1084,20 +1548,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 22,
+                "quarter_2": 24,
+                "quarter_3": 26,
+                "quarter_4": 15,
                 "over_time": null,
-                "total": null
+                "total": 87
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 18,
+                "quarter_2": 28,
+                "quarter_3": 28,
+                "quarter_4": 18,
                 "over_time": null,
-                "total": null
+                "total": 92
             }
         }
     },
@@ -1111,8 +1575,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -1142,20 +1606,136 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 22,
+                "quarter_2": 30,
+                "quarter_3": 24,
+                "quarter_4": 19,
                 "over_time": null,
-                "total": null
+                "total": 95
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 20,
+                "quarter_2": 24,
+                "quarter_3": 16,
+                "quarter_4": 21,
                 "over_time": null,
-                "total": null
+                "total": 81
+            }
+        }
+    },
+    {
+        "id": 513436,
+        "date": "2026-08-14T19:00:00+00:00",
+        "time": "19:00",
+        "timestamp": 1786734000,
+        "timezone": "UTC",
+        "stage": null,
+        "week": "EuroBasket U16 B - Semi-finals",
+        "venue": null,
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 341,
+            "name": "EuroBasket U16 B",
+            "type": "cup",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/341.png"
+        },
+        "country": {
+            "id": 55,
+            "name": "Europe",
+            "code": " ",
+            "flag": "https://media.api-sports.io/flags/ .svg"
+        },
+        "teams": {
+            "home": {
+                "id": 4634,
+                "name": "Croatia U16",
+                "logo": "https://media.api-sports.io/basketball/teams/4634.png"
+            },
+            "away": {
+                "id": 4635,
+                "name": "Estonia U16",
+                "logo": "https://media.api-sports.io/basketball/teams/4635.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 24,
+                "quarter_2": 17,
+                "quarter_3": 22,
+                "quarter_4": 24,
+                "over_time": null,
+                "total": 87
+            },
+            "away": {
+                "quarter_1": 15,
+                "quarter_2": 21,
+                "quarter_3": 16,
+                "quarter_4": 10,
+                "over_time": null,
+                "total": 62
+            }
+        }
+    },
+    {
+        "id": 513437,
+        "date": "2026-08-14T19:00:00+00:00",
+        "time": "19:00",
+        "timestamp": 1786734000,
+        "timezone": "UTC",
+        "stage": null,
+        "week": "EuroBasket U16 B - Semi-finals",
+        "venue": null,
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 341,
+            "name": "EuroBasket U16 B",
+            "type": "cup",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/341.png"
+        },
+        "country": {
+            "id": 55,
+            "name": "Europe",
+            "code": " ",
+            "flag": "https://media.api-sports.io/flags/ .svg"
+        },
+        "teams": {
+            "home": {
+                "id": 4757,
+                "name": "Ireland U16",
+                "logo": "https://media.api-sports.io/basketball/teams/4757.png"
+            },
+            "away": {
+                "id": 4652,
+                "name": "Finland U16",
+                "logo": "https://media.api-sports.io/basketball/teams/4652.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 13,
+                "quarter_2": 17,
+                "quarter_3": 21,
+                "quarter_4": 11,
+                "over_time": null,
+                "total": 62
+            },
+            "away": {
+                "quarter_1": 8,
+                "quarter_2": 25,
+                "quarter_3": 12,
+                "quarter_4": 27,
+                "over_time": null,
+                "total": 72
             }
         }
     },
@@ -1169,8 +1749,8 @@
         "week": null,
         "venue": "Polideportivo ODD Fuerzas Armadas",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -1200,20 +1780,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 31,
+                "quarter_2": 32,
+                "quarter_3": 21,
+                "quarter_4": 24,
                 "over_time": null,
-                "total": null
+                "total": 108
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 21,
+                "quarter_2": 20,
+                "quarter_3": 23,
+                "quarter_4": 23,
                 "over_time": null,
-                "total": null
+                "total": 87
             }
         }
     },
@@ -1227,8 +1807,8 @@
         "week": null,
         "venue": "Gainbridge Fieldhouse",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -1258,20 +1838,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 17,
+                "quarter_2": 18,
+                "quarter_3": 28,
+                "quarter_4": 35,
                 "over_time": null,
-                "total": null
+                "total": 98
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 15,
+                "quarter_2": 22,
+                "quarter_3": 29,
+                "quarter_4": 21,
                 "over_time": null,
-                "total": null
+                "total": 87
             }
         }
     }
