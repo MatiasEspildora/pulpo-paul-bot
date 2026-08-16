@@ -6,8 +6,8 @@ from datetime import datetime, timedelta
 import pytz
 import sys
 import time
+import traceback
 
-# Ajuste para importar módulos de la raíz
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from api_client import BasketballAPI
@@ -15,29 +15,33 @@ from analyzer import MatchAnalyzer
 from notifier import enviar_mensaje_telegram, enviar_bloque_reportes_basket
 
 def cargar_configuracion_basket():
-    with open("config/basketball/leagues.json", "r", encoding="utf-8") as f:
-        data = json.load(f)
-        api_to_master = data.get("api_basketball_to_master", {})
-        master_leagues_info = data.get("master_leagues", {})
     with open("config/basketball/statuses.json", "r", encoding="utf-8") as f:
         statuses = json.load(f)["active_providers"].get("api_basketball", {"finished": ["FT"], "upcoming": ["NS"]})
-    with open("config/basketball/team_aliases.json", "r", encoding="utf-8") as f:
-        aliases_data = json.load(f)
-    return api_to_master, master_leagues_info, statuses, aliases_data
+    return {}, {}, statuses, {}
 
 def cargar_historico_mensual_basket():
     all_files = glob.glob("historico_mensual/basketball/historico_*.csv")
+    default_cols = ['League', 'LeagueId', 'Date', 'HomeTeamId', 'AwayTeamId', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HasOT', 'Home_OT', 'Away_OT']
+    
     if not all_files:
-        return pd.DataFrame(columns=['League', 'Date', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG'])
+        return pd.DataFrame(columns=default_cols)
+        
     li = [pd.read_csv(filename) for filename in all_files]
     df = pd.concat(li, axis=0, ignore_index=True)
+    
+    # Asegurar columnas nuevas
+    if 'LeagueId' not in df.columns: df['LeagueId'] = ''
+    if 'HomeTeamId' not in df.columns: df['HomeTeamId'] = pd.NA
+    if 'AwayTeamId' not in df.columns: df['AwayTeamId'] = pd.NA
+        
     df['Date'] = pd.to_datetime(df['Date'], format='mixed').dt.strftime('%Y-%m-%d')
+    cols_present = [c for c in default_cols if c in df.columns]
+    df = df[cols_present + [c for c in df.columns if c not in cols_present]]
     return df
 
 def guardar_historico_mensual_basket(df, meses_a_actualizar=None):
     os.makedirs("historico_mensual/basketball", exist_ok=True)
-    if df.empty:
-        return
+    if df.empty: return
     df_temp = df.copy()
     df_temp['Date_dt'] = pd.to_datetime(df_temp['Date'], format='mixed')
     df_temp['year_month'] = df_temp['Date_dt'].dt.to_period('M')
@@ -48,32 +52,7 @@ def guardar_historico_mensual_basket(df, meses_a_actualizar=None):
             g_clean = group.drop(columns=['Date_dt', 'year_month'], errors='ignore')
             g_clean.sort_values(by=['Date', 'League', 'HomeTeam', 'AwayTeam'], ascending=[False, True, True, True]).to_csv(filename, index=False)
 
-def normalizar_equipo(nombre, master_league_id, aliases_data, equipos_historicos, unmapped_log):
-    #global_map = aliases_data.get("global_aliases", {})
-    #conflict_map = aliases_data.get("conflicting_aliases", {})
-    #liga_conflicto = conflict_map.get(master_league_id, {})
-    
-    #for n_oficial, variaciones in {**liga_conflicto, **global_map}.items():
-    #    if nombre == n_oficial or nombre in variaciones:
-    #        return n_oficial
-            
-    #if master_league_id not in ["WOR_FRIENDLIES_CLUBS", "WOR_FRIENDLY_INTERNATIONAL"]:
-    #    existe_en_historico = nombre in equipos_historicos
-    #    estado = "EQUIPO_NUEVO" if not existe_en_historico else "ERROR_MAPEO"
-    #    registro = {
-    #        "team": nombre, 
-    #        "master_league": master_league_id,
-    #        "status": estado
-    #    }
-    #    ya_registrado = any(r.get("team") == nombre and r.get("master_league") == master_league_id for r in unmapped_log)
-    #    if not ya_registrado: 
-    #        unmapped_log.append(registro)
-    return nombre
-
-def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_master, statuses, aliases_data, unmapped_log):
-    equipos_historicos = set(df_hist["HomeTeam"].dropna().unique()).union(set(df_hist["AwayTeam"].dropna().unique())) if not df_hist.empty else set()
-    
-    # Asegurar que las columnas de OT existan en el DataFrame histórico
+def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses):
     for col in ["HasOT", "Home_OT", "Away_OT"]:
         if col not in df_hist.columns:
             df_hist[col] = False if col == "HasOT" else 0
@@ -81,35 +60,44 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_m
     for match in partidos_lista:
         liga_id = str(match["league"]["id"])
         status_short = match.get("status", {}).get("short", "")
-        if liga_id in api_to_master and status_short in statuses.get("finished", []):
-            h_name = match.get("teams", {}).get("home", {}).get("name", "")
-            a_name = match.get("teams", {}).get("away", {}).get("name", "")
-            h_team = normalizar_equipo(h_name, api_to_master[liga_id], aliases_data, equipos_historicos, unmapped_log)
-            a_team = normalizar_equipo(a_name, api_to_master[liga_id], aliases_data, equipos_historicos, unmapped_log)
+        
+        if status_short in statuses.get("finished", []):
+            h_id = match["teams"]["home"]["id"]
+            a_id = match["teams"]["away"]["id"]
+            h_team = match["teams"]["home"]["name"]
+            a_team = match["teams"]["away"]["name"]
             
-            # EXTRACCIÓN CORRECTA DE BÁSQUETBOL
             scores = match.get("scores", {})
             h_score = scores.get("home", {}).get("total", 0)
             a_score = scores.get("away", {}).get("total", 0)
-            
             h_ot = scores.get("home", {}).get("over_time") or 0
             a_ot = scores.get("away", {}).get("over_time") or 0
             has_ot = bool(h_ot > 0 or a_ot > 0)
             
-            if not df_hist.empty and "HomeTeam" in df_hist.columns:
-                mask = (df_hist["Date"] == fecha_str) & (df_hist["HomeTeam"] == h_team) & (df_hist["AwayTeam"] == a_team)
+            if not df_hist.empty and "HomeTeamId" in df_hist.columns:
+                # Cruce principal por ID
+                mask = (df_hist["Date"] == fecha_str) & (df_hist["HomeTeamId"] == h_id) & (df_hist["AwayTeamId"] == a_id)
                 if mask.any():
                     idx = df_hist[mask].index[0]
-                    df_hist.at[idx, "FTHG"] = h_score
-                    df_hist.at[idx, "FTAG"] = a_score
-                    df_hist.at[idx, "HasOT"] = has_ot
-                    df_hist.at[idx, "Home_OT"] = h_ot
-                    df_hist.at[idx, "Away_OT"] = a_ot
+                    df_hist.at[idx, "FTHG"], df_hist.at[idx, "FTAG"] = h_score, a_score
+                    df_hist.at[idx, "HasOT"], df_hist.at[idx, "Home_OT"], df_hist.at[idx, "Away_OT"] = has_ot, h_ot, a_ot
+                    continue
+                    
+                # Respaldo Legacy (por si el CSV antiguo aún no tiene el ID inyectado)
+                legacy_mask = (df_hist["Date"] == fecha_str) & (df_hist["HomeTeam"] == h_team) & (df_hist["AwayTeam"] == a_team)
+                if legacy_mask.any():
+                    idx = df_hist[legacy_mask].index[0]
+                    df_hist.at[idx, "FTHG"], df_hist.at[idx, "FTAG"] = h_score, a_score
+                    df_hist.at[idx, "HasOT"], df_hist.at[idx, "Home_OT"], df_hist.at[idx, "Away_OT"] = has_ot, h_ot, a_ot
+                    df_hist.at[idx, "HomeTeamId"], df_hist.at[idx, "AwayTeamId"] = h_id, a_id
                     continue
             
             nuevo = {
                 "League": match["league"]["name"], 
+                "LeagueId": liga_id,
                 "Date": fecha_str, 
+                "HomeTeamId": h_id,
+                "AwayTeamId": a_id,
                 "HomeTeam": h_team, 
                 "AwayTeam": a_team, 
                 "FTHG": h_score, 
@@ -129,23 +117,20 @@ def run_process(df_externo=None):
     TOKEN_BASKET = os.environ.get("TELEGRAM_BOT_TOKEN_BASKET")
     API_KEY = os.environ.get("API_BASKETBALL_KEY")
     
-    api_to_master, _, statuses_map, team_aliases = cargar_configuracion_basket()
-    ligas_permitidas = list(api_to_master.keys())
+    _, _, statuses_map, _ = cargar_configuracion_basket()
     
     df = df_externo if df_externo is not None else cargar_historico_mensual_basket()
     api = BasketballAPI(API_KEY)
     zona = pytz.timezone('America/Santiago')
     now = datetime.now(zona)
-    unmapped_teams = []
     
     fecha_hoy_str = now.strftime("%Y-%m-%d")
     fecha_mañana_str = (now + timedelta(days=1)).strftime("%Y-%m-%d")
     
-    # Almacén temporal en memoria para optimizar y no reconsultar
     datos_fechas = {}
-    
-    # Procesamiento inteligente con caché estricto para días pasados
     meses_afectados = set()
+    
+    print("🏀 [BASKETBALL] Iniciando descarga y actualización global...")
     for i in range(-1, 2):
         f_dt = now + timedelta(days=i)
         meses_afectados.add(pd.Period(f_dt.strftime("%Y-%m"), 'M'))
@@ -154,13 +139,10 @@ def run_process(df_externo=None):
         file_path = f"resultados/basketball/basket_partidos_{f_str}.json"
         partidos_del_dia = None
         
-        es_dia_pasado = f_str < fecha_hoy_str
-        if es_dia_pasado and os.path.exists(file_path):
+        if f_str < fecha_hoy_str and os.path.exists(file_path):
             try:
-                with open(file_path, "r", encoding="utf-8") as f:
-                    partidos_del_dia = json.load(f)
-            except Exception:
-                pass
+                with open(file_path, "r", encoding="utf-8") as f: partidos_del_dia = json.load(f)
+            except Exception: pass
                 
         if not partidos_del_dia:
             data = api.get_data("games", {"date": f_str})
@@ -172,7 +154,7 @@ def run_process(df_externo=None):
             
         if partidos_del_dia:
             datos_fechas[f_str] = partidos_del_dia
-            df = actualizar_maestro_con_partidos(df, partidos_del_dia, f_str, api_to_master, statuses_map, team_aliases, unmapped_teams)
+            df = actualizar_maestro_con_partidos(df, partidos_del_dia, f_str, statuses_map)
 
     guardar_historico_mensual_basket(df, meses_afectados)
     analyzer = MatchAnalyzer(df)
@@ -181,15 +163,16 @@ def run_process(df_externo=None):
     
     def procesar_lote_partidos(lista_partidos):
         for match in lista_partidos:
-            liga_id = str(match["league"]["id"])
             status_short = match.get("status", {}).get("short", "")
-            if liga_id in ligas_permitidas and status_short in statuses_map.get("upcoming", []):
-                h_name = match.get("teams", {}).get("home", {}).get("name", "")
-                a_name = match.get("teams", {}).get("away", {}).get("name", "")
-                h_team = normalizar_equipo(h_name, api_to_master[liga_id], team_aliases, set(), [])
-                a_team = normalizar_equipo(a_name, api_to_master[liga_id], team_aliases, set(), [])
+            if status_short in statuses_map.get("upcoming", []):
+                h_name = match["teams"]["home"]["name"]
+                a_name = match["teams"]["away"]["name"]
+                h_id = match["teams"]["home"]["id"]
+                a_id = match["teams"]["away"]["id"]
                 
-                proj = analyzer.get_basketball_projections(h_team, a_team)
+                # ✅ Ahora le pasamos los 4 parámetros + la data completa del partido
+                proj = analyzer.get_basketball_projections(h_name, a_name, h_id, a_id, match)
+                
                 game_date = match.get("date", datetime.now().isoformat())
                 proj['fecha_str'] = datetime.fromisoformat(game_date.replace("Z", "+00:00")).astimezone(zona).strftime("%Y-%m-%d")
                 proj['hora'] = datetime.fromisoformat(game_date.replace("Z", "+00:00")).astimezone(zona).strftime("%H:%M")
@@ -198,24 +181,16 @@ def run_process(df_externo=None):
                 target = proyecciones_mañana if proj['fecha_str'] == fecha_mañana_str else proyecciones_hoy
                 target.setdefault(match["league"]["name"], []).append(proj)
 
-    # Reutilizamos los datos que ya están en memoria (hoy y mañana)
+    print("🏀 [BASKETBALL] Generando proyecciones globales...")
     procesar_lote_partidos(datos_fechas.get(fecha_hoy_str, []))
     procesar_lote_partidos(datos_fechas.get(fecha_mañana_str, []))
-    
-    if unmapped_teams:
-        with open(f"logs/basketball/unmapped_basket_teams_{now.strftime('%Y%m%d')}.json", "w", encoding="utf-8") as f:
-            json.dump(unmapped_teams, f, ensure_ascii=False, indent=4)
             
-    # Título dinámico dependiendo de la hora
-    if now.hour < 12:
-        titulo_hoy = f"🌅 *INICIO DIA BASKET: {fecha_hoy_str}*"
-    else:
-        titulo_hoy = f"🏁 *FIN DIA BASKET: {fecha_hoy_str}*"
+    if now.hour < 12: titulo_hoy = f"🌅 *INICIO DIA BASKET: {fecha_hoy_str}*"
+    else: titulo_hoy = f"🏁 *FIN DIA BASKET: {fecha_hoy_str}*"
 
     enviar_mensaje_telegram(titulo_hoy, TOKEN_BASKET)
     enviar_bloque_reportes_basket(proyecciones_hoy, "", analyzer, TOKEN_BASKET)
     
-    # Solo envía la ventana anticipada en la ejecución nocturna
     if proyecciones_mañana and now.hour >= 22:
         enviar_mensaje_telegram(f"🚀 *INICIO DIA BASKET: {fecha_mañana_str} (Ventana Anticipada)*", TOKEN_BASKET)
         enviar_bloque_reportes_basket(proyecciones_mañana, "Madrugada", analyzer, TOKEN_BASKET)
