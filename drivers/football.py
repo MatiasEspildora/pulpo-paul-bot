@@ -275,8 +275,11 @@ def run_process(df_externo=None):
             json.dump(unmapped_teams, f, ensure_ascii=False, indent=4)
 
     if unmapped_leagues:
-        # Convertir set de tuplas a lista de dicts
-        ul = [{"id": lid, "name": name} for lid, name in sorted(unmapped_leagues, key=lambda x:int(x[0]) if x[0].isdigit() else x[0])]
+        def safe_sort_key(item):
+            lid_str = str(item[0])
+            return (0, int(lid_str)) if lid_str.isdigit() else (1, lid_str)
+
+        ul = [{"id": lid, "name": name} for lid, name in sorted(unmapped_leagues, key=safe_sort_key)]
         with open(f"logs/football/unmapped_leagues_{now.strftime('%Y%m%d')}.json", "w", encoding="utf-8") as f:
             json.dump(ul, f, ensure_ascii=False, indent=4)
             
