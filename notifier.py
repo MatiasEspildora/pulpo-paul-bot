@@ -7,19 +7,16 @@ TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
 def cargar_banderas():
-    """Carga de forma dinámica el mapa de banderas desde la configuración."""
     ruta_flags = os.path.join("config", "flags.json")
     try:
         with open(ruta_flags, "r", encoding="utf-8") as f:
             return json.load(f)
     except Exception:
-        print("⚠️ No se pudo cargar config/flags.json, se usarán banderas por defecto.")
         return {}
 
 BANDERAS = cargar_banderas()
 
 def enviar_mensaje_telegram(mensaje, token_override=None):
-    """Dispara un mensaje directo a Telegram usando el token indicado o el general, manejando Rate Limits."""
     token_activo = token_override or os.environ.get("TELEGRAM_BOT_TOKEN")
     chat_id = os.environ.get("TELEGRAM_CHAT_ID")
     if token_activo and chat_id:
@@ -29,11 +26,10 @@ def enviar_mensaje_telegram(mensaje, token_override=None):
                 data={"chat_id": chat_id, "text": mensaje, "parse_mode": "Markdown"}
             )
             
-            # 🛡️ Manejo inteligente del límite de envíos (Error 429)
             if res.status_code == 429:
                 error_data = res.json()
                 espera = error_data.get("parameters", {}).get("retry_after", 5)
-                print(f"⏳ Límite de Telegram alcanzado. Esperando {espera} segundos...")
+                print(f"⏳ Límite de Telegram. Esperando {espera} segundos...")
                 time.sleep(espera)
                 return enviar_mensaje_telegram(mensaje, token_override=token_override)
 
@@ -42,27 +38,22 @@ def enviar_mensaje_telegram(mensaje, token_override=None):
         except Exception as e:
             print(f"⚠️ Excepción al conectar con Telegram: {e}")
     else:
-        print("⚠️ Faltan credenciales de Telegram (TOKEN o CHAT_ID).")
+        print("⚠️ Faltan credenciales de Telegram.")
 
 def agrupar_por_pais(proyecciones_dict):
-    """Función auxiliar para reestructurar el diccionario de ligas a países."""
     agrupado = {}
     for liga, proyecciones in proyecciones_dict.items():
         if not proyecciones:
             continue
-        
-        # Extraer país desde el primer partido de forma segura
         p_info = proyecciones[0].get('pais', 'World')
         pais = p_info.get('name', 'World') if isinstance(p_info, dict) else (p_info or 'World')
         
         if pais not in agrupado:
             agrupado[pais] = {}
         agrupado[pais][liga] = proyecciones
-        
     return agrupado
 
 def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
-    """Reportes agrupados por PAÍS para Fútbol ordenados alfabéticamente."""
     agrupado_por_pais = agrupar_por_pais(proyecciones_dict)
     
     for pais, ligas_del_pais in sorted(agrupado_por_pais.items()):
@@ -73,14 +64,15 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
         mensaje_actual = f"🏆 {bandera} *{pais}*{sufijo}\n" + "━"*20 + "\n\n"
         
         for liga, proyecciones in sorted(ligas_del_pais.items()):
-            limite_dinamico = min(len(proyecciones), 3)
-            top_items = analyzer.get_top_by_league(proyecciones, n=limite_dinamico)
+            top_items = proyecciones # ✅ Sin límite
             
-            bloque_liga = f"📌 *{liga} - TOP ({len(top_items)})*\n\n"
+            bloque_liga = f"📌 *{liga} - TOTAL ({len(top_items)})*\n\n"
             
             for p in top_items:
-                s_l = analyzer.get_team_stats(p['local'])
-                s_v = analyzer.get_team_stats(p['visita'])
+                # ✅ Pasando los IDs nativos al analizador
+                s_l = analyzer.get_team_stats(p['local'], p.get('local_id'))
+                s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'))
+                
                 bloque_liga += f"📅 `{p.get('fecha_str', '')}` 🕒 `{p['hora']}`\n⚽ *{p['local']}* vs *{p['visita']}*\n"
                 bloque_liga += (f"📊 Probabilidades: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
                                 f"🎯 Ambos anotan: {p['btts']:.0%} | Marcadores: {', '.join(p['scores'])}\n")
@@ -101,16 +93,15 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
                 else:
                     bloque_liga += "⚠️ *Sin historial suficiente para promedios detallados.*\n\n"
 
-            # 🛡️ Control de límite de caracteres de Telegram (Max 4096)
             if len(mensaje_actual) + len(bloque_liga) > 3800:
-                mensaje_actual += "━"*20 + "\n"  # ✅ DIVISIÓN AL FINAL DEL MENSAJE
+                mensaje_actual += "━"*20 + "\n"
                 mensajes_a_enviar.append(mensaje_actual)
                 mensaje_actual = f"🏆 {bandera} *{pais}*{sufijo} (Cont.)\n" + "━"*20 + "\n\n" + bloque_liga
             else:
                 mensaje_actual += bloque_liga
                 
         if mensaje_actual:
-            mensaje_actual += "━"*20 + "\n"  # ✅ DIVISIÓN AL FINAL DEL MENSAJE
+            mensaje_actual += "━"*20 + "\n"
             mensajes_a_enviar.append(mensaje_actual)
             
         for msg in mensajes_a_enviar:
@@ -118,7 +109,6 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
             time.sleep(1.5)
 
 def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
-    """Reportes agrupados por PAÍS para Basketball ordenados alfabéticamente."""
     agrupado_por_pais = agrupar_por_pais(proyecciones_dict)
     
     for pais, ligas_del_pais in sorted(agrupado_por_pais.items()):
@@ -129,16 +119,16 @@ def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, to
         mensaje_actual = f"🏀 {bandera} *{pais}*{sufijo}\n" + "━"*20 + "\n\n"
         
         for liga, proyecciones in sorted(ligas_del_pais.items()):
-            limite_dinamico = min(len(proyecciones), 3)
-            top_items = analyzer.get_top_by_league(proyecciones, n=limite_dinamico)
+            top_items = proyecciones # ✅ Sin límite
             
-            bloque_liga = f"📌 *{liga} - TOP ({len(top_items)})*\n\n"
+            bloque_liga = f"📌 *{liga} - TOTAL ({len(top_items)})*\n\n"
             
             for p in top_items:
-                s_l = analyzer.get_basketball_team_stats(p['local'])
-                s_v = analyzer.get_basketball_team_stats(p['visita'])
-                ot_l = analyzer.get_basketball_overtime_stats(p['local'])
-                ot_v = analyzer.get_basketball_overtime_stats(p['visita'])
+                # ✅ Pasando los IDs
+                s_l = analyzer.get_basketball_team_stats(p['local'], p.get('local_id'))
+                s_v = analyzer.get_basketball_team_stats(p['visita'], p.get('visita_id'))
+                ot_l = analyzer.get_basketball_overtime_stats(p['local'], p.get('local_id'))
+                ot_v = analyzer.get_basketball_overtime_stats(p['visita'], p.get('visita_id'))
 
                 bloque_liga += f"📅 `{p.get('fecha_str', '')}` 🕒 `{p['hora']}`\n🏀 *{p['local']}* vs *{p['visita']}*\n"
                 bloque_liga += (f"📊 Victoria Proyectada: L:{p['prob_home']:.0%} | V:{p['prob_away']:.0%}\n"
@@ -161,16 +151,15 @@ def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, to
                 else:
                     bloque_liga += "⚠️ *Sin historial suficiente.*\n\n"
 
-            # 🛡️ Control de límite de caracteres
             if len(mensaje_actual) + len(bloque_liga) > 3800:
-                mensaje_actual += "━"*20 + "\n"  # ✅ DIVISIÓN AL FINAL DEL MENSAJE
+                mensaje_actual += "━"*20 + "\n"
                 mensajes_a_enviar.append(mensaje_actual)
                 mensaje_actual = f"🏀 {bandera} *{pais}*{sufijo} (Cont.)\n" + "━"*20 + "\n\n" + bloque_liga
             else:
                 mensaje_actual += bloque_liga
                 
         if mensaje_actual:
-            mensaje_actual += "━"*20 + "\n"  # ✅ DIVISIÓN AL FINAL DEL MENSAJE
+            mensaje_actual += "━"*20 + "\n"
             mensajes_a_enviar.append(mensaje_actual)
             
         for msg in mensajes_a_enviar:
