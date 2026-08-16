@@ -42,15 +42,27 @@ def enviar_mensaje_telegram(mensaje, token_override=None):
 
 def agrupar_por_pais(proyecciones_dict):
     agrupado = {}
-    for liga, proyecciones in proyecciones_dict.items():
+    for key, proyecciones in proyecciones_dict.items():
         if not proyecciones:
             continue
-        p_info = proyecciones[0].get('pais', 'World')
-        pais = p_info.get('name', 'World') if isinstance(p_info, dict) else (p_info or 'World')
         
+        # Soporte para la nueva llave doble (País, Liga)
+        if isinstance(key, tuple):
+            pais, liga = key
+        else:
+            # Respaldo por si llega un formato antiguo
+            liga = key
+            p_info = proyecciones[0].get('pais', 'World')
+            pais = p_info.get('name', 'World') if isinstance(p_info, dict) else (p_info or 'World')
+            
         if pais not in agrupado:
             agrupado[pais] = {}
-        agrupado[pais][liga] = proyecciones
+        
+        # Agregamos las proyecciones sin sobrescribir ligas con el mismo nombre
+        if liga not in agrupado[pais]:
+            agrupado[pais][liga] = []
+        agrupado[pais][liga].extend(proyecciones)
+        
     return agrupado
 
 def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, token_override=None, is_basket=False):
@@ -67,7 +79,6 @@ def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, token_over
     if not todas_las_proyecciones:
         return
 
-    # Ordenamos por la probabilidad más alta del partido
     todas_las_proyecciones.sort(key=lambda x: x.get('score_value', 0), reverse=True)
     top_5 = todas_las_proyecciones[:5]
     
