@@ -171,6 +171,17 @@ def run_process(df_externo=None):
             for match in lista_partidos:
                 try:
                     if match.get("fixture", {}).get("status", {}).get("short") in statuses_map["upcoming"]:
+                        
+                        date_str = match.get("fixture", {}).get("date", "")
+                        if not date_str:
+                            continue
+                            
+                        dt_obj = datetime.fromisoformat(date_str.replace("Z", "+00:00")).astimezone(zona)
+                        
+                        # Filtro temporal: Evita partidos que ya comenzaron
+                        if dt_obj < now:
+                            continue
+                            
                         h_name = match.get("teams", {}).get("home", {}).get("name")
                         a_name = match.get("teams", {}).get("away", {}).get("name")
                         h_id = match.get("teams", {}).get("home", {}).get("id")
@@ -178,20 +189,13 @@ def run_process(df_externo=None):
                         
                         proj = analyzer.get_projections(h_name, a_name, h_id, a_id)
                         
-                        date_str = match.get("fixture", {}).get("date", "")
-                        if date_str:
-                            dt_obj = datetime.fromisoformat(date_str.replace("Z", "+00:00")).astimezone(zona)
-                            proj['fecha_str'] = dt_obj.strftime("%Y-%m-%d")
-                            proj['hora'] = dt_obj.strftime("%H:%M")
-                        else:
-                            proj['fecha_str'] = "Desconocida"
-                            proj['hora'] = "00:00"
-                            
+                        proj['fecha_str'] = dt_obj.strftime("%Y-%m-%d")
+                        proj['hora'] = dt_obj.strftime("%H:%M")
                         pais = match.get("league", {}).get("country", "World")
                         liga = match.get("league", {}).get("name", "Unknown")
                         proj['pais'] = pais
                         
-                        target = proyecciones_mañana if match.get("fixture", {}).get("date") > fecha_mañana_str else proyecciones_hoy
+                        target = proyecciones_mañana if dt_obj.strftime("%Y-%m-%d") > fecha_mañana_str else proyecciones_hoy
                         target.setdefault((pais, liga), []).append(proj)
                 except Exception as e:
                     continue
