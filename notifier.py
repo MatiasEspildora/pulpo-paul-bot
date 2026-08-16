@@ -62,10 +62,11 @@ def agrupar_por_pais(proyecciones_dict):
     return agrupado
 
 def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
-    """Reportes agrupados por PAÍS para Fútbol."""
+    """Reportes agrupados por PAÍS para Fútbol ordenados alfabéticamente."""
     agrupado_por_pais = agrupar_por_pais(proyecciones_dict)
     
-    for pais, ligas_del_pais in agrupado_por_pais.items():
+    # ✅ SE APLICA SORTED() PARA ORDENAR POR PAÍS
+    for pais, ligas_del_pais in sorted(agrupado_por_pais.items()):
         bandera = BANDERAS.get(pais, "🏴")
         sufijo = f" ({titulo_bloque})" if titulo_bloque else ""
         
@@ -73,7 +74,8 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
         # Cabecera principal del país
         mensaje_actual = f"🏆 {bandera} *{pais}*{sufijo}\n" + "━"*20 + "\n\n"
         
-        for liga, proyecciones in ligas_del_pais.items():
+        # ✅ SE APLICA SORTED() PARA ORDENAR POR LIGA DENTRO DEL PAÍS
+        for liga, proyecciones in sorted(ligas_del_pais.items()):
             limite_dinamico = min(len(proyecciones), 3)
             top_items = analyzer.get_top_by_league(proyecciones, n=limite_dinamico)
             
@@ -118,17 +120,19 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
             time.sleep(1.5)
 
 def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
-    """Reportes agrupados por PAÍS para Basketball."""
+    """Reportes agrupados por PAÍS para Basketball ordenados alfabéticamente."""
     agrupado_por_pais = agrupar_por_pais(proyecciones_dict)
     
-    for pais, ligas_del_pais in agrupado_por_pais.items():
+    # ✅ SE APLICA SORTED() PARA ORDENAR POR PAÍS
+    for pais, ligas_del_pais in sorted(agrupado_por_pais.items()):
         bandera = BANDERAS.get(pais, "🏴")
         sufijo = f" ({titulo_bloque})" if titulo_bloque else ""
         
         mensajes_a_enviar = []
         mensaje_actual = f"🏀 {bandera} *{pais}*{sufijo}\n" + "━"*20 + "\n\n"
         
-        for liga, proyecciones in ligas_del_pais.items():
+        # ✅ SE APLICA SORTED() PARA ORDENAR POR LIGA DENTRO DEL PAÍS
+        for liga, proyecciones in sorted(ligas_del_pais.items()):
             limite_dinamico = min(len(proyecciones), 3)
             top_items = analyzer.get_top_by_league(proyecciones, n=limite_dinamico)
             
