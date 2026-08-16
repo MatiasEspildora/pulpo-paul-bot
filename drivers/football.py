@@ -178,123 +178,142 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_m
     return df_hist
 
 
-def run_process(df_externo=None):
+ def run_process(df_externo=None):
     os.makedirs("logs/football", exist_ok=True)
     os.makedirs("resultados/football", exist_ok=True)
     
-    API_KEY = os.environ.get("API_FOOTBALL_KEY")
-    api_to_master, _, statuses_map, team_aliases = cargar_configuracion()
-    ligas_permitidas = list(api_to_master.keys())
-    
-    # Cargar histórico desde la carpeta modular mensual
-    df = df_externo if df_externo is not None else cargar_historico_mensual()
-    
-    api = FootballAPI(API_KEY)
-    zona = pytz.timezone('America/Santiago')
-    now = datetime.now(zona)
-    unmapped_teams = []
-    unmapped_leagues = set()
-    
-    fecha_hoy_str = now.strftime("%Y-%m-%d")
-    fecha_mañana_str = (now + timedelta(days=1)).strftime("%Y-%m-%d")
-    
-    # Almacén temporal en memoria para las proyecciones
-    datos_fechas = {}
-    
-    # Procesamiento inteligente de días con caché optimizado
-    meses_afectados = set()
-    for i in range(-1, 2):
-        f_dt = now + timedelta(days=i)
-        meses_afectados.add(pd.Period(f_dt.strftime("%Y-%m"), 'M'))
-        f_str = f_dt.strftime("%Y-%m-%d")
+    try:
+        API_KEY = os.environ.get("API_FOOTBALL_KEY")
+        api_to_master, _, statuses_map, team_aliases = cargar_configuracion()
+        ligas_permitidas = list(api_to_master.keys())
         
-        file_path = f"resultados/football/partidos_{f_str}.json"
-        partidos_del_dia = None
+        # Cargar histórico desde la carpeta modular mensual
+        df = df_externo if df_externo is not None else cargar_historico_mensual()
         
-        # Always attempt to fetch fresh data from the API for the daily process.
-        # If API returns valid response, overwrite cache; otherwise fall back to cached file if present.
-        try:
-            data = api.get_data("fixtures", {"date": f_str, "timezone": "America/Santiago"})
-        except Exception:
-            data = None
-
-        if data and data.get("response"):
-            partidos_del_dia = data["response"]
+        api = FootballAPI(API_KEY)
+        zona = pytz.timezone('America/Santiago')
+        now = datetime.now(zona)
+        unmapped_teams = []
+        unmapped_leagues = set()
+        
+        fecha_hoy_str = now.strftime("%Y-%m-%d")
+        fecha_mañana_str = (now + timedelta(days=1)).strftime("%Y-%m-%d")
+        
+        # Almacén temporal en memoria para las proyecciones
+        datos_fechas = {}
+        meses_afectados = set()
+        
+        print("⚽ [FOOTBALL] Iniciando descarga y actualización de datos...")
+        # Procesamiento inteligente de días con caché optimizado
+        for i in range(-1, 2):
             try:
-                with open(file_path, "w", encoding="utf-8") as f:
-                    json.dump(partidos_del_dia, f, ensure_ascii=False, indent=4)
-            except Exception:
-                # If we fail to write cache, continue — we still have the data in memory
-                pass
-        else:
-            # fallback to cache if API failed or returned no response
-            if os.path.exists(file_path):
-                try:
-                    with open(file_path, "r", encoding="utf-8") as f:
-                        partidos_del_dia = json.load(f)
-                except Exception:
-                    partidos_del_dia = None
-            else:
+                f_dt = now + timedelta(days=i)
+                meses_afectados.add(pd.Period(f_dt.strftime("%Y-%m"), 'M'))
+                f_str = f_dt.strftime("%Y-%m-%d")
+                
+                file_path = f"resultados/football/partidos_{f_str}.json"
                 partidos_del_dia = None
+                
+                try:
+                    data = api.get_data("fixtures", {"date": f_str, "timezone": "America/Santiago"})
+                except Exception:
+                    data = None
+
+                if data and data.get("response"):
+                    partidos_del_dia = data["response"]
+                    try:
+                        with open(file_path, "w", encoding="utf-8") as f:
+                            json.dump(partidos_del_dia, f, ensure_ascii=False, indent=4)
+                    except Exception as e:
+                        print(f"⚠️ [FOOTBALL] Error al guardar caché del {f_str}: {e}")
+                else:
+                    if os.path.exists(file_path):
+                        try:
+                            with open(file_path, "r", encoding="utf-8") as f:
+                                partidos_del_dia = json.load(f)
+                        except Exception:
+                            partidos_del_dia = None
+                    
+                if partidos_del_dia:
+                    datos_fechas[f_str] = partidos_del_dia
+                    df = actualizar_maestro_con_partidos(df, partidos_del_dia, f_str, api_to_master, statuses_map, team_aliases, unmapped_teams, unmapped_leagues)
+            except Exception as e:
+                print(f"❌ [FOOTBALL] Error procesando el día {f_str}: {e}")
+                print(traceback.format_exc())
+                continue # Continuar con el siguiente día aunque falle este
+
+        # Guardar únicamente los meses que sufrieron cambios
+        guardar_historico_mensual(df, meses_afectados)
             
-        if partidos_del_dia:
-            datos_fechas[f_str] = partidos_del_dia
-            df = actualizar_maestro_con_partidos(df, partidos_del_dia, f_str, api_to_master, statuses_map, team_aliases, unmapped_teams, unmapped_leagues)
-    
-    # Guardar únicamente los meses que sufrieron cambios en esta ejecución
-    guardar_historico_mensual(df, meses_afectados)
+        analyzer = MatchAnalyzer(df)
+        proyecciones_hoy, proyecciones_mañana = {}, {}
         
-    analyzer = MatchAnalyzer(df)
-    
-    # Proyecciones reutilizando los datos en memoria
-    proyecciones_hoy, proyecciones_mañana = {}, {}
-    
-    def procesar_lote_partidos(lista_partidos):
-        for match in lista_partidos:
-            # Procesar proyecciones para todas las ligas, usando normalización cuando exista el mapeo
-            liga_id = str(match.get("league", {}).get("id")) if match.get("league") else None
-            master = api_to_master.get(liga_id)
-            if match.get("fixture", {}).get("status", {}).get("short") in statuses_map["upcoming"]:
-                h_name = normalizar_equipo(match.get("teams", {}).get("home", {}).get("name"), master, team_aliases, set(), [])
-                a_name = normalizar_equipo(match.get("teams", {}).get("away", {}).get("name"), master, team_aliases, set(), [])
+        def procesar_lote_partidos(lista_partidos):
+            for match in lista_partidos:
+                try:
+                    liga_id = str(match.get("league", {}).get("id")) if match.get("league") else None
+                    master = api_to_master.get(liga_id)
+                    
+                    if match.get("fixture", {}).get("status", {}).get("short") in statuses_map["upcoming"]:
+                        h_name = normalizar_equipo(match.get("teams", {}).get("home", {}).get("name"), master, team_aliases, set(), [])
+                        a_name = normalizar_equipo(match.get("teams", {}).get("away", {}).get("name"), master, team_aliases, set(), [])
+                        
+                        proj = analyzer.get_projections(h_name, a_name)
+                        
+                        # Extraer la fecha de forma segura
+                        date_str = match.get("fixture", {}).get("date", "")
+                        if date_str:
+                            dt_obj = datetime.fromisoformat(date_str.replace("Z", "+00:00")).astimezone(zona)
+                            proj['fecha_str'] = dt_obj.strftime("%Y-%m-%d")
+                            proj['hora'] = dt_obj.strftime("%H:%M")
+                        else:
+                            proj['fecha_str'] = "Desconocida"
+                            proj['hora'] = "00:00"
+                            
+                        proj['pais'] = match.get("league", {}).get("country")
+                        
+                        target = proyecciones_mañana if match.get("fixture", {}).get("date") > fecha_mañana_str else proyecciones_hoy
+                        target.setdefault(match.get("league", {}).get("name"), []).append(proj)
+                except Exception as e:
+                    match_id = match.get('fixture', {}).get('id', 'Desconocido')
+                    print(f"❌ [FOOTBALL] Error analizando partido ID {match_id}: {e}")
+                    print(traceback.format_exc())
+                    continue # Continuar con el siguiente partido si este falla
+
+        print("⚽ [FOOTBALL] Generando proyecciones...")
+        procesar_lote_partidos(datos_fechas.get(fecha_hoy_str, []))
+        procesar_lote_partidos(datos_fechas.get(fecha_mañana_str, []))
+        
+        # Guardar logs de elementos no mapeados para revisión
+        if unmapped_teams:
+            with open(f"logs/football/unmapped_teams_{now.strftime('%Y%m%d')}.json", "w", encoding="utf-8") as f:
+                json.dump(unmapped_teams, f, ensure_ascii=False, indent=4)
+
+        if unmapped_leagues:
+            def safe_sort_key(item):
+                lid_str = str(item[0])
+                return (0, int(lid_str)) if lid_str.isdigit() else (1, lid_str)
+
+            ul = [{"id": lid, "name": name} for lid, name in sorted(unmapped_leagues, key=safe_sort_key)]
+            with open(f"logs/football/unmapped_leagues_{now.strftime('%Y%m%d')}.json", "w", encoding="utf-8") as f:
+                json.dump(ul, f, ensure_ascii=False, indent=4)
                 
-                proj = analyzer.get_projections(h_name, a_name)
-                proj['fecha_str'] = datetime.fromisoformat(match.get("fixture", {}).get("date")).replace("Z", "+00:00").astimezone(zona).strftime("%Y-%m-%d")
-                proj['hora'] = datetime.fromisoformat(match.get("fixture", {}).get("date")).replace("Z", "+00:00").astimezone(zona).strftime("%H:%M")
-                proj['pais'] = match.get("league", {}).get("country")
-                
-                target = proyecciones_mañana if match.get("fixture", {}).get("date") > fecha_mañana_str else proyecciones_hoy
-                target.setdefault(match.get("league", {}).get("name"), []).append(proj)
+        # Notificaciones
+        if now.hour < 12:
+            titulo_hoy = f"🌅 *INICIO DIA: {fecha_hoy_str}*"
+        else:
+            titulo_hoy = f"🏁 *FIN DIA: {fecha_hoy_str}*"
 
-    procesar_lote_partidos(datos_fechas.get(fecha_hoy_str, []))
-    procesar_lote_partidos(datos_fechas.get(fecha_mañana_str, []))
-    
-    # Guardar logs de elementos no mapeados para revisión
-    if unmapped_teams:
-        with open(f"logs/football/unmapped_teams_{now.strftime('%Y%m%d')}.json", "w", encoding="utf-8") as f:
-            json.dump(unmapped_teams, f, ensure_ascii=False, indent=4)
+        enviar_mensaje_telegram(titulo_hoy)
+        enviar_bloque_reportes(proyecciones_hoy, "", analyzer)
+        
+        if proyecciones_mañana and now.hour >= 22:
+            enviar_mensaje_telegram(f"🚀 *INICIO DIA: {fecha_mañana_str} (Ventana Anticipada)*")
+            enviar_bloque_reportes(proyecciones_mañana, "Madrugada", analyzer)
 
-    if unmapped_leagues:
-        def safe_sort_key(item):
-            lid_str = str(item[0])
-            return (0, int(lid_str)) if lid_str.isdigit() else (1, lid_str)
+        print("✅ [FOOTBALL] Proceso completo con éxito.")
 
-        ul = [{"id": lid, "name": name} for lid, name in sorted(unmapped_leagues, key=safe_sort_key)]
-        with open(f"logs/football/unmapped_leagues_{now.strftime('%Y%m%d')}.json", "w", encoding="utf-8") as f:
-            json.dump(ul, f, ensure_ascii=False, indent=4)
-            
-     # Título dinámico dependiendo de la hora (si es antes de las 12:00, es Inicio de Día)
-    if now.hour < 12:
-        titulo_hoy = f"🌅 *INICIO DIA: {fecha_hoy_str}*"
-    else:
-        titulo_hoy = f"🏁 *FIN DIA: {fecha_hoy_str}*"
+    except Exception as e:
+        print(f"❌ [FOOTBALL] Error crítico en el proceso principal: {e}")
+        print(traceback.format_exc())
 
-    enviar_mensaje_telegram(titulo_hoy)
-    enviar_bloque_reportes(proyecciones_hoy, "", analyzer)
-    
-    # Solo envía la ventana anticipada en la ejecución nocturna (ej. a partir de las 22:00)
-    if proyecciones_mañana and now.hour >= 22:
-        enviar_mensaje_telegram(f"🚀 *INICIO DIA: {fecha_mañana_str} (Ventana Anticipada)*")
-        enviar_bloque_reportes(proyecciones_mañana, "Madrugada", analyzer)
-
-    print("✅ Proceso completo.")
