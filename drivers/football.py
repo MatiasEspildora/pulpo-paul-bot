@@ -8,7 +8,6 @@ import sys
 import time
 import traceback
 
-# Ajuste para importar módulos de la raíz
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from api_client import FootballAPI
@@ -17,31 +16,26 @@ from notifier import enviar_mensaje_telegram, enviar_bloque_reportes
 
 
 def cargar_configuracion():
-    with open("config/football/leagues.json", "r", encoding="utf-8") as f:
-        data = json.load(f)
-        api_to_master = data.get("api_football_to_master", {})
-        master_leagues_info = data.get("master_leagues", {})
+    # Retornamos valores vacíos para mantener compatibilidad con scripts externos
     with open("config/football/statuses.json", "r", encoding="utf-8") as f:
         statuses = json.load(f)["active_providers"]["api_football"]
-    with open("config/football/team_aliases.json", "r", encoding="utf-8") as f:
-        aliases_data = json.load(f)
-    return api_to_master, master_leagues_info, statuses, aliases_data
+    return {}, {}, statuses, {}
 
 
 def cargar_historico_mensual():
     all_files = glob.glob("historico_mensual/football/historico_*.csv")
-    default_cols = ['League', 'LeagueId', 'Country', 'Date', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR', 'HS', 'AS']
+    default_cols = ['League', 'LeagueId', 'Country', 'Date', 'HomeTeamId', 'AwayTeamId', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR', 'HS', 'AS']
     if not all_files:
         return pd.DataFrame(columns=default_cols)
     li = [pd.read_csv(filename) for filename in all_files]
     df = pd.concat(li, axis=0, ignore_index=True)
-    # Asegurar que las columnas existan en historiales antiguos
-    if 'Country' not in df.columns:
-        df['Country'] = ''
-    if 'LeagueId' not in df.columns:
-        df['LeagueId'] = ''
+    
+    if 'Country' not in df.columns: df['Country'] = ''
+    if 'LeagueId' not in df.columns: df['LeagueId'] = ''
+    if 'HomeTeamId' not in df.columns: df['HomeTeamId'] = pd.NA
+    if 'AwayTeamId' not in df.columns: df['AwayTeamId'] = pd.NA
+        
     df['Date'] = pd.to_datetime(df['Date'], format='mixed', errors='coerce').dt.strftime('%Y-%m-%d')
-    # Reordenar columnas para consistencia
     cols_present = [c for c in default_cols if c in df.columns]
     df = df[cols_present + [c for c in df.columns if c not in cols_present]]
     return df
@@ -59,118 +53,52 @@ def guardar_historico_mensual(df, meses_a_actualizar=None):
         if meses_a_actualizar is None or period in meses_a_actualizar:
             filename = f'historico_mensual/football/historico_{period.year}_{period.month:02d}.csv'
             g_clean = group.drop(columns=['Date_dt', 'year_month'], errors='ignore')
-            # Ordenar incluyendo Country para evitar colisiones de ligas con mismo nombre en distintos paises
             sort_cols = ['Date']
-            if 'Country' in g_clean.columns:
-                sort_cols.append('Country')
-            if 'League' in g_clean.columns:
-                sort_cols.append('League')
+            if 'Country' in g_clean.columns: sort_cols.append('Country')
+            if 'League' in g_clean.columns: sort_cols.append('League')
             sort_cols.extend(['HomeTeam', 'AwayTeam'])
             g_clean.sort_values(by=sort_cols, ascending=[False] + [True]*(len(sort_cols)-1)).to_csv(filename, index=False)
             
 
-def normalizar_equipo(nombre, master_league_id, aliases_data, equipos_historicos, unmapped_log):
-    """
-    Normaliza el nombre del equipo usando aliases cuando exista master_league_id.
-    Si master_league_id es None, devolvemos el nombre tal cual (guardamos igualmente para histórico).
-    """
-    # Si no hay mapeo de liga, no intentamos normalizar
-    if not master_league_id:
-        return nombre
-
-    # Intento de mapear usando datos de aliases (mantengo comportamiento simple)
-    global_map = aliases_data.get("global_aliases", {})
-    conflict_map = aliases_data.get("conflicting_aliases", {})
-    liga_conflicto = conflict_map.get(master_league_id, {})
-
-    for n_oficial, variaciones in {**liga_conflicto, **global_map}.items():
-        if nombre == n_oficial or nombre in variaciones:
-            return n_oficial
-
-    # Si no se mapeó, registramos en el log de equipos no mapeados
-    existe_en_historico = nombre in equipos_historicos
-    estado = "EQUIPO_NUEVO" if not existe_en_historico else "ERROR_MAPEO"
-
-    registro = {
-        "team": nombre,
-        "master_league": master_league_id,
-        "status": estado
-    }
-
-    ya_registrado = any(r.get("team") == nombre and r.get("master_league") == master_league_id for r in unmapped_log)
-    if not ya_registrado:
-        unmapped_log.append(registro)
-
-    return nombre
-
-
-def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_master, statuses, aliases_data, unmapped_teams, unmapped_leagues):
-    """
-    Guarda TODOS los partidos finalizados independientemente de si la liga está mapeada.
-    """
-    equipos_historicos = set(df_hist["HomeTeam"].dropna().unique()).union(set(df_hist["AwayTeam"].dropna().unique())) if not df_hist.empty else set()
+def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses):
+    """Guarda TODOS los partidos finalizados mundialmente usando IDs nativos."""
     for match in partidos_lista:
         liga = match.get("league") or {}
         liga_id = liga.get("id") if liga else None
         liga_id_str = str(liga_id) if liga_id is not None else None
-        master_league = api_to_master.get(str(liga_id)) if liga_id else None
 
-        # Si el partido está finalizado, lo guardamos siempre
         if match.get("fixture", {}).get("status", {}).get("short") in statuses["finished"]:
-            # Registrar liga no mapeada
-            if liga_id and not master_league:
-                unmapped_leagues.add((str(liga_id), liga.get("name")))
-
-            h_team = normalizar_equipo(match.get("teams", {}).get("home", {}).get("name"), master_league, aliases_data, equipos_historicos, unmapped_teams)
-            a_team = normalizar_equipo(match.get("teams", {}).get("away", {}).get("name"), master_league, aliases_data, equipos_historicos, unmapped_teams)
+            h_id = match.get("teams", {}).get("home", {}).get("id")
+            a_id = match.get("teams", {}).get("away", {}).get("id")
+            h_team = match.get("teams", {}).get("home", {}).get("name")
+            a_team = match.get("teams", {}).get("away", {}).get("name")
 
             league_name = liga.get("name")
             league_country = liga.get("country")
 
-            # Intento de emparejamiento jerárquico para evitar duplicados
-            if not df_hist.empty and "HomeTeam" in df_hist.columns:
-                base_mask = (
-                    (df_hist["Date"] == fecha_str) &
-                    (df_hist["HomeTeam"] == h_team) &
-                    (df_hist["AwayTeam"] == a_team)
-                )
+            if not df_hist.empty and "HomeTeamId" in df_hist.columns:
+                # 1) Emparejamiento exacto por ID
+                base_mask = (df_hist["Date"] == fecha_str) & (df_hist["HomeTeamId"] == h_id) & (df_hist["AwayTeamId"] == a_id)
+                if base_mask.any():
+                    idx = df_hist[base_mask].index[0]
+                    df_hist.at[idx, "FTHG"], df_hist.at[idx, "FTAG"] = match.get("goals", {}).get("home"), match.get("goals", {}).get("away")
+                    continue
+                    
+                # 2) Respaldo para data Legacy pre-migración (solo por nombre)
+                legacy_mask = (df_hist["Date"] == fecha_str) & (df_hist["HomeTeam"] == h_team) & (df_hist["AwayTeam"] == a_team)
+                if legacy_mask.any():
+                    idx = df_hist[legacy_mask].index[0]
+                    df_hist.at[idx, "FTHG"], df_hist.at[idx, "FTAG"] = match.get("goals", {}).get("home"), match.get("goals", {}).get("away")
+                    df_hist.at[idx, "HomeTeamId"], df_hist.at[idx, "AwayTeamId"] = h_id, a_id
+                    continue
 
-                # 1) por LeagueId (si está disponible y existe columna)
-                if liga_id_str is not None and "LeagueId" in df_hist.columns:
-                    try:
-                        mask = base_mask & (df_hist.get("LeagueId", pd.Series([""] * len(df_hist))).astype(str) == liga_id_str)
-                    except Exception:
-                        mask = base_mask & (df_hist.get("LeagueId", pd.Series([""] * len(df_hist))) == liga_id_str)
-                    if mask.any():
-                        idx = df_hist[mask].index[0]
-                        df_hist.at[idx, "FTHG"], df_hist.at[idx, "FTAG"] = match.get("goals", {}).get("home"), match.get("goals", {}).get("away")
-                        continue
-
-                # 2) por Country + League
-                if league_country and league_name:
-                    country_col = df_hist.get("Country", pd.Series([""] * len(df_hist)))
-                    league_col = df_hist.get("League", pd.Series([""] * len(df_hist)))
-                    mask = base_mask & (country_col == league_country) & (league_col == league_name)
-                    if mask.any():
-                        idx = df_hist[mask].index[0]
-                        df_hist.at[idx, "FTHG"], df_hist.at[idx, "FTAG"] = match.get("goals", {}).get("home"), match.get("goals", {}).get("away")
-                        continue
-
-                # 3) fallback por nombre de liga
-                if league_name:
-                    league_col = df_hist.get("League", pd.Series([""] * len(df_hist)))
-                    mask = base_mask & (league_col == league_name)
-                    if mask.any():
-                        idx = df_hist[mask].index[0]
-                        df_hist.at[idx, "FTHG"], df_hist.at[idx, "FTAG"] = match.get("goals", {}).get("home"), match.get("goals", {}).get("away")
-                        continue
-
-            # Si no había match, insertamos nueva fila
             nuevo = {
                 "League": league_name,
                 "LeagueId": liga_id_str,
                 "Country": league_country,
                 "Date": fecha_str,
+                "HomeTeamId": h_id,
+                "AwayTeamId": a_id,
                 "HomeTeam": h_team,
                 "AwayTeam": a_team,
                 "FTHG": match.get("goals", {}).get("home"),
@@ -186,27 +114,21 @@ def run_process(df_externo=None):
     
     try:
         API_KEY = os.environ.get("API_FOOTBALL_KEY")
-        api_to_master, _, statuses_map, team_aliases = cargar_configuracion()
-        ligas_permitidas = list(api_to_master.keys())
+        _, _, statuses_map, _ = cargar_configuracion()
         
-        # Cargar histórico desde la carpeta modular mensual
         df = df_externo if df_externo is not None else cargar_historico_mensual()
         
         api = FootballAPI(API_KEY)
         zona = pytz.timezone('America/Santiago')
         now = datetime.now(zona)
-        unmapped_teams = []
-        unmapped_leagues = set()
         
         fecha_hoy_str = now.strftime("%Y-%m-%d")
         fecha_mañana_str = (now + timedelta(days=1)).strftime("%Y-%m-%d")
         
-        # Almacén temporal en memoria para las proyecciones
         datos_fechas = {}
         meses_afectados = set()
         
-        print("⚽ [FOOTBALL] Iniciando descarga y actualización de datos...")
-        # Procesamiento inteligente de días con caché optimizado
+        print("⚽ [FOOTBALL] Iniciando descarga y actualización global...")
         for i in range(-1, 2):
             try:
                 f_dt = now + timedelta(days=i)
@@ -227,7 +149,7 @@ def run_process(df_externo=None):
                         with open(file_path, "w", encoding="utf-8") as f:
                             json.dump(partidos_del_dia, f, ensure_ascii=False, indent=4)
                     except Exception as e:
-                        print(f"⚠️ [FOOTBALL] Error al guardar caché del {f_str}: {e}")
+                        print(f"⚠️ [FOOTBALL] Error al guardar caché: {e}")
                 else:
                     if os.path.exists(file_path):
                         try:
@@ -238,13 +160,12 @@ def run_process(df_externo=None):
                     
                 if partidos_del_dia:
                     datos_fechas[f_str] = partidos_del_dia
-                    df = actualizar_maestro_con_partidos(df, partidos_del_dia, f_str, api_to_master, statuses_map, team_aliases, unmapped_teams, unmapped_leagues)
+                    df = actualizar_maestro_con_partidos(df, partidos_del_dia, f_str, statuses_map)
             except Exception as e:
                 print(f"❌ [FOOTBALL] Error procesando el día {f_str}: {e}")
                 print(traceback.format_exc())
-                continue # Continuar con el siguiente día aunque falle este
+                continue 
 
-        # Guardar únicamente los meses que sufrieron cambios
         guardar_historico_mensual(df, meses_afectados)
             
         analyzer = MatchAnalyzer(df)
@@ -253,16 +174,14 @@ def run_process(df_externo=None):
         def procesar_lote_partidos(lista_partidos):
             for match in lista_partidos:
                 try:
-                    liga_id = str(match.get("league", {}).get("id")) if match.get("league") else None
-                    master = api_to_master.get(liga_id)
-                    
                     if match.get("fixture", {}).get("status", {}).get("short") in statuses_map["upcoming"]:
-                        h_name = normalizar_equipo(match.get("teams", {}).get("home", {}).get("name"), master, team_aliases, set(), [])
-                        a_name = normalizar_equipo(match.get("teams", {}).get("away", {}).get("name"), master, team_aliases, set(), [])
+                        h_name = match.get("teams", {}).get("home", {}).get("name")
+                        a_name = match.get("teams", {}).get("away", {}).get("name")
+                        h_id = match.get("teams", {}).get("home", {}).get("id")
+                        a_id = match.get("teams", {}).get("away", {}).get("id")
                         
-                        proj = analyzer.get_projections(h_name, a_name)
+                        proj = analyzer.get_projections(h_name, a_name, h_id, a_id)
                         
-                        # Extraer la fecha de forma segura
                         date_str = match.get("fixture", {}).get("date", "")
                         if date_str:
                             dt_obj = datetime.fromisoformat(date_str.replace("Z", "+00:00")).astimezone(zona)
@@ -277,34 +196,14 @@ def run_process(df_externo=None):
                         target = proyecciones_mañana if match.get("fixture", {}).get("date") > fecha_mañana_str else proyecciones_hoy
                         target.setdefault(match.get("league", {}).get("name"), []).append(proj)
                 except Exception as e:
-                    match_id = match.get('fixture', {}).get('id', 'Desconocido')
-                    print(f"❌ [FOOTBALL] Error analizando partido ID {match_id}: {e}")
-                    print(traceback.format_exc())
-                    continue # Continuar con el siguiente partido si este falla
+                    continue
 
-        print("⚽ [FOOTBALL] Generando proyecciones...")
+        print("⚽ [FOOTBALL] Generando proyecciones globales...")
         procesar_lote_partidos(datos_fechas.get(fecha_hoy_str, []))
         procesar_lote_partidos(datos_fechas.get(fecha_mañana_str, []))
-        
-        # Guardar logs de elementos no mapeados para revisión
-        if unmapped_teams:
-            with open(f"logs/football/unmapped_teams_{now.strftime('%Y%m%d')}.json", "w", encoding="utf-8") as f:
-                json.dump(unmapped_teams, f, ensure_ascii=False, indent=4)
-
-        if unmapped_leagues:
-            def safe_sort_key(item):
-                lid_str = str(item[0])
-                return (0, int(lid_str)) if lid_str.isdigit() else (1, lid_str)
-
-            ul = [{"id": lid, "name": name} for lid, name in sorted(unmapped_leagues, key=safe_sort_key)]
-            with open(f"logs/football/unmapped_leagues_{now.strftime('%Y%m%d')}.json", "w", encoding="utf-8") as f:
-                json.dump(ul, f, ensure_ascii=False, indent=4)
                 
-        # Notificaciones
-        if now.hour < 12:
-            titulo_hoy = f"🌅 *INICIO DIA: {fecha_hoy_str}*"
-        else:
-            titulo_hoy = f"🏁 *FIN DIA: {fecha_hoy_str}*"
+        if now.hour < 12: titulo_hoy = f"🌅 *INICIO DIA: {fecha_hoy_str}*"
+        else: titulo_hoy = f"🏁 *FIN DIA: {fecha_hoy_str}*"
 
         enviar_mensaje_telegram(titulo_hoy)
         enviar_bloque_reportes(proyecciones_hoy, "", analyzer)
@@ -316,5 +215,5 @@ def run_process(df_externo=None):
         print("✅ [FOOTBALL] Proceso completo con éxito.")
 
     except Exception as e:
-        print(f"❌ [FOOTBALL] Error crítico en el proceso principal: {e}")
+        print(f"❌ [FOOTBALL] Error crítico: {e}")
         print(traceback.format_exc())
