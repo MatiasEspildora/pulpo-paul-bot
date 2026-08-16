@@ -1,0 +1,73 @@
+name: Manual backfill process resultados/basketball JSONs
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    name: Run backfill (manual) for Basketball
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Debug - listar resultados/basketball
+        run: |
+          echo "Ref: $GITHUB_REF"
+          echo "SHA: $GITHUB_SHA"
+          echo "PWD: $(pwd)"
+          echo "Files in repo root:"
+          ls -la
+          echo "Files in resultados/basketball:"
+          ls -la resultados/basketball || true
+          echo "Git tracked files matching pattern:"
+          git ls-files 'resultados/basketball/basket_partidos_*.json' || true
+
+      - name: Add repo root to PYTHONPATH
+        run: echo "PYTHONPATH=${GITHUB_WORKSPACE}" >> $GITHUB_ENV
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi
+          python -m pip install pandas pytz
+
+      - name: Run backfill (process all basketball JSONs)
+        run: |
+          python test/carga_manual_basket.py --all
+
+      - name: Commit historico_mensual/ and logs/ if changed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Resolve branch name robustly
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          BRANCH_NAME="${GITHUB_REF_NAME:-$BRANCH_NAME}"
+          BRANCH_NAME="${GITHUB_HEAD_REF:-$BRANCH_NAME}"
+          BRANCH_NAME="${BRANCH_NAME:-main}"
+
+          # Add only if the directories exist
+          [ -d historico_mensual/basketball ] && git add historico_mensual/basketball
+          [ -d logs/basketball ] && git add logs/basketball
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "ci(backfill): update basketball historico_mensual and logs via manual workflow"
+            git push origin HEAD:"$BRANCH_NAME"
+          fi
