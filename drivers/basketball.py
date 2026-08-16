@@ -29,7 +29,6 @@ def cargar_historico_mensual_basket():
     li = [pd.read_csv(filename) for filename in all_files]
     df = pd.concat(li, axis=0, ignore_index=True)
     
-    # Asegurar columnas nuevas
     if 'LeagueId' not in df.columns: df['LeagueId'] = ''
     if 'HomeTeamId' not in df.columns: df['HomeTeamId'] = pd.NA
     if 'AwayTeamId' not in df.columns: df['AwayTeamId'] = pd.NA
@@ -75,7 +74,6 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
             has_ot = bool(h_ot > 0 or a_ot > 0)
             
             if not df_hist.empty and "HomeTeamId" in df_hist.columns:
-                # Cruce principal por ID
                 mask = (df_hist["Date"] == fecha_str) & (df_hist["HomeTeamId"] == h_id) & (df_hist["AwayTeamId"] == a_id)
                 if mask.any():
                     idx = df_hist[mask].index[0]
@@ -83,7 +81,6 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
                     df_hist.at[idx, "HasOT"], df_hist.at[idx, "Home_OT"], df_hist.at[idx, "Away_OT"] = has_ot, h_ot, a_ot
                     continue
                     
-                # Respaldo Legacy (por si el CSV antiguo aún no tiene el ID inyectado)
                 legacy_mask = (df_hist["Date"] == fecha_str) & (df_hist["HomeTeam"] == h_team) & (df_hist["AwayTeam"] == a_team)
                 if legacy_mask.any():
                     idx = df_hist[legacy_mask].index[0]
@@ -170,16 +167,19 @@ def run_process(df_externo=None):
                 h_id = match["teams"]["home"]["id"]
                 a_id = match["teams"]["away"]["id"]
                 
-                # ✅ Ahora le pasamos los 4 parámetros + la data completa del partido
                 proj = analyzer.get_basketball_projections(h_name, a_name, h_id, a_id, match)
                 
                 game_date = match.get("date", datetime.now().isoformat())
                 proj['fecha_str'] = datetime.fromisoformat(game_date.replace("Z", "+00:00")).astimezone(zona).strftime("%Y-%m-%d")
                 proj['hora'] = datetime.fromisoformat(game_date.replace("Z", "+00:00")).astimezone(zona).strftime("%H:%M")
-                proj['pais'] = match.get("country", {}).get("name", "World")
+                
+                pais_obj = match.get("country", {})
+                pais = pais_obj.get("name", "World") if isinstance(pais_obj, dict) else (pais_obj or "World")
+                liga = match.get("league", {}).get("name", "Unknown")
+                proj['pais'] = pais
                 
                 target = proyecciones_mañana if proj['fecha_str'] == fecha_mañana_str else proyecciones_hoy
-                target.setdefault(match["league"]["name"], []).append(proj)
+                target.setdefault((pais, liga), []).append(proj)
 
     print("🏀 [BASKETBALL] Generando proyecciones globales...")
     procesar_lote_partidos(datos_fechas.get(fecha_hoy_str, []))
