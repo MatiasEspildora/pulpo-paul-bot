@@ -1,6 +1,7 @@
 import os
 import json
 import requests
+import time  # 👈 Importante para evitar el Error 429
 
 TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
@@ -18,7 +19,7 @@ def cargar_banderas():
 BANDERAS = cargar_banderas()
 
 def enviar_mensaje_telegram(mensaje, token_override=None):
-    """Dispara un mensaje directo a Telegram usando el token indicado o el general."""
+    """Dispara un mensaje directo a Telegram usando el token indicado o el general, manejando Rate Limits."""
     token_activo = token_override or os.environ.get("TELEGRAM_BOT_TOKEN")
     chat_id = os.environ.get("TELEGRAM_CHAT_ID")
     if token_activo and chat_id:
@@ -27,6 +28,17 @@ def enviar_mensaje_telegram(mensaje, token_override=None):
                 f"https://api.telegram.org/bot{token_activo}/sendMessage", 
                 data={"chat_id": chat_id, "text": mensaje, "parse_mode": "Markdown"}
             )
+            
+            # 🛡️ Manejo inteligente del límite de envíos (Error 429)
+            if res.status_code == 429:
+                error_data = res.json()
+                # Telegram nos dice exactamente cuántos segundos esperar
+                espera = error_data.get("parameters", {}).get("retry_after", 5)
+                print(f"⏳ Límite de Telegram alcanzado. Esperando {espera} segundos...")
+                time.sleep(espera)
+                # Reintentamos enviar el mismo mensaje tras la pausa
+                return enviar_mensaje_telegram(mensaje, token_override=token_override)
+
             if not res.ok:
                 print(f"⚠️ Error al enviar a Telegram: {res.text}")
         except Exception as e:
@@ -42,6 +54,11 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
         limite_dinamico = min(len(proyecciones), 3)
         top_items = analyzer.get_top_by_league(proyecciones, n=limite_dinamico)
         pais_liga = top_items[0].get('pais', 'World') if top_items else 'World'
+        
+        # Blindaje defensivo por si viene un diccionario desde la API
+        if isinstance(pais_liga, dict):
+            pais_liga = pais_liga.get('name', 'World')
+            
         bandera = BANDERAS.get(pais_liga, "🏴")
 
         sufijo = f" ({titulo_bloque})" if titulo_bloque else ""
@@ -73,6 +90,9 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
                 mensaje += "⚠️ *Sin historial suficiente para promedios detallados.*\n\n"
 
         enviar_mensaje_telegram(mensaje, token_override=token_override)
+        
+        # 🛡️ Prevención: Pausa de 1.5 segundos entre cada liga para no saturar a Telegram
+        time.sleep(1.5)
 
 def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
     """Construye y envía el reporte específico para Basketball incluyendo datos de Overtime."""
@@ -82,6 +102,11 @@ def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, to
         limite_dinamico = min(len(proyecciones), 3)
         top_items = analyzer.get_top_by_league(proyecciones, n=limite_dinamico)
         pais_liga = top_items[0].get('pais', 'World') if top_items else 'World'
+        
+        # Blindaje defensivo por si viene un diccionario desde la API
+        if isinstance(pais_liga, dict):
+            pais_liga = pais_liga.get('name', 'World')
+            
         bandera = BANDERAS.get(pais_liga, "🏴")
 
         sufijo = f" ({titulo_bloque})" if titulo_bloque else ""
@@ -118,3 +143,6 @@ def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, to
                 mensaje += "⚠️ *Sin historial suficiente para promedios de anotación.*\n\n"
 
         enviar_mensaje_telegram(mensaje, token_override=token_override)
+        
+        # 🛡️ Prevención: Pausa de 1.5 segundos entre cada liga para no saturar a Telegram
+        time.sleep(1.5)
