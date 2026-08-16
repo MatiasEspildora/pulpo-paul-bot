@@ -16,7 +16,6 @@ from notifier import enviar_mensaje_telegram, enviar_bloque_reportes
 
 
 def cargar_configuracion():
-    # Retornamos valores vacíos para mantener compatibilidad con scripts externos
     with open("config/football/statuses.json", "r", encoding="utf-8") as f:
         statuses = json.load(f)["active_providers"]["api_football"]
     return {}, {}, statuses, {}
@@ -61,7 +60,6 @@ def guardar_historico_mensual(df, meses_a_actualizar=None):
             
 
 def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses):
-    """Guarda TODOS los partidos finalizados mundialmente usando IDs nativos."""
     for match in partidos_lista:
         liga = match.get("league") or {}
         liga_id = liga.get("id") if liga else None
@@ -77,14 +75,12 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
             league_country = liga.get("country")
 
             if not df_hist.empty and "HomeTeamId" in df_hist.columns:
-                # 1) Emparejamiento exacto por ID
                 base_mask = (df_hist["Date"] == fecha_str) & (df_hist["HomeTeamId"] == h_id) & (df_hist["AwayTeamId"] == a_id)
                 if base_mask.any():
                     idx = df_hist[base_mask].index[0]
                     df_hist.at[idx, "FTHG"], df_hist.at[idx, "FTAG"] = match.get("goals", {}).get("home"), match.get("goals", {}).get("away")
                     continue
                     
-                # 2) Respaldo para data Legacy pre-migración (solo por nombre)
                 legacy_mask = (df_hist["Date"] == fecha_str) & (df_hist["HomeTeam"] == h_team) & (df_hist["AwayTeam"] == a_team)
                 if legacy_mask.any():
                     idx = df_hist[legacy_mask].index[0]
@@ -191,10 +187,12 @@ def run_process(df_externo=None):
                             proj['fecha_str'] = "Desconocida"
                             proj['hora'] = "00:00"
                             
-                        proj['pais'] = match.get("league", {}).get("country")
+                        pais = match.get("league", {}).get("country", "World")
+                        liga = match.get("league", {}).get("name", "Unknown")
+                        proj['pais'] = pais
                         
                         target = proyecciones_mañana if match.get("fixture", {}).get("date") > fecha_mañana_str else proyecciones_hoy
-                        target.setdefault(match.get("league", {}).get("name"), []).append(proj)
+                        target.setdefault((pais, liga), []).append(proj)
                 except Exception as e:
                     continue
 
