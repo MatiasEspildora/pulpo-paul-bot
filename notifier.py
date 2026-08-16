@@ -53,6 +53,49 @@ def agrupar_por_pais(proyecciones_dict):
         agrupado[pais][liga] = proyecciones
     return agrupado
 
+def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, token_override=None, is_basket=False):
+    """Genera y envía un TOP 5 absoluto de las proyecciones más seguras del día."""
+    todas_las_proyecciones = []
+    
+    for pais, ligas in agrupar_por_pais(proyecciones_dict).items():
+        for liga, projs in ligas.items():
+            for p in projs:
+                p['liga_nombre'] = liga
+                p['pais_nombre'] = pais
+                todas_las_proyecciones.append(p)
+                
+    if not todas_las_proyecciones:
+        return
+
+    # Ordenamos por la probabilidad más alta del partido
+    todas_las_proyecciones.sort(key=lambda x: x.get('score_value', 0), reverse=True)
+    top_5 = todas_las_proyecciones[:5]
+    
+    deporte_icono = "🏀" if is_basket else "⚽"
+    sufijo = f" ({titulo_bloque})" if titulo_bloque else ""
+    mensaje_resumen = f"💎 *TOP 5 MEJORES PICKS{sufijo}* 💎\n" + "━"*20 + "\n\n"
+    
+    for i, p in enumerate(top_5, 1):
+        prob = p.get('score_value', 0)
+        hora = p.get('hora', '')
+        
+        if is_basket:
+            pick = p['local'] if p['prob_home'] > p['prob_away'] else p['visita']
+            mensaje_resumen += f"*{i}.* {deporte_icono} {p['local']} vs {p['visita']}\n"
+            mensaje_resumen += f"   🏆 {p['pais_nombre']} - {p['liga_nombre']} | 🕒 {hora}\n"
+            mensaje_resumen += f"   🎯 *Pick:* {pick} ({prob:.0%})\n\n"
+        else:
+            probs = p['probs']
+            max_idx = probs.index(max(probs))
+            opciones = [p['local'], "Empate", p['visita']]
+            pick = opciones[max_idx]
+            
+            mensaje_resumen += f"*{i}.* {deporte_icono} {p['local']} vs {p['visita']}\n"
+            mensaje_resumen += f"   🏆 {p['pais_nombre']} - {p['liga_nombre']} | 🕒 {hora}\n"
+            mensaje_resumen += f"   🎯 *Pick:* {pick} ({prob:.0%})\n\n"
+            
+    enviar_mensaje_telegram(mensaje_resumen, token_override=token_override)
+
 def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
     agrupado_por_pais = agrupar_por_pais(proyecciones_dict)
     
@@ -64,12 +107,11 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
         mensaje_actual = f"🏆 {bandera} *{pais}*{sufijo}\n" + "━"*20 + "\n\n"
         
         for liga, proyecciones in sorted(ligas_del_pais.items()):
-            top_items = proyecciones # ✅ Sin límite
+            top_items = proyecciones 
             
             bloque_liga = f"📌 *{liga} - TOTAL ({len(top_items)})*\n\n"
             
             for p in top_items:
-                # ✅ Pasando los IDs nativos al analizador
                 s_l = analyzer.get_team_stats(p['local'], p.get('local_id'))
                 s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'))
                 
@@ -107,6 +149,8 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
         for msg in mensajes_a_enviar:
             enviar_mensaje_telegram(msg, token_override=token_override)
             time.sleep(1.5)
+            
+    enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, token_override, is_basket=False)
 
 def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
     agrupado_por_pais = agrupar_por_pais(proyecciones_dict)
@@ -119,12 +163,11 @@ def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, to
         mensaje_actual = f"🏀 {bandera} *{pais}*{sufijo}\n" + "━"*20 + "\n\n"
         
         for liga, proyecciones in sorted(ligas_del_pais.items()):
-            top_items = proyecciones # ✅ Sin límite
+            top_items = proyecciones
             
             bloque_liga = f"📌 *{liga} - TOTAL ({len(top_items)})*\n\n"
             
             for p in top_items:
-                # ✅ Pasando los IDs
                 s_l = analyzer.get_basketball_team_stats(p['local'], p.get('local_id'))
                 s_v = analyzer.get_basketball_team_stats(p['visita'], p.get('visita_id'))
                 ot_l = analyzer.get_basketball_overtime_stats(p['local'], p.get('local_id'))
@@ -165,3 +208,5 @@ def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, to
         for msg in mensajes_a_enviar:
             enviar_mensaje_telegram(msg, token_override=token_override)
             time.sleep(1.5)
+
+    enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, token_override, is_basket=True)
