@@ -46,11 +46,9 @@ def agrupar_por_pais(proyecciones_dict):
         if not proyecciones:
             continue
         
-        # Soporte para la nueva llave doble (País, Liga)
         if isinstance(key, tuple):
             pais, liga = key
         else:
-            # Respaldo por si llega un formato antiguo
             liga = key
             p_info = proyecciones[0].get('pais', 'World')
             pais = p_info.get('name', 'World') if isinstance(p_info, dict) else (p_info or 'World')
@@ -58,7 +56,6 @@ def agrupar_por_pais(proyecciones_dict):
         if pais not in agrupado:
             agrupado[pais] = {}
         
-        # Agregamos las proyecciones sin sobrescribir ligas con el mismo nombre
         if liga not in agrupado[pais]:
             agrupado[pais][liga] = []
         agrupado[pais][liga].extend(proyecciones)
@@ -66,7 +63,7 @@ def agrupar_por_pais(proyecciones_dict):
     return agrupado
 
 def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, token_override=None, is_basket=False):
-    """Genera y envía un TOP 5 absoluto de las proyecciones más seguras del día."""
+    """Genera y envía un TOP 10, dándole prioridad de visualización a Chile."""
     todas_las_proyecciones = []
     
     for pais, ligas in agrupar_por_pais(proyecciones_dict).items():
@@ -79,21 +76,33 @@ def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, token_over
     if not todas_las_proyecciones:
         return
 
+    # 1. Obtenemos el Top 10 matemático absoluto
     todas_las_proyecciones.sort(key=lambda x: x.get('score_value', 0), reverse=True)
-    top_5 = todas_las_proyecciones[:5]
+    top_10 = todas_las_proyecciones[:10]
+    
+    # 2. Ordenamos: Primero Chile (cronológicamente), luego el Resto del Mundo (cronológicamente)
+    top_10.sort(key=lambda x: (
+        0 if x.get('pais_nombre') == 'Chile' else 1, 
+        x.get('fecha_str', ''), 
+        x.get('hora', '')
+    ))
     
     deporte_icono = "🏀" if is_basket else "⚽"
     sufijo = f" ({titulo_bloque})" if titulo_bloque else ""
-    mensaje_resumen = f"💎 *TOP 5 MEJORES PICKS{sufijo}* 💎\n" + "━"*20 + "\n\n"
+    mensaje_resumen = f"💎 *TOP 10 MEJORES PICKS{sufijo}* 💎\n" + "━"*20 + "\n\n"
     
-    for i, p in enumerate(top_5, 1):
+    for i, p in enumerate(top_10, 1):
         prob = p.get('score_value', 0)
         hora = p.get('hora', '')
+        fecha = p.get('fecha_str', '')
+        
+        # Le ponemos un pequeño indicador visual si es de Chile
+        flag = "🇨🇱 " if p['pais_nombre'] == 'Chile' else ""
         
         if is_basket:
             pick = p['local'] if p['prob_home'] > p['prob_away'] else p['visita']
-            mensaje_resumen += f"*{i}.* {deporte_icono} {p['local']} vs {p['visita']}\n"
-            mensaje_resumen += f"   🏆 {p['pais_nombre']} - {p['liga_nombre']} | 🕒 {hora}\n"
+            mensaje_resumen += f"*{i}.* {flag}{deporte_icono} {p['local']} vs {p['visita']}\n"
+            mensaje_resumen += f"   🏆 {p['pais_nombre']} - {p['liga_nombre']} | 📅 {fecha} 🕒 {hora}\n"
             mensaje_resumen += f"   🎯 *Pick:* {pick} ({prob:.0%})\n\n"
         else:
             probs = p['probs']
@@ -101,8 +110,8 @@ def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, token_over
             opciones = [p['local'], "Empate", p['visita']]
             pick = opciones[max_idx]
             
-            mensaje_resumen += f"*{i}.* {deporte_icono} {p['local']} vs {p['visita']}\n"
-            mensaje_resumen += f"   🏆 {p['pais_nombre']} - {p['liga_nombre']} | 🕒 {hora}\n"
+            mensaje_resumen += f"*{i}.* {flag}{deporte_icono} {p['local']} vs {p['visita']}\n"
+            mensaje_resumen += f"   🏆 {p['pais_nombre']} - {p['liga_nombre']} | 📅 {fecha} 🕒 {hora}\n"
             mensaje_resumen += f"   🎯 *Pick:* {pick} ({prob:.0%})\n\n"
             
     enviar_mensaje_telegram(mensaje_resumen, token_override=token_override)
