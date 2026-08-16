@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 import pytz
 import sys
 import time
+import traceback
 
 # Ajuste para importar módulos de la raíz
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -39,7 +40,7 @@ def cargar_historico_mensual():
         df['Country'] = ''
     if 'LeagueId' not in df.columns:
         df['LeagueId'] = ''
-    df['Date'] = pd.to_datetime(df['Date'], format='mixed').dt.strftime('%Y-%m-%d')
+    df['Date'] = pd.to_datetime(df['Date'], format='mixed', errors='coerce').dt.strftime('%Y-%m-%d')
     # Reordenar columnas para consistencia
     cols_present = [c for c in default_cols if c in df.columns]
     df = df[cols_present + [c for c in df.columns if c not in cols_present]]
@@ -49,10 +50,12 @@ def cargar_historico_mensual():
 def guardar_historico_mensual(df, meses_a_actualizar=None):
     os.makedirs("historico_mensual/football", exist_ok=True)
     df_temp = df.copy()
-    df_temp['Date_dt'] = pd.to_datetime(df_temp['Date'], format='mixed')
+    df_temp['Date_dt'] = pd.to_datetime(df_temp['Date'], format='mixed', errors='coerce')
     df_temp['year_month'] = df_temp['Date_dt'].dt.to_period('M')
     
     for period, group in df_temp.groupby('year_month'):
+        if pd.isna(period):
+            continue
         if meses_a_actualizar is None or period in meses_a_actualizar:
             filename = f'historico_mensual/football/historico_{period.year}_{period.month:02d}.csv'
             g_clean = group.drop(columns=['Date_dt', 'year_month'], errors='ignore')
@@ -103,8 +106,7 @@ def normalizar_equipo(nombre, master_league_id, aliases_data, equipos_historicos
 
 def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_master, statuses, aliases_data, unmapped_teams, unmapped_leagues):
     """
-    Ahora guarda TODOS los partidos finalizados independientemente de si la liga está mapeada.
-    Si la liga no está en api_to_master, se agrega a unmapped_leagues para revisión.
+    Guarda TODOS los partidos finalizados independientemente de si la liga está mapeada.
     """
     equipos_historicos = set(df_hist["HomeTeam"].dropna().unique()).union(set(df_hist["AwayTeam"].dropna().unique())) if not df_hist.empty else set()
     for match in partidos_lista:
@@ -178,7 +180,7 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_m
     return df_hist
 
 
- def run_process(df_externo=None):
+def run_process(df_externo=None):
     os.makedirs("logs/football", exist_ok=True)
     os.makedirs("resultados/football", exist_ok=True)
     
@@ -316,4 +318,3 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, api_to_m
     except Exception as e:
         print(f"❌ [FOOTBALL] Error crítico en el proceso principal: {e}")
         print(traceback.format_exc())
-
