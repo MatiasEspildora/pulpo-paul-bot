@@ -8,12 +8,9 @@ class MatchAnalyzer:
         if 'Date' in self.df.columns:
             self.df['Date'] = pd.to_datetime(self.df['Date'], errors='coerce')
 
-    def get_team_stats(self, team_name):
-        """
-        Calcula estadísticas de forma flexible (Momentum puro para visualización). 
-        Si hay datos estadísticos detallados (córners, tarjetas, remates), los retorna.
-        """
-        matches = self.df[(self.df["HomeTeam"] == team_name) | (self.df["AwayTeam"] == team_name)]
+    def get_team_stats(self, team_name, team_id):
+        """Calcula estadísticas usando el ID nativo para evitar fallos por cambios de nombre."""
+        matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)]
         matches = matches.dropna(subset=["FTHG", "FTAG"])
         matches = matches.sort_values(by="Date", ascending=False)
         recent = matches.head(5)
@@ -22,10 +19,9 @@ class MatchAnalyzer:
         if recent.empty or count == 0:
             return {"has_details": False, "goles_favor": 0.0, "goles_contra": 0.0, "count": 0}
 
-        # Verificamos si la primera fila reciente tiene datos reales de córners (HC/AC)
         primer_row = recent.iloc[0]
         tiene_detalles = False
-        if primer_row["HomeTeam"] == team_name:
+        if primer_row["HomeTeamId"] == team_id:
             if pd.notna(primer_row.get("HC")) or pd.notna(primer_row.get("HS")):
                 tiene_detalles = True
         else:
@@ -36,7 +32,7 @@ class MatchAnalyzer:
         corners, tarjetas, remates = [], [], []
 
         for _, row in recent.iterrows():
-            if row["HomeTeam"] == team_name:
+            if row["HomeTeamId"] == team_id:
                 goles_favor.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
                 goles_contra.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
             else:
@@ -45,7 +41,7 @@ class MatchAnalyzer:
 
         if tiene_detalles:
             for _, row in recent.iterrows():
-                if row["HomeTeam"] == team_name:
+                if row["HomeTeamId"] == team_id:
                     corners.append(row["HC"] if pd.notna(row["HC"]) else 0)
                     tarjetas.append((row["HY"] if pd.notna(row["HY"]) else 0) + (row["HR"] if pd.notna(row["HR"]) else 0))
                     remates.append(row["HS"] if pd.notna(row["HS"]) else 0)
@@ -64,14 +60,13 @@ class MatchAnalyzer:
             "count": count,
         }
 
-    def get_projections(self, home_team, away_team):
-        """Modelo predictivo para fútbol usando Doble Métrica (Momentum + Localía)."""
-        # --- FUNCIÓN AUXILIAR PARA CALCULAR PROMEDIOS ---
-        def get_avg_goals(df_subset, team_name):
-            if df_subset.empty: return 1.2, 1.2 # Valores por defecto si no hay datos
+    def get_projections(self, home_team, away_team, home_id, away_id):
+        """Modelo predictivo para fútbol usando Doble Métrica basado en IDs."""
+        def get_avg_goals(df_subset, team_id):
+            if df_subset.empty: return 1.2, 1.2 
             goles_f, goles_c = [], []
             for _, row in df_subset.iterrows():
-                if row["HomeTeam"] == team_name:
+                if row["HomeTeamId"] == team_id:
                     goles_f.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
                     goles_c.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
                 else:
@@ -79,31 +74,27 @@ class MatchAnalyzer:
                     goles_c.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
             return float(np.nanmean(goles_f)), float(np.nanmean(goles_c))
 
-        # --- 1. MOMENTUM GLOBAL (Estado de forma actual) ---
-        home_global = self.df[(self.df['HomeTeam'] == home_team) | (self.df['AwayTeam'] == home_team)]
+        home_global = self.df[(self.df['HomeTeamId'] == home_id) | (self.df['AwayTeamId'] == home_id)]
         home_global = home_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
 
-        away_global = self.df[(self.df['HomeTeam'] == away_team) | (self.df['AwayTeam'] == away_team)]
+        away_global = self.df[(self.df['HomeTeamId'] == away_id) | (self.df['AwayTeamId'] == away_id)]
         away_global = away_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
 
-        hg_f_glob, hg_c_glob = get_avg_goals(home_global, home_team)
-        ag_f_glob, ag_c_glob = get_avg_goals(away_global, away_team)
+        hg_f_glob, hg_c_glob = get_avg_goals(home_global, home_id)
+        ag_f_glob, ag_c_glob = get_avg_goals(away_global, away_id)
 
-        # --- 2. FACTOR LOCALÍA (Rendimiento en el estadio) ---
-        home_venue = self.df[self.df['HomeTeam'] == home_team].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
-        away_venue = self.df[self.df['AwayTeam'] == away_team].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
+        home_venue = self.df[self.df['HomeTeamId'] == home_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
+        away_venue = self.df[self.df['AwayTeamId'] == away_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
 
-        hg_f_ven, hg_c_ven = get_avg_goals(home_venue, home_team)
-        ag_f_ven, ag_c_ven = get_avg_goals(away_venue, away_team)
+        hg_f_ven, hg_c_ven = get_avg_goals(home_venue, home_id)
+        ag_f_ven, ag_c_ven = get_avg_goals(away_venue, away_id)
 
-        # --- 3. COMBINACIÓN DE DOBLE MÉTRICA ---
         home_scored_avg = (hg_f_glob + hg_f_ven) / 2
         home_concede_avg = (hg_c_glob + hg_c_ven) / 2
 
         away_scored_avg = (ag_f_glob + ag_f_ven) / 2
         away_concede_avg = (ag_c_glob + ag_c_ven) / 2
 
-        # --- 4. CÁLCULO DE POISSON ---
         lambda_home = (home_scored_avg + away_concede_avg) / 2
         lambda_away = (away_scored_avg + home_concede_avg) / 2
 
@@ -126,16 +117,16 @@ class MatchAnalyzer:
         return {
             'local': home_team,
             'visita': away_team,
+            'local_id': home_id,    # Agregado para notifier
+            'visita_id': away_id,   # Agregado para notifier
             'probs': [prob_home, prob_draw, prob_away],
             'btts': btts,
             'scores': top_scores,
             'score_value': max(prob_home, prob_draw, prob_away)
         }
 
-    # --- MODELO PREDICTIVO ESPECÍFICO PARA BASKETBALL ---
-    def get_basketball_team_stats(self, team_name):
-        """Calcula promedios de puntos anotados y recibidos en los últimos 5 partidos de básquetbol."""
-        matches = self.df[(self.df["HomeTeam"] == team_name) | (self.df["AwayTeam"] == team_name)]
+    def get_basketball_team_stats(self, team_name, team_id):
+        matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)]
         matches = matches.dropna(subset=["FTHG", "FTAG"]) 
         matches = matches.sort_values(by="Date", ascending=False)
         recent = matches.head(5)
@@ -146,7 +137,7 @@ class MatchAnalyzer:
 
         puntos_favor, puntos_contra = [], []
         for _, row in recent.iterrows():
-            if row["HomeTeam"] == team_name:
+            if row["HomeTeamId"] == team_id:
                 puntos_favor.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0)
                 puntos_contra.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0)
             else:
@@ -159,14 +150,12 @@ class MatchAnalyzer:
             "count": count,
         }
 
-    def get_basketball_projections(self, home_team, away_team, match_data=None):
-        """Modelo predictivo para básquetbol usando Doble Métrica (Momentum + Localía)."""
-        # --- FUNCIÓN AUXILIAR PARA CALCULAR PROMEDIOS DE PUNTOS ---
-        def get_avg_points(df_subset, team_name):
-            if df_subset.empty: return 105.0, 105.0 # Valores por defecto
+    def get_basketball_projections(self, home_team, away_team, home_id, away_id, match_data=None):
+        def get_avg_points(df_subset, team_id):
+            if df_subset.empty: return 105.0, 105.0
             pts_f, pts_c = [], []
             for _, row in df_subset.iterrows():
-                if row["HomeTeam"] == team_name:
+                if row["HomeTeamId"] == team_id:
                     pts_f.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
                     pts_c.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
                 else:
@@ -174,31 +163,27 @@ class MatchAnalyzer:
                     pts_c.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
             return float(np.nanmean(pts_f)), float(np.nanmean(pts_c))
 
-        # --- 1. MOMENTUM GLOBAL (Estado de forma actual) ---
-        home_global = self.df[(self.df['HomeTeam'] == home_team) | (self.df['AwayTeam'] == home_team)]
+        home_global = self.df[(self.df['HomeTeamId'] == home_id) | (self.df['AwayTeamId'] == home_id)]
         home_global = home_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
         
-        away_global = self.df[(self.df['HomeTeam'] == away_team) | (self.df['AwayTeam'] == away_team)]
+        away_global = self.df[(self.df['HomeTeamId'] == away_id) | (self.df['AwayTeamId'] == away_id)]
         away_global = away_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
 
-        hg_f_glob, hg_c_glob = get_avg_points(home_global, home_team)
-        ag_f_glob, ag_c_glob = get_avg_points(away_global, away_team)
+        hg_f_glob, hg_c_glob = get_avg_points(home_global, home_id)
+        ag_f_glob, ag_c_glob = get_avg_points(away_global, away_id)
 
-        # --- 2. FACTOR LOCALÍA (Rendimiento en el estadio) ---
-        home_venue = self.df[self.df['HomeTeam'] == home_team].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
-        away_venue = self.df[self.df['AwayTeam'] == away_team].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
+        home_venue = self.df[self.df['HomeTeamId'] == home_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
+        away_venue = self.df[self.df['AwayTeamId'] == away_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
 
-        hg_f_ven, hg_c_ven = get_avg_points(home_venue, home_team)
-        ag_f_ven, ag_c_ven = get_avg_points(away_venue, away_team)
+        hg_f_ven, hg_c_ven = get_avg_points(home_venue, home_id)
+        ag_f_ven, ag_c_ven = get_avg_points(away_venue, away_id)
 
-        # --- 3. COMBINACIÓN DE DOBLE MÉTRICA ---
         home_avg_scored = (hg_f_glob + hg_f_ven) / 2
         home_avg_conceded = (hg_c_glob + hg_c_ven) / 2
         
         away_avg_scored = (ag_f_glob + ag_f_ven) / 2
         away_avg_conceded = (ag_c_glob + ag_c_ven) / 2
 
-        # --- 4. CÁLCULO DE EXPECTATIVA ---
         exp_home_score = (home_avg_scored + away_avg_conceded) / 2
         exp_away_score = (away_avg_scored + home_avg_conceded) / 2
         total_projected_points = exp_home_score + exp_away_score
@@ -207,7 +192,6 @@ class MatchAnalyzer:
         prob_home = 1 / (1 + np.exp(-diff / 10))
         prob_away = 1 - prob_home
 
-        # Detección segura de OT si viene el JSON del partido
         has_overtime = False
         if match_data:
             ot_home = match_data.get("scores", {}).get("home", {}).get("over_time")
@@ -217,6 +201,8 @@ class MatchAnalyzer:
         return {
             'local': home_team,
             'visita': away_team,
+            'local_id': home_id,    # Agregado para notifier
+            'visita_id': away_id,   # Agregado para notifier
             'prob_home': prob_home,
             'prob_away': prob_away,
             'probs': [prob_home, 0.0, prob_away],
@@ -225,9 +211,8 @@ class MatchAnalyzer:
             'score_value': max(prob_home, prob_away)
         }
 
-    def get_basketball_overtime_stats(self, team_name):
-        """Analiza la frecuencia de overtimes y puntos en tiempo extra en los últimos 5 partidos."""
-        matches = self.df[(self.df["HomeTeam"] == team_name) | (self.df["AwayTeam"] == team_name)]
+    def get_basketball_overtime_stats(self, team_name, team_id):
+        matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)]
         matches = matches.sort_values(by="Date", ascending=False)
         recent = matches.head(5)
 
@@ -252,6 +237,7 @@ class MatchAnalyzer:
             "total_partidos": count
         }
 
-    def get_top_by_league(self, proyecciones, n=3):
+    def get_top_by_league(self, proyecciones, n=None):
+        # El parámetro 'n' ahora puede ser None para no limitar
         sorted_projs = sorted(proyecciones, key=lambda x: x['score_value'], reverse=True)
-        return sorted_projs[:n]
+        return sorted_projs[:n] if n else sorted_projs
