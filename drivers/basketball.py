@@ -162,6 +162,17 @@ def run_process(df_externo=None):
         for match in lista_partidos:
             status_short = match.get("status", {}).get("short", "")
             if status_short in statuses_map.get("upcoming", []):
+                
+                game_date = match.get("date", "")
+                if not game_date:
+                    continue
+                    
+                dt_obj = datetime.fromisoformat(game_date.replace("Z", "+00:00")).astimezone(zona)
+                
+                # Filtro temporal: Evita partidos que ya comenzaron
+                if dt_obj < now:
+                    continue
+
                 h_name = match["teams"]["home"]["name"]
                 a_name = match["teams"]["away"]["name"]
                 h_id = match["teams"]["home"]["id"]
@@ -169,16 +180,15 @@ def run_process(df_externo=None):
                 
                 proj = analyzer.get_basketball_projections(h_name, a_name, h_id, a_id, match)
                 
-                game_date = match.get("date", datetime.now().isoformat())
-                proj['fecha_str'] = datetime.fromisoformat(game_date.replace("Z", "+00:00")).astimezone(zona).strftime("%Y-%m-%d")
-                proj['hora'] = datetime.fromisoformat(game_date.replace("Z", "+00:00")).astimezone(zona).strftime("%H:%M")
+                proj['fecha_str'] = dt_obj.strftime("%Y-%m-%d")
+                proj['hora'] = dt_obj.strftime("%H:%M")
                 
                 pais_obj = match.get("country", {})
                 pais = pais_obj.get("name", "World") if isinstance(pais_obj, dict) else (pais_obj or "World")
                 liga = match.get("league", {}).get("name", "Unknown")
                 proj['pais'] = pais
                 
-                target = proyecciones_mañana if proj['fecha_str'] == fecha_mañana_str else proyecciones_hoy
+                target = proyecciones_mañana if dt_obj.strftime("%Y-%m-%d") > fecha_mañana_str else proyecciones_hoy
                 target.setdefault((pais, liga), []).append(proj)
 
     print("🏀 [BASKETBALL] Generando proyecciones globales...")
