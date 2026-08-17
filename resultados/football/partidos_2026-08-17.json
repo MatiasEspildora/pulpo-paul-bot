@@ -226,8 +226,8 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
+                "long": "Match Suspended",
+                "short": "SUSP",
                 "elapsed": null,
                 "extra": null
             }
@@ -257,13 +257,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
                 "home": null,
@@ -8051,216 +8051,6 @@
     },
     {
         "fixture": {
-            "id": 1525758,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-08-17T16:00:00-04:00",
-            "timestamp": 1786996800,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": 379,
-                "name": "Estadio Polideportivo Sur",
-                "city": "Envigado"
-            },
-            "status": {
-                "long": "Match Postponed",
-                "short": "PST",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 712,
-            "name": "Liga Femenina",
-            "country": "Colombia",
-            "logo": "https://media.api-sports.io/football/leagues/712.png",
-            "flag": "https://media.api-sports.io/flags/co.svg",
-            "season": 2026,
-            "round": "Regular Season - 16",
-            "standings": false
-        },
-        "teams": {
-            "home": {
-                "id": 15725,
-                "name": "Independiente Medellín W",
-                "logo": "https://media.api-sports.io/football/teams/15725.png",
-                "winner": null
-            },
-            "away": {
-                "id": 15721,
-                "name": "América de Cali W",
-                "logo": "https://media.api-sports.io/football/teams/15721.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1525762,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-08-17T16:00:00-04:00",
-            "timestamp": 1786996800,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": "Estadio Municipal Raul Miranda",
-                "city": "Palmira"
-            },
-            "status": {
-                "long": "Match Postponed",
-                "short": "PST",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 712,
-            "name": "Liga Femenina",
-            "country": "Colombia",
-            "logo": "https://media.api-sports.io/football/leagues/712.png",
-            "flag": "https://media.api-sports.io/flags/co.svg",
-            "season": 2026,
-            "round": "Regular Season - 16",
-            "standings": false
-        },
-        "teams": {
-            "home": {
-                "id": 18432,
-                "name": "Orsomarso W",
-                "logo": "https://media.api-sports.io/football/teams/18432.png",
-                "winner": null
-            },
-            "away": {
-                "id": 15724,
-                "name": "Deportivo Pasto W",
-                "logo": "https://media.api-sports.io/football/teams/15724.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1525763,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-08-17T16:00:00-04:00",
-            "timestamp": 1786996800,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Match Postponed",
-                "short": "PST",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 712,
-            "name": "Liga Femenina",
-            "country": "Colombia",
-            "logo": "https://media.api-sports.io/football/leagues/712.png",
-            "flag": "https://media.api-sports.io/flags/co.svg",
-            "season": 2026,
-            "round": "Regular Season - 16",
-            "standings": false
-        },
-        "teams": {
-            "home": {
-                "id": 15730,
-                "name": "Santa Fe W",
-                "logo": "https://media.api-sports.io/football/teams/15730.png",
-                "winner": null
-            },
-            "away": {
-                "id": 15719,
-                "name": "Fortaleza W",
-                "logo": "https://media.api-sports.io/football/teams/15719.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
             "id": 1623363,
             "referee": null,
             "timezone": "America/Santiago",
@@ -8272,8 +8062,8 @@
             },
             "venue": {
                 "id": 0,
-                "name": null,
-                "city": null
+                "name": "Estadio Municipal de Nasca",
+                "city": "Nazca"
             },
             "status": {
                 "long": "Not Started",
