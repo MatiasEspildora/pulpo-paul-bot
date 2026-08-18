@@ -31,8 +31,8 @@ def dedupe_dataframe(df):
         return df
 
     df = df.copy().fillna("")
-    # ✅ Añadidas columnas de ID
-    for col in ["League", "LeagueId", "Country", "Date", "HomeTeamId", "AwayTeamId", "HomeTeam", "AwayTeam", "FTHG", "FTAG"]:
+    # ✅ Añadidas columnas de ID y las nuevas variables tácticas de Eliminatoria
+    for col in ["League", "LeagueId", "Country", "Round", "EsEliminatoria", "Date", "HomeTeamId", "AwayTeamId", "HomeTeam", "AwayTeam", "FTHG", "FTAG"]:
         if col not in df.columns:
             df[col] = ""
 
@@ -66,8 +66,8 @@ def dedupe_dataframe(df):
         for i, other in enumerate(records):
             if i == best_idx:
                 continue
-            # ✅ Añadidas columnas de ID a la fusión de rescate
-            for col in ["League", "LeagueId", "Country", "HomeTeamId", "AwayTeamId", "FTHG", "FTAG", "HC", "AC", "HY", "AY", "HR", "AR", "HS", "AS"]:
+            # ✅ Añadidas dimensiones tácticas a la fusión de rescate para no perder el dato en el cruce
+            for col in ["League", "LeagueId", "Country", "Round", "EsEliminatoria", "HomeTeamId", "AwayTeamId", "FTHG", "FTAG", "HC", "AC", "HY", "AY", "HR", "AR", "HS", "AS"]:
                 bval = best.get(col, "") or ""
                 oval = other.get(col, "") or ""
                 if (not bval) and oval:
