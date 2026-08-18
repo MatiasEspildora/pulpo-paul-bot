@@ -12476,9 +12476,9 @@
                 "city": null
             },
             "status": {
-                "long": "Penalty in progress",
-                "short": "P",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "PEN",
+                "elapsed": 120,
                 "extra": null
             }
         },
@@ -12497,13 +12497,13 @@
                 "id": 476,
                 "name": "Deportivo Riestra",
                 "logo": "https://media.api-sports.io/football/teams/476.png",
-                "winner": false
+                "winner": true
             },
             "away": {
                 "id": 434,
                 "name": "Gimnasia L.P.",
                 "logo": "https://media.api-sports.io/football/teams/434.png",
-                "winner": true
+                "winner": false
             }
         },
         "goals": {
@@ -12524,7 +12524,7 @@
                 "away": 0
             },
             "penalty": {
-                "home": 1,
+                "home": 4,
                 "away": 2
             }
         }
@@ -12618,7 +12618,7 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 4,
+                "elapsed": 18,
                 "extra": null
             }
         },
@@ -12688,7 +12688,7 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 4,
+                "elapsed": 18,
                 "extra": null
             }
         },
@@ -12747,7 +12747,7 @@
             "date": "2026-08-18T18:00:00-04:00",
             "timestamp": 1787090400,
             "periods": {
-                "first": null,
+                "first": 1787090400,
                 "second": null
             },
             "venue": {
@@ -12756,9 +12756,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 12,
                 "extra": null
             }
         },
@@ -12787,13 +12787,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
@@ -12828,7 +12828,7 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 4,
+                "elapsed": 18,
                 "extra": null
             }
         },
@@ -12847,22 +12847,22 @@
                 "id": 3704,
                 "name": "Guabirá",
                 "logo": "https://media.api-sports.io/football/teams/3704.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 17762,
                 "name": "Universitario de Vinto",
                 "logo": "https://media.api-sports.io/football/teams/17762.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": 0,
+            "home": 1,
             "away": 0
         },
         "score": {
             "halftime": {
-                "home": 0,
+                "home": 1,
                 "away": 0
             },
             "fulltime": {
