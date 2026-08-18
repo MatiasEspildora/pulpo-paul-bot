@@ -2,6 +2,7 @@ import os
 import json
 import requests
 import time
+import math
 
 TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
@@ -63,7 +64,6 @@ def agrupar_por_pais(proyecciones_dict):
     return agrupado
 
 def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, token_override=None, is_basket=False):
-    """Genera y envía un TOP 10 buscando la MEJOR OPCIÓN DE MERCADO en lugar de solo al ganador."""
     todas_las_proyecciones = []
     
     for pais, ligas in agrupar_por_pais(proyecciones_dict).items():
@@ -80,25 +80,59 @@ def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, 
                 count_l = s_l.get('count', 0)
                 count_v = s_v.get('count', 0)
 
-                # Filtro de madurez estadística
+                # Filtro de madurez estadística (mínimo 3 partidos)
                 if count_l >= 3 and count_v >= 3:
                     p['liga_nombre'] = liga
                     p['pais_nombre'] = pais
                     
-                    # 💡 NUEVO: EVALUADOR TRANSVERSAL DE MERCADOS
                     if is_basket:
                         mercados = [
                             {'tipo': 'Gana Partido', 'seleccion': p['local'], 'prob': p['prob_home']},
                             {'tipo': 'Gana Partido', 'seleccion': p['visita'], 'prob': p['prob_away']}
                         ]
                     else:
+                        prob_L = p['probs'][0]
+                        prob_E = p['probs'][1]
+                        prob_V = p['probs'][2]
+                        
+                        # Mercados Derivados: Doble Oportunidad y DNB
+                        prob_1X = prob_L + prob_E
+                        prob_X2 = prob_V + prob_E
+                        suma_sin_empate = prob_L + prob_V
+                        prob_DNB_L = (prob_L / suma_sin_empate) if suma_sin_empate > 0 else 0
+                        prob_DNB_V = (prob_V / suma_sin_empate) if suma_sin_empate > 0 else 0
+
+                        # CÁLCULO DE POISSON PARA +1.5 Y +2.5 GOLES
+                        esp_goles_L = (s_l.get('goles_favor', 0) + s_v.get('goles_contra', 0)) / 2
+                        esp_goles_V = (s_v.get('goles_favor', 0) + s_l.get('goles_contra', 0)) / 2
+                        lam = esp_goles_L + esp_goles_V 
+
+                        if lam > 0:
+                            p_0 = math.exp(-lam)
+                            p_1 = lam * math.exp(-lam)
+                            p_2 = (lam**2 * math.exp(-lam)) / 2
+
+                            prob_under_1_5 = p_0 + p_1
+                            prob_over_1_5 = 1 - prob_under_1_5
+                            
+                            prob_under_2_5 = prob_under_1_5 + p_2
+                            prob_over_2_5 = 1 - prob_under_2_5
+                        else:
+                            prob_over_1_5 = 0
+                            prob_over_2_5 = 0
+
                         mercados = [
-                            {'tipo': 'Gana Partido', 'seleccion': p['local'], 'prob': p['probs'][0]},
-                            {'tipo': 'Gana Partido', 'seleccion': p['visita'], 'prob': p['probs'][2]},
-                            {'tipo': 'Ambos Anotan (BTTS)', 'seleccion': 'Sí', 'prob': p.get('btts', 0)}
+                            {'tipo': 'Gana Partido', 'seleccion': p['local'], 'prob': prob_L},
+                            {'tipo': 'Gana Partido', 'seleccion': p['visita'], 'prob': prob_V},
+                            {'tipo': 'Goles', 'seleccion': 'Ambos Anotan (Sí)', 'prob': p.get('btts', 0)},
+                            {'tipo': 'Goles', 'seleccion': '+1.5 Goles', 'prob': prob_over_1_5},
+                            {'tipo': 'Goles', 'seleccion': '+2.5 Goles', 'prob': prob_over_2_5},
+                            {'tipo': 'Doble Oportunidad', 'seleccion': f"{p['local']} o Empate", 'prob': prob_1X},
+                            {'tipo': 'Doble Oportunidad', 'seleccion': f"{p['visita']} o Empate", 'prob': prob_X2},
+                            {'tipo': 'Sin Empate (DNB)', 'seleccion': p['local'], 'prob': prob_DNB_L},
+                            {'tipo': 'Sin Empate (DNB)', 'seleccion': p['visita'], 'prob': prob_DNB_V}
                         ]
                     
-                    # Encontramos el mercado con mayor probabilidad real para este evento
                     mejor_mercado = max(mercados, key=lambda x: x['prob'])
                     
                     p['mejor_mercado_tipo'] = mejor_mercado['tipo']
@@ -108,50 +142,63 @@ def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, 
                     todas_las_proyecciones.append(p)
                 
     if not todas_las_proyecciones:
-        aviso = f"💎 *TOP 10 MEJORES PICKS* 💎\n" + "━"*20 + "\n\n⚠️ _Hoy no hay partidos con historial maduro (Mín. 3 partidos por equipo) para generar proyecciones seguras._"
+        aviso = f"💎 *MENÚ DE MEJORES PICKS* 💎\n" + "━"*20 + "\n\n⚠️ _Hoy no hay partidos con historial maduro para generar proyecciones seguras._"
         enviar_mensaje_telegram(aviso, token_override=token_override)
         return
 
-    # 1. Obtenemos el Top 10 absoluto basándonos en la probabilidad del MEJOR MERCADO
-    todas_las_proyecciones.sort(key=lambda x: x.get('mejor_mercado_prob', 0), reverse=True)
-    top_10 = todas_las_proyecciones[:10]
-    
-    # 2. Ordenamos: Chile primero, luego el resto (cronológicamente)
-    top_10.sort(key=lambda x: (
-        0 if x.get('pais_nombre') == 'Chile' else 1, 
-        x.get('fecha_str', ''), 
-        x.get('hora', '')
-    ))
-    
-    deporte_icono = "🏀" if is_basket else "⚽"
     sufijo = f" ({titulo_bloque})" if titulo_bloque else ""
-    mensaje_resumen = f"💎 *TOP 10 MEJORES OPCIONES DE APUESTA{sufijo}* 💎\n" + "━"*20 + "\n\n"
-    
-    for i, p in enumerate(top_10, 1):
-        prob_top = p.get('mejor_mercado_prob', 0)
-        tipo_mercado = p.get('mejor_mercado_tipo', '')
-        seleccion = p.get('mejor_mercado_seleccion', '')
-        
-        hora = p.get('hora', '')
-        fecha = p.get('fecha_str', '')
-        flag = "🇨🇱 " if p['pais_nombre'] == 'Chile' else ""
-        
-        if is_basket:
-            pts_proyectados = p.get('puntos_proyectados', 0)
-            mensaje_resumen += f"*{i}.* {flag}{deporte_icono} {p['local']} vs {p['visita']}\n"
-            mensaje_resumen += f"   🏆 {p['pais_nombre']} - {p['liga_nombre']} | 📅 {fecha} 🕒 {hora}\n"
-            mensaje_resumen += f"   🎯 *Mercado Sugerido:* {tipo_mercado} -> *{seleccion}* ({prob_top:.0%})\n"
-            mensaje_resumen += f"   🔥 *Dato Extra:* Puntos Totales Proyectados: `{pts_proyectados:.1f}`\n\n"
-        else:
-            mejores_scores = p.get('scores', [])
-            marcador_top = mejores_scores[0] if mejores_scores else "N/A"
+    mensaje_resumen = f"💎 *MENÚ ESTRATÉGICO DE APUESTAS{sufijo}* 💎\n" + "━"*20 + "\n\n"
+
+    if is_basket:
+        todas_las_proyecciones.sort(key=lambda x: x.get('mejor_mercado_prob', 0), reverse=True)
+        top_10 = todas_las_proyecciones[:10]
+        for i, p in enumerate(top_10, 1):
+            prob = p.get('mejor_mercado_prob', 0)
+            mensaje_resumen += f"*{i}.* 🏀 {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n"
+            mensaje_resumen += f"   🎯 *Pick:* {p.get('mejor_mercado_seleccion', '')} ({prob:.0%}) | 🔥 Pts: `{p.get('puntos_proyectados', 0):.1f}`\n\n"
             
-            mensaje_resumen += f"*{i}.* {flag}{deporte_icono} {p['local']} vs {p['visita']}\n"
-            mensaje_resumen += f"   🏆 {p['pais_nombre']} - {p['liga_nombre']} | 📅 {fecha} 🕒 {hora}\n"
-            mensaje_resumen += f"   🎯 *Mercado Sugerido:* {tipo_mercado} -> *{seleccion}* ({prob_top:.0%})\n"
-            mensaje_resumen += f"   🔥 *Marcador Proyectado:* `{marcador_top}`\n\n"
+    else:
+        # SEPARAMOS EN LAS 3 CATEGORÍAS PRINCIPALES
+        ganadores = [p for p in todas_las_proyecciones if p['mejor_mercado_tipo'] == 'Gana Partido']
+        goles = [p for p in todas_las_proyecciones if p['mejor_mercado_tipo'] == 'Goles']
+        seguros = [p for p in todas_las_proyecciones if p['mejor_mercado_tipo'] in ['Doble Oportunidad', 'Sin Empate (DNB)']]
+        
+        ganadores.sort(key=lambda x: x['mejor_mercado_prob'], reverse=True)
+        goles.sort(key=lambda x: x['mejor_mercado_prob'], reverse=True)
+        seguros.sort(key=lambda x: x['mejor_mercado_prob'], reverse=True)
+        
+        if ganadores:
+            mensaje_resumen += "🏆 *TOP 5 - GANADOR DIRECTO*\n"
+            for i, p in enumerate(ganadores[:5], 1):
+                mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n   🎯 Gana {p['mejor_mercado_seleccion']} ({p['mejor_mercado_prob']:.0%})\n\n"
             
-    enviar_mensaje_telegram(mensaje_resumen, token_override=token_override)
+        if seguros:
+            mensaje_resumen += "🛡️ *TOP 5 - MERCADOS SEGUROS (DNB / 1X2)*\n"
+            for i, p in enumerate(seguros[:5], 1):
+                mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n   🎯 {p['mejor_mercado_tipo']}: {p['mejor_mercado_seleccion']} ({p['mejor_mercado_prob']:.0%})\n\n"
+
+        if goles:
+            mensaje_resumen += "🔥 *TOP 5 - MERCADOS DE GOLES*\n"
+            for i, p in enumerate(goles[:5], 1):
+                marcador = p.get('scores', ['N/A'])[0] if p.get('scores') else 'N/A'
+                mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n   🎯 Pick: {p['mejor_mercado_seleccion']} ({p['mejor_mercado_prob']:.0%}) | Marcador: `{marcador}`\n\n"
+
+        # PORTAFOLIO DE COMBINADAS
+        mensaje_resumen += "━"*20 + "\n💼 *PORTAFOLIO RECOMENDADO*\n\n"
+        if len(seguros) >= 2:
+            mensaje_resumen += f"🧱 *La Muralla (Seguros):*\n   1️⃣ {seguros[0]['mejor_mercado_tipo']}: {seguros[0]['mejor_mercado_seleccion']}\n   2️⃣ {seguros[1]['mejor_mercado_tipo']}: {seguros[1]['mejor_mercado_seleccion']}\n\n"
+        if ganadores and goles:
+            mensaje_resumen += f"🚀 *El Mix de Valor:*\n   1️⃣ Gana {ganadores[0]['mejor_mercado_seleccion']}\n   2️⃣ {goles[0]['mejor_mercado_seleccion']} en {goles[0]['local']} vs {goles[0]['visita']}\n"
+
+    # Enviar particionado si supera el límite de caracteres de Telegram
+    if len(mensaje_resumen) > 4000:
+        mitad = len(mensaje_resumen) // 2
+        enviar_mensaje_telegram(mensaje_resumen[:mitad], token_override=token_override)
+        time.sleep(1.5)
+        enviar_mensaje_telegram(mensaje_resumen[mitad:], token_override=token_override)
+    else:
+        enviar_mensaje_telegram(mensaje_resumen, token_override=token_override)
+
 
 def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
     agrupado_por_pais = agrupar_por_pais(proyecciones_dict)
@@ -208,6 +255,7 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
             time.sleep(1.5)
             
     enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, token_override, is_basket=False)
+
 
 def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
     agrupado_por_pais = agrupar_por_pais(proyecciones_dict)
