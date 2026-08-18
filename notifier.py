@@ -62,21 +62,40 @@ def agrupar_por_pais(proyecciones_dict):
         
     return agrupado
 
-def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, token_override=None, is_basket=False):
-    """Genera y envía un TOP 10, dándole prioridad de visualización a Chile."""
+def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, token_override=None, is_basket=False):
+    """Genera y envía un TOP 10 absoluto, FILTRANDO por historial mínimo para evitar falsos positivos."""
     todas_las_proyecciones = []
     
     for pais, ligas in agrupar_por_pais(proyecciones_dict).items():
         for liga, projs in ligas.items():
             for p in projs:
-                p['liga_nombre'] = liga
-                p['pais_nombre'] = pais
-                todas_las_proyecciones.append(p)
+                
+                # --- NUEVO: FILTRO DE CONFIANZA ESTADÍSTICA ---
+                # Extraemos las estadísticas para ver cuántos partidos tienen de historial
+                if is_basket:
+                    s_l = analyzer.get_basketball_team_stats(p['local'], p.get('local_id'))
+                    s_v = analyzer.get_basketball_team_stats(p['visita'], p.get('visita_id'))
+                else:
+                    s_l = analyzer.get_team_stats(p['local'], p.get('local_id'))
+                    s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'))
+
+                count_l = s_l.get('count', 0)
+                count_v = s_v.get('count', 0)
+
+                # ✅ SOLO incluimos al equipo si AMBOS tienen al menos 3 partidos jugados.
+                # Puedes subir este número a 4 o 5 si quieres apuestas aún más conservadoras.
+                if count_l >= 3 and count_v >= 3:
+                    p['liga_nombre'] = liga
+                    p['pais_nombre'] = pais
+                    todas_las_proyecciones.append(p)
                 
     if not todas_las_proyecciones:
+        # Si a principio de mes ningún equipo cumple el requisito, enviamos un aviso transparente
+        aviso = f"💎 *TOP 10 MEJORES PICKS* 💎\n" + "━"*20 + "\n\n⚠️ _Hoy no hay partidos con historial maduro (Mín. 3 partidos por equipo) para generar proyecciones seguras._"
+        enviar_mensaje_telegram(aviso, token_override=token_override)
         return
 
-    # 1. Obtenemos el Top 10 matemático absoluto
+    # 1. Obtenemos el Top 10 matemático de los que SÍ pasaron el filtro
     todas_las_proyecciones.sort(key=lambda x: x.get('score_value', 0), reverse=True)
     top_10 = todas_las_proyecciones[:10]
     
@@ -96,7 +115,6 @@ def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, token_over
         hora = p.get('hora', '')
         fecha = p.get('fecha_str', '')
         
-        # Le ponemos un pequeño indicador visual si es de Chile
         flag = "🇨🇱 " if p['pais_nombre'] == 'Chile' else ""
         
         if is_basket:
@@ -170,7 +188,8 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
             enviar_mensaje_telegram(msg, token_override=token_override)
             time.sleep(1.5)
             
-    enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, token_override, is_basket=False)
+    # ✅ Se pasa el analyzer a la nueva función de resumen
+    enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, token_override, is_basket=False)
 
 def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
     agrupado_por_pais = agrupar_por_pais(proyecciones_dict)
@@ -229,4 +248,5 @@ def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, to
             enviar_mensaje_telegram(msg, token_override=token_override)
             time.sleep(1.5)
 
-    enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, token_override, is_basket=True)
+    # ✅ Se pasa el analyzer a la nueva función de resumen
+    enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, token_override, is_basket=True)
