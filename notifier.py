@@ -63,14 +63,13 @@ def agrupar_por_pais(proyecciones_dict):
     return agrupado
 
 def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, token_override=None, is_basket=False):
-    """Genera y envía un TOP 10 absoluto, con filtro de madurez y mercados alternativos."""
+    """Genera y envía un TOP 10 buscando la MEJOR OPCIÓN DE MERCADO en lugar de solo al ganador."""
     todas_las_proyecciones = []
     
     for pais, ligas in agrupar_por_pais(proyecciones_dict).items():
         for liga, projs in ligas.items():
             for p in projs:
                 
-                # Filtro de Confianza Estadística (Mín. 3 partidos)
                 if is_basket:
                     s_l = analyzer.get_basketball_team_stats(p['local'], p.get('local_id'))
                     s_v = analyzer.get_basketball_team_stats(p['visita'], p.get('visita_id'))
@@ -81,9 +80,31 @@ def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, 
                 count_l = s_l.get('count', 0)
                 count_v = s_v.get('count', 0)
 
+                # Filtro de madurez estadística
                 if count_l >= 3 and count_v >= 3:
                     p['liga_nombre'] = liga
                     p['pais_nombre'] = pais
+                    
+                    # 💡 NUEVO: EVALUADOR TRANSVERSAL DE MERCADOS
+                    if is_basket:
+                        mercados = [
+                            {'tipo': 'Gana Partido', 'seleccion': p['local'], 'prob': p['prob_home']},
+                            {'tipo': 'Gana Partido', 'seleccion': p['visita'], 'prob': p['prob_away']}
+                        ]
+                    else:
+                        mercados = [
+                            {'tipo': 'Gana Partido', 'seleccion': p['local'], 'prob': p['probs'][0]},
+                            {'tipo': 'Gana Partido', 'seleccion': p['visita'], 'prob': p['probs'][2]},
+                            {'tipo': 'Ambos Anotan (BTTS)', 'seleccion': 'Sí', 'prob': p.get('btts', 0)}
+                        ]
+                    
+                    # Encontramos el mercado con mayor probabilidad real para este evento
+                    mejor_mercado = max(mercados, key=lambda x: x['prob'])
+                    
+                    p['mejor_mercado_tipo'] = mejor_mercado['tipo']
+                    p['mejor_mercado_seleccion'] = mejor_mercado['seleccion']
+                    p['mejor_mercado_prob'] = mejor_mercado['prob']
+                    
                     todas_las_proyecciones.append(p)
                 
     if not todas_las_proyecciones:
@@ -91,11 +112,11 @@ def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, 
         enviar_mensaje_telegram(aviso, token_override=token_override)
         return
 
-    # 1. Obtenemos el Top 10 matemático
-    todas_las_proyecciones.sort(key=lambda x: x.get('score_value', 0), reverse=True)
+    # 1. Obtenemos el Top 10 absoluto basándonos en la probabilidad del MEJOR MERCADO
+    todas_las_proyecciones.sort(key=lambda x: x.get('mejor_mercado_prob', 0), reverse=True)
     top_10 = todas_las_proyecciones[:10]
     
-    # 2. Ordenamos: Chile primero (cronológicamente), luego el resto
+    # 2. Ordenamos: Chile primero, luego el resto (cronológicamente)
     top_10.sort(key=lambda x: (
         0 if x.get('pais_nombre') == 'Chile' else 1, 
         x.get('fecha_str', ''), 
@@ -104,37 +125,31 @@ def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, 
     
     deporte_icono = "🏀" if is_basket else "⚽"
     sufijo = f" ({titulo_bloque})" if titulo_bloque else ""
-    mensaje_resumen = f"💎 *TOP 10 MEJORES PICKS{sufijo}* 💎\n" + "━"*20 + "\n\n"
+    mensaje_resumen = f"💎 *TOP 10 MEJORES OPCIONES DE APUESTA{sufijo}* 💎\n" + "━"*20 + "\n\n"
     
     for i, p in enumerate(top_10, 1):
-        prob = p.get('score_value', 0)
+        prob_top = p.get('mejor_mercado_prob', 0)
+        tipo_mercado = p.get('mejor_mercado_tipo', '')
+        seleccion = p.get('mejor_mercado_seleccion', '')
+        
         hora = p.get('hora', '')
         fecha = p.get('fecha_str', '')
         flag = "🇨🇱 " if p['pais_nombre'] == 'Chile' else ""
         
         if is_basket:
-            pick = p['local'] if p['prob_home'] > p['prob_away'] else p['visita']
             pts_proyectados = p.get('puntos_proyectados', 0)
-            
             mensaje_resumen += f"*{i}.* {flag}{deporte_icono} {p['local']} vs {p['visita']}\n"
             mensaje_resumen += f"   🏆 {p['pais_nombre']} - {p['liga_nombre']} | 📅 {fecha} 🕒 {hora}\n"
-            mensaje_resumen += f"   🎯 *Pick Principal:* {pick} ({prob:.0%})\n"
-            mensaje_resumen += f"   🔥 *Mercado Extra:* Total Puntos Proyectados: `{pts_proyectados:.1f}`\n\n"
+            mensaje_resumen += f"   🎯 *Mercado Sugerido:* {tipo_mercado} -> *{seleccion}* ({prob_top:.0%})\n"
+            mensaje_resumen += f"   🔥 *Dato Extra:* Puntos Totales Proyectados: `{pts_proyectados:.1f}`\n\n"
         else:
-            probs = p['probs']
-            max_idx = probs.index(max(probs))
-            opciones = [p['local'], "Empate", p['visita']]
-            pick = opciones[max_idx]
-            
-            # Mercados alternativos fútbol
-            btts_prob = p.get('btts', 0)
             mejores_scores = p.get('scores', [])
             marcador_top = mejores_scores[0] if mejores_scores else "N/A"
             
             mensaje_resumen += f"*{i}.* {flag}{deporte_icono} {p['local']} vs {p['visita']}\n"
             mensaje_resumen += f"   🏆 {p['pais_nombre']} - {p['liga_nombre']} | 📅 {fecha} 🕒 {hora}\n"
-            mensaje_resumen += f"   🎯 *Pick Principal:* {pick} ({prob:.0%})\n"
-            mensaje_resumen += f"   🔥 *Mercado Extra:* Ambos Anotan ({btts_prob:.0%}) | Marcador: `{marcador_top}`\n\n"
+            mensaje_resumen += f"   🎯 *Mercado Sugerido:* {tipo_mercado} -> *{seleccion}* ({prob_top:.0%})\n"
+            mensaje_resumen += f"   🔥 *Marcador Proyectado:* `{marcador_top}`\n\n"
             
     enviar_mensaje_telegram(mensaje_resumen, token_override=token_override)
 
