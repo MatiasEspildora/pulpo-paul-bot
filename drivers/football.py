@@ -23,7 +23,7 @@ def cargar_configuracion():
 
 def cargar_historico_mensual():
     all_files = glob.glob("historico_mensual/football/historico_*.csv")
-    default_cols = ['League', 'LeagueId', 'Country', 'Date', 'HomeTeamId', 'AwayTeamId', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR', 'HS', 'AS']
+    default_cols = ['League', 'LeagueId', 'Country', 'Round', 'EsEliminatoria', 'Date', 'HomeTeamId', 'AwayTeamId', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR', 'HS', 'AS']
     if not all_files:
         return pd.DataFrame(columns=default_cols)
     li = [pd.read_csv(filename) for filename in all_files]
@@ -31,6 +31,8 @@ def cargar_historico_mensual():
     
     if 'Country' not in df.columns: df['Country'] = ''
     if 'LeagueId' not in df.columns: df['LeagueId'] = ''
+    if 'Round' not in df.columns: df['Round'] = ''
+    if 'EsEliminatoria' not in df.columns: df['EsEliminatoria'] = False
     if 'HomeTeamId' not in df.columns: df['HomeTeamId'] = pd.NA
     if 'AwayTeamId' not in df.columns: df['AwayTeamId'] = pd.NA
         
@@ -88,10 +90,17 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
                     df_hist.at[idx, "HomeTeamId"], df_hist.at[idx, "AwayTeamId"] = h_id, a_id
                     continue
 
+            # LÓGICA DE ELIMINATORIA
+            ronda_texto = liga.get("round", "")
+            palabras_clave = ["Round", "Quarter", "Semi", "Final", "Elimination"]
+            es_eliminatoria = any(palabra in ronda_texto for palabra in palabras_clave)
+
             nuevo = {
                 "League": league_name,
                 "LeagueId": liga_id_str,
                 "Country": league_country,
+                "Round": ronda_texto,              
+                "EsEliminatoria": es_eliminatoria, 
                 "Date": fecha_str,
                 "HomeTeamId": h_id,
                 "AwayTeamId": a_id,
@@ -194,6 +203,11 @@ def run_process(df_externo=None):
                         pais = match.get("league", {}).get("country", "World")
                         liga = match.get("league", {}).get("name", "Unknown")
                         proj['pais'] = pais
+                        
+                        # INYECCIÓN DE LA BANDERA PARA EL NOTIFICADOR
+                        ronda_texto = match.get("league", {}).get("round", "")
+                        palabras_clave = ["Round", "Quarter", "Semi", "Final", "Elimination"]
+                        proj['es_eliminatoria'] = any(palabra in ronda_texto for palabra in palabras_clave)
                         
                         target = proyecciones_mañana if dt_obj.strftime("%Y-%m-%d") > fecha_mañana_str else proyecciones_hoy
                         target.setdefault((pais, liga), []).append(proj)
