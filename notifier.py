@@ -2,7 +2,6 @@ import os
 import json
 import requests
 import time
-import math
 
 TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
@@ -91,46 +90,20 @@ def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, 
                             {'tipo': 'Gana Partido', 'seleccion': p['visita'], 'prob': p['prob_away']}
                         ]
                     else:
+                        # 💡 El Notificador ahora es un cliente limpio que solo lee las llaves del diccionario
                         prob_L = p['probs'][0]
-                        prob_E = p['probs'][1]
                         prob_V = p['probs'][2]
                         
-                        # Mercados Derivados: Doble Oportunidad y DNB
-                        prob_1X = prob_L + prob_E
-                        prob_X2 = prob_V + prob_E
-                        suma_sin_empate = prob_L + prob_V
-                        prob_DNB_L = (prob_L / suma_sin_empate) if suma_sin_empate > 0 else 0
-                        prob_DNB_V = (prob_V / suma_sin_empate) if suma_sin_empate > 0 else 0
-
-                        # CÁLCULO DE POISSON PARA +1.5 Y +2.5 GOLES
-                        esp_goles_L = (s_l.get('goles_favor', 0) + s_v.get('goles_contra', 0)) / 2
-                        esp_goles_V = (s_v.get('goles_favor', 0) + s_l.get('goles_contra', 0)) / 2
-                        lam = esp_goles_L + esp_goles_V 
-
-                        if lam > 0:
-                            p_0 = math.exp(-lam)
-                            p_1 = lam * math.exp(-lam)
-                            p_2 = (lam**2 * math.exp(-lam)) / 2
-
-                            prob_under_1_5 = p_0 + p_1
-                            prob_over_1_5 = 1 - prob_under_1_5
-                            
-                            prob_under_2_5 = prob_under_1_5 + p_2
-                            prob_over_2_5 = 1 - prob_under_2_5
-                        else:
-                            prob_over_1_5 = 0
-                            prob_over_2_5 = 0
-
                         mercados = [
                             {'tipo': 'Gana Partido', 'seleccion': p['local'], 'prob': prob_L},
                             {'tipo': 'Gana Partido', 'seleccion': p['visita'], 'prob': prob_V},
                             {'tipo': 'Goles', 'seleccion': 'Ambos Anotan (Sí)', 'prob': p.get('btts', 0)},
-                            {'tipo': 'Goles', 'seleccion': '+1.5 Goles', 'prob': prob_over_1_5},
-                            {'tipo': 'Goles', 'seleccion': '+2.5 Goles', 'prob': prob_over_2_5},
-                            {'tipo': 'Doble Oportunidad', 'seleccion': f"{p['local']} o Empate", 'prob': prob_1X},
-                            {'tipo': 'Doble Oportunidad', 'seleccion': f"{p['visita']} o Empate", 'prob': prob_X2},
-                            {'tipo': 'Sin Empate (DNB)', 'seleccion': p['local'], 'prob': prob_DNB_L},
-                            {'tipo': 'Sin Empate (DNB)', 'seleccion': p['visita'], 'prob': prob_DNB_V}
+                            {'tipo': 'Goles', 'seleccion': '+1.5 Goles', 'prob': p.get('over_1_5', 0)},
+                            {'tipo': 'Goles', 'seleccion': '+2.5 Goles', 'prob': p.get('over_2_5', 0)},
+                            {'tipo': 'Doble Oportunidad', 'seleccion': f"{p['local']} o Empate", 'prob': p.get('prob_1X', 0)},
+                            {'tipo': 'Doble Oportunidad', 'seleccion': f"{p['visita']} o Empate", 'prob': p.get('prob_X2', 0)},
+                            {'tipo': 'Sin Empate (DNB)', 'seleccion': p['local'], 'prob': p.get('prob_DNB_L', 0)},
+                            {'tipo': 'Sin Empate (DNB)', 'seleccion': p['visita'], 'prob': p.get('prob_DNB_V', 0)}
                         ]
                     
                     mejor_mercado = max(mercados, key=lambda x: x['prob'])
@@ -158,7 +131,7 @@ def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, 
             mensaje_resumen += f"   🎯 *Pick:* {p.get('mejor_mercado_seleccion', '')} ({prob:.0%}) | 🔥 Pts: `{p.get('puntos_proyectados', 0):.1f}`\n\n"
             
     else:
-        # SEPARAMOS EN LAS 3 CATEGORÍAS PRINCIPALES
+        # SEPARAMOS EN LAS CATEGORÍAS PRINCIPALES
         ganadores = [p for p in todas_las_proyecciones if p['mejor_mercado_tipo'] == 'Gana Partido']
         goles = [p for p in todas_las_proyecciones if p['mejor_mercado_tipo'] == 'Goles']
         seguros = [p for p in todas_las_proyecciones if p['mejor_mercado_tipo'] in ['Doble Oportunidad', 'Sin Empate (DNB)']]
