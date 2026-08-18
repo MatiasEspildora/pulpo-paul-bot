@@ -2,7 +2,7 @@ import os
 import json
 import requests
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 import pytz
 
 TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
@@ -64,7 +64,7 @@ def agrupar_por_pais(proyecciones_dict):
         
     return agrupado
 
-def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, token_override=None, is_basket=False):
+def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_override=None, is_basket=False):
     ganadores_lista = []
     goles_lista = []
     seguros_lista = []
@@ -115,16 +115,14 @@ def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, 
                         mejor_seguro = max(mercados_seguros, key=lambda x: x['prob'])
                         seguros_lista.append({'match': p, 'prob': mejor_seguro['prob'], 'seleccion': mejor_seguro['seleccion'], 'tipo': mejor_seguro['tipo']})
                 
+    # Si no hay partidos para este bloque, no enviamos nada
     if not (ganadores_lista or basket_lista):
-        aviso = f"💎 ━━ *MENÚ DE MEJORES PICKS* ━━ 💎\n" + "━"*22 + "\n\n⚠️ _Hoy no hay partidos con historial maduro para generar proyecciones seguras._\n\n" + "━"*22 + "\n✅ *FIN DEL REPORTE* ✅"
-        enviar_mensaje_telegram(aviso, token_override=token_override)
-        return
+        return False
 
     tz_chile = pytz.timezone('America/Santiago')
     hora_generacion = datetime.now(tz_chile).strftime("%d/%m/%Y %H:%M")
 
-    sufijo = f" {titulo_bloque} " if titulo_bloque else " "
-    mensaje_resumen = f"💎 ━━ *MENÚ ESTRATÉGICO{sufijo}* ━━ 💎\n"
+    mensaje_resumen = f"💎 ━━ *MENÚ ESTRATÉGICO: {etiqueta_dia}* ━━ 💎\n"
     mensaje_resumen += f"📅 _Generado: {hora_generacion}_\n"
     mensaje_resumen += "━"*24 + "\n\n"
 
@@ -132,7 +130,7 @@ def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, 
         basket_lista.sort(key=lambda x: x['prob'], reverse=True)
         for i, item in enumerate(basket_lista[:10], 1):
             p = item['match']
-            mensaje_resumen += f"*{i}.* 🏀 {p['local']} vs {p['visita']} | 📅 {p.get('fecha_str', '')} 🕒 {p.get('hora', '')}\n"
+            mensaje_resumen += f"*{i}.* 🏀 {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n"
             mensaje_resumen += f"   🎯 *Pick:* Gana {item['seleccion']} ({item['prob']:.0%}) | 🔥 Pts: `{p.get('puntos_proyectados', 0):.1f}`\n\n"
             
     else:
@@ -145,7 +143,7 @@ def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, 
             mensaje_resumen += "🏆 *TOP 5 - GANADOR DIRECTO*\n"
             for i, item in enumerate(ganadores_lista[:5], 1):
                 p = item['match']
-                mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 📅 {p.get('fecha_str', '')} 🕒 {p.get('hora', '')}\n   🎯 Gana *{item['seleccion']}* ({item['prob']:.0%})\n\n"
+                mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n   🎯 Gana *{item['seleccion']}* ({item['prob']:.0%})\n\n"
         
         # BLOQUE 2: SEGUROS
         if seguros_lista:
@@ -153,7 +151,7 @@ def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, 
             mensaje_resumen += "🛡️ *TOP 5 - DOBLE OPORTUNIDAD*\n\n"
             for i, item in enumerate(seguros_lista[:5], 1):
                 p = item['match']
-                mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 📅 {p.get('fecha_str', '')} 🕒 {p.get('hora', '')}\n   🎯 1X2: *{item['seleccion']}* ({item['prob']:.0%})\n\n"
+                mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n   🎯 1X2: *{item['seleccion']}* ({item['prob']:.0%})\n\n"
 
         # BLOQUE 3: GOLES
         if goles_lista:
@@ -162,13 +160,12 @@ def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, 
             for i, item in enumerate(goles_lista[:5], 1):
                 p = item['match']
                 marcador = p.get('scores', ['N/A'])[0] if p.get('scores') else 'N/A'
-                mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 📅 {p.get('fecha_str', '')} 🕒 {p.get('hora', '')}\n   🎯 Pick: *{item['seleccion']}* ({item['prob']:.0%}) | Marcador: `{marcador}`\n\n"
+                mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n   🎯 Pick: *{item['seleccion']}* ({item['prob']:.0%}) | Marcador: `{marcador}`\n\n"
 
-        # 💼 NUEVO PORTAFOLIO DE COMBINADAS ESPECIALIZADAS
+        # PORTAFOLIO DE COMBINADAS ESPECIALIZADAS
         mensaje_resumen += "━━━━━━━━━━━━━━━━━━━━━━━━\n"
         mensaje_resumen += "💼 *PORTAFOLIO RECOMENDADO*\n\n"
         
-        # Combinada 1: Puros Goles
         if len(goles_lista) >= 3:
             g1, g2, g3 = goles_lista[0], goles_lista[1], goles_lista[2]
             mensaje_resumen += f"⚽ *El Triple de Goles:*\n"
@@ -176,14 +173,12 @@ def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, 
             mensaje_resumen += f"   2️⃣ {g2['seleccion']}: {g2['match']['local']} vs {g2['match']['visita']}\n"
             mensaje_resumen += f"   3️⃣ {g3['seleccion']}: {g3['match']['local']} vs {g3['match']['visita']}\n\n"
 
-        # Combinada 2: Puros Seguros
         if len(seguros_lista) >= 2:
             s1, s2 = seguros_lista[0], seguros_lista[1]
             mensaje_resumen += f"🛡️ *El Doble Blindado (1X2):*\n"
             mensaje_resumen += f"   1️⃣ {s1['tipo']}: {s1['seleccion']}\n"
             mensaje_resumen += f"   2️⃣ {s2['tipo']}: {s2['seleccion']}\n\n"
 
-        # Combinada 3: Puros Favoritos
         if len(ganadores_lista) >= 2:
             w1, w2 = ganadores_lista[0], ganadores_lista[1]
             mensaje_resumen += f"🏆 *El Par de Favoritos:*\n"
@@ -201,6 +196,32 @@ def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, 
         enviar_mensaje_telegram(mensaje_resumen[mitad:], token_override=token_override)
     else:
         enviar_mensaje_telegram(mensaje_resumen, token_override=token_override)
+        
+    return True
+
+def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, token_override=None, is_basket=False):
+    tz_chile = pytz.timezone('America/Santiago')
+    hoy_dt = datetime.now(tz_chile)
+    hoy_str = hoy_dt.strftime("%Y-%m-%d")
+    manana_str = (hoy_dt + timedelta(days=1)).strftime("%Y-%m-%d")
+    
+    dict_hoy = {}
+    dict_manana = {}
+    
+    for key, projs in proyecciones_dict.items():
+        for p in projs:
+            fecha = p.get('fecha_str', '')
+            if fecha == hoy_str:
+                dict_hoy.setdefault(key, []).append(p)
+            elif fecha == manana_str:
+                dict_manana.setdefault(key, []).append(p)
+                
+    enviado_hoy = _generar_y_enviar_menu(dict_hoy, f"HOY ({hoy_str})", analyzer, token_override, is_basket)
+    enviado_manana = _generar_y_enviar_menu(dict_manana, f"MAÑANA ({manana_str})", analyzer, token_override, is_basket)
+    
+    if not enviado_hoy and not enviado_manana:
+        aviso = f"💎 ━━ *MENÚ DE MEJORES PICKS* ━━ 💎\n" + "━"*22 + "\n\n⚠️ _No hay partidos con historial maduro para HOY ni MAÑANA._\n\n" + "━"*22 + "\n✅ *FIN DEL REPORTE* ✅"
+        enviar_mensaje_telegram(aviso, token_override=token_override)
 
 def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
     agrupado_por_pais = agrupar_por_pais(proyecciones_dict)
