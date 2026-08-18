@@ -114,15 +114,42 @@ class MatchAnalyzer:
         score_probs.sort(key=lambda x: x[1], reverse=True)
         top_scores = [s[0] for s in score_probs[:3]]
 
+        # --- CÁLCULO DE MERCADOS DERIVADOS ---
+        # 1. Doble Oportunidad
+        prob_1X = prob_home + prob_draw
+        prob_X2 = prob_away + prob_draw
+        
+        # 2. Draw No Bet (DNB)
+        suma_sin_empate = prob_home + prob_away
+        prob_DNB_L = (prob_home / suma_sin_empate) if suma_sin_empate > 0 else 0
+        prob_DNB_V = (prob_away / suma_sin_empate) if suma_sin_empate > 0 else 0
+
+        # 3. Mercados Over/Under mediante Función de Distribución Acumulada (CDF) de Poisson
+        lam_total = lambda_home + lambda_away
+        prob_under_1_5 = poisson.cdf(1, lam_total)
+        prob_over_1_5 = 1 - prob_under_1_5
+        
+        prob_under_2_5 = poisson.cdf(2, lam_total)
+        prob_over_2_5 = 1 - prob_under_2_5
+
         return {
             'local': home_team,
             'visita': away_team,
-            'local_id': home_id,    # Agregado para notifier
-            'visita_id': away_id,   # Agregado para notifier
+            'local_id': home_id,
+            'visita_id': away_id,
             'probs': [prob_home, prob_draw, prob_away],
             'btts': btts,
             'scores': top_scores,
-            'score_value': max(prob_home, prob_draw, prob_away)
+            'score_value': max(prob_home, prob_draw, prob_away),
+            
+            # Nuevos mercados inyectados en el diccionario
+            'prob_1X': prob_1X,
+            'prob_X2': prob_X2,
+            'prob_DNB_L': prob_DNB_L,
+            'prob_DNB_V': prob_DNB_V,
+            'over_1_5': prob_over_1_5,
+            'over_2_5': prob_over_2_5,
+            'under_2_5': prob_under_2_5
         }
 
     def get_basketball_team_stats(self, team_name, team_id):
@@ -201,8 +228,8 @@ class MatchAnalyzer:
         return {
             'local': home_team,
             'visita': away_team,
-            'local_id': home_id,    # Agregado para notifier
-            'visita_id': away_id,   # Agregado para notifier
+            'local_id': home_id,    
+            'visita_id': away_id,   
             'prob_home': prob_home,
             'prob_away': prob_away,
             'probs': [prob_home, 0.0, prob_away],
@@ -238,6 +265,5 @@ class MatchAnalyzer:
         }
 
     def get_top_by_league(self, proyecciones, n=None):
-        # El parámetro 'n' ahora puede ser None para no limitar
         sorted_projs = sorted(proyecciones, key=lambda x: x['score_value'], reverse=True)
         return sorted_projs[:n] if n else sorted_projs
