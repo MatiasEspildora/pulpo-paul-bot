@@ -93,12 +93,10 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
                         seleccion = p['local'] if p['prob_home'] > p['prob_away'] else p['visita']
                         basket_lista.append({'match': p, 'prob': prob_gana, 'seleccion': seleccion})
                     else:
-                        # 1. GANADOR DIRECTO
                         prob_gana = max(p['probs'][0], p['probs'][2])
                         seleccion_gana = p['local'] if p['probs'][0] > p['probs'][2] else p['visita']
                         ganadores_lista.append({'match': p, 'prob': prob_gana, 'seleccion': seleccion_gana})
 
-                        # 2. MERCADO DE GOLES
                         mercados_goles = [
                             {'tipo': 'Ambos Anotan (Sí)', 'prob': p.get('btts', 0)},
                             {'tipo': '+1.5 Goles', 'prob': p.get('over_1_5', 0)},
@@ -107,7 +105,6 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
                         mejor_gol = max(mercados_goles, key=lambda x: x['prob'])
                         goles_lista.append({'match': p, 'prob': mejor_gol['prob'], 'seleccion': mejor_gol['tipo']})
 
-                        # 3. MERCADOS SEGUROS (Solo Doble Oportunidad)
                         mercados_seguros = [
                             {'tipo': 'Doble Oportunidad', 'seleccion': f"{p['local']} o Empate", 'prob': p.get('prob_1X', 0)},
                             {'tipo': 'Doble Oportunidad', 'seleccion': f"{p['visita']} o Empate", 'prob': p.get('prob_X2', 0)}
@@ -115,7 +112,6 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
                         mejor_seguro = max(mercados_seguros, key=lambda x: x['prob'])
                         seguros_lista.append({'match': p, 'prob': mejor_seguro['prob'], 'seleccion': mejor_seguro['seleccion'], 'tipo': mejor_seguro['tipo']})
                 
-    # Si no hay partidos para este bloque, no enviamos nada
     if not (ganadores_lista or basket_lista):
         return False
 
@@ -138,14 +134,12 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
         goles_lista.sort(key=lambda x: x['prob'], reverse=True)
         seguros_lista.sort(key=lambda x: x['prob'], reverse=True)
         
-        # BLOQUE 1: GANADORES
         if ganadores_lista:
             mensaje_resumen += "🏆 *TOP 5 - GANADOR DIRECTO*\n"
             for i, item in enumerate(ganadores_lista[:5], 1):
                 p = item['match']
                 mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n   🎯 Gana *{item['seleccion']}* ({item['prob']:.0%})\n\n"
         
-        # BLOQUE 2: SEGUROS
         if seguros_lista:
             mensaje_resumen += "━━━━━━━━━━━━━━━━━━━━━━━━\n"
             mensaje_resumen += "🛡️ *TOP 5 - DOBLE OPORTUNIDAD*\n\n"
@@ -153,7 +147,6 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
                 p = item['match']
                 mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n   🎯 1X2: *{item['seleccion']}* ({item['prob']:.0%})\n\n"
 
-        # BLOQUE 3: GOLES
         if goles_lista:
             mensaje_resumen += "━━━━━━━━━━━━━━━━━━━━━━━━\n"
             mensaje_resumen += "🔥 *TOP 5 - MERCADOS DE GOLES*\n\n"
@@ -162,7 +155,6 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
                 marcador = p.get('scores', ['N/A'])[0] if p.get('scores') else 'N/A'
                 mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n   🎯 Pick: *{item['seleccion']}* ({item['prob']:.0%}) | Marcador: `{marcador}`\n\n"
 
-        # PORTAFOLIO DE COMBINADAS ESPECIALIZADAS
         mensaje_resumen += "━━━━━━━━━━━━━━━━━━━━━━━━\n"
         mensaje_resumen += "💼 *PORTAFOLIO RECOMENDADO*\n\n"
         
@@ -185,7 +177,6 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
             mensaje_resumen += f"   1️⃣ Gana {w1['seleccion']}\n"
             mensaje_resumen += f"   2️⃣ Gana {w2['seleccion']}\n\n"
 
-    # CIERRE OFICIAL DEL MENSAJE
     mensaje_resumen += "━"*24 + "\n"
     mensaje_resumen += "✅ *FIN DEL REPORTE* ✅\n"
 
@@ -236,39 +227,48 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
         for liga, proyecciones in sorted(ligas_del_pais.items()):
             top_items = proyecciones 
             
-            bloque_liga = f"📌 *{liga} - TOTAL ({len(top_items)})*\n\n"
+            header_liga = f"📌 *{liga} - TOTAL ({len(top_items)})*\n\n"
+            
+            # Evaluamos si el puro encabezado rompe el límite
+            if len(mensaje_actual) + len(header_liga) > 3800:
+                mensaje_actual += "━"*20 + "\n"
+                mensajes_a_enviar.append(mensaje_actual)
+                mensaje_actual = f"🏆 {bandera} *{pais}*{sufijo} (Cont.)\n" + "━"*20 + "\n\n"
+                
+            mensaje_actual += header_liga
             
             for p in top_items:
                 s_l = analyzer.get_team_stats(p['local'], p.get('local_id'))
                 s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'))
                 
-                bloque_liga += f"📅 `{p.get('fecha_str', '')}` 🕒 `{p['hora']}`\n⚽ *{p['local']}* vs *{p['visita']}*\n"
-                bloque_liga += (f"📊 Probabilidades: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
-                                f"🎯 Ambos anotan: {p['btts']:.0%} | Marcadores: {', '.join(p['scores'])}\n")
+                bloque_partido = f"📅 `{p.get('fecha_str', '')}` 🕒 `{p['hora']}`\n⚽ *{p['local']}* vs *{p['visita']}*\n"
+                bloque_partido += (f"📊 Probabilidades: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
+                                f"🎯 Ambos anotan: {p.get('btts', 0):.0%} | Marcadores: {', '.join(p.get('scores', []))}\n")
 
                 count_l = s_l.get('count', 0) if isinstance(s_l, dict) else 0
                 count_v = s_v.get('count', 0) if isinstance(s_v, dict) else 0
 
                 if count_l > 0 and count_v > 0:
-                    bloque_liga += (f"📐 *Promedio de goles ({count_l}p | {count_v}p):*\n"
-                                    f"  ⚽ A favor: `{s_l['goles_favor']:.1f}` | `{s_v['goles_favor']:.1f}`\n"
-                                    f"  🛡️ En contra: `{s_l['goles_contra']:.1f}` | `{s_v['goles_contra']:.1f}`\n\n")
+                    bloque_partido += (f"📐 *Promedio de goles ({count_l}p | {count_v}p):*\n"
+                                    f"  ⚽ A favor: `{s_l.get('goles_favor', 0):.1f}` | `{s_v.get('goles_favor', 0):.1f}`\n"
+                                    f"  🛡️ En contra: `{s_l.get('goles_contra', 0):.1f}` | `{s_v.get('goles_contra', 0):.1f}`\n\n")
 
                     if s_l.get("has_details") and s_v.get("has_details"):
-                        bloque_liga += (f"📊 *Estadísticas avanzadas:*\n"
-                                        f"  🚩 Córners: `{s_l['corners']:.0f}` | `{s_v['corners']:.0f}`\n"
-                                        f"  🟨 Tarjetas: `{s_l['tarjetas']:.0f}` | `{s_v['tarjetas']:.0f}`\n"
-                                        f"  🥅 Remates: `{s_l['remates']:.0f}` | `{s_v['remates']:.0f}`\n\n")
+                        bloque_partido += (f"📊 *Estadísticas avanzadas:*\n"
+                                        f"  🚩 Córners: `{s_l.get('corners', 0):.0f}` | `{s_v.get('corners', 0):.0f}`\n"
+                                        f"  🟨 Tarjetas: `{s_l.get('tarjetas', 0):.0f}` | `{s_v.get('tarjetas', 0):.0f}`\n"
+                                        f"  🥅 Remates: `{s_l.get('remates', 0):.0f}` | `{s_v.get('remates', 0):.0f}`\n\n")
                 else:
-                    bloque_liga += "⚠️ *Sin historial suficiente para promedios detallados.*\n\n"
+                    bloque_partido += "⚠️ *Sin historial suficiente para promedios detallados.*\n\n"
 
-            if len(mensaje_actual) + len(bloque_liga) > 3800:
-                mensaje_actual += "━"*20 + "\n"
-                mensajes_a_enviar.append(mensaje_actual)
-                mensaje_actual = f"🏆 {bandera} *{pais}*{sufijo} (Cont.)\n" + "━"*20 + "\n\n" + bloque_liga
-            else:
-                mensaje_actual += bloque_liga
-                
+                # Evaluamos el tamaño PARTIDO por PARTIDO
+                if len(mensaje_actual) + len(bloque_partido) > 3800:
+                    mensaje_actual += "━"*20 + "\n"
+                    mensajes_a_enviar.append(mensaje_actual)
+                    mensaje_actual = f"🏆 {bandera} *{pais}*{sufijo} (Cont.)\n" + "━"*20 + "\n\n"
+                    
+                mensaje_actual += bloque_partido
+
         if mensaje_actual:
             mensaje_actual += "━"*20 + "\n"
             mensajes_a_enviar.append(mensaje_actual)
@@ -277,7 +277,9 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
             enviar_mensaje_telegram(msg, token_override=token_override)
             time.sleep(1.5)
             
+    # LLAMADA AL MENÚ (Solo una vez al final del proceso)
     enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, token_override, is_basket=False)
+
 
 def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
     agrupado_por_pais = agrupar_por_pais(proyecciones_dict)
@@ -292,7 +294,14 @@ def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, to
         for liga, proyecciones in sorted(ligas_del_pais.items()):
             top_items = proyecciones
             
-            bloque_liga = f"📌 *{liga} - TOTAL ({len(top_items)})*\n\n"
+            header_liga = f"📌 *{liga} - TOTAL ({len(top_items)})*\n\n"
+            
+            if len(mensaje_actual) + len(header_liga) > 3800:
+                mensaje_actual += "━"*20 + "\n"
+                mensajes_a_enviar.append(mensaje_actual)
+                mensaje_actual = f"🏀 {bandera} *{pais}*{sufijo} (Cont.)\n" + "━"*20 + "\n\n"
+                
+            mensaje_actual += header_liga
             
             for p in top_items:
                 s_l = analyzer.get_basketball_team_stats(p['local'], p.get('local_id'))
@@ -300,34 +309,34 @@ def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, to
                 ot_l = analyzer.get_basketball_overtime_stats(p['local'], p.get('local_id'))
                 ot_v = analyzer.get_basketball_overtime_stats(p['visita'], p.get('visita_id'))
 
-                bloque_liga += f"📅 `{p.get('fecha_str', '')}` 🕒 `{p['hora']}`\n🏀 *{p['local']}* vs *{p['visita']}*\n"
-                bloque_liga += (f"📊 Victoria Proyectada: L:{p['prob_home']:.0%} | V:{p['prob_away']:.0%}\n"
+                bloque_partido = f"📅 `{p.get('fecha_str', '')}` 🕒 `{p['hora']}`\n🏀 *{p['local']}* vs *{p['visita']}*\n"
+                bloque_partido += (f"📊 Victoria Proyectada: L:{p['prob_home']:.0%} | V:{p['prob_away']:.0%}\n"
                                 f"🎯 Puntos Proyectados: `{p['puntos_proyectados']:.1f}` pts\n")
 
                 count_l = s_l.get('count', 0) if isinstance(s_l, dict) else 0
                 count_v = s_v.get('count', 0) if isinstance(s_v, dict) else 0
 
                 if count_l > 0 and count_v > 0:
-                    bloque_liga += (f"📐 *Promedios ({count_l}p | {count_v}p):*\n"
-                                    f"  pts a favor: `{s_l['puntos_favor']:.1f}` | `{s_v['puntos_favor']:.1f}`\n"
-                                    f"  pts en contra: `{s_l['puntos_contra']:.1f}` | `{s_v['puntos_contra']:.1f}`\n")
+                    bloque_partido += (f"📐 *Promedios ({count_l}p | {count_v}p):*\n"
+                                    f"  pts a favor: `{s_l.get('puntos_favor', 0):.1f}` | `{s_v.get('puntos_favor', 0):.1f}`\n"
+                                    f"  pts en contra: `{s_l.get('puntos_contra', 0):.1f}` | `{s_v.get('puntos_contra', 0):.1f}`\n")
 
                     if ot_l.get('partidos_ot', 0) > 0 or ot_v.get('partidos_ot', 0) > 0:
-                        bloque_liga += (f"⏱️ *Tendencia a Prórroga (OT):*\n"
-                                        f"  partidos con OT: `{ot_l['partidos_ot']}/5` | `{ot_v['partidos_ot']}/5`\n"
-                                        f"  puntos extra prom: `{ot_l['promedio_puntos_ot']:.1f}` | `{ot_v['promedio_puntos_ot']:.1f}`\n\n")
+                        bloque_partido += (f"⏱️ *Tendencia a Prórroga (OT):*\n"
+                                        f"  partidos con OT: `{ot_l.get('partidos_ot', 0)}/5` | `{ot_v.get('partidos_ot', 0)}/5`\n"
+                                        f"  puntos extra prom: `{ot_l.get('promedio_puntos_ot', 0):.1f}` | `{ot_v.get('promedio_puntos_ot', 0):.1f}`\n\n")
                     else:
-                        bloque_liga += "\n"
+                        bloque_partido += "\n"
                 else:
-                    bloque_liga += "⚠️ *Sin historial suficiente.*\n\n"
+                    bloque_partido += "⚠️ *Sin historial suficiente.*\n\n"
 
-            if len(mensaje_actual) + len(bloque_liga) > 3800:
-                mensaje_actual += "━"*20 + "\n"
-                mensajes_a_enviar.append(mensaje_actual)
-                mensaje_actual = f"🏀 {bandera} *{pais}*{sufijo} (Cont.)\n" + "━"*20 + "\n\n" + bloque_liga
-            else:
-                mensaje_actual += bloque_liga
-                
+                if len(mensaje_actual) + len(bloque_partido) > 3800:
+                    mensaje_actual += "━"*20 + "\n"
+                    mensajes_a_enviar.append(mensaje_actual)
+                    mensaje_actual = f"🏀 {bandera} *{pais}*{sufijo} (Cont.)\n" + "━"*20 + "\n\n"
+                    
+                mensaje_actual += bloque_partido
+
         if mensaje_actual:
             mensaje_actual += "━"*20 + "\n"
             mensajes_a_enviar.append(mensaje_actual)
