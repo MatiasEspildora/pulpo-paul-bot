@@ -63,15 +63,14 @@ def agrupar_por_pais(proyecciones_dict):
     return agrupado
 
 def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, token_override=None, is_basket=False):
-    """Genera y envía un TOP 10 absoluto, FILTRANDO por historial mínimo para evitar falsos positivos."""
+    """Genera y envía un TOP 10 absoluto, con filtro de madurez y mercados alternativos."""
     todas_las_proyecciones = []
     
     for pais, ligas in agrupar_por_pais(proyecciones_dict).items():
         for liga, projs in ligas.items():
             for p in projs:
                 
-                # --- NUEVO: FILTRO DE CONFIANZA ESTADÍSTICA ---
-                # Extraemos las estadísticas para ver cuántos partidos tienen de historial
+                # Filtro de Confianza Estadística (Mín. 3 partidos)
                 if is_basket:
                     s_l = analyzer.get_basketball_team_stats(p['local'], p.get('local_id'))
                     s_v = analyzer.get_basketball_team_stats(p['visita'], p.get('visita_id'))
@@ -82,24 +81,21 @@ def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, 
                 count_l = s_l.get('count', 0)
                 count_v = s_v.get('count', 0)
 
-                # ✅ SOLO incluimos al equipo si AMBOS tienen al menos 3 partidos jugados.
-                # Puedes subir este número a 4 o 5 si quieres apuestas aún más conservadoras.
                 if count_l >= 3 and count_v >= 3:
                     p['liga_nombre'] = liga
                     p['pais_nombre'] = pais
                     todas_las_proyecciones.append(p)
                 
     if not todas_las_proyecciones:
-        # Si a principio de mes ningún equipo cumple el requisito, enviamos un aviso transparente
         aviso = f"💎 *TOP 10 MEJORES PICKS* 💎\n" + "━"*20 + "\n\n⚠️ _Hoy no hay partidos con historial maduro (Mín. 3 partidos por equipo) para generar proyecciones seguras._"
         enviar_mensaje_telegram(aviso, token_override=token_override)
         return
 
-    # 1. Obtenemos el Top 10 matemático de los que SÍ pasaron el filtro
+    # 1. Obtenemos el Top 10 matemático
     todas_las_proyecciones.sort(key=lambda x: x.get('score_value', 0), reverse=True)
     top_10 = todas_las_proyecciones[:10]
     
-    # 2. Ordenamos: Primero Chile (cronológicamente), luego el Resto del Mundo (cronológicamente)
+    # 2. Ordenamos: Chile primero (cronológicamente), luego el resto
     top_10.sort(key=lambda x: (
         0 if x.get('pais_nombre') == 'Chile' else 1, 
         x.get('fecha_str', ''), 
@@ -114,23 +110,31 @@ def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, 
         prob = p.get('score_value', 0)
         hora = p.get('hora', '')
         fecha = p.get('fecha_str', '')
-        
         flag = "🇨🇱 " if p['pais_nombre'] == 'Chile' else ""
         
         if is_basket:
             pick = p['local'] if p['prob_home'] > p['prob_away'] else p['visita']
+            pts_proyectados = p.get('puntos_proyectados', 0)
+            
             mensaje_resumen += f"*{i}.* {flag}{deporte_icono} {p['local']} vs {p['visita']}\n"
             mensaje_resumen += f"   🏆 {p['pais_nombre']} - {p['liga_nombre']} | 📅 {fecha} 🕒 {hora}\n"
-            mensaje_resumen += f"   🎯 *Pick:* {pick} ({prob:.0%})\n\n"
+            mensaje_resumen += f"   🎯 *Pick Principal:* {pick} ({prob:.0%})\n"
+            mensaje_resumen += f"   🔥 *Mercado Extra:* Total Puntos Proyectados: `{pts_proyectados:.1f}`\n\n"
         else:
             probs = p['probs']
             max_idx = probs.index(max(probs))
             opciones = [p['local'], "Empate", p['visita']]
             pick = opciones[max_idx]
             
+            # Mercados alternativos fútbol
+            btts_prob = p.get('btts', 0)
+            mejores_scores = p.get('scores', [])
+            marcador_top = mejores_scores[0] if mejores_scores else "N/A"
+            
             mensaje_resumen += f"*{i}.* {flag}{deporte_icono} {p['local']} vs {p['visita']}\n"
             mensaje_resumen += f"   🏆 {p['pais_nombre']} - {p['liga_nombre']} | 📅 {fecha} 🕒 {hora}\n"
-            mensaje_resumen += f"   🎯 *Pick:* {pick} ({prob:.0%})\n\n"
+            mensaje_resumen += f"   🎯 *Pick Principal:* {pick} ({prob:.0%})\n"
+            mensaje_resumen += f"   🔥 *Mercado Extra:* Ambos Anotan ({btts_prob:.0%}) | Marcador: `{marcador_top}`\n\n"
             
     enviar_mensaje_telegram(mensaje_resumen, token_override=token_override)
 
@@ -188,7 +192,6 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
             enviar_mensaje_telegram(msg, token_override=token_override)
             time.sleep(1.5)
             
-    # ✅ Se pasa el analyzer a la nueva función de resumen
     enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, token_override, is_basket=False)
 
 def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
@@ -248,5 +251,4 @@ def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, to
             enviar_mensaje_telegram(msg, token_override=token_override)
             time.sleep(1.5)
 
-    # ✅ Se pasa el analyzer a la nueva función de resumen
     enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, token_override, is_basket=True)
