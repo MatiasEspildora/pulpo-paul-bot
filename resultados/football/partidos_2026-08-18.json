@@ -12618,7 +12618,7 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 18,
+                "elapsed": 32,
                 "extra": null
             }
         },
@@ -12688,7 +12688,7 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 18,
+                "elapsed": 32,
                 "extra": null
             }
         },
@@ -12707,23 +12707,23 @@
                 "id": 10476,
                 "name": "Deportivo Recoleta",
                 "logo": "https://media.api-sports.io/football/teams/10476.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 451,
                 "name": "Boca Juniors",
                 "logo": "https://media.api-sports.io/football/teams/451.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
             "home": 0,
-            "away": 0
+            "away": 1
         },
         "score": {
             "halftime": {
                 "home": 0,
-                "away": 0
+                "away": 1
             },
             "fulltime": {
                 "home": null,
@@ -12758,7 +12758,7 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 12,
+                "elapsed": 26,
                 "extra": null
             }
         },
@@ -12828,7 +12828,7 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 18,
+                "elapsed": 32,
                 "extra": null
             }
         },
@@ -12847,23 +12847,23 @@
                 "id": 3704,
                 "name": "Guabirá",
                 "logo": "https://media.api-sports.io/football/teams/3704.png",
-                "winner": true
+                "winner": null
             },
             "away": {
                 "id": 17762,
                 "name": "Universitario de Vinto",
                 "logo": "https://media.api-sports.io/football/teams/17762.png",
-                "winner": false
+                "winner": null
             }
         },
         "goals": {
             "home": 1,
-            "away": 0
+            "away": 1
         },
         "score": {
             "halftime": {
                 "home": 1,
-                "away": 0
+                "away": 1
             },
             "fulltime": {
                 "home": null,
@@ -12887,7 +12887,7 @@
             "date": "2026-08-18T18:30:00-04:00",
             "timestamp": 1787092200,
             "periods": {
-                "first": null,
+                "first": 1787092200,
                 "second": null
             },
             "venue": {
@@ -12896,9 +12896,9 @@
                 "city": "Londrina"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 1,
                 "extra": null
             }
         },
@@ -12927,13 +12927,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
