@@ -9606,10 +9606,10 @@
                 "city": null
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
+                "long": "Match Finished",
+                "short": "FT",
                 "elapsed": 90,
-                "extra": 4
+                "extra": 7
             }
         },
         "league": {
@@ -9646,8 +9646,8 @@
                 "away": 3
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 4
             },
             "extratime": {
                 "home": null,
@@ -9668,7 +9668,7 @@
             "timestamp": 1787018400,
             "periods": {
                 "first": 1787018400,
-                "second": null
+                "second": 1787022000
             },
             "venue": {
                 "id": null,
@@ -9676,10 +9676,10 @@
                 "city": "Grecia"
             },
             "status": {
-                "long": "Halftime",
-                "short": "HT",
-                "elapsed": 45,
-                "extra": 4
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 62,
+                "extra": null
             }
         },
         "league": {
@@ -9737,7 +9737,7 @@
             "date": "2026-08-17T23:06:00-04:00",
             "timestamp": 1787022360,
             "periods": {
-                "first": null,
+                "first": 1787022360,
                 "second": null
             },
             "venue": {
@@ -9746,9 +9746,9 @@
                 "city": "Pachuca de Soto"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 19,
                 "extra": null
             }
         },
@@ -9767,23 +9767,23 @@
                 "id": 2292,
                 "name": "CF Pachuca",
                 "logo": "https://media.api-sports.io/football/teams/2292.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 2291,
                 "name": "Puebla",
                 "logo": "https://media.api-sports.io/football/teams/2291.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
                 "home": null,
