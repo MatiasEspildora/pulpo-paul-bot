@@ -3,7 +3,9 @@ name: Pulpo Paul Diario
 on:
   workflow_dispatch:
   schedule:
-    # Corre todos los días a las 01:00 UTC (22:00 de Chile)
+    # Turno Prime: 17:45 UTC (13:45 de Chile, considerando el horario de invierno actual GMT-4)
+    - cron: '45 17 * * *'
+    # Turno de Cierre: 01:00 UTC (21:00 o 22:00 de Chile, dependiendo del cambio de hora)
     - cron: '0 1 * * *'
 
 jobs:
@@ -52,4 +54,3 @@ jobs:
             git commit -m "🤖 Actualización automática de resultados y proyecciones [skip ci]"
             git push
           fi
-       
