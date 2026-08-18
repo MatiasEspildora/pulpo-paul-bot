@@ -2,6 +2,8 @@ import os
 import json
 import requests
 import time
+from datetime import datetime
+import pytz
 
 TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
@@ -63,7 +65,10 @@ def agrupar_por_pais(proyecciones_dict):
     return agrupado
 
 def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, token_override=None, is_basket=False):
-    todas_las_proyecciones = []
+    ganadores_lista = []
+    goles_lista = []
+    seguros_lista = []
+    basket_lista = []
     
     for pais, ligas in agrupar_por_pais(proyecciones_dict).items():
         for liga, projs in ligas.items():
@@ -85,85 +90,100 @@ def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, 
                     p['pais_nombre'] = pais
                     
                     if is_basket:
-                        mercados = [
-                            {'tipo': 'Gana Partido', 'seleccion': p['local'], 'prob': p['prob_home']},
-                            {'tipo': 'Gana Partido', 'seleccion': p['visita'], 'prob': p['prob_away']}
-                        ]
+                        prob_gana = max(p['prob_home'], p['prob_away'])
+                        seleccion = p['local'] if p['prob_home'] > p['prob_away'] else p['visita']
+                        basket_lista.append({'match': p, 'prob': prob_gana, 'seleccion': seleccion})
                     else:
-                        # 💡 El Notificador ahora es un cliente limpio que solo lee las llaves del diccionario
-                        prob_L = p['probs'][0]
-                        prob_V = p['probs'][2]
-                        
-                        mercados = [
-                            {'tipo': 'Gana Partido', 'seleccion': p['local'], 'prob': prob_L},
-                            {'tipo': 'Gana Partido', 'seleccion': p['visita'], 'prob': prob_V},
-                            {'tipo': 'Goles', 'seleccion': 'Ambos Anotan (Sí)', 'prob': p.get('btts', 0)},
-                            {'tipo': 'Goles', 'seleccion': '+1.5 Goles', 'prob': p.get('over_1_5', 0)},
-                            {'tipo': 'Goles', 'seleccion': '+2.5 Goles', 'prob': p.get('over_2_5', 0)},
+                        # 1. EVALUACIÓN DE GANADOR DIRECTO
+                        prob_gana = max(p['probs'][0], p['probs'][2])
+                        seleccion_gana = p['local'] if p['probs'][0] > p['probs'][2] else p['visita']
+                        ganadores_lista.append({'match': p, 'prob': prob_gana, 'seleccion': seleccion_gana})
+
+                        # 2. EVALUACIÓN DE MERCADO DE GOLES
+                        mercados_goles = [
+                            {'tipo': 'Ambos Anotan (Sí)', 'prob': p.get('btts', 0)},
+                            {'tipo': '+1.5 Goles', 'prob': p.get('over_1_5', 0)},
+                            {'tipo': '+2.5 Goles', 'prob': p.get('over_2_5', 0)}
+                        ]
+                        mejor_gol = max(mercados_goles, key=lambda x: x['prob'])
+                        goles_lista.append({'match': p, 'prob': mejor_gol['prob'], 'seleccion': mejor_gol['tipo']})
+
+                        # 3. EVALUACIÓN DE MERCADOS SEGUROS (DNB / Doble Oportunidad)
+                        mercados_seguros = [
                             {'tipo': 'Doble Oportunidad', 'seleccion': f"{p['local']} o Empate", 'prob': p.get('prob_1X', 0)},
                             {'tipo': 'Doble Oportunidad', 'seleccion': f"{p['visita']} o Empate", 'prob': p.get('prob_X2', 0)},
                             {'tipo': 'Sin Empate (DNB)', 'seleccion': p['local'], 'prob': p.get('prob_DNB_L', 0)},
                             {'tipo': 'Sin Empate (DNB)', 'seleccion': p['visita'], 'prob': p.get('prob_DNB_V', 0)}
                         ]
-                    
-                    mejor_mercado = max(mercados, key=lambda x: x['prob'])
-                    
-                    p['mejor_mercado_tipo'] = mejor_mercado['tipo']
-                    p['mejor_mercado_seleccion'] = mejor_mercado['seleccion']
-                    p['mejor_mercado_prob'] = mejor_mercado['prob']
-                    
-                    todas_las_proyecciones.append(p)
+                        mejor_seguro = max(mercados_seguros, key=lambda x: x['prob'])
+                        seguros_lista.append({'match': p, 'prob': mejor_seguro['prob'], 'seleccion': mejor_seguro['seleccion'], 'tipo': mejor_seguro['tipo']})
                 
-    if not todas_las_proyecciones:
-        aviso = f"💎 *MENÚ DE MEJORES PICKS* 💎\n" + "━"*20 + "\n\n⚠️ _Hoy no hay partidos con historial maduro para generar proyecciones seguras._"
+    if not (ganadores_lista or basket_lista):
+        aviso = f"💎 ━━ *MENÚ DE MEJORES PICKS* ━━ 💎\n" + "━"*22 + "\n\n⚠️ _Hoy no hay partidos con historial maduro para generar proyecciones seguras._\n\n" + "━"*22 + "\n✅ *FIN DEL REPORTE* ✅"
         enviar_mensaje_telegram(aviso, token_override=token_override)
         return
 
-    sufijo = f" ({titulo_bloque})" if titulo_bloque else ""
-    mensaje_resumen = f"💎 *MENÚ ESTRATÉGICO DE APUESTAS{sufijo}* 💎\n" + "━"*20 + "\n\n"
+    # Generamos la hora actual para el reporte
+    tz_chile = pytz.timezone('America/Santiago')
+    hora_generacion = datetime.now(tz_chile).strftime("%d/%m/%Y %H:%M")
+
+    sufijo = f" {titulo_bloque} " if titulo_bloque else " "
+    mensaje_resumen = f"💎 ━━ *MENÚ ESTRATÉGICO{sufijo}* ━━ 💎\n"
+    mensaje_resumen += f"📅 _Generado: {hora_generacion}_\n"
+    mensaje_resumen += "━"*24 + "\n\n"
 
     if is_basket:
-        todas_las_proyecciones.sort(key=lambda x: x.get('mejor_mercado_prob', 0), reverse=True)
-        top_10 = todas_las_proyecciones[:10]
-        for i, p in enumerate(top_10, 1):
-            prob = p.get('mejor_mercado_prob', 0)
+        basket_lista.sort(key=lambda x: x['prob'], reverse=True)
+        for i, item in enumerate(basket_lista[:10], 1):
+            p = item['match']
             mensaje_resumen += f"*{i}.* 🏀 {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n"
-            mensaje_resumen += f"   🎯 *Pick:* {p.get('mejor_mercado_seleccion', '')} ({prob:.0%}) | 🔥 Pts: `{p.get('puntos_proyectados', 0):.1f}`\n\n"
+            mensaje_resumen += f"   🎯 *Pick:* Gana {item['seleccion']} ({item['prob']:.0%}) | 🔥 Pts: `{p.get('puntos_proyectados', 0):.1f}`\n\n"
             
     else:
-        # SEPARAMOS EN LAS CATEGORÍAS PRINCIPALES
-        ganadores = [p for p in todas_las_proyecciones if p['mejor_mercado_tipo'] == 'Gana Partido']
-        goles = [p for p in todas_las_proyecciones if p['mejor_mercado_tipo'] == 'Goles']
-        seguros = [p for p in todas_las_proyecciones if p['mejor_mercado_tipo'] in ['Doble Oportunidad', 'Sin Empate (DNB)']]
+        ganadores_lista.sort(key=lambda x: x['prob'], reverse=True)
+        goles_lista.sort(key=lambda x: x['prob'], reverse=True)
+        seguros_lista.sort(key=lambda x: x['prob'], reverse=True)
         
-        ganadores.sort(key=lambda x: x['mejor_mercado_prob'], reverse=True)
-        goles.sort(key=lambda x: x['mejor_mercado_prob'], reverse=True)
-        seguros.sort(key=lambda x: x['mejor_mercado_prob'], reverse=True)
-        
-        if ganadores:
+        # BLOQUE 1: GANADORES
+        if ganadores_lista:
             mensaje_resumen += "🏆 *TOP 5 - GANADOR DIRECTO*\n"
-            for i, p in enumerate(ganadores[:5], 1):
-                mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n   🎯 Gana {p['mejor_mercado_seleccion']} ({p['mejor_mercado_prob']:.0%})\n\n"
-            
-        if seguros:
-            mensaje_resumen += "🛡️ *TOP 5 - MERCADOS SEGUROS (DNB / 1X2)*\n"
-            for i, p in enumerate(seguros[:5], 1):
-                mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n   🎯 {p['mejor_mercado_tipo']}: {p['mejor_mercado_seleccion']} ({p['mejor_mercado_prob']:.0%})\n\n"
+            for i, item in enumerate(ganadores_lista[:5], 1):
+                p = item['match']
+                mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n   🎯 Gana *{item['seleccion']}* ({item['prob']:.0%})\n\n"
+        
+        # BLOQUE 2: SEGUROS
+        if seguros_lista:
+            mensaje_resumen += "━━━━━━━━━━━━━━━━━━━━━━━━\n"
+            mensaje_resumen += "🛡️ *TOP 5 - MERCADOS SEGUROS*\n"
+            mensaje_resumen += "_(Doble Oportunidad / Sin Empate)_\n\n"
+            for i, item in enumerate(seguros_lista[:5], 1):
+                p = item['match']
+                mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n   🎯 {item['tipo']}: *{item['seleccion']}* ({item['prob']:.0%})\n\n"
 
-        if goles:
-            mensaje_resumen += "🔥 *TOP 5 - MERCADOS DE GOLES*\n"
-            for i, p in enumerate(goles[:5], 1):
+        # BLOQUE 3: GOLES
+        if goles_lista:
+            mensaje_resumen += "━━━━━━━━━━━━━━━━━━━━━━━━\n"
+            mensaje_resumen += "🔥 *TOP 5 - MERCADOS DE GOLES*\n\n"
+            for i, item in enumerate(goles_lista[:5], 1):
+                p = item['match']
                 marcador = p.get('scores', ['N/A'])[0] if p.get('scores') else 'N/A'
-                mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n   🎯 Pick: {p['mejor_mercado_seleccion']} ({p['mejor_mercado_prob']:.0%}) | Marcador: `{marcador}`\n\n"
+                mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n   🎯 Pick: *{item['seleccion']}* ({item['prob']:.0%}) | Marcador: `{marcador}`\n\n"
 
         # PORTAFOLIO DE COMBINADAS
-        mensaje_resumen += "━"*20 + "\n💼 *PORTAFOLIO RECOMENDADO*\n\n"
-        if len(seguros) >= 2:
-            mensaje_resumen += f"🧱 *La Muralla (Seguros):*\n   1️⃣ {seguros[0]['mejor_mercado_tipo']}: {seguros[0]['mejor_mercado_seleccion']}\n   2️⃣ {seguros[1]['mejor_mercado_tipo']}: {seguros[1]['mejor_mercado_seleccion']}\n\n"
-        if ganadores and goles:
-            mensaje_resumen += f"🚀 *El Mix de Valor:*\n   1️⃣ Gana {ganadores[0]['mejor_mercado_seleccion']}\n   2️⃣ {goles[0]['mejor_mercado_seleccion']} en {goles[0]['local']} vs {goles[0]['visita']}\n"
+        mensaje_resumen += "━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        mensaje_resumen += "💼 *PORTAFOLIO RECOMENDADO*\n\n"
+        if len(seguros_lista) >= 2:
+            s1, s2 = seguros_lista[0], seguros_lista[1]
+            mensaje_resumen += f"🧱 *La Muralla (Combinada Segura):*\n   1️⃣ {s1['tipo']}: {s1['seleccion']}\n   2️⃣ {s2['tipo']}: {s2['seleccion']}\n\n"
+        if ganadores_lista and goles_lista:
+            g_top = ganadores_lista[0]
+            gol_top = goles_lista[0]
+            mensaje_resumen += f"🚀 *El Mix de Valor:*\n   1️⃣ Gana {g_top['seleccion']}\n   2️⃣ {gol_top['seleccion']} en {gol_top['match']['local']} vs {gol_top['match']['visita']}\n\n"
 
-    # Enviar particionado si supera el límite de caracteres de Telegram
+    # CIERRE OFICIAL DEL MENSAJE
+    mensaje_resumen += "━"*24 + "\n"
+    mensaje_resumen += "✅ *FIN DEL REPORTE* ✅\n"
+
     if len(mensaje_resumen) > 4000:
         mitad = len(mensaje_resumen) // 2
         enviar_mensaje_telegram(mensaje_resumen[:mitad], token_override=token_override)
@@ -171,7 +191,6 @@ def enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, 
         enviar_mensaje_telegram(mensaje_resumen[mitad:], token_override=token_override)
     else:
         enviar_mensaje_telegram(mensaje_resumen, token_override=token_override)
-
 
 def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
     agrupado_por_pais = agrupar_por_pais(proyecciones_dict)
@@ -228,7 +247,6 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
             time.sleep(1.5)
             
     enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, token_override, is_basket=False)
-
 
 def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
     agrupado_por_pais = agrupar_por_pais(proyecciones_dict)
