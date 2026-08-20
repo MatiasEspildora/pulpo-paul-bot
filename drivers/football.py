@@ -90,9 +90,9 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
                     df_hist.at[idx, "HomeTeamId"], df_hist.at[idx, "AwayTeamId"] = h_id, a_id
                     continue
 
-            # LÓGICA DE ELIMINATORIA (Hotfix: Minúsculas y Playoffs)
+            # LÓGICA DE ELIMINATORIA (Hotfix: Minúsculas y Play-offs)
             ronda_texto = (liga.get("round") or "").lower()
-            palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "qualifying"]
+            palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "play-off", "qualifying"]
             es_eliminatoria = any(palabra in ronda_texto for palabra in palabras_clave)
 
             nuevo = {
@@ -204,9 +204,9 @@ def run_process(df_externo=None):
                         liga = match.get("league", {}).get("name", "Unknown")
                         proj['pais'] = pais
                         
-                        # INYECCIÓN DE LA BANDERA PARA EL NOTIFICADOR (Hotfix: Minúsculas y Playoffs)
+                        # INYECCIÓN DE LA BANDERA PARA EL NOTIFICADOR (Hotfix: Minúsculas y Play-offs)
                         ronda_texto = (match.get("league", {}).get("round") or "").lower()
-                        palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "qualifying"]
+                        palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "play-off", "qualifying"]
                         proj['es_eliminatoria'] = any(palabra in ronda_texto for palabra in palabras_clave)
                         
                         target = proyecciones_mañana if dt_obj.strftime("%Y-%m-%d") > fecha_mañana_str else proyecciones_hoy
