@@ -90,16 +90,16 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
                     df_hist.at[idx, "HomeTeamId"], df_hist.at[idx, "AwayTeamId"] = h_id, a_id
                     continue
 
-            # LÓGICA DE ELIMINATORIA
-            ronda_texto = liga.get("round", "")
-            palabras_clave = ["Round", "Quarter", "Semi", "Final", "Elimination"]
+            # LÓGICA DE ELIMINATORIA (Hotfix: Minúsculas y Playoffs)
+            ronda_texto = (liga.get("round") or "").lower()
+            palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "qualifying"]
             es_eliminatoria = any(palabra in ronda_texto for palabra in palabras_clave)
 
             nuevo = {
                 "League": league_name,
                 "LeagueId": liga_id_str,
                 "Country": league_country,
-                "Round": ronda_texto,              
+                "Round": liga.get("round", ""),              
                 "EsEliminatoria": es_eliminatoria, 
                 "Date": fecha_str,
                 "HomeTeamId": h_id,
@@ -204,9 +204,9 @@ def run_process(df_externo=None):
                         liga = match.get("league", {}).get("name", "Unknown")
                         proj['pais'] = pais
                         
-                        # INYECCIÓN DE LA BANDERA PARA EL NOTIFICADOR
-                        ronda_texto = match.get("league", {}).get("round", "")
-                        palabras_clave = ["Round", "Quarter", "Semi", "Final", "Elimination"]
+                        # INYECCIÓN DE LA BANDERA PARA EL NOTIFICADOR (Hotfix: Minúsculas y Playoffs)
+                        ronda_texto = (match.get("league", {}).get("round") or "").lower()
+                        palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "qualifying"]
                         proj['es_eliminatoria'] = any(palabra in ronda_texto for palabra in palabras_clave)
                         
                         target = proyecciones_mañana if dt_obj.strftime("%Y-%m-%d") > fecha_mañana_str else proyecciones_hoy
