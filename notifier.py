@@ -69,6 +69,7 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
     goles_lista = []
     seguros_lista = []
     basket_lista = []
+    eliminatorias_lista = [] # NUEVO GRUPO: Partición de Alta Varianza
     
     for pais, ligas in agrupar_por_pais(proyecciones_dict).items():
         for liga, projs in ligas.items():
@@ -93,34 +94,48 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
                         seleccion = p['local'] if p['prob_home'] > p['prob_away'] else p['visita']
                         basket_lista.append({'match': p, 'prob': prob_gana, 'seleccion': seleccion})
                     else:
-                        # 🚨 LÓGICA DE PENALIZACIÓN TÁCTICA
                         es_elim = p.get('es_eliminatoria', False)
-                        penalidad_tactica = 0.85 if es_elim else 1.0
-                        alerta = " ⚠️(Mata-Mata)" if es_elim else ""
 
-                        # 1. GANADOR DIRECTO (Castigado)
-                        prob_gana = max(p['probs'][0], p['probs'][2]) * penalidad_tactica
-                        seleccion_gana = p['local'] if p['probs'][0] > p['probs'][2] else p['visita']
-                        ganadores_lista.append({'match': p, 'prob': prob_gana, 'seleccion': seleccion_gana + alerta})
+                        if es_elim:
+                            # 🚨 LÓGICA MATA-MATA (Aislada del menú principal)
+                            prob_gana = max(p['probs'][0], p['probs'][2])
+                            mercados_elim = [
+                                {'tipo': 'Ganador', 'seleccion': p['local'] if p['probs'][0] > p['probs'][2] else p['visita'], 'prob': prob_gana},
+                                {'tipo': 'Goles', 'seleccion': '+1.5 Goles', 'prob': p.get('over_1_5', 0)},
+                                {'tipo': 'Goles', 'seleccion': 'Ambos Anotan', 'prob': p.get('btts', 0)},
+                                {'tipo': 'Blindaje', 'seleccion': f"{p['local']} o Empate", 'prob': p.get('prob_1X', 0)},
+                                {'tipo': 'Blindaje', 'seleccion': f"{p['visita']} o Empate", 'prob': p.get('prob_X2', 0)}
+                            ]
+                            # Escogemos el mercado con mayor probabilidad para mostrar en el radar
+                            mejor_pick = max(mercados_elim, key=lambda x: x['prob'])
+                            eliminatorias_lista.append({'match': p, 'prob': mejor_pick['prob'], 'seleccion': mejor_pick['seleccion'], 'mercado': mejor_pick['tipo']})
+                            
+                        else:
+                            # 🟢 LÓGICA REGULAR PURA (Data limpia para los Tops)
+                            
+                            # 1. GANADOR DIRECTO
+                            prob_gana = max(p['probs'][0], p['probs'][2])
+                            seleccion_gana = p['local'] if p['probs'][0] > p['probs'][2] else p['visita']
+                            ganadores_lista.append({'match': p, 'prob': prob_gana, 'seleccion': seleccion_gana})
 
-                        # 2. MERCADO DE GOLES (Intacto)
-                        mercados_goles = [
-                            {'tipo': 'Ambos Anotan (Sí)', 'prob': p.get('btts', 0)},
-                            {'tipo': '+1.5 Goles', 'prob': p.get('over_1_5', 0)},
-                            {'tipo': '+2.5 Goles', 'prob': p.get('over_2_5', 0)}
-                        ]
-                        mejor_gol = max(mercados_goles, key=lambda x: x['prob'])
-                        goles_lista.append({'match': p, 'prob': mejor_gol['prob'], 'seleccion': mejor_gol['tipo'] + alerta})
+                            # 2. MERCADO DE GOLES
+                            mercados_goles = [
+                                {'tipo': 'Ambos Anotan (Sí)', 'prob': p.get('btts', 0)},
+                                {'tipo': '+1.5 Goles', 'prob': p.get('over_1_5', 0)},
+                                {'tipo': '+2.5 Goles', 'prob': p.get('over_2_5', 0)}
+                            ]
+                            mejor_gol = max(mercados_goles, key=lambda x: x['prob'])
+                            goles_lista.append({'match': p, 'prob': mejor_gol['prob'], 'seleccion': mejor_gol['tipo']})
 
-                        # 3. MERCADOS SEGUROS (Castigado)
-                        mercados_seguros = [
-                            {'tipo': 'Doble Oportunidad', 'seleccion': f"{p['local']} o Empate", 'prob': p.get('prob_1X', 0) * penalidad_tactica},
-                            {'tipo': 'Doble Oportunidad', 'seleccion': f"{p['visita']} o Empate", 'prob': p.get('prob_X2', 0) * penalidad_tactica}
-                        ]
-                        mejor_seguro = max(mercados_seguros, key=lambda x: x['prob'])
-                        seguros_lista.append({'match': p, 'prob': mejor_seguro['prob'], 'seleccion': mejor_seguro['seleccion'] + alerta, 'tipo': mejor_seguro['tipo']})
+                            # 3. MERCADOS SEGUROS
+                            mercados_seguros = [
+                                {'tipo': 'Doble Oportunidad', 'seleccion': f"{p['local']} o Empate", 'prob': p.get('prob_1X', 0)},
+                                {'tipo': 'Doble Oportunidad', 'seleccion': f"{p['visita']} o Empate", 'prob': p.get('prob_X2', 0)}
+                            ]
+                            mejor_seguro = max(mercados_seguros, key=lambda x: x['prob'])
+                            seguros_lista.append({'match': p, 'prob': mejor_seguro['prob'], 'seleccion': mejor_seguro['seleccion'], 'tipo': mejor_seguro['tipo']})
                 
-    if not (ganadores_lista or basket_lista):
+    if not (ganadores_lista or basket_lista or eliminatorias_lista):
         return False
 
     tz_chile = pytz.timezone('America/Santiago')
@@ -141,6 +156,7 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
         ganadores_lista.sort(key=lambda x: x['prob'], reverse=True)
         goles_lista.sort(key=lambda x: x['prob'], reverse=True)
         seguros_lista.sort(key=lambda x: x['prob'], reverse=True)
+        eliminatorias_lista.sort(key=lambda x: x['prob'], reverse=True)
         
         if ganadores_lista:
             mensaje_resumen += "🏆 *TOP 5 - GANADOR DIRECTO*\n"
@@ -184,6 +200,16 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
             mensaje_resumen += f"🏆 *El Par de Favoritos:*\n"
             mensaje_resumen += f"   1️⃣ Gana {w1['seleccion']}\n"
             mensaje_resumen += f"   2️⃣ Gana {w2['seleccion']}\n\n"
+
+        # 🚨 NUEVO BLOQUE AL FINAL PARA LAS ELIMINATORIAS
+        if eliminatorias_lista:
+            mensaje_resumen += "━━━━━━━━━━━━━━━━━━━━━━━━\n"
+            mensaje_resumen += "⚠️ *ZONA DE ALTA VARIANZA (MATA-MATA)* ⚠️\n"
+            mensaje_resumen += "_Radar secundario (Ignorar para caja principal)_\n\n"
+            for i, item in enumerate(eliminatorias_lista[:5], 1):
+                p = item['match']
+                mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n"
+                mensaje_resumen += f"   🎯 {item['mercado']}: *{item['seleccion']}* ({item['prob']:.0%})\n\n"
 
     mensaje_resumen += "━"*24 + "\n"
     mensaje_resumen += "✅ *FIN DEL REPORTE* ✅\n"
