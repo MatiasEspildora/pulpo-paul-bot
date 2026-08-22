@@ -145,6 +145,7 @@ def run_process(df_externo=None):
                 
                 try:
                     data = api.get_data("fixtures", {"date": f_str, "timezone": "America/Santiago"})
+                    time.sleep(1.5) # ⏱️ PAUSA DE SEGURIDAD AÑADIDA PARA EVITAR BANEOS DE LA API
                 except Exception:
                     data = None
 
