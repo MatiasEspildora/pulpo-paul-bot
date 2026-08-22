@@ -69,7 +69,7 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
     goles_lista = []
     seguros_lista = []
     basket_lista = []
-    eliminatorias_lista = [] # NUEVO GRUPO: Partición de Alta Varianza
+    eliminatorias_lista = [] 
     
     for pais, ligas in agrupar_por_pais(proyecciones_dict).items():
         for liga, projs in ligas.items():
@@ -97,7 +97,7 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
                         es_elim = p.get('es_eliminatoria', False)
 
                         if es_elim:
-                            # 🚨 LÓGICA MATA-MATA (Aislada del menú principal)
+                            # 🚨 LÓGICA MATA-MATA 
                             prob_gana = max(p['probs'][0], p['probs'][2])
                             mercados_elim = [
                                 {'tipo': 'Ganador', 'seleccion': p['local'] if p['probs'][0] > p['probs'][2] else p['visita'], 'prob': prob_gana},
@@ -106,12 +106,11 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
                                 {'tipo': 'Blindaje', 'seleccion': f"{p['local']} o Empate", 'prob': p.get('prob_1X', 0)},
                                 {'tipo': 'Blindaje', 'seleccion': f"{p['visita']} o Empate", 'prob': p.get('prob_X2', 0)}
                             ]
-                            # Escogemos el mercado con mayor probabilidad para mostrar en el radar
                             mejor_pick = max(mercados_elim, key=lambda x: x['prob'])
                             eliminatorias_lista.append({'match': p, 'prob': mejor_pick['prob'], 'seleccion': mejor_pick['seleccion'], 'mercado': mejor_pick['tipo']})
                             
                         else:
-                            # 🟢 LÓGICA REGULAR PURA (Data limpia para los Tops)
+                            # 🟢 LÓGICA REGULAR PURA 
                             
                             # 1. GANADOR DIRECTO
                             prob_gana = max(p['probs'][0], p['probs'][2])
@@ -162,22 +161,25 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
             mensaje_resumen += "🏆 *TOP 5 - GANADOR DIRECTO*\n"
             for i, item in enumerate(ganadores_lista[:5], 1):
                 p = item['match']
-                mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n   🎯 Gana *{item['seleccion']}* ({item['prob']:.0%})\n\n"
+                bandera = BANDERAS.get(p.get('pais_nombre', ''), "🏴")
+                mensaje_resumen += f"*{i}.* ⚽ [{bandera} {p.get('pais_nombre', '')} - {p.get('liga_nombre', '')}]\n   {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n   🎯 Gana *{item['seleccion']}* ({item['prob']:.0%})\n\n"
         
         if seguros_lista:
             mensaje_resumen += "━━━━━━━━━━━━━━━━━━━━━━━━\n"
             mensaje_resumen += "🛡️ *TOP 5 - DOBLE OPORTUNIDAD*\n\n"
             for i, item in enumerate(seguros_lista[:5], 1):
                 p = item['match']
-                mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n   🎯 1X2: *{item['seleccion']}* ({item['prob']:.0%})\n\n"
+                bandera = BANDERAS.get(p.get('pais_nombre', ''), "🏴")
+                mensaje_resumen += f"*{i}.* ⚽ [{bandera} {p.get('pais_nombre', '')} - {p.get('liga_nombre', '')}]\n   {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n   🎯 1X2: *{item['seleccion']}* ({item['prob']:.0%})\n\n"
 
         if goles_lista:
             mensaje_resumen += "━━━━━━━━━━━━━━━━━━━━━━━━\n"
             mensaje_resumen += "🔥 *TOP 5 - MERCADOS DE GOLES*\n\n"
             for i, item in enumerate(goles_lista[:5], 1):
                 p = item['match']
+                bandera = BANDERAS.get(p.get('pais_nombre', ''), "🏴")
                 marcador = p.get('scores', ['N/A'])[0] if p.get('scores') else 'N/A'
-                mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n   🎯 Pick: *{item['seleccion']}* ({item['prob']:.0%}) | Marcador: `{marcador}`\n\n"
+                mensaje_resumen += f"*{i}.* ⚽ [{bandera} {p.get('pais_nombre', '')} - {p.get('liga_nombre', '')}]\n   {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n   🎯 Pick: *{item['seleccion']}* ({item['prob']:.0%}) | Marcador: `{marcador}`\n\n"
 
         mensaje_resumen += "━━━━━━━━━━━━━━━━━━━━━━━━\n"
         mensaje_resumen += "💼 *PORTAFOLIO RECOMENDADO*\n\n"
@@ -201,14 +203,14 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
             mensaje_resumen += f"   1️⃣ Gana {w1['seleccion']}\n"
             mensaje_resumen += f"   2️⃣ Gana {w2['seleccion']}\n\n"
 
-        # 🚨 NUEVO BLOQUE AL FINAL PARA LAS ELIMINATORIAS
         if eliminatorias_lista:
             mensaje_resumen += "━━━━━━━━━━━━━━━━━━━━━━━━\n"
             mensaje_resumen += "⚠️ *ZONA DE ALTA VARIANZA (MATA-MATA)* ⚠️\n"
             mensaje_resumen += "_Radar secundario (Ignorar para caja principal)_\n\n"
             for i, item in enumerate(eliminatorias_lista[:5], 1):
                 p = item['match']
-                mensaje_resumen += f"*{i}.* ⚽ {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n"
+                bandera = BANDERAS.get(p.get('pais_nombre', ''), "🏴")
+                mensaje_resumen += f"*{i}.* ⚽ [{bandera} {p.get('pais_nombre', '')} - {p.get('liga_nombre', '')}]\n   {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n"
                 mensaje_resumen += f"   🎯 {item['mercado']}: *{item['seleccion']}* ({item['prob']:.0%})\n\n"
 
     mensaje_resumen += "━"*24 + "\n"
