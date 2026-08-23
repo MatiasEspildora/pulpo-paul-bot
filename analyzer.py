@@ -126,11 +126,12 @@ class MatchAnalyzer:
 
         # 3. Mercados Over/Under mediante Función de Distribución Acumulada (CDF) de Poisson
         lam_total = lambda_home + lambda_away
-        prob_under_1_5 = poisson.cdf(1, lam_total)
-        prob_over_1_5 = 1 - prob_under_1_5
         
+        prob_under_0_5 = poisson.cdf(0, lam_total)
+        prob_under_1_5 = poisson.cdf(1, lam_total)
         prob_under_2_5 = poisson.cdf(2, lam_total)
-        prob_over_2_5 = 1 - prob_under_2_5
+        prob_under_3_5 = poisson.cdf(3, lam_total)
+        prob_under_4_5 = poisson.cdf(4, lam_total)
 
         return {
             'local': home_team,
@@ -147,9 +148,16 @@ class MatchAnalyzer:
             'prob_X2': prob_X2,
             'prob_DNB_L': prob_DNB_L,
             'prob_DNB_V': prob_DNB_V,
-            'over_1_5': prob_over_1_5,
-            'over_2_5': prob_over_2_5,
-            'under_2_5': prob_under_2_5
+            'over_0_5': 1 - prob_under_0_5,
+            'under_0_5': prob_under_0_5,
+            'over_1_5': 1 - prob_under_1_5,
+            'under_1_5': prob_under_1_5,
+            'over_2_5': 1 - prob_under_2_5,
+            'under_2_5': prob_under_2_5,
+            'over_3_5': 1 - prob_under_3_5,
+            'under_3_5': prob_under_3_5,
+            'over_4_5': 1 - prob_under_4_5,
+            'under_4_5': prob_under_4_5
         }
 
     def get_basketball_team_stats(self, team_name, team_id):
