@@ -117,7 +117,7 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
                             seleccion_gana = p['local'] if p['probs'][0] > p['probs'][2] else p['visita']
                             ganadores_lista.append({'match': p, 'prob': prob_gana, 'seleccion': seleccion_gana})
 
-                            # 2. MERCADO DE GOLES
+                            # 2. MERCADO DE GOLES (Manteniendo la fórmula ganadora)
                             mercados_goles = [
                                 {'tipo': 'Ambos Anotan (Sí)', 'prob': p.get('btts', 0)},
                                 {'tipo': '+1.5 Goles', 'prob': p.get('over_1_5', 0)},
@@ -179,7 +179,15 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
                 p = item['match']
                 bandera = BANDERAS.get(p.get('pais_nombre', ''), "🏴")
                 marcador = p.get('scores', ['N/A'])[0] if p.get('scores') else 'N/A'
-                mensaje_resumen += f"*{i}.* ⚽ [{bandera} {p.get('pais_nombre', '')} - {p.get('liga_nombre', '')}]\n   {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n   🎯 Pick: *{item['seleccion']}* ({item['prob']:.0%}) | Marcador: `{marcador}`\n\n"
+                
+                prob_o25 = p.get('over_2_5', 0)
+                prob_u35 = p.get('under_3_5', 0)
+                prob_btts = p.get('btts', 0)
+                
+                mensaje_resumen += f"*{i}.* ⚽ [{bandera} {p.get('pais_nombre', '')} - {p.get('liga_nombre', '')}]\n"
+                mensaje_resumen += f"   {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n"
+                mensaje_resumen += f"   🎯 Pick: *{item['seleccion']}* ({item['prob']:.0%}) | Marcador: `{marcador}`\n"
+                mensaje_resumen += f"   🔄 Respaldo: +2.5 ({prob_o25:.0%}) | -3.5 ({prob_u35:.0%}) | A.A. ({prob_btts:.0%})\n\n"
 
         mensaje_resumen += "━━━━━━━━━━━━━━━━━━━━━━━━\n"
         mensaje_resumen += "💼 *PORTAFOLIO RECOMENDADO*\n\n"
@@ -278,7 +286,8 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
                 
                 bloque_partido = f"📅 `{p.get('fecha_str', '')}` 🕒 `{p['hora']}`\n⚽ *{p['local']}* vs *{p['visita']}*\n"
                 bloque_partido += (f"📊 Probabilidades: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
-                                f"🎯 Ambos anotan: {p.get('btts', 0):.0%} | Marcadores: {', '.join(p.get('scores', []))}\n")
+                                f"🎯 Ambos anotan: {p.get('btts', 0):.0%} | Marcadores: {', '.join(p.get('scores', []))}\n"
+                                f"⚽ Bajas(U): -2.5({p.get('under_2_5', 0):.0%}) | -3.5({p.get('under_3_5', 0):.0%})\n")
 
                 count_l = s_l.get('count', 0) if isinstance(s_l, dict) else 0
                 count_v = s_v.get('count', 0) if isinstance(s_v, dict) else 0
@@ -312,7 +321,6 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
             time.sleep(1.5)
             
     enviar_resumen_mejores_apuestas(proyecciones_dict, titulo_bloque, analyzer, token_override, is_basket=False)
-
 
 def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
     agrupado_por_pais = agrupar_por_pais(proyecciones_dict)
