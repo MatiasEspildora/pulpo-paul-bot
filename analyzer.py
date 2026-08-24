@@ -9,7 +9,6 @@ class MatchAnalyzer:
             self.df['Date'] = pd.to_datetime(self.df['Date'], errors='coerce')
 
     def get_team_stats(self, team_name, team_id):
-        """Calcula estadísticas usando el ID nativo para evitar fallos por cambios de nombre."""
         matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)]
         matches = matches.dropna(subset=["FTHG", "FTAG"])
         matches = matches.sort_values(by="Date", ascending=False)
@@ -61,7 +60,6 @@ class MatchAnalyzer:
         }
 
     def get_projections(self, home_team, away_team, home_id, away_id):
-        """Modelo predictivo para fútbol usando Doble Métrica basado en IDs."""
         def get_avg_goals(df_subset, team_id):
             if df_subset.empty: return 1.2, 1.2 
             goles_f, goles_c = [], []
@@ -74,6 +72,21 @@ class MatchAnalyzer:
                     goles_c.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
             return float(np.nanmean(goles_f)), float(np.nanmean(goles_c))
 
+        # Helper nuevo para promediar goles de la primera mitad
+        def get_avg_ht_goals(df_subset, team_id):
+            if df_subset.empty: return 0.5, 0.5 
+            goles_f, goles_c = [], []
+            for _, row in df_subset.iterrows():
+                h_f = row.get("HTHG")
+                a_f = row.get("HTAG")
+                if row["HomeTeamId"] == team_id:
+                    goles_f.append(h_f if pd.notna(h_f) else 0.0)
+                    goles_c.append(a_f if pd.notna(a_f) else 0.0)
+                else:
+                    goles_f.append(a_f if pd.notna(a_f) else 0.0)
+                    goles_c.append(h_f if pd.notna(h_f) else 0.0)
+            return float(np.nanmean(goles_f)), float(np.nanmean(goles_c))
+
         home_global = self.df[(self.df['HomeTeamId'] == home_id) | (self.df['AwayTeamId'] == home_id)]
         home_global = home_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
 
@@ -83,20 +96,35 @@ class MatchAnalyzer:
         hg_f_glob, hg_c_glob = get_avg_goals(home_global, home_id)
         ag_f_glob, ag_c_glob = get_avg_goals(away_global, away_id)
 
+        hht_f_glob, hht_c_glob = get_avg_ht_goals(home_global, home_id)
+        aht_f_glob, aht_c_glob = get_avg_ht_goals(away_global, away_id)
+
         home_venue = self.df[self.df['HomeTeamId'] == home_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
         away_venue = self.df[self.df['AwayTeamId'] == away_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
 
         hg_f_ven, hg_c_ven = get_avg_goals(home_venue, home_id)
         ag_f_ven, ag_c_ven = get_avg_goals(away_venue, away_id)
 
+        hht_f_ven, hht_c_ven = get_avg_ht_goals(home_venue, home_id)
+        aht_f_ven, aht_c_ven = get_avg_ht_goals(away_venue, away_id)
+
+        # Promedios Finales
         home_scored_avg = (hg_f_glob + hg_f_ven) / 2
         home_concede_avg = (hg_c_glob + hg_c_ven) / 2
-
         away_scored_avg = (ag_f_glob + ag_f_ven) / 2
         away_concede_avg = (ag_c_glob + ag_c_ven) / 2
 
+        # Promedios HT (Primer Tiempo)
+        home_ht_scored_avg = (hht_f_glob + hht_f_ven) / 2
+        home_ht_concede_avg = (hht_c_glob + hht_c_ven) / 2
+        away_ht_scored_avg = (aht_f_glob + aht_f_ven) / 2
+        away_ht_concede_avg = (aht_c_glob + aht_c_ven) / 2
+
         lambda_home = (home_scored_avg + away_concede_avg) / 2
         lambda_away = (away_scored_avg + home_concede_avg) / 2
+        
+        lambda_home_ht = (home_ht_scored_avg + away_ht_concede_avg) / 2
+        lambda_away_ht = (away_ht_scored_avg + home_ht_concede_avg) / 2
 
         max_goals = 5
         p_home = [poisson.pmf(i, lambda_home) for i in range(max_goals + 1)]
@@ -105,7 +133,9 @@ class MatchAnalyzer:
         prob_home = sum(p_home[i] * p_away[j] for i in range(max_goals + 1) for j in range(max_goals + 1) if i > j)
         prob_draw = sum(p_home[i] * p_away[j] for i in range(max_goals + 1) for j in range(max_goals + 1) if i == j)
         prob_away = sum(p_home[i] * p_away[j] for i in range(max_goals + 1) for j in range(max_goals + 1) if i < j)
-        btts = (1 - p_home[0]) * (1 - p_away[0])
+        
+        btts_yes = (1 - p_home[0]) * (1 - p_away[0])
+        btts_no = 1 - btts_yes
 
         score_probs = []
         for i in range(3):
@@ -114,24 +144,24 @@ class MatchAnalyzer:
         score_probs.sort(key=lambda x: x[1], reverse=True)
         top_scores = [s[0] for s in score_probs[:3]]
 
-        # --- CÁLCULO DE MERCADOS DERIVADOS ---
-        # 1. Doble Oportunidad
+        # --- MERCADOS DERIVADOS ---
         prob_1X = prob_home + prob_draw
         prob_X2 = prob_away + prob_draw
         
-        # 2. Draw No Bet (DNB)
         suma_sin_empate = prob_home + prob_away
         prob_DNB_L = (prob_home / suma_sin_empate) if suma_sin_empate > 0 else 0
         prob_DNB_V = (prob_away / suma_sin_empate) if suma_sin_empate > 0 else 0
 
-        # 3. Mercados Over/Under mediante Función de Distribución Acumulada (CDF) de Poisson
         lam_total = lambda_home + lambda_away
+        lam_ht_total = lambda_home_ht + lambda_away_ht
         
         prob_under_0_5 = poisson.cdf(0, lam_total)
         prob_under_1_5 = poisson.cdf(1, lam_total)
         prob_under_2_5 = poisson.cdf(2, lam_total)
         prob_under_3_5 = poisson.cdf(3, lam_total)
         prob_under_4_5 = poisson.cdf(4, lam_total)
+        
+        prob_over_0_5_ht = 1 - poisson.cdf(0, lam_ht_total)
 
         return {
             'local': home_team,
@@ -139,11 +169,10 @@ class MatchAnalyzer:
             'local_id': home_id,
             'visita_id': away_id,
             'probs': [prob_home, prob_draw, prob_away],
-            'btts': btts,
+            'btts': btts_yes,
+            'btts_no': btts_no,
             'scores': top_scores,
             'score_value': max(prob_home, prob_draw, prob_away),
-            
-            # Nuevos mercados inyectados en el diccionario
             'prob_1X': prob_1X,
             'prob_X2': prob_X2,
             'prob_DNB_L': prob_DNB_L,
@@ -157,7 +186,8 @@ class MatchAnalyzer:
             'over_3_5': 1 - prob_under_3_5,
             'under_3_5': prob_under_3_5,
             'over_4_5': 1 - prob_under_4_5,
-            'under_4_5': prob_under_4_5
+            'under_4_5': prob_under_4_5,
+            'prob_over_0_5_ht': prob_over_0_5_ht
         }
 
     def get_basketball_team_stats(self, team_name, team_id):
