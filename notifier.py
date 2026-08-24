@@ -70,7 +70,7 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
     seguros_lista = []
     basket_lista = []
     eliminatorias_lista = [] 
-    bet_builders_lista = [] # Nuevo array para piezas de Bet Builder
+    bet_builders_lista = []
     
     for pais, ligas in agrupar_por_pais(proyecciones_dict).items():
         for liga, projs in ligas.items():
@@ -110,12 +110,10 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
                             eliminatorias_lista.append({'match': p, 'prob': mejor_pick['prob'], 'seleccion': mejor_pick['seleccion'], 'mercado': mejor_pick['tipo']})
                             
                         else:
-                            # 1. GANADOR DIRECTO
                             prob_gana = max(p['probs'][0], p['probs'][2])
                             seleccion_gana = p['local'] if p['probs'][0] > p['probs'][2] else p['visita']
                             ganadores_lista.append({'match': p, 'prob': prob_gana, 'seleccion': seleccion_gana})
 
-                            # 2. MERCADO DE GOLES
                             mercados_goles = [
                                 {'tipo': 'Ambos Anotan (Sí)', 'prob': p.get('btts', 0)},
                                 {'tipo': '+1.5 Goles', 'prob': p.get('over_1_5', 0)},
@@ -124,7 +122,6 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
                             mejor_gol = max(mercados_goles, key=lambda x: x['prob'])
                             goles_lista.append({'match': p, 'prob': mejor_gol['prob'], 'seleccion': mejor_gol['tipo']})
 
-                            # 3. MERCADOS SEGUROS
                             mercados_seguros = [
                                 {'tipo': 'Doble Oportunidad', 'seleccion': f"{p['local']} o Empate", 'prob': p.get('prob_1X', 0)},
                                 {'tipo': 'Doble Oportunidad', 'seleccion': f"{p['visita']} o Empate", 'prob': p.get('prob_X2', 0)}
@@ -132,7 +129,6 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
                             mejor_seguro = max(mercados_seguros, key=lambda x: x['prob'])
                             seguros_lista.append({'match': p, 'prob': mejor_seguro['prob'], 'seleccion': mejor_seguro['seleccion'], 'tipo': mejor_seguro['tipo']})
 
-                            # 4. EXTRACCIÓN DE PIEZAS PARA BET BUILDERS
                             if p.get('btts_no', 0) > 0.75:
                                 bet_builders_lista.append({'match': p, 'prob': p.get('btts_no', 0), 'seleccion': 'Ambos Anotan (NO)'})
                             if p.get('under_3_5', 0) > 0.80:
@@ -195,7 +191,6 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
                 mensaje_resumen += f"   🎯 Pick: *{item['seleccion']}* ({item['prob']:.0%}) | Marcador: `{marcador}`\n"
                 mensaje_resumen += f"   🔄 Respaldo: +2.5 ({prob_o25:.0%}) | -3.5 ({prob_u35:.0%}) | A.A. ({prob_btts:.0%})\n\n"
 
-        # NUEVO BLOQUE: PIEZAS BET BUILDER
         if bet_builders_lista:
             mensaje_resumen += "━━━━━━━━━━━━━━━━━━━━━━━━\n"
             mensaje_resumen += "🧱 *PIEZAS BET BUILDER (Alta Confianza)*\n"
@@ -295,8 +290,10 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
                 s_l = analyzer.get_team_stats(p['local'], p.get('local_id'))
                 s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'))
                 
+                # Modificado para incluir 🛡️ Doble Op (1X, 12, X2) tal como lo pidió Bender
                 bloque_partido = f"📅 `{p.get('fecha_str', '')}` 🕒 `{p['hora']}`\n⚽ *{p['local']}* vs *{p['visita']}*\n"
                 bloque_partido += (f"📊 1X2: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
+                                f"🛡️ Doble Op: 1X ({p.get('prob_1X', 0):.0%}) | 12 ({p.get('prob_12', 0):.0%}) | X2 ({p.get('prob_X2', 0):.0%})\n"
                                 f"🎯 Ambos Anotan: Sí ({p.get('btts', 0):.0%}) | No ({p.get('btts_no', 0):.0%})\n"
                                 f"⚽ Bajas(U): -2.5 ({p.get('under_2_5', 0):.0%}) | -3.5 ({p.get('under_3_5', 0):.0%})\n"
                                 f"⏱️ +0.5 Goles HT: {p.get('prob_over_0_5_ht', 0):.0%}\n")
