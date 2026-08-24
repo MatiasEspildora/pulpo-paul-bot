@@ -97,12 +97,21 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
     goles = []
 
     for p in partidos_validos:
-        # Piezas Bet Builder (>80% Titanio)
+        # Piezas Bet Builder (>80% Titanio) - ARSENAL COMPLETO
         if p.get('btts_no', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('btts_no'), 'sel': 'Ambos Anotan (NO)'})
         if p.get('btts', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('btts'), 'sel': 'Ambos Anotan (SÍ)'})
+        if p.get('under_2_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('under_2_5'), 'sel': '-2.5 Goles'})
         if p.get('under_3_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('under_3_5'), 'sel': '-3.5 Goles'})
         if p.get('over_1_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_1_5'), 'sel': '+1.5 Goles'})
+        if p.get('over_2_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_2_5'), 'sel': '+2.5 Goles'})
         if p.get('prob_over_0_5_ht', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('prob_over_0_5_ht'), 'sel': '+0.5 Goles HT'})
+        if p.get('prob_under_1_5_ht', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('prob_under_1_5_ht'), 'sel': '-1.5 Goles HT'})
+        
+        # Inyecciones de equipo individual
+        if p.get('home_over_0_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('home_over_0_5'), 'sel': f"{p['local']} +0.5 Goles"})
+        if p.get('home_over_1_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('home_over_1_5'), 'sel': f"{p['local']} +1.5 Goles"})
+        if p.get('away_over_0_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('away_over_0_5'), 'sel': f"{p['visita']} +0.5 Goles"})
+        if p.get('away_over_1_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('away_over_1_5'), 'sel': f"{p['visita']} +1.5 Goles"})
         
         # Ganadores
         prob_gana = max(p['probs'][0], p['probs'][2])
@@ -130,7 +139,7 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
     dobles.sort(key=lambda x: x['prob'], reverse=True)
     goles.sort(key=lambda x: x['prob'], reverse=True)
 
-    # 3. Rastrear partidos seleccionados para La Autopsia (El Filtro de Basura)
+    # 3. Rastrear partidos seleccionados para La Autopsia
     seleccionados = set()
     for item in bb_list: seleccionados.add(id(item['match']))
     for item in ganadores[:5]: seleccionados.add(id(item['match']))
@@ -138,15 +147,16 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
     for item in goles[:5]: seleccionados.add(id(item['match']))
 
     # 4. Ensamblar Mensaje V3.0
-    msg = f"💎 ━━ *MENÚ ESTRATÉGICO BENDER V3.0* ━━ 💎\n"
+    fecha_bloque = partidos_validos[0].get('fecha_str', '') if partidos_validos else ""
+    etiqueta_ventana = f" | {titulo_bloque}" if titulo_bloque else ""
+    
+    msg = f"💎 ━━ *MENÚ BENDER V3.0: {fecha_bloque}{etiqueta_ventana}* ━━ 💎\n"
     msg += f"📅 _Generado: {hora_generacion}_\n"
-    if titulo_bloque: msg += f"📌 _Ventana: {titulo_bloque}_\n"
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
 
     msg += "🧱 *PIEZAS BET BUILDER (Filtro Titanio > 80%)*\n"
     if bb_list:
-        # Limitado a 10 para no saturar si es un día muy bueno
-        for i, item in enumerate(bb_list[:10], 1):
+        for i, item in enumerate(bb_list[:12], 1): 
             m = item['match']
             msg += f"*{i}.* ⚽ {m['bandera']} {m['pais_nombre']} - {m['local']} vs {m['visita']} | 🧩 *{item['sel']}* ({item['prob']:.0%})\n"
     else:
@@ -186,12 +196,11 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
             msg += f"📊 1X2: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
             msg += f"🛡️ Doble Op: 1X ({p.get('prob_1X',0):.0%}) | 12 ({p.get('prob_12',0):.0%}) | X2 ({p.get('prob_X2',0):.0%})\n"
             msg += f"🎯 Ambos Anotan: Sí ({p.get('btts',0):.0%}) | No ({p.get('btts_no',0):.0%})\n"
-            msg += f"⚽ Bajas/Altas: -2.5 ({p.get('under_2_5',0):.0%}) | -3.5 ({p.get('under_3_5',0):.0%}) | +1.5 ({p.get('over_1_5',0):.0%})\n"
+            msg += f"⚽ Bajas/Altas: -2.5 ({p.get('under_2_5',0):.0%}) | -3.5 ({p.get('under_3_5',0):.0%}) | +1.5 ({p.get('over_1_5',0):.0%}) | +2.5 ({p.get('over_2_5',0):.0%})\n"
             msg += f"⏱️ +0.5 Goles HT: {p.get('prob_over_0_5_ht',0):.0%}\n\n"
 
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n✅ *FIN DEL REPORTE* ✅\n"
 
-    # Enviar mensaje controlando la longitud de Telegram (Max 4096)
     max_len = 4000
     if len(msg) > max_len:
         parts = msg.split("🩸 *LA AUTOPSIA (Código Fuente)*\n\n")
