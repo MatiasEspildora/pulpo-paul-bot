@@ -31,8 +31,9 @@ def dedupe_dataframe(df):
         return df
 
     df = df.copy().fillna("")
-    # ✅ Añadidas columnas de ID y las nuevas variables tácticas de Eliminatoria
-    for col in ["League", "LeagueId", "Country", "Round", "EsEliminatoria", "Date", "HomeTeamId", "AwayTeamId", "HomeTeam", "AwayTeam", "FTHG", "FTAG"]:
+    
+    # ✅ Añadidas columnas del Primer Tiempo (HTHG, HTAG)
+    for col in ["League", "LeagueId", "Country", "Round", "EsEliminatoria", "Date", "HomeTeamId", "AwayTeamId", "HomeTeam", "AwayTeam", "FTHG", "FTAG", "HTHG", "HTAG"]:
         if col not in df.columns:
             df[col] = ""
 
@@ -45,7 +46,10 @@ def dedupe_dataframe(df):
         if row.get("Country"): score += 30
         if row.get("League"): score += 10
         if (row.get("FTHG") not in (None, "")) or (row.get("FTAG") not in (None, "")): score += 20
-        # ✅ Priorizar filas que sí tengan IDs nativos
+        
+        # ✅ Puntos extra si el registro trae la info del primer tiempo
+        if (row.get("HTHG") not in (None, "")) or (row.get("HTAG") not in (None, "")): score += 15 
+        
         if row.get("HomeTeamId") and row.get("AwayTeamId"): score += 60
         return score
 
@@ -66,8 +70,9 @@ def dedupe_dataframe(df):
         for i, other in enumerate(records):
             if i == best_idx:
                 continue
-            # ✅ Añadidas dimensiones tácticas a la fusión de rescate para no perder el dato en el cruce
-            for col in ["League", "LeagueId", "Country", "Round", "EsEliminatoria", "HomeTeamId", "AwayTeamId", "FTHG", "FTAG", "HC", "AC", "HY", "AY", "HR", "AR", "HS", "AS"]:
+            
+            # ✅ Añadido HTHG y HTAG a la fusión de rescate
+            for col in ["League", "LeagueId", "Country", "Round", "EsEliminatoria", "HomeTeamId", "AwayTeamId", "FTHG", "FTAG", "HTHG", "HTAG", "HC", "AC", "HY", "AY", "HR", "AR", "HS", "AS"]:
                 bval = best.get(col, "") or ""
                 oval = other.get(col, "") or ""
                 if (not bval) and oval:
@@ -104,7 +109,6 @@ def main(args=None):
 
     os.makedirs(os.path.join('logs', 'football'), exist_ok=True)
 
-    # ✅ Actualizado a la nueva firma
     _, _, statuses, _ = football.cargar_configuracion()
     df_hist = football.cargar_historico_mensual()
 
@@ -137,7 +141,6 @@ def main(args=None):
             except Exception:
                 fecha_str = datetime.now().strftime('%Y-%m-%d')
 
-            # ✅ Actualizado a la nueva firma (ya no se pasan aliases ni ligas_permitidas)
             df_hist = football.actualizar_maestro_con_partidos(df_hist, [match], fecha_str, statuses)
             try:
                 period = pd.Period(fecha_str[:7], 'M')
@@ -151,7 +154,7 @@ def main(args=None):
         meses_afectados = None
 
     football.guardar_historico_mensual(df_hist, meses_afectados)
-    print('Backfill completo e inyección de IDs terminada. Revisa historico_mensual/football.')
+    print('Backfill completo e inyección de datos HT terminada. Revisa historico_mensual/football.')
 
 if __name__ == '__main__':
     main()
