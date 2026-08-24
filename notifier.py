@@ -70,6 +70,7 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
     seguros_lista = []
     basket_lista = []
     eliminatorias_lista = [] 
+    bet_builders_lista = [] # Nuevo array para piezas de Bet Builder
     
     for pais, ligas in agrupar_por_pais(proyecciones_dict).items():
         for liga, projs in ligas.items():
@@ -97,7 +98,6 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
                         es_elim = p.get('es_eliminatoria', False)
 
                         if es_elim:
-                            # 🚨 LÓGICA MATA-MATA 
                             prob_gana = max(p['probs'][0], p['probs'][2])
                             mercados_elim = [
                                 {'tipo': 'Ganador', 'seleccion': p['local'] if p['probs'][0] > p['probs'][2] else p['visita'], 'prob': prob_gana},
@@ -110,14 +110,12 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
                             eliminatorias_lista.append({'match': p, 'prob': mejor_pick['prob'], 'seleccion': mejor_pick['seleccion'], 'mercado': mejor_pick['tipo']})
                             
                         else:
-                            # 🟢 LÓGICA REGULAR PURA 
-                            
                             # 1. GANADOR DIRECTO
                             prob_gana = max(p['probs'][0], p['probs'][2])
                             seleccion_gana = p['local'] if p['probs'][0] > p['probs'][2] else p['visita']
                             ganadores_lista.append({'match': p, 'prob': prob_gana, 'seleccion': seleccion_gana})
 
-                            # 2. MERCADO DE GOLES (Manteniendo la fórmula ganadora)
+                            # 2. MERCADO DE GOLES
                             mercados_goles = [
                                 {'tipo': 'Ambos Anotan (Sí)', 'prob': p.get('btts', 0)},
                                 {'tipo': '+1.5 Goles', 'prob': p.get('over_1_5', 0)},
@@ -133,6 +131,14 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
                             ]
                             mejor_seguro = max(mercados_seguros, key=lambda x: x['prob'])
                             seguros_lista.append({'match': p, 'prob': mejor_seguro['prob'], 'seleccion': mejor_seguro['seleccion'], 'tipo': mejor_seguro['tipo']})
+
+                            # 4. EXTRACCIÓN DE PIEZAS PARA BET BUILDERS
+                            if p.get('btts_no', 0) > 0.75:
+                                bet_builders_lista.append({'match': p, 'prob': p.get('btts_no', 0), 'seleccion': 'Ambos Anotan (NO)'})
+                            if p.get('under_3_5', 0) > 0.80:
+                                bet_builders_lista.append({'match': p, 'prob': p.get('under_3_5', 0), 'seleccion': '-3.5 Goles Totales'})
+                            if p.get('prob_over_0_5_ht', 0) > 0.75:
+                                bet_builders_lista.append({'match': p, 'prob': p.get('prob_over_0_5_ht', 0), 'seleccion': '+0.5 Goles al Descanso (HT)'})
                 
     if not (ganadores_lista or basket_lista or eliminatorias_lista):
         return False
@@ -156,6 +162,7 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
         goles_lista.sort(key=lambda x: x['prob'], reverse=True)
         seguros_lista.sort(key=lambda x: x['prob'], reverse=True)
         eliminatorias_lista.sort(key=lambda x: x['prob'], reverse=True)
+        bet_builders_lista.sort(key=lambda x: x['prob'], reverse=True)
         
         if ganadores_lista:
             mensaje_resumen += "🏆 *TOP 5 - GANADOR DIRECTO*\n"
@@ -179,7 +186,6 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
                 p = item['match']
                 bandera = BANDERAS.get(p.get('pais_nombre', ''), "🏴")
                 marcador = p.get('scores', ['N/A'])[0] if p.get('scores') else 'N/A'
-                
                 prob_o25 = p.get('over_2_5', 0)
                 prob_u35 = p.get('under_3_5', 0)
                 prob_btts = p.get('btts', 0)
@@ -188,6 +194,17 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
                 mensaje_resumen += f"   {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n"
                 mensaje_resumen += f"   🎯 Pick: *{item['seleccion']}* ({item['prob']:.0%}) | Marcador: `{marcador}`\n"
                 mensaje_resumen += f"   🔄 Respaldo: +2.5 ({prob_o25:.0%}) | -3.5 ({prob_u35:.0%}) | A.A. ({prob_btts:.0%})\n\n"
+
+        # NUEVO BLOQUE: PIEZAS BET BUILDER
+        if bet_builders_lista:
+            mensaje_resumen += "━━━━━━━━━━━━━━━━━━━━━━━━\n"
+            mensaje_resumen += "🧱 *PIEZAS BET BUILDER (Alta Confianza)*\n"
+            mensaje_resumen += "_Úsalas para engordar cuotas de blindaje (1X2)_\n\n"
+            for i, item in enumerate(bet_builders_lista[:5], 1):
+                p = item['match']
+                bandera = BANDERAS.get(p.get('pais_nombre', ''), "🏴")
+                mensaje_resumen += f"*{i}.* ⚽ [{bandera} {p.get('pais_nombre', '')}] {p['local']} vs {p['visita']}\n"
+                mensaje_resumen += f"   🧩 Pieza: *{item['seleccion']}* ({item['prob']:.0%})\n\n"
 
         mensaje_resumen += "━━━━━━━━━━━━━━━━━━━━━━━━\n"
         mensaje_resumen += "💼 *PORTAFOLIO RECOMENDADO*\n\n"
@@ -204,12 +221,6 @@ def _generar_y_enviar_menu(proyecciones_dict, etiqueta_dia, analyzer, token_over
             mensaje_resumen += f"🛡️ *El Doble Blindado (1X2):*\n"
             mensaje_resumen += f"   1️⃣ {s1['tipo']}: {s1['seleccion']}\n"
             mensaje_resumen += f"   2️⃣ {s2['tipo']}: {s2['seleccion']}\n\n"
-
-        if len(ganadores_lista) >= 2:
-            w1, w2 = ganadores_lista[0], ganadores_lista[1]
-            mensaje_resumen += f"🏆 *El Par de Favoritos:*\n"
-            mensaje_resumen += f"   1️⃣ Gana {w1['seleccion']}\n"
-            mensaje_resumen += f"   2️⃣ Gana {w2['seleccion']}\n\n"
 
         if eliminatorias_lista:
             mensaje_resumen += "━━━━━━━━━━━━━━━━━━━━━━━━\n"
@@ -285,9 +296,10 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
                 s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'))
                 
                 bloque_partido = f"📅 `{p.get('fecha_str', '')}` 🕒 `{p['hora']}`\n⚽ *{p['local']}* vs *{p['visita']}*\n"
-                bloque_partido += (f"📊 Probabilidades: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
-                                f"🎯 Ambos anotan: {p.get('btts', 0):.0%} | Marcadores: {', '.join(p.get('scores', []))}\n"
-                                f"⚽ Bajas(U): -2.5({p.get('under_2_5', 0):.0%}) | -3.5({p.get('under_3_5', 0):.0%})\n")
+                bloque_partido += (f"📊 1X2: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
+                                f"🎯 Ambos Anotan: Sí ({p.get('btts', 0):.0%}) | No ({p.get('btts_no', 0):.0%})\n"
+                                f"⚽ Bajas(U): -2.5 ({p.get('under_2_5', 0):.0%}) | -3.5 ({p.get('under_3_5', 0):.0%})\n"
+                                f"⏱️ +0.5 Goles HT: {p.get('prob_over_0_5_ht', 0):.0%}\n")
 
                 count_l = s_l.get('count', 0) if isinstance(s_l, dict) else 0
                 count_v = s_v.get('count', 0) if isinstance(s_v, dict) else 0
