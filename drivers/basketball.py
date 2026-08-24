@@ -153,9 +153,11 @@ def run_process(df_externo=None):
                 
                 file_path = f"resultados/basketball/basket_partidos_{f_str}.json"
                 partidos_del_dia = None
+                origen_datos = "🌐 API" # Inicializamos el flag por defecto
                 
                 try:
                     data = api.get_data("games", {"date": f_str})
+                    time.sleep(1.5) # ⏱️ PAUSA DE SEGURIDAD PARA EVITAR BANEOS (Reemplaza el sleep(1) de abajo)
                 except Exception as e:
                     print(f"⚠️ [BASKETBALL] Error al consultar API para {f_str}: {e}")
                     data = None
@@ -168,6 +170,7 @@ def run_process(df_externo=None):
                     except Exception as e:
                         print(f"⚠️ [BASKETBALL] Error al guardar caché: {e}")
                 else:
+                    origen_datos = "📂 LOCAL" # Cambiamos el flag si falla la API
                     if os.path.exists(file_path):
                         try:
                             with open(file_path, "r", encoding="utf-8") as f:
@@ -177,9 +180,13 @@ def run_process(df_externo=None):
                             partidos_del_dia = None
                     
                 if partidos_del_dia:
+                    # Imprimimos el flag para confirmar visualmente de dónde viene la data
+                    print(f"✔️ [BASKETBALL] {f_str} procesado desde {origen_datos} ({len(partidos_del_dia)} partidos).")
                     datos_fechas[f_str] = partidos_del_dia
                     df = actualizar_maestro_con_partidos(df, partidos_del_dia, f_str, statuses_map)
-                time.sleep(1)
+                else:
+                     print(f"❌ [BASKETBALL] Sin datos para {f_str} (Ni API ni LOCAL).")
+                     
             except Exception as e:
                 print(f"❌ [BASKETBALL] Error procesando el día {f_str}: {e}")
                 print(traceback.format_exc())
@@ -249,3 +256,6 @@ def run_process(df_externo=None):
     except Exception as e:
         print(f"❌ [BASKETBALL] Error crítico: {e}")
         print(traceback.format_exc())
+
+if __name__ == "__main__":
+    run_process()
