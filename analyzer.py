@@ -141,7 +141,7 @@ class MatchAnalyzer:
         score_probs.sort(key=lambda x: x[1], reverse=True)
         top_scores = [s[0] for s in score_probs[:3]]
 
-        # --- MERCADOS DERIVADOS (Ahora incluye el 12) ---
+        # --- MERCADOS DERIVADOS ---
         prob_1X = prob_home + prob_draw
         prob_X2 = prob_away + prob_draw
         prob_12 = prob_home + prob_away
@@ -153,13 +153,27 @@ class MatchAnalyzer:
         lam_total = lambda_home + lambda_away
         lam_ht_total = lambda_home_ht + lambda_away_ht
         
+        # Totales Generales
         prob_under_0_5 = poisson.cdf(0, lam_total)
         prob_under_1_5 = poisson.cdf(1, lam_total)
         prob_under_2_5 = poisson.cdf(2, lam_total)
         prob_under_3_5 = poisson.cdf(3, lam_total)
         prob_under_4_5 = poisson.cdf(4, lam_total)
         
+        # Totales Primer Tiempo
         prob_over_0_5_ht = 1 - poisson.cdf(0, lam_ht_total)
+        prob_under_1_5_ht = poisson.cdf(1, lam_ht_total) # Nuevo
+
+        # Goles por Equipo (Nuevas Inyecciones)
+        home_under_0_5 = p_home[0]
+        home_over_0_5 = 1 - home_under_0_5
+        home_under_1_5 = p_home[0] + p_home[1]
+        home_over_1_5 = 1 - home_under_1_5
+
+        away_under_0_5 = p_away[0]
+        away_over_0_5 = 1 - away_under_0_5
+        away_under_1_5 = p_away[0] + p_away[1]
+        away_over_1_5 = 1 - away_under_1_5
 
         return {
             'local': home_team,
@@ -173,7 +187,7 @@ class MatchAnalyzer:
             'score_value': max(prob_home, prob_draw, prob_away),
             'prob_1X': prob_1X,
             'prob_X2': prob_X2,
-            'prob_12': prob_12, # Inyectado para Bender
+            'prob_12': prob_12,
             'prob_DNB_L': prob_DNB_L,
             'prob_DNB_V': prob_DNB_V,
             'over_0_5': 1 - prob_under_0_5,
@@ -186,7 +200,12 @@ class MatchAnalyzer:
             'under_3_5': prob_under_3_5,
             'over_4_5': 1 - prob_under_4_5,
             'under_4_5': prob_under_4_5,
-            'prob_over_0_5_ht': prob_over_0_5_ht
+            'prob_over_0_5_ht': prob_over_0_5_ht,
+            'prob_under_1_5_ht': prob_under_1_5_ht,
+            'home_over_0_5': home_over_0_5,
+            'home_over_1_5': home_over_1_5,
+            'away_over_0_5': away_over_0_5,
+            'away_over_1_5': away_over_1_5
         }
 
     def get_basketball_team_stats(self, team_name, team_id):
