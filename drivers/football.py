@@ -14,16 +14,15 @@ from api_client import FootballAPI
 from analyzer import MatchAnalyzer
 from notifier import enviar_mensaje_telegram, enviar_bloque_reportes
 
-
 def cargar_configuracion():
     with open("config/football/statuses.json", "r", encoding="utf-8") as f:
         statuses = json.load(f)["active_providers"]["api_football"]
     return {}, {}, statuses, {}
 
-
 def cargar_historico_mensual():
     all_files = glob.glob("historico_mensual/football/historico_*.csv")
-    default_cols = ['League', 'LeagueId', 'Country', 'Round', 'EsEliminatoria', 'Date', 'HomeTeamId', 'AwayTeamId', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR', 'HS', 'AS']
+    # Añadidas HTHG y HTAG al listado de columnas por defecto
+    default_cols = ['League', 'LeagueId', 'Country', 'Round', 'EsEliminatoria', 'Date', 'HomeTeamId', 'AwayTeamId', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HTHG', 'HTAG', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR', 'HS', 'AS']
     if not all_files:
         return pd.DataFrame(columns=default_cols)
     li = [pd.read_csv(filename) for filename in all_files]
@@ -35,12 +34,13 @@ def cargar_historico_mensual():
     if 'EsEliminatoria' not in df.columns: df['EsEliminatoria'] = False
     if 'HomeTeamId' not in df.columns: df['HomeTeamId'] = pd.NA
     if 'AwayTeamId' not in df.columns: df['AwayTeamId'] = pd.NA
+    if 'HTHG' not in df.columns: df['HTHG'] = pd.NA
+    if 'HTAG' not in df.columns: df['HTAG'] = pd.NA
         
     df['Date'] = pd.to_datetime(df['Date'], format='mixed', errors='coerce').dt.strftime('%Y-%m-%d')
     cols_present = [c for c in default_cols if c in df.columns]
     df = df[cols_present + [c for c in df.columns if c not in cols_present]]
     return df
-
 
 def guardar_historico_mensual(df, meses_a_actualizar=None):
     os.makedirs("historico_mensual/football", exist_ok=True)
@@ -59,7 +59,6 @@ def guardar_historico_mensual(df, meses_a_actualizar=None):
             if 'League' in g_clean.columns: sort_cols.append('League')
             sort_cols.extend(['HomeTeam', 'AwayTeam'])
             g_clean.sort_values(by=sort_cols, ascending=[False] + [True]*(len(sort_cols)-1)).to_csv(filename, index=False)
-            
 
 def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses):
     for match in partidos_lista:
@@ -75,22 +74,27 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
 
             league_name = liga.get("name")
             league_country = liga.get("country")
+            
+            # Extraemos goles del primer tiempo (HT) de la API
+            h_ht_score = match.get("score", {}).get("halftime", {}).get("home")
+            a_ht_score = match.get("score", {}).get("halftime", {}).get("away")
 
             if not df_hist.empty and "HomeTeamId" in df_hist.columns:
                 base_mask = (df_hist["Date"] == fecha_str) & (df_hist["HomeTeamId"] == h_id) & (df_hist["AwayTeamId"] == a_id)
                 if base_mask.any():
                     idx = df_hist[base_mask].index[0]
                     df_hist.at[idx, "FTHG"], df_hist.at[idx, "FTAG"] = match.get("goals", {}).get("home"), match.get("goals", {}).get("away")
+                    df_hist.at[idx, "HTHG"], df_hist.at[idx, "HTAG"] = h_ht_score, a_ht_score
                     continue
                     
                 legacy_mask = (df_hist["Date"] == fecha_str) & (df_hist["HomeTeam"] == h_team) & (df_hist["AwayTeam"] == a_team)
                 if legacy_mask.any():
                     idx = df_hist[legacy_mask].index[0]
                     df_hist.at[idx, "FTHG"], df_hist.at[idx, "FTAG"] = match.get("goals", {}).get("home"), match.get("goals", {}).get("away")
+                    df_hist.at[idx, "HTHG"], df_hist.at[idx, "HTAG"] = h_ht_score, a_ht_score
                     df_hist.at[idx, "HomeTeamId"], df_hist.at[idx, "AwayTeamId"] = h_id, a_id
                     continue
 
-            # LÓGICA DE ELIMINATORIA (Hotfix: Minúsculas y Play-offs)
             ronda_texto = (liga.get("round") or "").lower()
             palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "play-off", "qualifying"]
             es_eliminatoria = any(palabra in ronda_texto for palabra in palabras_clave)
@@ -107,11 +111,12 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
                 "HomeTeam": h_team,
                 "AwayTeam": a_team,
                 "FTHG": match.get("goals", {}).get("home"),
-                "FTAG": match.get("goals", {}).get("away")
+                "FTAG": match.get("goals", {}).get("away"),
+                "HTHG": h_ht_score,
+                "HTAG": a_ht_score
             }
             df_hist = pd.concat([df_hist, pd.DataFrame([nuevo])], ignore_index=True)
     return df_hist
-
 
 def run_process(df_externo=None):
     os.makedirs("logs/football", exist_ok=True)
@@ -142,11 +147,11 @@ def run_process(df_externo=None):
                 
                 file_path = f"resultados/football/partidos_{f_str}.json"
                 partidos_del_dia = None
-                origen_datos = "🌐 API" # Inicializamos el flag por defecto
+                origen_datos = "🌐 API" 
                 
                 try:
                     data = api.get_data("fixtures", {"date": f_str, "timezone": "America/Santiago"})
-                    time.sleep(1.5) # ⏱️ PAUSA DE SEGURIDAD AÑADIDA PARA EVITAR BANEOS DE LA API
+                    time.sleep(1.5) 
                 except Exception:
                     data = None
 
@@ -158,7 +163,7 @@ def run_process(df_externo=None):
                     except Exception as e:
                         print(f"⚠️ [FOOTBALL] Error al guardar caché: {e}")
                 else:
-                    origen_datos = "📂 LOCAL" # Cambiamos el flag si falla la API o no hay respuesta
+                    origen_datos = "📂 LOCAL" 
                     if os.path.exists(file_path):
                         try:
                             with open(file_path, "r", encoding="utf-8") as f:
@@ -167,7 +172,6 @@ def run_process(df_externo=None):
                             partidos_del_dia = None
                     
                 if partidos_del_dia:
-                    # Imprimimos el flag para confirmar visualmente de dónde viene la data
                     print(f"✔️ [FOOTBALL] {f_str} procesado desde {origen_datos} ({len(partidos_del_dia)} partidos).")
                     datos_fechas[f_str] = partidos_del_dia
                     df = actualizar_maestro_con_partidos(df, partidos_del_dia, f_str, statuses_map)
@@ -195,7 +199,6 @@ def run_process(df_externo=None):
                             
                         dt_obj = datetime.fromisoformat(date_str.replace("Z", "+00:00")).astimezone(zona)
                         
-                        # Filtro temporal: Evita partidos que ya comenzaron
                         if dt_obj < now:
                             continue
                             
@@ -212,7 +215,6 @@ def run_process(df_externo=None):
                         liga = match.get("league", {}).get("name", "Unknown")
                         proj['pais'] = pais
                         
-                        # INYECCIÓN DE LA BANDERA PARA EL NOTIFICADOR (Hotfix: Minúsculas y Play-offs)
                         ronda_texto = (match.get("league", {}).get("round") or "").lower()
                         palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "play-off", "qualifying"]
                         proj['es_eliminatoria'] = any(palabra in ronda_texto for palabra in palabras_clave)
