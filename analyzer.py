@@ -72,7 +72,6 @@ class MatchAnalyzer:
                     goles_c.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
             return float(np.nanmean(goles_f)), float(np.nanmean(goles_c))
 
-        # Helper nuevo para promediar goles de la primera mitad
         def get_avg_ht_goals(df_subset, team_id):
             if df_subset.empty: return 0.5, 0.5 
             goles_f, goles_c = [], []
@@ -108,13 +107,11 @@ class MatchAnalyzer:
         hht_f_ven, hht_c_ven = get_avg_ht_goals(home_venue, home_id)
         aht_f_ven, aht_c_ven = get_avg_ht_goals(away_venue, away_id)
 
-        # Promedios Finales
         home_scored_avg = (hg_f_glob + hg_f_ven) / 2
         home_concede_avg = (hg_c_glob + hg_c_ven) / 2
         away_scored_avg = (ag_f_glob + ag_f_ven) / 2
         away_concede_avg = (ag_c_glob + ag_c_ven) / 2
 
-        # Promedios HT (Primer Tiempo)
         home_ht_scored_avg = (hht_f_glob + hht_f_ven) / 2
         home_ht_concede_avg = (hht_c_glob + hht_c_ven) / 2
         away_ht_scored_avg = (aht_f_glob + aht_f_ven) / 2
@@ -144,9 +141,10 @@ class MatchAnalyzer:
         score_probs.sort(key=lambda x: x[1], reverse=True)
         top_scores = [s[0] for s in score_probs[:3]]
 
-        # --- MERCADOS DERIVADOS ---
+        # --- MERCADOS DERIVADOS (Ahora incluye el 12) ---
         prob_1X = prob_home + prob_draw
         prob_X2 = prob_away + prob_draw
+        prob_12 = prob_home + prob_away
         
         suma_sin_empate = prob_home + prob_away
         prob_DNB_L = (prob_home / suma_sin_empate) if suma_sin_empate > 0 else 0
@@ -175,6 +173,7 @@ class MatchAnalyzer:
             'score_value': max(prob_home, prob_draw, prob_away),
             'prob_1X': prob_1X,
             'prob_X2': prob_X2,
+            'prob_12': prob_12, # Inyectado para Bender
             'prob_DNB_L': prob_DNB_L,
             'prob_DNB_V': prob_DNB_V,
             'over_0_5': 1 - prob_under_0_5,
