@@ -97,7 +97,7 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
     goles = []
 
     for p in partidos_validos:
-        # Piezas Bet Builder (>80% Titanio) - ARSENAL COMPLETO
+        # Piezas Bet Builder (>80% Titanio)
         if p.get('btts_no', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('btts_no'), 'sel': 'Ambos Anotan (NO)'})
         if p.get('btts', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('btts'), 'sel': 'Ambos Anotan (SÍ)'})
         if p.get('under_2_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('under_2_5'), 'sel': '-2.5 Goles'})
@@ -167,12 +167,14 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
     for i, item in enumerate(ganadores[:5], 1):
         m = item['match']
         msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']} | 🎯 Gana *{item['sel']}* ({item['prob']:.0%})\n"
+        msg += f"   📈 Forma: L `{m.get('home_form')}` ({m.get('home_ppg')}p) | V `{m.get('away_form')}` ({m.get('away_ppg')}p)\n"
 
     msg += "\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
     msg += "🛡️ *TOP 5 - DOBLE OPORTUNIDAD*\n"
     for i, item in enumerate(dobles[:5], 1):
         m = item['match']
         msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']} | 🛡️ *{item['sel']}* ({item['prob']:.0%})\n"
+        msg += f"   📈 Forma: L `{m.get('home_form')}` ({m.get('home_ppg')}p) | V `{m.get('away_form')}` ({m.get('away_ppg')}p)\n"
 
     msg += "\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
     msg += "🔥 *TOP 5 - MERCADOS DE GOLES*\n"
@@ -193,10 +195,11 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
         msg += f"📌 *{liga_key}*\n"
         for p in projs:
             msg += f"⚽ *{p['local']}* vs *{p['visita']}* | 🕒 {p.get('hora', '')}\n"
+            msg += f"📈 Forma: L `{p.get('home_form')}` ({p.get('home_ppg')}p) | V `{p.get('away_form')}` ({p.get('away_ppg')}p)\n"
             msg += f"📊 1X2: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
             msg += f"🛡️ Doble Op: 1X ({p.get('prob_1X',0):.0%}) | 12 ({p.get('prob_12',0):.0%}) | X2 ({p.get('prob_X2',0):.0%})\n"
             msg += f"🎯 Ambos Anotan: Sí ({p.get('btts',0):.0%}) | No ({p.get('btts_no',0):.0%})\n"
-            msg += f"⚽ Bajas/Altas: -2.5 ({p.get('under_2_5',0):.0%}) | -3.5 ({p.get('under_3_5',0):.0%}) | +1.5 ({p.get('over_1_5',0):.0%}) | +2.5 ({p.get('over_2_5',0):.0%})\n"
+            msg += f"⚽ B/A: -2.5 ({p.get('under_2_5',0):.0%}) | -3.5 ({p.get('under_3_5',0):.0%}) | +1.5 ({p.get('over_1_5',0):.0%}) | +2.5 ({p.get('over_2_5',0):.0%})\n"
             msg += f"⏱️ +0.5 Goles HT: {p.get('prob_over_0_5_ht',0):.0%}\n\n"
 
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n✅ *FIN DEL REPORTE* ✅\n"
