@@ -1,11 +1,81 @@
 [
   {
     "fixture": {
-      "id": 1631488,
+      "id": 1633882,
       "referee": null,
       "timezone": "America/Santiago",
-      "date": "2026-08-24T05:30:00-04:00",
-      "timestamp": 1787563800,
+      "date": "2026-08-24T04:30:00-04:00",
+      "timestamp": 1787560200,
+      "periods": {
+        "first": 1787560200,
+        "second": 1787563800
+      },
+      "venue": {
+        "id": null,
+        "name": null,
+        "city": null
+      },
+      "status": {
+        "long": "Match Finished",
+        "short": "FT",
+        "elapsed": 90,
+        "extra": 3
+      }
+    },
+    "league": {
+      "id": 919,
+      "name": "Mediterranean Games",
+      "country": "World",
+      "logo": "https://media.api-sports.io/football/leagues/919.png",
+      "flag": null,
+      "season": 2026,
+      "round": "Group Stage - 2",
+      "standings": false
+    },
+    "teams": {
+      "home": {
+        "id": 11039,
+        "name": "Morocco U20",
+        "logo": "https://media.api-sports.io/football/teams/11039.png",
+        "winner": false
+      },
+      "away": {
+        "id": 28333,
+        "name": "Tunisia U21",
+        "logo": "https://media.api-sports.io/football/teams/28333.png",
+        "winner": true
+      }
+    },
+    "goals": {
+      "home": 0,
+      "away": 1
+    },
+    "score": {
+      "halftime": {
+        "home": 0,
+        "away": 0
+      },
+      "fulltime": {
+        "home": 0,
+        "away": 1
+      },
+      "extratime": {
+        "home": null,
+        "away": null
+      },
+      "penalty": {
+        "home": null,
+        "away": null
+      }
+    }
+  },
+  {
+    "fixture": {
+      "id": 1632342,
+      "referee": null,
+      "timezone": "America/Santiago",
+      "date": "2026-08-24T05:00:00-04:00",
+      "timestamp": 1787562000,
       "periods": {
         "first": null,
         "second": null
@@ -19,6 +89,76 @@
         "long": "Not Started",
         "short": "NS",
         "elapsed": null,
+        "extra": null
+      }
+    },
+    "league": {
+      "id": 10,
+      "name": "Friendlies",
+      "country": "World",
+      "logo": "https://media.api-sports.io/football/leagues/10.png",
+      "flag": null,
+      "season": 2026,
+      "round": "Friendly International",
+      "standings": false
+    },
+    "teams": {
+      "home": {
+        "id": 25098,
+        "name": "Kuwait U20",
+        "logo": "https://media.api-sports.io/football/teams/25098.png",
+        "winner": null
+      },
+      "away": {
+        "id": 19632,
+        "name": "UAE U20",
+        "logo": "https://media.api-sports.io/football/teams/19632.png",
+        "winner": null
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "halftime": {
+        "home": null,
+        "away": null
+      },
+      "fulltime": {
+        "home": null,
+        "away": null
+      },
+      "extratime": {
+        "home": null,
+        "away": null
+      },
+      "penalty": {
+        "home": null,
+        "away": null
+      }
+    }
+  },
+  {
+    "fixture": {
+      "id": 1631488,
+      "referee": null,
+      "timezone": "America/Santiago",
+      "date": "2026-08-24T05:30:00-04:00",
+      "timestamp": 1787563800,
+      "periods": {
+        "first": 1787563800,
+        "second": 1787567400
+      },
+      "venue": {
+        "id": null,
+        "name": null,
+        "city": null
+      },
+      "status": {
+        "long": "Second Half",
+        "short": "2H",
+        "elapsed": 66,
         "extra": null
       }
     },
@@ -47,13 +187,13 @@
       }
     },
     "goals": {
-      "home": null,
-      "away": null
+      "home": 0,
+      "away": 0
     },
     "score": {
       "halftime": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       },
       "fulltime": {
         "home": null,
@@ -77,8 +217,8 @@
       "date": "2026-08-24T05:30:00-04:00",
       "timestamp": 1787563800,
       "periods": {
-        "first": null,
-        "second": null
+        "first": 1787563800,
+        "second": 1787567400
       },
       "venue": {
         "id": null,
@@ -86,9 +226,9 @@
         "city": null
       },
       "status": {
-        "long": "Not Started",
-        "short": "NS",
-        "elapsed": null,
+        "long": "Second Half",
+        "short": "2H",
+        "elapsed": 66,
         "extra": null
       }
     },
@@ -107,23 +247,23 @@
         "id": 22001,
         "name": "Aryan",
         "logo": "https://media.api-sports.io/football/teams/22001.png",
-        "winner": null
+        "winner": true
       },
       "away": {
         "id": 21215,
         "name": "Rainbow",
         "logo": "https://media.api-sports.io/football/teams/21215.png",
-        "winner": null
+        "winner": false
       }
     },
     "goals": {
-      "home": null,
-      "away": null
+      "home": 2,
+      "away": 0
     },
     "score": {
       "halftime": {
-        "home": null,
-        "away": null
+        "home": 2,
+        "away": 0
       },
       "fulltime": {
         "home": null,
@@ -147,8 +287,8 @@
       "date": "2026-08-24T05:30:00-04:00",
       "timestamp": 1787563800,
       "periods": {
-        "first": null,
-        "second": null
+        "first": 1787563800,
+        "second": 1787567400
       },
       "venue": {
         "id": null,
@@ -156,9 +296,9 @@
         "city": null
       },
       "status": {
-        "long": "Not Started",
-        "short": "NS",
-        "elapsed": null,
+        "long": "Second Half",
+        "short": "2H",
+        "elapsed": 68,
         "extra": null
       }
     },
@@ -177,23 +317,23 @@
         "id": 24100,
         "name": "Calcutta Police",
         "logo": "https://media.api-sports.io/football/teams/24100.png",
-        "winner": null
+        "winner": true
       },
       "away": {
         "id": 24101,
         "name": "Kalighat Club",
         "logo": "https://media.api-sports.io/football/teams/24101.png",
-        "winner": null
+        "winner": false
       }
     },
     "goals": {
-      "home": null,
-      "away": null
+      "home": 3,
+      "away": 0
     },
     "score": {
       "halftime": {
-        "home": null,
-        "away": null
+        "home": 1,
+        "away": 0
       },
       "fulltime": {
         "home": null,
@@ -217,8 +357,8 @@
       "date": "2026-08-24T05:30:00-04:00",
       "timestamp": 1787563800,
       "periods": {
-        "first": null,
-        "second": null
+        "first": 1787563800,
+        "second": 1787567400
       },
       "venue": {
         "id": null,
@@ -226,9 +366,9 @@
         "city": null
       },
       "status": {
-        "long": "Not Started",
-        "short": "NS",
-        "elapsed": null,
+        "long": "Second Half",
+        "short": "2H",
+        "elapsed": 64,
         "extra": null
       }
     },
@@ -247,23 +387,23 @@
         "id": 21608,
         "name": "Peerless",
         "logo": "https://media.api-sports.io/football/teams/21608.png",
-        "winner": null
+        "winner": true
       },
       "away": {
         "id": 21612,
         "name": "Wari",
         "logo": "https://media.api-sports.io/football/teams/21612.png",
-        "winner": null
+        "winner": false
       }
     },
     "goals": {
-      "home": null,
-      "away": null
+      "home": 2,
+      "away": 0
     },
     "score": {
       "halftime": {
-        "home": null,
-        "away": null
+        "home": 2,
+        "away": 0
       },
       "fulltime": {
         "home": null,
@@ -883,6 +1023,76 @@
         "id": 28241,
         "name": "Amedspor U19",
         "logo": "https://media.api-sports.io/football/teams/28241.png",
+        "winner": null
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "halftime": {
+        "home": null,
+        "away": null
+      },
+      "fulltime": {
+        "home": null,
+        "away": null
+      },
+      "extratime": {
+        "home": null,
+        "away": null
+      },
+      "penalty": {
+        "home": null,
+        "away": null
+      }
+    }
+  },
+  {
+    "fixture": {
+      "id": 1632343,
+      "referee": null,
+      "timezone": "America/Santiago",
+      "date": "2026-08-24T10:00:00-04:00",
+      "timestamp": 1787580000,
+      "periods": {
+        "first": null,
+        "second": null
+      },
+      "venue": {
+        "id": null,
+        "name": null,
+        "city": null
+      },
+      "status": {
+        "long": "Not Started",
+        "short": "NS",
+        "elapsed": null,
+        "extra": null
+      }
+    },
+    "league": {
+      "id": 10,
+      "name": "Friendlies",
+      "country": "World",
+      "logo": "https://media.api-sports.io/football/leagues/10.png",
+      "flag": null,
+      "season": 2026,
+      "round": "Friendly International",
+      "standings": false
+    },
+    "teams": {
+      "home": {
+        "id": 19628,
+        "name": "Lebanon U20",
+        "logo": "https://media.api-sports.io/football/teams/19628.png",
+        "winner": null
+      },
+      "away": {
+        "id": 21060,
+        "name": "Tajikistan U20",
+        "logo": "https://media.api-sports.io/football/teams/21060.png",
         "winner": null
       }
     },
@@ -1891,6 +2101,76 @@
   },
   {
     "fixture": {
+      "id": 1519624,
+      "referee": null,
+      "timezone": "America/Santiago",
+      "date": "2026-08-24T11:30:00-04:00",
+      "timestamp": 1787585400,
+      "periods": {
+        "first": null,
+        "second": null
+      },
+      "venue": {
+        "id": null,
+        "name": "Nike Arena",
+        "city": "Elva"
+      },
+      "status": {
+        "long": "Not Started",
+        "short": "NS",
+        "elapsed": null,
+        "extra": null
+      }
+    },
+    "league": {
+      "id": 328,
+      "name": "Esiliiga A",
+      "country": "Estonia",
+      "logo": "https://media.api-sports.io/football/leagues/328.png",
+      "flag": "https://media.api-sports.io/flags/ee.svg",
+      "season": 2026,
+      "round": "Regular Season - 25",
+      "standings": true
+    },
+    "teams": {
+      "home": {
+        "id": 3516,
+        "name": "Elva",
+        "logo": "https://media.api-sports.io/football/teams/3516.png",
+        "winner": null
+      },
+      "away": {
+        "id": 3518,
+        "name": "Flora II",
+        "logo": "https://media.api-sports.io/football/teams/3518.png",
+        "winner": null
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "halftime": {
+        "home": null,
+        "away": null
+      },
+      "fulltime": {
+        "home": null,
+        "away": null
+      },
+      "extratime": {
+        "home": null,
+        "away": null
+      },
+      "penalty": {
+        "home": null,
+        "away": null
+      }
+    }
+  },
+  {
+    "fixture": {
       "id": 1565225,
       "referee": null,
       "timezone": "America/Santiago",
@@ -2073,76 +2353,6 @@
         "id": 3870,
         "name": "Šiauliai",
         "logo": "https://media.api-sports.io/football/teams/3870.png",
-        "winner": null
-      }
-    },
-    "goals": {
-      "home": null,
-      "away": null
-    },
-    "score": {
-      "halftime": {
-        "home": null,
-        "away": null
-      },
-      "fulltime": {
-        "home": null,
-        "away": null
-      },
-      "extratime": {
-        "home": null,
-        "away": null
-      },
-      "penalty": {
-        "home": null,
-        "away": null
-      }
-    }
-  },
-  {
-    "fixture": {
-      "id": 1519624,
-      "referee": null,
-      "timezone": "America/Santiago",
-      "date": "2026-08-24T12:00:00-04:00",
-      "timestamp": 1787587200,
-      "periods": {
-        "first": null,
-        "second": null
-      },
-      "venue": {
-        "id": null,
-        "name": "Nike Arena",
-        "city": "Elva"
-      },
-      "status": {
-        "long": "Not Started",
-        "short": "NS",
-        "elapsed": null,
-        "extra": null
-      }
-    },
-    "league": {
-      "id": 328,
-      "name": "Esiliiga A",
-      "country": "Estonia",
-      "logo": "https://media.api-sports.io/football/leagues/328.png",
-      "flag": "https://media.api-sports.io/flags/ee.svg",
-      "season": 2026,
-      "round": "Regular Season - 25",
-      "standings": true
-    },
-    "teams": {
-      "home": {
-        "id": 3516,
-        "name": "Elva",
-        "logo": "https://media.api-sports.io/football/teams/3516.png",
-        "winner": null
-      },
-      "away": {
-        "id": 3518,
-        "name": "Flora II",
-        "logo": "https://media.api-sports.io/football/teams/3518.png",
         "winner": null
       }
     },
@@ -3263,6 +3473,146 @@
         "id": 10388,
         "name": "Mes Shahr-e Babak",
         "logo": "https://media.api-sports.io/football/teams/10388.png",
+        "winner": null
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "halftime": {
+        "home": null,
+        "away": null
+      },
+      "fulltime": {
+        "home": null,
+        "away": null
+      },
+      "extratime": {
+        "home": null,
+        "away": null
+      },
+      "penalty": {
+        "home": null,
+        "away": null
+      }
+    }
+  },
+  {
+    "fixture": {
+      "id": 1632344,
+      "referee": null,
+      "timezone": "America/Santiago",
+      "date": "2026-08-24T12:00:00-04:00",
+      "timestamp": 1787587200,
+      "periods": {
+        "first": null,
+        "second": null
+      },
+      "venue": {
+        "id": null,
+        "name": null,
+        "city": null
+      },
+      "status": {
+        "long": "Not Started",
+        "short": "NS",
+        "elapsed": null,
+        "extra": null
+      }
+    },
+    "league": {
+      "id": 10,
+      "name": "Friendlies",
+      "country": "World",
+      "logo": "https://media.api-sports.io/football/leagues/10.png",
+      "flag": null,
+      "season": 2026,
+      "round": "Friendly International",
+      "standings": false
+    },
+    "teams": {
+      "home": {
+        "id": 10301,
+        "name": "Saudi Arabia U20",
+        "logo": "https://media.api-sports.io/football/teams/10301.png",
+        "winner": null
+      },
+      "away": {
+        "id": 21059,
+        "name": "Syria U20",
+        "logo": "https://media.api-sports.io/football/teams/21059.png",
+        "winner": null
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "halftime": {
+        "home": null,
+        "away": null
+      },
+      "fulltime": {
+        "home": null,
+        "away": null
+      },
+      "extratime": {
+        "home": null,
+        "away": null
+      },
+      "penalty": {
+        "home": null,
+        "away": null
+      }
+    }
+  },
+  {
+    "fixture": {
+      "id": 1632345,
+      "referee": null,
+      "timezone": "America/Santiago",
+      "date": "2026-08-24T12:00:00-04:00",
+      "timestamp": 1787587200,
+      "periods": {
+        "first": null,
+        "second": null
+      },
+      "venue": {
+        "id": null,
+        "name": null,
+        "city": null
+      },
+      "status": {
+        "long": "Not Started",
+        "short": "NS",
+        "elapsed": null,
+        "extra": null
+      }
+    },
+    "league": {
+      "id": 10,
+      "name": "Friendlies",
+      "country": "World",
+      "logo": "https://media.api-sports.io/football/leagues/10.png",
+      "flag": null,
+      "season": 2026,
+      "round": "Friendly International",
+      "standings": false
+    },
+    "teams": {
+      "home": {
+        "id": 10300,
+        "name": "Qatar U20",
+        "logo": "https://media.api-sports.io/football/teams/10300.png",
+        "winner": null
+      },
+      "away": {
+        "id": 19624,
+        "name": "Bahrain U20",
+        "logo": "https://media.api-sports.io/football/teams/19624.png",
         "winner": null
       }
     },
@@ -7393,6 +7743,216 @@
         "id": 26427,
         "name": "Chaco",
         "logo": "https://media.api-sports.io/football/teams/26427.png",
+        "winner": null
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "halftime": {
+        "home": null,
+        "away": null
+      },
+      "fulltime": {
+        "home": null,
+        "away": null
+      },
+      "extratime": {
+        "home": null,
+        "away": null
+      },
+      "penalty": {
+        "home": null,
+        "away": null
+      }
+    }
+  },
+  {
+    "fixture": {
+      "id": 1633883,
+      "referee": null,
+      "timezone": "America/Santiago",
+      "date": "2026-08-24T15:00:00-04:00",
+      "timestamp": 1787598000,
+      "periods": {
+        "first": null,
+        "second": null
+      },
+      "venue": {
+        "id": null,
+        "name": null,
+        "city": null
+      },
+      "status": {
+        "long": "Not Started",
+        "short": "NS",
+        "elapsed": null,
+        "extra": null
+      }
+    },
+    "league": {
+      "id": 919,
+      "name": "Mediterranean Games",
+      "country": "World",
+      "logo": "https://media.api-sports.io/football/leagues/919.png",
+      "flag": null,
+      "season": 2026,
+      "round": "Group Stage - 2",
+      "standings": false
+    },
+    "teams": {
+      "home": {
+        "id": 8177,
+        "name": "Albania U21",
+        "logo": "https://media.api-sports.io/football/teams/8177.png",
+        "winner": null
+      },
+      "away": {
+        "id": 8203,
+        "name": "Kosovo U21",
+        "logo": "https://media.api-sports.io/football/teams/8203.png",
+        "winner": null
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "halftime": {
+        "home": null,
+        "away": null
+      },
+      "fulltime": {
+        "home": null,
+        "away": null
+      },
+      "extratime": {
+        "home": null,
+        "away": null
+      },
+      "penalty": {
+        "home": null,
+        "away": null
+      }
+    }
+  },
+  {
+    "fixture": {
+      "id": 1633884,
+      "referee": null,
+      "timezone": "America/Santiago",
+      "date": "2026-08-24T15:00:00-04:00",
+      "timestamp": 1787598000,
+      "periods": {
+        "first": null,
+        "second": null
+      },
+      "venue": {
+        "id": null,
+        "name": null,
+        "city": null
+      },
+      "status": {
+        "long": "Not Started",
+        "short": "NS",
+        "elapsed": null,
+        "extra": null
+      }
+    },
+    "league": {
+      "id": 919,
+      "name": "Mediterranean Games",
+      "country": "World",
+      "logo": "https://media.api-sports.io/football/leagues/919.png",
+      "flag": null,
+      "season": 2026,
+      "round": "Group Stage - 2",
+      "standings": false
+    },
+    "teams": {
+      "home": {
+        "id": 19071,
+        "name": "Italy U18",
+        "logo": "https://media.api-sports.io/football/teams/19071.png",
+        "winner": null
+      },
+      "away": {
+        "id": 28332,
+        "name": "Algeria U21",
+        "logo": "https://media.api-sports.io/football/teams/28332.png",
+        "winner": null
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "halftime": {
+        "home": null,
+        "away": null
+      },
+      "fulltime": {
+        "home": null,
+        "away": null
+      },
+      "extratime": {
+        "home": null,
+        "away": null
+      },
+      "penalty": {
+        "home": null,
+        "away": null
+      }
+    }
+  },
+  {
+    "fixture": {
+      "id": 1633885,
+      "referee": null,
+      "timezone": "America/Santiago",
+      "date": "2026-08-24T15:00:00-04:00",
+      "timestamp": 1787598000,
+      "periods": {
+        "first": null,
+        "second": null
+      },
+      "venue": {
+        "id": null,
+        "name": null,
+        "city": null
+      },
+      "status": {
+        "long": "Not Started",
+        "short": "NS",
+        "elapsed": null,
+        "extra": null
+      }
+    },
+    "league": {
+      "id": 919,
+      "name": "Mediterranean Games",
+      "country": "World",
+      "logo": "https://media.api-sports.io/football/leagues/919.png",
+      "flag": null,
+      "season": 2026,
+      "round": "Group Stage - 2",
+      "standings": false
+    },
+    "teams": {
+      "home": {
+        "id": 23431,
+        "name": "Türkiye U20",
+        "logo": "https://media.api-sports.io/football/teams/23431.png",
+        "winner": null
+      },
+      "away": {
+        "id": 8212,
+        "name": "North Macedonia U21",
+        "logo": "https://media.api-sports.io/football/teams/8212.png",
         "winner": null
       }
     },
