@@ -1,6 +1,76 @@
 [
   {
     "fixture": {
+      "id": 1631488,
+      "referee": null,
+      "timezone": "America/Santiago",
+      "date": "2026-08-24T05:30:00-04:00",
+      "timestamp": 1787563800,
+      "periods": {
+        "first": null,
+        "second": null
+      },
+      "venue": {
+        "id": null,
+        "name": null,
+        "city": null
+      },
+      "status": {
+        "long": "Not Started",
+        "short": "NS",
+        "elapsed": null,
+        "extra": null
+      }
+    },
+    "league": {
+      "id": 1020,
+      "name": "Calcutta Premier Division",
+      "country": "India",
+      "logo": "https://media.api-sports.io/football/leagues/1020.png",
+      "flag": "https://media.api-sports.io/flags/in.svg",
+      "season": 2026,
+      "round": "Regular season",
+      "standings": true
+    },
+    "teams": {
+      "home": {
+        "id": 21605,
+        "name": "Kalighat",
+        "logo": "https://media.api-sports.io/football/teams/21605.png",
+        "winner": null
+      },
+      "away": {
+        "id": 3463,
+        "name": "East Bengal",
+        "logo": "https://media.api-sports.io/football/teams/3463.png",
+        "winner": null
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "halftime": {
+        "home": null,
+        "away": null
+      },
+      "fulltime": {
+        "home": null,
+        "away": null
+      },
+      "extratime": {
+        "home": null,
+        "away": null
+      },
+      "penalty": {
+        "home": null,
+        "away": null
+      }
+    }
+  },
+  {
+    "fixture": {
       "id": 1631493,
       "referee": null,
       "timezone": "America/Santiago",
@@ -296,8 +366,8 @@
         "city": null
       },
       "status": {
-        "long": "Not Started",
-        "short": "NS",
+        "long": "Technical loss",
+        "short": "AWD",
         "elapsed": null,
         "extra": null
       }
@@ -327,8 +397,8 @@
       }
     },
     "goals": {
-      "home": null,
-      "away": null
+      "home": 0,
+      "away": 0
     },
     "score": {
       "halftime": {
@@ -2118,7 +2188,7 @@
       "status": {
         "long": "Not Started",
         "short": "NS",
-        "elapsed": 81,
+        "elapsed": null,
         "extra": null
       }
     },
@@ -2152,8 +2222,8 @@
     },
     "score": {
       "halftime": {
-        "home": 3,
-        "away": 1
+        "home": null,
+        "away": null
       },
       "fulltime": {
         "home": null,
@@ -3712,7 +3782,7 @@
   {
     "fixture": {
       "id": 1497671,
-      "referee": null,
+      "referee": "R. Beigi",
       "timezone": "America/Santiago",
       "date": "2026-08-24T13:00:00-04:00",
       "timestamp": 1787590800,
@@ -3782,7 +3852,7 @@
   {
     "fixture": {
       "id": 1497672,
-      "referee": null,
+      "referee": "N. Karlsson",
       "timezone": "America/Santiago",
       "date": "2026-08-24T13:00:00-04:00",
       "timestamp": 1787590800,
@@ -4552,7 +4622,7 @@
   {
     "fixture": {
       "id": 1497667,
-      "referee": null,
+      "referee": "J. Svraka",
       "timezone": "America/Santiago",
       "date": "2026-08-24T13:05:00-04:00",
       "timestamp": 1787591100,
@@ -5322,7 +5392,7 @@
   {
     "fixture": {
       "id": 1551765,
-      "referee": null,
+      "referee": "C. Ruperti",
       "timezone": "America/Santiago",
       "date": "2026-08-24T14:00:00-04:00",
       "timestamp": 1787594400,
@@ -5392,7 +5462,7 @@
   {
     "fixture": {
       "id": 1551766,
-      "referee": null,
+      "referee": "M. Perez",
       "timezone": "America/Santiago",
       "date": "2026-08-24T14:00:00-04:00",
       "timestamp": 1787594400,
@@ -5672,7 +5742,7 @@
   {
     "fixture": {
       "id": 1620994,
-      "referee": null,
+      "referee": "A. Bannister",
       "timezone": "America/Santiago",
       "date": "2026-08-24T14:00:00-04:00",
       "timestamp": 1787594400,
@@ -5742,7 +5812,7 @@
   {
     "fixture": {
       "id": 1620995,
-      "referee": null,
+      "referee": "M. Scholes",
       "timezone": "America/Santiago",
       "date": "2026-08-24T14:00:00-04:00",
       "timestamp": 1787594400,
@@ -5812,7 +5882,7 @@
   {
     "fixture": {
       "id": 1620996,
-      "referee": null,
+      "referee": "J. Westgate",
       "timezone": "America/Santiago",
       "date": "2026-08-24T14:00:00-04:00",
       "timestamp": 1787594400,
@@ -5882,7 +5952,7 @@
   {
     "fixture": {
       "id": 1620997,
-      "referee": null,
+      "referee": "C. Walchester",
       "timezone": "America/Santiago",
       "date": "2026-08-24T14:00:00-04:00",
       "timestamp": 1787594400,
@@ -5952,7 +6022,7 @@
   {
     "fixture": {
       "id": 1620998,
-      "referee": null,
+      "referee": "A. Jackson",
       "timezone": "America/Santiago",
       "date": "2026-08-24T14:00:00-04:00",
       "timestamp": 1787594400,
@@ -8122,7 +8192,7 @@
   {
     "fixture": {
       "id": 1603334,
-      "referee": null,
+      "referee": "F. Caballero",
       "timezone": "America/Santiago",
       "date": "2026-08-24T17:45:00-04:00",
       "timestamp": 1787607900,
@@ -8653,6 +8723,76 @@
         "id": 134,
         "name": "Atletico Paranaense",
         "logo": "https://media.api-sports.io/football/teams/134.png",
+        "winner": null
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "halftime": {
+        "home": null,
+        "away": null
+      },
+      "fulltime": {
+        "home": null,
+        "away": null
+      },
+      "extratime": {
+        "home": null,
+        "away": null
+      },
+      "penalty": {
+        "home": null,
+        "away": null
+      }
+    }
+  },
+  {
+    "fixture": {
+      "id": 1493642,
+      "referee": "B. Jensen",
+      "timezone": "America/Santiago",
+      "date": "2026-08-24T19:00:00-04:00",
+      "timestamp": 1787612400,
+      "periods": {
+        "first": null,
+        "second": null
+      },
+      "venue": {
+        "id": null,
+        "name": "Patriots Point Soccer Complex",
+        "city": null
+      },
+      "status": {
+        "long": "Not Started",
+        "short": "NS",
+        "elapsed": null,
+        "extra": null
+      }
+    },
+    "league": {
+      "id": 255,
+      "name": "USL Championship",
+      "country": "USA",
+      "logo": "https://media.api-sports.io/football/leagues/255.png",
+      "flag": "https://media.api-sports.io/flags/us.svg",
+      "season": 2026,
+      "round": "Group Stage",
+      "standings": true
+    },
+    "teams": {
+      "home": {
+        "id": 3990,
+        "name": "Charleston Battery",
+        "logo": "https://media.api-sports.io/football/teams/3990.png",
+        "winner": null
+      },
+      "away": {
+        "id": 9030,
+        "name": "Miami FC",
+        "logo": "https://media.api-sports.io/football/teams/9030.png",
         "winner": null
       }
     },
@@ -9382,7 +9522,7 @@
   {
     "fixture": {
       "id": 1603335,
-      "referee": null,
+      "referee": "A. C. Guarneros Lezama",
       "timezone": "America/Santiago",
       "date": "2026-08-24T21:00:00-04:00",
       "timestamp": 1787619600,
