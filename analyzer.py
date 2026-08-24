@@ -60,52 +60,87 @@ class MatchAnalyzer:
         }
 
     def get_projections(self, home_team, away_team, home_id, away_id):
-        def get_avg_goals(df_subset, team_id):
-            if df_subset.empty: return 1.2, 1.2 
-            goles_f, goles_c = [], []
+        
+        # Función para sacar V-E-D y Puntos Por Partido (PPG)
+        def get_form_tracker(df_subset, team_id):
+            if df_subset.empty: return "N/A", 0.0
+            form = []
+            pts = 0
             for _, row in df_subset.iterrows():
+                hg = row.get("FTHG")
+                ag = row.get("FTAG")
+                if pd.isna(hg) or pd.isna(ag): continue
                 if row["HomeTeamId"] == team_id:
-                    goles_f.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
-                    goles_c.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
+                    if hg > ag: form.append('V'); pts += 3
+                    elif hg == ag: form.append('E'); pts += 1
+                    else: form.append('D')
                 else:
-                    goles_f.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
-                    goles_c.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
-            return float(np.nanmean(goles_f)), float(np.nanmean(goles_c))
+                    if ag > hg: form.append('V'); pts += 3
+                    elif ag == hg: form.append('E'); pts += 1
+                    else: form.append('D')
+            
+            form.reverse() # Invertimos para que el último partido quede a la derecha
+            form_str = "[" + "-".join(form) + "]"
+            ppg = pts / len(form) if form else 0.0
+            return form_str, round(ppg, 1)
 
-        def get_avg_ht_goals(df_subset, team_id):
-            if df_subset.empty: return 0.5, 0.5 
+        # Cálculo de Promedios Ponderados (Time-Decay)
+        def get_avg_goals_decay(df_subset, team_id, is_ht=False):
+            if df_subset.empty: return 1.2 if not is_ht else 0.5, 1.2 if not is_ht else 0.5
+            
+            # Pesos estadísticos (El partido 1 vale 35%, el partido 5 vale 8%)
+            base_weights = [0.35, 0.25, 0.20, 0.12, 0.08]
             goles_f, goles_c = [], []
+            
+            col_fthg = "HTHG" if is_ht else "FTHG"
+            col_ftag = "HTAG" if is_ht else "FTAG"
+
             for _, row in df_subset.iterrows():
-                h_f = row.get("HTHG")
-                a_f = row.get("HTAG")
+                h_val = row.get(col_fthg)
+                a_val = row.get(col_ftag)
+                if pd.isna(h_val) or pd.isna(a_val):
+                    h_val, a_val = 0.0, 0.0
+
                 if row["HomeTeamId"] == team_id:
-                    goles_f.append(h_f if pd.notna(h_f) else 0.0)
-                    goles_c.append(a_f if pd.notna(a_f) else 0.0)
+                    goles_f.append(float(h_val))
+                    goles_c.append(float(a_val))
                 else:
-                    goles_f.append(a_f if pd.notna(a_f) else 0.0)
-                    goles_c.append(h_f if pd.notna(h_f) else 0.0)
-            return float(np.nanmean(goles_f)), float(np.nanmean(goles_c))
+                    goles_f.append(float(a_val))
+                    goles_c.append(float(h_val))
+            
+            # Normalizar pesos en caso de que haya menos de 5 partidos
+            w = base_weights[:len(goles_f)]
+            w_sum = sum(w)
+            w = [x / w_sum for x in w]
+            
+            avg_f = sum(g * w_i for g, w_i in zip(goles_f, w))
+            avg_c = sum(g * w_i for g, w_i in zip(goles_c, w))
+            return float(avg_f), float(avg_c)
 
         home_global = self.df[(self.df['HomeTeamId'] == home_id) | (self.df['AwayTeamId'] == home_id)]
         home_global = home_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
 
         away_global = self.df[(self.df['HomeTeamId'] == away_id) | (self.df['AwayTeamId'] == away_id)]
         away_global = away_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
+        
+        # Extraer Form Tracker de Bender
+        home_form_str, home_ppg = get_form_tracker(home_global, home_id)
+        away_form_str, away_ppg = get_form_tracker(away_global, away_id)
 
-        hg_f_glob, hg_c_glob = get_avg_goals(home_global, home_id)
-        ag_f_glob, ag_c_glob = get_avg_goals(away_global, away_id)
+        hg_f_glob, hg_c_glob = get_avg_goals_decay(home_global, home_id)
+        ag_f_glob, ag_c_glob = get_avg_goals_decay(away_global, away_id)
 
-        hht_f_glob, hht_c_glob = get_avg_ht_goals(home_global, home_id)
-        aht_f_glob, aht_c_glob = get_avg_ht_goals(away_global, away_id)
+        hht_f_glob, hht_c_glob = get_avg_goals_decay(home_global, home_id, is_ht=True)
+        aht_f_glob, aht_c_glob = get_avg_goals_decay(away_global, away_id, is_ht=True)
 
         home_venue = self.df[self.df['HomeTeamId'] == home_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
         away_venue = self.df[self.df['AwayTeamId'] == away_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
 
-        hg_f_ven, hg_c_ven = get_avg_goals(home_venue, home_id)
-        ag_f_ven, ag_c_ven = get_avg_goals(away_venue, away_id)
+        hg_f_ven, hg_c_ven = get_avg_goals_decay(home_venue, home_id)
+        ag_f_ven, ag_c_ven = get_avg_goals_decay(away_venue, away_id)
 
-        hht_f_ven, hht_c_ven = get_avg_ht_goals(home_venue, home_id)
-        aht_f_ven, aht_c_ven = get_avg_ht_goals(away_venue, away_id)
+        hht_f_ven, hht_c_ven = get_avg_goals_decay(home_venue, home_id, is_ht=True)
+        aht_f_ven, aht_c_ven = get_avg_goals_decay(away_venue, away_id, is_ht=True)
 
         home_scored_avg = (hg_f_glob + hg_f_ven) / 2
         home_concede_avg = (hg_c_glob + hg_c_ven) / 2
@@ -141,7 +176,6 @@ class MatchAnalyzer:
         score_probs.sort(key=lambda x: x[1], reverse=True)
         top_scores = [s[0] for s in score_probs[:3]]
 
-        # --- MERCADOS DERIVADOS ---
         prob_1X = prob_home + prob_draw
         prob_X2 = prob_away + prob_draw
         prob_12 = prob_home + prob_away
@@ -153,18 +187,15 @@ class MatchAnalyzer:
         lam_total = lambda_home + lambda_away
         lam_ht_total = lambda_home_ht + lambda_away_ht
         
-        # Totales Generales
         prob_under_0_5 = poisson.cdf(0, lam_total)
         prob_under_1_5 = poisson.cdf(1, lam_total)
         prob_under_2_5 = poisson.cdf(2, lam_total)
         prob_under_3_5 = poisson.cdf(3, lam_total)
         prob_under_4_5 = poisson.cdf(4, lam_total)
         
-        # Totales Primer Tiempo
         prob_over_0_5_ht = 1 - poisson.cdf(0, lam_ht_total)
-        prob_under_1_5_ht = poisson.cdf(1, lam_ht_total) # Nuevo
+        prob_under_1_5_ht = poisson.cdf(1, lam_ht_total) 
 
-        # Goles por Equipo (Nuevas Inyecciones)
         home_under_0_5 = p_home[0]
         home_over_0_5 = 1 - home_under_0_5
         home_under_1_5 = p_home[0] + p_home[1]
@@ -205,7 +236,13 @@ class MatchAnalyzer:
             'home_over_0_5': home_over_0_5,
             'home_over_1_5': home_over_1_5,
             'away_over_0_5': away_over_0_5,
-            'away_over_1_5': away_over_1_5
+            'away_over_1_5': away_over_1_5,
+            
+            # Variables inyectadas de Forma y PPG
+            'home_form': home_form_str,
+            'home_ppg': home_ppg,
+            'away_form': away_form_str,
+            'away_ppg': away_ppg
         }
 
     def get_basketball_team_stats(self, team_name, team_id):
