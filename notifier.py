@@ -74,7 +74,6 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
     
     partidos_validos = []
     
-    # 1. Aplanar y filtrar partidos maduros
     for pais, ligas in agrupar_por_pais(proyecciones_dict).items():
         for liga, projs in ligas.items():
             for p in projs:
@@ -90,14 +89,12 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
         enviar_mensaje_telegram(f"⚠️ No hay partidos con historial maduro para este bloque.", token_override=token_override)
         return
 
-    # 2. Construir Bloques
     bb_list = []
     ganadores = []
     dobles = []
     goles = []
 
     for p in partidos_validos:
-        # Piezas Bet Builder (>80% Titanio)
         if p.get('btts_no', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('btts_no'), 'sel': 'Ambos Anotan (NO)'})
         if p.get('btts', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('btts'), 'sel': 'Ambos Anotan (SÍ)'})
         if p.get('under_2_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('under_2_5'), 'sel': '-2.5 Goles'})
@@ -107,23 +104,19 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
         if p.get('prob_over_0_5_ht', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('prob_over_0_5_ht'), 'sel': '+0.5 Goles HT'})
         if p.get('prob_under_1_5_ht', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('prob_under_1_5_ht'), 'sel': '-1.5 Goles HT'})
         
-        # Inyecciones de equipo individual
         if p.get('home_over_0_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('home_over_0_5'), 'sel': f"{p['local']} +0.5 Goles"})
         if p.get('home_over_1_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('home_over_1_5'), 'sel': f"{p['local']} +1.5 Goles"})
         if p.get('away_over_0_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('away_over_0_5'), 'sel': f"{p['visita']} +0.5 Goles"})
         if p.get('away_over_1_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('away_over_1_5'), 'sel': f"{p['visita']} +1.5 Goles"})
         
-        # Ganadores
         prob_gana = max(p['probs'][0], p['probs'][2])
         sel_gana = p['local'] if p['probs'][0] > p['probs'][2] else p['visita']
         ganadores.append({'match': p, 'prob': prob_gana, 'sel': sel_gana})
         
-        # Dobles
         prob_doble = max(p.get('prob_1X', 0), p.get('prob_X2', 0))
         sel_doble = f"1X ({p['local']})" if p.get('prob_1X', 0) > p.get('prob_X2', 0) else f"X2 ({p['visita']})"
         dobles.append({'match': p, 'prob': prob_doble, 'sel': sel_doble})
         
-        # Goles
         opciones_goles = [
             {'sel': 'Ambos Anotan', 'prob': p.get('btts', 0)},
             {'sel': '+1.5 Goles', 'prob': p.get('over_1_5', 0)},
@@ -133,20 +126,17 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
         mejor_gol = max(opciones_goles, key=lambda x: x['prob'])
         goles.append({'match': p, 'prob': mejor_gol['prob'], 'sel': mejor_gol['sel']})
 
-    # Ordenar bloques
     bb_list.sort(key=lambda x: x['prob'], reverse=True)
     ganadores.sort(key=lambda x: x['prob'], reverse=True)
     dobles.sort(key=lambda x: x['prob'], reverse=True)
     goles.sort(key=lambda x: x['prob'], reverse=True)
 
-    # 3. Rastrear partidos seleccionados para La Autopsia
     seleccionados = set()
     for item in bb_list: seleccionados.add(id(item['match']))
     for item in ganadores[:5]: seleccionados.add(id(item['match']))
     for item in dobles[:5]: seleccionados.add(id(item['match']))
     for item in goles[:5]: seleccionados.add(id(item['match']))
 
-    # 4. Ensamblar Mensaje V3.0
     fecha_bloque = partidos_validos[0].get('fecha_str', '') if partidos_validos else ""
     etiqueta_ventana = f" | {titulo_bloque}" if titulo_bloque else ""
     
@@ -167,14 +157,16 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
     for i, item in enumerate(ganadores[:5], 1):
         m = item['match']
         msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']} | 🎯 Gana *{item['sel']}* ({item['prob']:.0%})\n"
-        msg += f"   📈 Forma: L `{m.get('home_form')}` ({m.get('home_ppg')}p) | V `{m.get('away_form')}` ({m.get('away_ppg')}p)\n"
+        msg += f"   📈 Forma Global: L `{m.get('home_form')}` ({m.get('home_ppg')}p) | V `{m.get('away_form')}` ({m.get('away_ppg')}p)\n"
+        msg += f"   🏟️ Casa/Fuera: L `{m.get('home_venue_form')}` ({m.get('home_venue_ppg')}p) | V `{m.get('away_venue_form')}` ({m.get('away_venue_ppg')}p)\n"
 
     msg += "\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
     msg += "🛡️ *TOP 5 - DOBLE OPORTUNIDAD*\n"
     for i, item in enumerate(dobles[:5], 1):
         m = item['match']
         msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']} | 🛡️ *{item['sel']}* ({item['prob']:.0%})\n"
-        msg += f"   📈 Forma: L `{m.get('home_form')}` ({m.get('home_ppg')}p) | V `{m.get('away_form')}` ({m.get('away_ppg')}p)\n"
+        msg += f"   📈 Forma Global: L `{m.get('home_form')}` ({m.get('home_ppg')}p) | V `{m.get('away_form')}` ({m.get('away_ppg')}p)\n"
+        msg += f"   🏟️ Casa/Fuera: L `{m.get('home_venue_form')}` ({m.get('home_venue_ppg')}p) | V `{m.get('away_venue_form')}` ({m.get('away_venue_ppg')}p)\n"
 
     msg += "\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
     msg += "🔥 *TOP 5 - MERCADOS DE GOLES*\n"
@@ -195,7 +187,8 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
         msg += f"📌 *{liga_key}*\n"
         for p in projs:
             msg += f"⚽ *{p['local']}* vs *{p['visita']}* | 🕒 {p.get('hora', '')}\n"
-            msg += f"📈 Forma: L `{p.get('home_form')}` ({p.get('home_ppg')}p) | V `{p.get('away_form')}` ({p.get('away_ppg')}p)\n"
+            msg += f"📈 Global: L `{p.get('home_form')}` ({p.get('home_ppg')}p) | V `{p.get('away_form')}` ({p.get('away_ppg')}p)\n"
+            msg += f"🏟️ Casa/Fuera: L `{p.get('home_venue_form')}` ({p.get('home_venue_ppg')}p) | V `{p.get('away_venue_form')}` ({p.get('away_venue_ppg')}p)\n"
             msg += f"📊 1X2: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
             msg += f"🛡️ Doble Op: 1X ({p.get('prob_1X',0):.0%}) | 12 ({p.get('prob_12',0):.0%}) | X2 ({p.get('prob_X2',0):.0%})\n"
             msg += f"🎯 Ambos Anotan: Sí ({p.get('btts',0):.0%}) | No ({p.get('btts_no',0):.0%})\n"
