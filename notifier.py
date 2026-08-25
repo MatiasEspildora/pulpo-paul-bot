@@ -83,6 +83,8 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
                     p['liga_nombre'] = liga
                     p['pais_nombre'] = pais
                     p['bandera'] = BANDERAS.get(pais, "🏴")
+                    # Asignamos un ID único al diccionario para rastrearlo de forma segura
+                    p['_id_interno'] = f"{p['local_id']}_{p['visita_id']}_{p['fecha_str']}" 
                     partidos_validos.append(p)
                     
     if not partidos_validos:
@@ -130,11 +132,12 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     dobles.sort(key=lambda x: x['prob'], reverse=True)
     goles.sort(key=lambda x: x['prob'], reverse=True)
 
+    # Identificamos los IDs de todos los partidos que aparecieron en el menú
     seleccionados = set()
-    for item in bb_list: seleccionados.add(id(item['match']))
-    for item in ganadores[:5]: seleccionados.add(id(item['match']))
-    for item in dobles[:5]: seleccionados.add(id(item['match']))
-    for item in goles[:5]: seleccionados.add(id(item['match']))
+    for item in bb_list[:12]: seleccionados.add(item['match']['_id_interno'])
+    for item in ganadores[:5]: seleccionados.add(item['match']['_id_interno'])
+    for item in dobles[:5]: seleccionados.add(item['match']['_id_interno'])
+    for item in goles[:5]: seleccionados.add(item['match']['_id_interno'])
 
     etiqueta_ventana = f" | {titulo_bloque}" if titulo_bloque else ""
     
@@ -175,22 +178,27 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     msg += "\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
     msg += "🩸 *LA AUTOPSIA (Código Fuente)*\n\n"
 
+    # Agrupamos los seleccionados por liga para la autopsia
     autopsia_dict = {}
     for p in partidos_validos:
-        if id(p) in seleccionados:
+        if p['_id_interno'] in seleccionados:
             liga_key = f"{p['bandera']} {p['pais_nombre']} - {p['liga_nombre']}"
             autopsia_dict.setdefault(liga_key, []).append(p)
             
-    for liga_key, projs in autopsia_dict.items():
+    # Ordenamos el diccionario alfabéticamente por la llave (la liga)
+    for liga_key in sorted(autopsia_dict.keys()):
+        projs = autopsia_dict[liga_key]
         msg += f"📌 *{liga_key}*\n"
+        
+        # Opcional: También ordenamos los partidos dentro de la liga por hora
+        projs.sort(key=lambda x: x.get('hora', '00:00'))
+        
         for p in projs:
             s_l = analyzer.get_team_stats(p['local'], p.get('local_id'))
             s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'))
             
-            # 🔥 Indicadores visuales de Mata-Mata y Jerarquía
             es_mata_mata = " ⚔️ *[MATA-MATA]*" if p.get('es_eliminatoria') else ""
             
-            # Cortamos a un largo prudente por si la liga tiene nombre muy largo
             l_league_str = str(p.get('local_league', ''))[:18]
             v_league_str = str(p.get('visita_league', ''))[:18]
             
