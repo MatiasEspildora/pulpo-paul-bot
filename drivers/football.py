@@ -116,6 +116,28 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
             df_hist = pd.concat([df_hist, pd.DataFrame([nuevo])], ignore_index=True)
     return df_hist
 
+# 🔥 NUEVA FUNCIÓN: Infiere la liga local del equipo desde la Base de Datos
+def obtener_liga_domestica(df, team_id, team_name):
+    if df is None or df.empty: return ""
+    try:
+        if pd.notna(team_id) and str(team_id).strip() != "" and str(team_id) != "None":
+            mask = (df['HomeTeamId'] == team_id) | (df['AwayTeamId'] == team_id)
+        else:
+            mask = (df['HomeTeam'] == team_name) | (df['AwayTeam'] == team_name)
+        
+        # Filtramos partidos de Copa/Mata-Mata para encontrar su liga habitual
+        mask_league = mask & (df['EsEliminatoria'] == False) & (~df['League'].fillna("").str.contains("Cup|Copa|Pokal|Trophy|Taça|Coppa|Coupe|Shield", case=False))
+        df_team = df[mask_league]
+        
+        if not df_team.empty:
+            liga = df_team['League'].mode().iloc[0]
+            # Pequeña limpieza visual
+            liga = str(liga).replace("Primera División", "1ra").replace("Segunda División", "2da")
+            return liga
+    except Exception:
+        pass
+    return ""
+
 def run_process(df_externo=None):
     os.makedirs("logs/football", exist_ok=True)
     os.makedirs("resultados/football", exist_ok=True)
@@ -131,10 +153,9 @@ def run_process(df_externo=None):
         now = datetime.now(zona)
         hora_actual = now.hour
         
-        # LOGICA DE TURNOS: Determinar qué fechas descargar y analizar
-        fechas_a_procesar = [now.strftime("%Y-%m-%d")] # Siempre procesar hoy
+        fechas_a_procesar = [now.strftime("%Y-%m-%d")] 
         
-        if hora_actual >= 20: # Turno Nocturno (21:00 o 22:00 dependiendo del daylight saving)
+        if hora_actual >= 20: 
             fechas_a_procesar.append((now + timedelta(days=1)).strftime("%Y-%m-%d"))
         
         datos_fechas = {}
@@ -142,12 +163,10 @@ def run_process(df_externo=None):
         
         print(f"⚽ [FOOTBALL] Iniciando descarga para fechas: {fechas_a_procesar}")
         
-        # Bucle de descarga y actualización (Incluimos Ayer [-1] para limpiar partidos retrasados)
         for i in range(-1, 2): 
             f_dt = now + timedelta(days=i)
             f_str = f_dt.strftime("%Y-%m-%d")
             
-            # Solo descargamos API si es Ayer, o si la fecha está en nuestra lista de procesar
             if i == -1 or f_str in fechas_a_procesar:
                 try:
                     meses_afectados.add(pd.Period(f_dt.strftime("%Y-%m"), 'M'))
@@ -179,11 +198,9 @@ def run_process(df_externo=None):
                         
                     if partidos_del_dia:
                         print(f"✔️ [FOOTBALL] {f_str} procesado desde {origen_datos} ({len(partidos_del_dia)} partidos).")
-                        # Solo guardamos en memoria los partidos de las fechas que queremos PROYECTAR
                         if f_str in fechas_a_procesar:
                             datos_fechas[f_str] = partidos_del_dia
                             
-                        # Pero siempre actualizamos la BD con los resultados (para cerrar el día anterior)
                         df = actualizar_maestro_con_partidos(df, partidos_del_dia, f_str, statuses_map)
                     else:
                         print(f"❌ [FOOTBALL] Sin datos para {f_str} (Ni API ni LOCAL).")
@@ -196,7 +213,7 @@ def run_process(df_externo=None):
         guardar_historico_mensual(df, meses_afectados)
             
         analyzer = MatchAnalyzer(df)
-        proyecciones_globales = {} # Diccionario único para todo
+        proyecciones_globales = {} 
         
         def procesar_lote_partidos(lista_partidos):
             for match in lista_partidos:
@@ -229,7 +246,10 @@ def run_process(df_externo=None):
                         palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "play-off", "qualifying"]
                         proj['es_eliminatoria'] = any(palabra in ronda_texto for palabra in palabras_clave)
                         
-                        # Almacenamos todo en un mismo lugar, notifier se encarga de agrupar
+                        # 🔥 AÑADIMOS LA LIGA DOMÉSTICA PARA LA AUTOPSIA
+                        proj['local_league'] = obtener_liga_domestica(df, h_id, h_name)
+                        proj['visita_league'] = obtener_liga_domestica(df, a_id, a_name)
+                        
                         proyecciones_globales.setdefault((pais, liga), []).append(proj)
                 except Exception as e:
                     continue
@@ -238,13 +258,11 @@ def run_process(df_externo=None):
         for fecha in fechas_a_procesar:
              procesar_lote_partidos(datos_fechas.get(fecha, []))
                 
-        # Etiquetas dinámicas de turno
         if hora_actual < 12: titulo_bloque = "Turno Mañana"
         elif hora_actual < 17: titulo_bloque = "Turno Mediodía"
         elif hora_actual < 20: titulo_bloque = "Turno Latam"
         else: titulo_bloque = "Turno Nocturno"
 
-        # Le pasamos TODO al notifier. Él se encarga de desglosar por fecha
         if proyecciones_globales:
             enviar_bloque_reportes(proyecciones_globales, titulo_bloque, analyzer)
         else:
@@ -258,4 +276,3 @@ def run_process(df_externo=None):
 
 if __name__ == "__main__":
     run_process()
-
