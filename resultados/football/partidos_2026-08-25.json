@@ -646,10 +646,10 @@
                 "city": null
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 84,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 3
             }
         },
         "league": {
@@ -686,8 +686,8 @@
                 "away": 2
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 4,
+                "away": 3
             },
             "extratime": {
                 "home": null,
@@ -716,10 +716,10 @@
                 "city": null
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
+                "long": "Match Finished",
+                "short": "FT",
                 "elapsed": 90,
-                "extra": null
+                "extra": 4
             }
         },
         "league": {
@@ -756,8 +756,8 @@
                 "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 3
             },
             "extratime": {
                 "home": null,
@@ -848,7 +848,7 @@
             "timestamp": 1787659200,
             "periods": {
                 "first": 1787659200,
-                "second": null
+                "second": 1787662800
             },
             "venue": {
                 "id": null,
@@ -856,10 +856,10 @@
                 "city": null
             },
             "status": {
-                "long": "Halftime",
-                "short": "HT",
-                "elapsed": 45,
-                "extra": 2
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 48,
+                "extra": null
             }
         },
         "league": {
@@ -926,8 +926,8 @@
                 "city": null
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
+                "long": "Halftime",
+                "short": "HT",
                 "elapsed": 45,
                 "extra": 3
             }
@@ -1068,7 +1068,7 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 13,
+                "elapsed": 24,
                 "extra": null
             }
         },
@@ -1208,7 +1208,7 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 18,
+                "elapsed": 28,
                 "extra": null
             }
         },
@@ -1237,12 +1237,12 @@
             }
         },
         "goals": {
-            "home": 1,
+            "home": 2,
             "away": 0
         },
         "score": {
             "halftime": {
-                "home": 1,
+                "home": 2,
                 "away": 0
             },
             "fulltime": {
@@ -1267,7 +1267,7 @@
             "date": "2026-08-25T09:00:00-04:00",
             "timestamp": 1787662800,
             "periods": {
-                "first": null,
+                "first": 1787662800,
                 "second": null
             },
             "venue": {
@@ -1276,9 +1276,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 1,
                 "extra": null
             }
         },
@@ -1307,13 +1307,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
