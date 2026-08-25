@@ -68,7 +68,7 @@ def agrupar_por_pais(proyecciones_dict):
 # ==========================================
 # ⚽ FORMATO BENDER V3.0 (FÚTBOL)
 # ==========================================
-def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
+def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_bloque, analyzer, token_override=None):
     tz_chile = pytz.timezone('America/Santiago')
     hora_generacion = datetime.now(tz_chile).strftime("%d/%m/%Y %H:%M")
     
@@ -86,8 +86,7 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
                     partidos_validos.append(p)
                     
     if not partidos_validos:
-        enviar_mensaje_telegram(f"⚠️ No hay partidos con historial maduro para este bloque.", token_override=token_override)
-        return
+        return 0
 
     bb_list = []
     ganadores = []
@@ -137,7 +136,6 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
     for item in dobles[:5]: seleccionados.add(id(item['match']))
     for item in goles[:5]: seleccionados.add(id(item['match']))
 
-    fecha_bloque = partidos_validos[0].get('fecha_str', '') if partidos_validos else ""
     etiqueta_ventana = f" | {titulo_bloque}" if titulo_bloque else ""
     
     msg = f"💎 ━━ *MENÚ BENDER V3.0: {fecha_bloque}{etiqueta_ventana}* ━━ 💎\n"
@@ -232,6 +230,32 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
                 time.sleep(1.5)
     else:
         enviar_mensaje_telegram(msg, token_override=token_override)
+        
+    return len(partidos_validos)
+
+def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
+    # Primero agrupamos estrictamente por fecha para no mezclar menús
+    agrupado_por_fecha = {}
+    for key, projs in proyecciones_dict.items():
+        for p in projs:
+            fecha = p.get('fecha_str', 'Sin Fecha')
+            if fecha not in agrupado_por_fecha:
+                agrupado_por_fecha[fecha] = {}
+            if key not in agrupado_por_fecha[fecha]:
+                agrupado_por_fecha[fecha][key] = []
+            agrupado_por_fecha[fecha][key].append(p)
+            
+    total_validos_global = 0
+    fechas_ordenadas = sorted(agrupado_por_fecha.keys())
+    
+    for fecha in fechas_ordenadas:
+        procesados = _procesar_y_enviar_bloque_futbol(agrupado_por_fecha[fecha], titulo_bloque, fecha, analyzer, token_override)
+        total_validos_global += (procesados or 0)
+        if procesados:
+            time.sleep(2) # Pausa amigable entre días para no saturar a Telegram
+            
+    if total_validos_global == 0:
+        enviar_mensaje_telegram(f"⚠️ No hay partidos con historial maduro para este bloque.", token_override=token_override)
 
 
 # ==========================================
@@ -295,7 +319,7 @@ def enviar_resumen_mejores_apuestas_basket(proyecciones_dict, titulo_bloque, ana
         aviso = "💎 ━━ *MENÚ DE MEJORES PICKS* ━━ 💎\n" + "━"*22 + "\n\n⚠️ _No hay partidos con historial maduro para HOY ni MAÑANA._\n\n" + "━"*22 + "\n✅ *FIN DEL REPORTE* ✅"
         enviar_mensaje_telegram(aviso, token_override=token_override)
 
-def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
+def _procesar_y_enviar_autopsia_basket(proyecciones_dict, titulo_bloque, fecha_bloque, analyzer, token_override=None):
     agrupado_por_pais = agrupar_por_pais(proyecciones_dict)
     
     for pais, ligas_del_pais in sorted(agrupado_por_pais.items()):
@@ -303,7 +327,7 @@ def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, to
         sufijo = f" ({titulo_bloque})" if titulo_bloque else ""
         
         mensajes_a_enviar = []
-        mensaje_actual = f"🏀 {bandera} *{pais}*{sufijo}\n" + "━"*20 + "\n\n"
+        mensaje_actual = f"🏀 {bandera} *{pais}*{sufijo} | 📅 {fecha_bloque}\n" + "━"*20 + "\n\n"
         
         for liga, proyecciones in sorted(ligas_del_pais.items()):
             top_items = proyecciones
@@ -313,7 +337,7 @@ def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, to
             if len(mensaje_actual) + len(header_liga) > 3800:
                 mensaje_actual += "━"*20 + "\n"
                 mensajes_a_enviar.append(mensaje_actual)
-                mensaje_actual = f"🏀 {bandera} *{pais}*{sufijo} (Cont.)\n" + "━"*20 + "\n\n"
+                mensaje_actual = f"🏀 {bandera} *{pais}*{sufijo} | 📅 {fecha_bloque} (Cont.)\n" + "━"*20 + "\n\n"
                 
             mensaje_actual += header_liga
             
@@ -349,7 +373,7 @@ def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, to
                 if len(mensaje_actual) + len(bloque_partido) > 3800:
                     mensaje_actual += "━"*20 + "\n"
                     mensajes_a_enviar.append(mensaje_actual)
-                    mensaje_actual = f"🏀 {bandera} *{pais}*{sufijo} (Cont.)\n" + "━"*20 + "\n\n"
+                    mensaje_actual = f"🏀 {bandera} *{pais}*{sufijo} | 📅 {fecha_bloque} (Cont.)\n" + "━"*20 + "\n\n"
                     
                 mensaje_actual += bloque_partido
 
@@ -361,4 +385,20 @@ def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, to
             enviar_mensaje_telegram(msg, token_override=token_override)
             time.sleep(1.5)
 
+def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
+    # Agrupamos por fecha al igual que en fútbol
+    agrupado_por_fecha = {}
+    for key, projs in proyecciones_dict.items():
+        for p in projs:
+            fecha = p.get('fecha_str', 'Sin Fecha')
+            if fecha not in agrupado_por_fecha:
+                agrupado_por_fecha[fecha] = {}
+            if key not in agrupado_por_fecha[fecha]:
+                agrupado_por_fecha[fecha][key] = []
+            agrupado_por_fecha[fecha][key].append(p)
+            
+    for fecha in sorted(agrupado_por_fecha.keys()):
+        _procesar_y_enviar_autopsia_basket(agrupado_por_fecha[fecha], titulo_bloque, fecha, analyzer, token_override)
+        time.sleep(2)
+        
     enviar_resumen_mejores_apuestas_basket(proyecciones_dict, titulo_bloque, analyzer, token_override)
