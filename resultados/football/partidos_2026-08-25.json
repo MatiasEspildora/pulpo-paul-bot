@@ -648,7 +648,7 @@
             "status": {
                 "long": "Second Half",
                 "short": "2H",
-                "elapsed": 72,
+                "elapsed": 84,
                 "extra": null
             }
         },
@@ -718,7 +718,7 @@
             "status": {
                 "long": "Second Half",
                 "short": "2H",
-                "elapsed": 77,
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -786,10 +786,10 @@
                 "city": null
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 38,
-                "extra": null
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
+                "extra": 1
             }
         },
         "league": {
@@ -817,12 +817,12 @@
             }
         },
         "goals": {
-            "home": 3,
+            "home": 4,
             "away": 0
         },
         "score": {
             "halftime": {
-                "home": 3,
+                "home": 4,
                 "away": 0
             },
             "fulltime": {
@@ -856,10 +856,10 @@
                 "city": null
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 38,
-                "extra": null
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
+                "extra": 2
             }
         },
         "league": {
@@ -928,8 +928,8 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 36,
-                "extra": null
+                "elapsed": 45,
+                "extra": 3
             }
         },
         "league": {
@@ -957,12 +957,12 @@
             }
         },
         "goals": {
-            "home": 0,
+            "home": 1,
             "away": 3
         },
         "score": {
             "halftime": {
-                "home": 0,
+                "home": 1,
                 "away": 3
             },
             "fulltime": {
@@ -996,10 +996,10 @@
                 "city": null
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 37,
-                "extra": null
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
+                "extra": 2
             }
         },
         "league": {
@@ -1057,7 +1057,7 @@
             "date": "2026-08-25T08:30:00-04:00",
             "timestamp": 1787661000,
             "periods": {
-                "first": null,
+                "first": 1787661000,
                 "second": null
             },
             "venue": {
@@ -1066,9 +1066,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 13,
                 "extra": null
             }
         },
@@ -1097,13 +1097,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
@@ -1208,7 +1208,7 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 5,
+                "elapsed": 18,
                 "extra": null
             }
         },
@@ -1227,22 +1227,22 @@
                 "id": 19877,
                 "name": "Bolton Wanderers Res.",
                 "logo": "https://media.api-sports.io/football/teams/19877.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 20083,
                 "name": "Colchester United U21",
                 "logo": "https://media.api-sports.io/football/teams/20083.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": 0,
+            "home": 1,
             "away": 0
         },
         "score": {
             "halftime": {
-                "home": 0,
+                "home": 1,
                 "away": 0
             },
             "fulltime": {
