@@ -60,7 +60,6 @@ class MatchAnalyzer:
         }
 
     def get_projections(self, home_team, away_team, home_id, away_id):
-        
         def get_form_tracker(df_subset, team_id):
             if df_subset.empty: return "N/A", 0.0
             form = []
@@ -125,7 +124,6 @@ class MatchAnalyzer:
         home_venue = self.df[self.df['HomeTeamId'] == home_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
         away_venue = self.df[self.df['AwayTeamId'] == away_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
 
-        # Extraer Form Tracker de Casa/Fuera
         home_venue_form_str, home_venue_ppg = get_form_tracker(home_venue, home_id)
         away_venue_form_str, away_venue_ppg = get_form_tracker(away_venue, away_id)
 
@@ -236,7 +234,6 @@ class MatchAnalyzer:
             'home_over_1_5': home_over_1_5,
             'away_over_0_5': away_over_0_5,
             'away_over_1_5': away_over_1_5,
-            
             'home_form': home_form_str,
             'home_ppg': home_ppg,
             'away_form': away_form_str,
@@ -273,17 +270,55 @@ class MatchAnalyzer:
         }
 
     def get_basketball_projections(self, home_team, away_team, home_id, away_id, match_data=None):
-        def get_avg_points(df_subset, team_id):
-            if df_subset.empty: return 105.0, 105.0
-            pts_f, pts_c = [], []
+        # Tracker de rachas para Básquetbol
+        def get_form_tracker(df_subset, team_id):
+            if df_subset.empty: return "N/A", 0.0
+            form = []
+            pts = 0
             for _, row in df_subset.iterrows():
+                hg = row.get("FTHG")
+                ag = row.get("FTAG")
+                if pd.isna(hg) or pd.isna(ag): continue
                 if row["HomeTeamId"] == team_id:
-                    pts_f.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
-                    pts_c.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
+                    if hg > ag: form.append('V'); pts += 3
+                    elif hg == ag: form.append('E'); pts += 1 # Raro en básquet, pero puede pasar sin OT
+                    else: form.append('D')
                 else:
-                    pts_f.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0.0)
-                    pts_c.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0.0)
-            return float(np.nanmean(pts_f)), float(np.nanmean(pts_c))
+                    if ag > hg: form.append('V'); pts += 3
+                    elif ag == hg: form.append('E'); pts += 1
+                    else: form.append('D')
+            
+            form.reverse()
+            form_str = "[" + "-".join(form) + "]"
+            ppg = pts / len(form) if form else 0.0
+            return form_str, round(ppg, 1)
+
+        # Time-Decay (Ponderación) para Puntos de Básquetbol
+        def get_avg_points_decay(df_subset, team_id):
+            if df_subset.empty: return 105.0, 105.0
+            base_weights = [0.35, 0.25, 0.20, 0.12, 0.08]
+            pts_f, pts_c = [], []
+            
+            for _, row in df_subset.iterrows():
+                h_val = row.get("FTHG")
+                a_val = row.get("FTAG")
+                if pd.isna(h_val) or pd.isna(a_val):
+                    h_val, a_val = 0.0, 0.0
+
+                if row["HomeTeamId"] == team_id:
+                    pts_f.append(float(h_val))
+                    pts_c.append(float(a_val))
+                else:
+                    pts_f.append(float(a_val))
+                    pts_c.append(float(h_val))
+                    
+            w = base_weights[:len(pts_f)]
+            w_sum = sum(w)
+            w = [x / w_sum for x in w]
+            
+            avg_f = sum(p * w_i for p, w_i in zip(pts_f, w))
+            avg_c = sum(p * w_i for p, w_i in zip(pts_c, w))
+            return float(avg_f), float(avg_c)
 
         home_global = self.df[(self.df['HomeTeamId'] == home_id) | (self.df['AwayTeamId'] == home_id)]
         home_global = home_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
@@ -291,14 +326,20 @@ class MatchAnalyzer:
         away_global = self.df[(self.df['HomeTeamId'] == away_id) | (self.df['AwayTeamId'] == away_id)]
         away_global = away_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
 
-        hg_f_glob, hg_c_glob = get_avg_points(home_global, home_id)
-        ag_f_glob, ag_c_glob = get_avg_points(away_global, away_id)
+        home_form_str, home_ppg = get_form_tracker(home_global, home_id)
+        away_form_str, away_ppg = get_form_tracker(away_global, away_id)
 
         home_venue = self.df[self.df['HomeTeamId'] == home_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
         away_venue = self.df[self.df['AwayTeamId'] == away_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
 
-        hg_f_ven, hg_c_ven = get_avg_points(home_venue, home_id)
-        ag_f_ven, ag_c_ven = get_avg_points(away_venue, away_id)
+        home_venue_form_str, home_venue_ppg = get_form_tracker(home_venue, home_id)
+        away_venue_form_str, away_venue_ppg = get_form_tracker(away_venue, away_id)
+
+        hg_f_glob, hg_c_glob = get_avg_points_decay(home_global, home_id)
+        ag_f_glob, ag_c_glob = get_avg_points_decay(away_global, away_id)
+
+        hg_f_ven, hg_c_ven = get_avg_points_decay(home_venue, home_id)
+        ag_f_ven, ag_c_ven = get_avg_points_decay(away_venue, away_id)
 
         home_avg_scored = (hg_f_glob + hg_f_ven) / 2
         home_avg_conceded = (hg_c_glob + hg_c_ven) / 2
@@ -330,7 +371,17 @@ class MatchAnalyzer:
             'probs': [prob_home, 0.0, prob_away],
             'puntos_proyectados': total_projected_points,
             'has_overtime': has_overtime,
-            'score_value': max(prob_home, prob_away)
+            'score_value': max(prob_home, prob_away),
+            
+            # Form Data Basketball
+            'home_form': home_form_str,
+            'home_ppg': home_ppg,
+            'away_form': away_form_str,
+            'away_ppg': away_ppg,
+            'home_venue_form': home_venue_form_str,
+            'home_venue_ppg': home_venue_ppg,
+            'away_venue_form': away_venue_form_str,
+            'away_venue_ppg': away_venue_ppg
         }
 
     def get_basketball_overtime_stats(self, team_name, team_id):
