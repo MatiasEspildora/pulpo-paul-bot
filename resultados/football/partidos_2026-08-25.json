@@ -5532,7 +5532,7 @@
     {
         "fixture": {
             "id": 1622626,
-            "referee": null,
+            "referee": "I. Kovacs",
             "timezone": "America/Santiago",
             "date": "2026-08-25T12:45:00-04:00",
             "timestamp": 1787676300,
@@ -6312,8 +6312,8 @@
             },
             "venue": {
                 "id": null,
-                "name": null,
-                "city": null
+                "name": "Mbombela Stadium",
+                "city": "Mbombela"
             },
             "status": {
                 "long": "Not Started",
@@ -6523,7 +6523,7 @@
             "venue": {
                 "id": null,
                 "name": null,
-                "city": null
+                "city": "Bloemfontein"
             },
             "status": {
                 "long": "Not Started",
@@ -12182,7 +12182,7 @@
     {
         "fixture": {
             "id": 1570342,
-            "referee": null,
+            "referee": "J. A. Gonzalez Esteban",
             "timezone": "America/Santiago",
             "date": "2026-08-25T15:00:00-04:00",
             "timestamp": 1787684400,
@@ -12322,7 +12322,7 @@
     {
         "fixture": {
             "id": 1610924,
-            "referee": null,
+            "referee": "S. Marciniak",
             "timezone": "America/Santiago",
             "date": "2026-08-25T15:00:00-04:00",
             "timestamp": 1787684400,
@@ -12532,7 +12532,7 @@
     {
         "fixture": {
             "id": 1622627,
-            "referee": null,
+            "referee": "M. Oliver",
             "timezone": "America/Santiago",
             "date": "2026-08-25T15:00:00-04:00",
             "timestamp": 1787684400,
@@ -12881,6 +12881,76 @@
     },
     {
         "fixture": {
+            "id": 1605341,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-25T16:00:00-04:00",
+            "timestamp": 1787688000,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 759,
+            "name": "Liga Mayor",
+            "country": "Dominican-Republic",
+            "logo": "https://media.api-sports.io/football/leagues/759.png",
+            "flag": "https://media.api-sports.io/flags/do.svg",
+            "season": 2026,
+            "round": "Regular Season - 2",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 16140,
+                "name": "Jarabacoa",
+                "logo": "https://media.api-sports.io/football/teams/16140.png",
+                "winner": null
+            },
+            "away": {
+                "id": 16138,
+                "name": "Atlántico",
+                "logo": "https://media.api-sports.io/football/teams/16138.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1549603,
             "referee": null,
             "timezone": "America/Santiago",
@@ -12923,76 +12993,6 @@
                 "id": 1458,
                 "name": "Bogota FC",
                 "logo": "https://media.api-sports.io/football/teams/1458.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1605341,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-08-25T17:00:00-04:00",
-            "timestamp": 1787691600,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 759,
-            "name": "Liga Mayor",
-            "country": "Dominican-Republic",
-            "logo": "https://media.api-sports.io/football/leagues/759.png",
-            "flag": "https://media.api-sports.io/flags/do.svg",
-            "season": 2026,
-            "round": "Regular Season - 2",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 16140,
-                "name": "Jarabacoa",
-                "logo": "https://media.api-sports.io/football/teams/16140.png",
-                "winner": null
-            },
-            "away": {
-                "id": 16138,
-                "name": "Atlántico",
-                "logo": "https://media.api-sports.io/football/teams/16138.png",
                 "winner": null
             }
         },
