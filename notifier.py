@@ -187,8 +187,18 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             s_l = analyzer.get_team_stats(p['local'], p.get('local_id'))
             s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'))
             
-            msg += f"📅 `{p.get('fecha_str', '')}` | 🕒 `{p.get('hora', '')}`\n"
-            msg += f"⚽ *{p['local']}* vs *{p['visita']}*\n"
+            # 🔥 Indicadores visuales de Mata-Mata y Jerarquía
+            es_mata_mata = " ⚔️ *[MATA-MATA]*" if p.get('es_eliminatoria') else ""
+            
+            # Cortamos a un largo prudente por si la liga tiene nombre muy largo
+            l_league_str = str(p.get('local_league', ''))[:18]
+            v_league_str = str(p.get('visita_league', ''))[:18]
+            
+            l_tag = f" [{l_league_str}]" if l_league_str else ""
+            v_tag = f" [{v_league_str}]" if v_league_str else ""
+            
+            msg += f"📅 `{p.get('fecha_str', '')}` | 🕒 `{p.get('hora', '')}`{es_mata_mata}\n"
+            msg += f"⚽ *{p['local']}*{l_tag} vs *{p['visita']}*{v_tag}\n"
             msg += f"📈 Global: L `{p.get('home_form')}` ({p.get('home_ppg')}p) | V `{p.get('away_form')}` ({p.get('away_ppg')}p)\n"
             msg += f"🏟️ Casa/Fuera: L `{p.get('home_venue_form')}` ({p.get('home_venue_ppg')}p) | V `{p.get('away_venue_form')}` ({p.get('away_venue_ppg')}p)\n"
             msg += f"📊 1X2: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
@@ -234,7 +244,6 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     return len(partidos_validos)
 
 def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
-    # Primero agrupamos estrictamente por fecha para no mezclar menús
     agrupado_por_fecha = {}
     for key, projs in proyecciones_dict.items():
         for p in projs:
@@ -252,7 +261,7 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
         procesados = _procesar_y_enviar_bloque_futbol(agrupado_por_fecha[fecha], titulo_bloque, fecha, analyzer, token_override)
         total_validos_global += (procesados or 0)
         if procesados:
-            time.sleep(2) # Pausa amigable entre días para no saturar a Telegram
+            time.sleep(2) 
             
     if total_validos_global == 0:
         enviar_mensaje_telegram(f"⚠️ No hay partidos con historial maduro para este bloque.", token_override=token_override)
@@ -386,7 +395,6 @@ def _procesar_y_enviar_autopsia_basket(proyecciones_dict, titulo_bloque, fecha_b
             time.sleep(1.5)
 
 def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
-    # Agrupamos por fecha al igual que en fútbol
     agrupado_por_fecha = {}
     for key, projs in proyecciones_dict.items():
         for p in projs:
