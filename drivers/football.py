@@ -21,7 +21,6 @@ def cargar_configuracion():
 
 def cargar_historico_mensual():
     all_files = glob.glob("historico_mensual/football/historico_*.csv")
-    # Añadidas HTHG y HTAG al listado de columnas por defecto
     default_cols = ['League', 'LeagueId', 'Country', 'Round', 'EsEliminatoria', 'Date', 'HomeTeamId', 'AwayTeamId', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HTHG', 'HTAG', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR', 'HS', 'AS']
     if not all_files:
         return pd.DataFrame(columns=default_cols)
@@ -75,7 +74,6 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
             league_name = liga.get("name")
             league_country = liga.get("country")
             
-            # Extraemos goles del primer tiempo (HT) de la API
             h_ht_score = match.get("score", {}).get("halftime", {}).get("home")
             a_ht_score = match.get("score", {}).get("halftime", {}).get("away")
 
@@ -131,62 +129,74 @@ def run_process(df_externo=None):
         api = FootballAPI(API_KEY)
         zona = pytz.timezone('America/Santiago')
         now = datetime.now(zona)
+        hora_actual = now.hour
         
-        fecha_hoy_str = now.strftime("%Y-%m-%d")
-        fecha_mañana_str = (now + timedelta(days=1)).strftime("%Y-%m-%d")
+        # LOGICA DE TURNOS: Determinar qué fechas descargar y analizar
+        fechas_a_procesar = [now.strftime("%Y-%m-%d")] # Siempre procesar hoy
+        
+        if hora_actual >= 20: # Turno Nocturno (21:00 o 22:00 dependiendo del daylight saving)
+            fechas_a_procesar.append((now + timedelta(days=1)).strftime("%Y-%m-%d"))
         
         datos_fechas = {}
         meses_afectados = set()
         
-        print("⚽ [FOOTBALL] Iniciando descarga y actualización global...")
-        for i in range(-1, 2):
-            try:
-                f_dt = now + timedelta(days=i)
-                meses_afectados.add(pd.Period(f_dt.strftime("%Y-%m"), 'M'))
-                f_str = f_dt.strftime("%Y-%m-%d")
-                
-                file_path = f"resultados/football/partidos_{f_str}.json"
-                partidos_del_dia = None
-                origen_datos = "🌐 API" 
-                
+        print(f"⚽ [FOOTBALL] Iniciando descarga para fechas: {fechas_a_procesar}")
+        
+        # Bucle de descarga y actualización (Incluimos Ayer [-1] para limpiar partidos retrasados)
+        for i in range(-1, 2): 
+            f_dt = now + timedelta(days=i)
+            f_str = f_dt.strftime("%Y-%m-%d")
+            
+            # Solo descargamos API si es Ayer, o si la fecha está en nuestra lista de procesar
+            if i == -1 or f_str in fechas_a_procesar:
                 try:
-                    data = api.get_data("fixtures", {"date": f_str, "timezone": "America/Santiago"})
-                    time.sleep(1.5) 
-                except Exception:
-                    data = None
-
-                if data and data.get("response"):
-                    partidos_del_dia = data["response"]
+                    meses_afectados.add(pd.Period(f_dt.strftime("%Y-%m"), 'M'))
+                    file_path = f"resultados/football/partidos_{f_str}.json"
+                    partidos_del_dia = None
+                    origen_datos = "🌐 API" 
+                    
                     try:
-                        with open(file_path, "w", encoding="utf-8") as f:
-                            json.dump(partidos_del_dia, f, ensure_ascii=False, indent=4)
-                    except Exception as e:
-                        print(f"⚠️ [FOOTBALL] Error al guardar caché: {e}")
-                else:
-                    origen_datos = "📂 LOCAL" 
-                    if os.path.exists(file_path):
+                        data = api.get_data("fixtures", {"date": f_str, "timezone": "America/Santiago"})
+                        time.sleep(1.5) 
+                    except Exception:
+                        data = None
+
+                    if data and data.get("response"):
+                        partidos_del_dia = data["response"]
                         try:
-                            with open(file_path, "r", encoding="utf-8") as f:
-                                partidos_del_dia = json.load(f)
-                        except Exception:
-                            partidos_del_dia = None
-                    
-                if partidos_del_dia:
-                    print(f"✔️ [FOOTBALL] {f_str} procesado desde {origen_datos} ({len(partidos_del_dia)} partidos).")
-                    datos_fechas[f_str] = partidos_del_dia
-                    df = actualizar_maestro_con_partidos(df, partidos_del_dia, f_str, statuses_map)
-                else:
-                    print(f"❌ [FOOTBALL] Sin datos para {f_str} (Ni API ni LOCAL).")
-                    
-            except Exception as e:
-                print(f"❌ [FOOTBALL] Error procesando el día {f_str}: {e}")
-                print(traceback.format_exc())
-                continue 
+                            with open(file_path, "w", encoding="utf-8") as f:
+                                json.dump(partidos_del_dia, f, ensure_ascii=False, indent=4)
+                        except Exception as e:
+                            print(f"⚠️ [FOOTBALL] Error al guardar caché: {e}")
+                    else:
+                        origen_datos = "📂 LOCAL" 
+                        if os.path.exists(file_path):
+                            try:
+                                with open(file_path, "r", encoding="utf-8") as f:
+                                    partidos_del_dia = json.load(f)
+                            except Exception:
+                                partidos_del_dia = None
+                        
+                    if partidos_del_dia:
+                        print(f"✔️ [FOOTBALL] {f_str} procesado desde {origen_datos} ({len(partidos_del_dia)} partidos).")
+                        # Solo guardamos en memoria los partidos de las fechas que queremos PROYECTAR
+                        if f_str in fechas_a_procesar:
+                            datos_fechas[f_str] = partidos_del_dia
+                            
+                        # Pero siempre actualizamos la BD con los resultados (para cerrar el día anterior)
+                        df = actualizar_maestro_con_partidos(df, partidos_del_dia, f_str, statuses_map)
+                    else:
+                        print(f"❌ [FOOTBALL] Sin datos para {f_str} (Ni API ni LOCAL).")
+                        
+                except Exception as e:
+                    print(f"❌ [FOOTBALL] Error procesando el día {f_str}: {e}")
+                    print(traceback.format_exc())
+                    continue 
 
         guardar_historico_mensual(df, meses_afectados)
             
         analyzer = MatchAnalyzer(df)
-        proyecciones_hoy, proyecciones_mañana = {}, {}
+        proyecciones_globales = {} # Diccionario único para todo
         
         def procesar_lote_partidos(lista_partidos):
             for match in lista_partidos:
@@ -219,24 +229,26 @@ def run_process(df_externo=None):
                         palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "play-off", "qualifying"]
                         proj['es_eliminatoria'] = any(palabra in ronda_texto for palabra in palabras_clave)
                         
-                        target = proyecciones_mañana if dt_obj.strftime("%Y-%m-%d") > fecha_mañana_str else proyecciones_hoy
-                        target.setdefault((pais, liga), []).append(proj)
+                        # Almacenamos todo en un mismo lugar, notifier se encarga de agrupar
+                        proyecciones_globales.setdefault((pais, liga), []).append(proj)
                 except Exception as e:
                     continue
 
         print("⚽ [FOOTBALL] Generando proyecciones globales...")
-        procesar_lote_partidos(datos_fechas.get(fecha_hoy_str, []))
-        procesar_lote_partidos(datos_fechas.get(fecha_mañana_str, []))
+        for fecha in fechas_a_procesar:
+             procesar_lote_partidos(datos_fechas.get(fecha, []))
                 
-        if now.hour < 12: titulo_hoy = f"🌅 *INICIO DIA: {fecha_hoy_str}*"
-        else: titulo_hoy = f"🏁 *FIN DIA: {fecha_hoy_str}*"
+        # Etiquetas dinámicas de turno
+        if hora_actual < 12: titulo_bloque = "Turno Mañana"
+        elif hora_actual < 17: titulo_bloque = "Turno Mediodía"
+        elif hora_actual < 20: titulo_bloque = "Turno Latam"
+        else: titulo_bloque = "Turno Nocturno"
 
-        enviar_mensaje_telegram(titulo_hoy)
-        enviar_bloque_reportes(proyecciones_hoy, "", analyzer)
-        
-        if proyecciones_mañana and now.hour >= 22:
-            enviar_mensaje_telegram(f"🚀 *INICIO DIA: {fecha_mañana_str} (Ventana Anticipada)*")
-            enviar_bloque_reportes(proyecciones_mañana, "Madrugada", analyzer)
+        # Le pasamos TODO al notifier. Él se encarga de desglosar por fecha
+        if proyecciones_globales:
+            enviar_bloque_reportes(proyecciones_globales, titulo_bloque, analyzer)
+        else:
+            enviar_mensaje_telegram(f"⚠️ No hay partidos proyectables en el {titulo_bloque}.")
 
         print("✅ [FOOTBALL] Proceso completo con éxito.")
 
@@ -246,3 +258,4 @@ def run_process(df_externo=None):
 
 if __name__ == "__main__":
     run_process()
+
