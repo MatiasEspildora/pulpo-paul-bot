@@ -66,7 +66,7 @@ def agrupar_por_pais(proyecciones_dict):
 
 
 # ==========================================
-# ⚽ NUEVO FORMATO BENDER V3.0 (FÚTBOL)
+# ⚽ FORMATO BENDER V3.0 (FÚTBOL)
 # ==========================================
 def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
     tz_chile = pytz.timezone('America/Santiago')
@@ -228,7 +228,7 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
 
 
 # ==========================================
-# 🏀 LÓGICA PRESERVADA PARA BÁSQUETBOL 
+# 🏀 FORMATO BENDER V3.0 (BÁSQUETBOL)
 # ==========================================
 def _generar_y_enviar_menu_basket(proyecciones_dict, etiqueta_dia, analyzer, token_override=None):
     basket_lista = []
@@ -250,7 +250,7 @@ def _generar_y_enviar_menu_basket(proyecciones_dict, etiqueta_dia, analyzer, tok
     tz_chile = pytz.timezone('America/Santiago')
     hora_generacion = datetime.now(tz_chile).strftime("%d/%m/%Y %H:%M")
 
-    mensaje_resumen = f"💎 ━━ *MENÚ ESTRATÉGICO BASKET: {etiqueta_dia}* ━━ 💎\n"
+    mensaje_resumen = f"💎 ━━ *MENÚ BENDER V3.0 BASKET: {etiqueta_dia}* ━━ 💎\n"
     mensaje_resumen += f"📅 _Generado: {hora_generacion}_\n"
     mensaje_resumen += "━"*24 + "\n\n"
 
@@ -258,7 +258,8 @@ def _generar_y_enviar_menu_basket(proyecciones_dict, etiqueta_dia, analyzer, tok
     for i, item in enumerate(basket_lista[:10], 1):
         p = item['match']
         mensaje_resumen += f"*{i}.* 🏀 {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n"
-        mensaje_resumen += f"   🎯 *Pick:* Gana {item['seleccion']} ({item['prob']:.0%}) | 🔥 Pts: `{p.get('puntos_proyectados', 0):.1f}`\n\n"
+        mensaje_resumen += f"   🎯 *Pick:* Gana {item['seleccion']} ({item['prob']:.0%}) | 🔥 Pts: `{p.get('puntos_proyectados', 0):.1f}`\n"
+        mensaje_resumen += f"   📈 Forma Global: L `{p.get('home_form', 'N/A')}` | V `{p.get('away_form', 'N/A')}`\n\n"
 
     mensaje_resumen += "━"*24 + "\n"
     mensaje_resumen += "✅ *FIN DEL REPORTE* ✅\n"
@@ -316,6 +317,8 @@ def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, to
                 ot_v = analyzer.get_basketball_overtime_stats(p['visita'], p.get('visita_id'))
 
                 bloque_partido = f"📅 `{p.get('fecha_str', '')}` 🕒 `{p['hora']}`\n🏀 *{p['local']}* vs *{p['visita']}*\n"
+                bloque_partido += f"📈 Global: L `{p.get('home_form')}` ({p.get('home_ppg')}p) | V `{p.get('away_form')}` ({p.get('away_ppg')}p)\n"
+                bloque_partido += f"🏟️ Casa/Fuera: L `{p.get('home_venue_form')}` ({p.get('home_venue_ppg')}p) | V `{p.get('away_venue_form')}` ({p.get('away_venue_ppg')}p)\n"
                 bloque_partido += (f"📊 Victoria Proyectada: L:{p['prob_home']:.0%} | V:{p['prob_away']:.0%}\n"
                                 f"🎯 Puntos Proyectados: `{p['puntos_proyectados']:.1f}` pts\n")
 
