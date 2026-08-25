@@ -186,14 +186,21 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
     for liga_key, projs in autopsia_dict.items():
         msg += f"📌 *{liga_key}*\n"
         for p in projs:
-            msg += f"⚽ *{p['local']}* vs *{p['visita']}* | 🕒 {p.get('hora', '')}\n"
+            s_l = analyzer.get_team_stats(p['local'], p.get('local_id'))
+            s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'))
+            
+            msg += f"📅 `{p.get('fecha_str', '')}` | 🕒 `{p.get('hora', '')}`\n"
+            msg += f"⚽ *{p['local']}* vs *{p['visita']}*\n"
             msg += f"📈 Global: L `{p.get('home_form')}` ({p.get('home_ppg')}p) | V `{p.get('away_form')}` ({p.get('away_ppg')}p)\n"
             msg += f"🏟️ Casa/Fuera: L `{p.get('home_venue_form')}` ({p.get('home_venue_ppg')}p) | V `{p.get('away_venue_form')}` ({p.get('away_venue_ppg')}p)\n"
             msg += f"📊 1X2: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
             msg += f"🛡️ Doble Op: 1X ({p.get('prob_1X',0):.0%}) | 12 ({p.get('prob_12',0):.0%}) | X2 ({p.get('prob_X2',0):.0%})\n"
             msg += f"🎯 Ambos Anotan: Sí ({p.get('btts',0):.0%}) | No ({p.get('btts_no',0):.0%})\n"
             msg += f"⚽ B/A: -2.5 ({p.get('under_2_5',0):.0%}) | -3.5 ({p.get('under_3_5',0):.0%}) | +1.5 ({p.get('over_1_5',0):.0%}) | +2.5 ({p.get('over_2_5',0):.0%})\n"
-            msg += f"⏱️ +0.5 Goles HT: {p.get('prob_over_0_5_ht',0):.0%}\n\n"
+            msg += f"⏱️ +0.5 Goles HT: {p.get('prob_over_0_5_ht',0):.0%}\n"
+            msg += f"📐 Promedios ({s_l.get('count',0)}p | {s_v.get('count',0)}p):\n"
+            msg += f"  ⚽ A favor: {s_l.get('goles_favor',0):.1f} | {s_v.get('goles_favor',0):.1f}\n"
+            msg += f"  🛡️ En contra: {s_l.get('goles_contra',0):.1f} | {s_v.get('goles_contra',0):.1f}\n\n"
 
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n✅ *FIN DEL REPORTE* ✅\n"
 
