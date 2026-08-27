@@ -3,25 +3,24 @@ name: Pulpo Paul Diario
 on:
   workflow_dispatch:
   schedule:
-    # 1. Turno Mañana (Apertura Europa): 12:30 UTC (08:00 hrs de Chile)
-    - cron: '0 12 * * *'
+    # 1. Apertura Europa (08:15 hrs Chile en GMT-3) -> 11:15 UTC
+    - cron: '15 11 * * *'
     
-    # 2. Turno Mediodía (Cierre Europa): 16:30 UTC (12:00 hrs de Chile)
-    - cron: '0 16 * * *'
+    # 2. Previa Champions/Tarde Europa (13:15 hrs Chile en GMT-3) -> 16:15 UTC
+    - cron: '15 16 * * *'
 
-    # 3. Turno Latam (Sudamérica/MLS): 19:30 UTC (15:00 hrs de Chile)
-    - cron: '0 19 * * *'
+    # 3. Previa Latam/Libertadores (17:15 hrs Chile en GMT-3) -> 20:15 UTC
+    - cron: '15 20 * * *'
 
-    # 4. Turno Nocturno (Proyección AM): 02:00 UTC (21:00 hrs de Chile)
-    - cron: '0 1 * * *'
-
+    # 4. Cierre del día y recálculo (23:15 hrs Chile en GMT-3) -> 02:15 UTC
+    - cron: '15 2 * * *'
 
 jobs:
   analizar_partidos:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write  # Necesario para el git push final
+      contents: write
 
     steps:
       - name: Descargar el repositorio
@@ -56,7 +55,6 @@ jobs:
         run: |
           git add historico_mensual/ logs/ resultados/
           git status
-          # Verificamos si hay cambios pendientes para commitear
           if git diff --staged --quiet; then
             echo "No hay cambios para guardar."
           else
