@@ -23,6 +23,19 @@ class FootballAPI(DataClient):
             "https": self.proxy_url
         } if self.proxy_url else None
 
+        # 🕵️ INICIO DEL TEST DE VERIFICACIÓN DE IP
+        print("\n--- PRUEBA DE CAMUFLAJE ---")
+        try:
+            # Consultamos cómo nos ve el mundo exterior
+            ip_real = requests.get("https://api.ipify.org", proxies=self.proxies, timeout=10).text
+            if self.proxies:
+                print(f"✅ Túnel ACTIVO. El mundo nos ve con la IP: {ip_real}")
+            else:
+                print(f"⚠️ Túnel APAGADO. Usando conexión directa. IP: {ip_real}")
+        except Exception as e:
+            print(f"❌ Error al conectar por el Proxy o test de IP fallido: {e}")
+        print("---------------------------\n")
+
     def get_data(self, endpoint, params):
         try:
             # 🔥 Añadimos el parámetro proxies y un timeout de seguridad
@@ -68,3 +81,4 @@ class BasketballAPI(DataClient):
         except requests.exceptions.RequestException as e:
             print(f"❌ Error conectando a API Basketball: {e}")
             return None
+
