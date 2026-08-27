@@ -1,14 +1,14 @@
 [
     {
         "fixture": {
-            "id": 1635059,
+            "id": 1627022,
             "referee": null,
             "timezone": "America/Santiago",
-            "date": "2026-08-27T05:30:00-04:00",
-            "timestamp": 1787823000,
+            "date": "2026-08-27T04:00:00-04:00",
+            "timestamp": 1787817600,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1787817600,
+                "second": 1787821200
             },
             "venue": {
                 "id": null,
@@ -16,10 +16,80 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 6
+            }
+        },
+        "league": {
+            "id": 667,
+            "name": "Friendlies Clubs",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/667.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Club Friendlies",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 9719,
+                "name": "Unión Adarve",
+                "logo": "https://media.api-sports.io/football/teams/9719.png",
+                "winner": null
+            },
+            "away": {
+                "id": 9572,
+                "name": "Getafe II",
+                "logo": "https://media.api-sports.io/football/teams/9572.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": 2,
+            "away": 2
+        },
+        "score": {
+            "halftime": {
+                "home": 1,
+                "away": 0
+            },
+            "fulltime": {
+                "home": 2,
+                "away": 2
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1635059,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-27T05:30:00-04:00",
+            "timestamp": 1787823000,
+            "periods": {
+                "first": 1787823000,
+                "second": 1787826600
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 6
             }
         },
         "league": {
@@ -37,27 +107,27 @@
                 "id": 21606,
                 "name": "Kidderpore",
                 "logo": "https://media.api-sports.io/football/teams/21606.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 3463,
                 "name": "East Bengal",
                 "logo": "https://media.api-sports.io/football/teams/3463.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 2
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -77,8 +147,8 @@
             "date": "2026-08-27T05:30:00-04:00",
             "timestamp": 1787823000,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1787823000,
+                "second": 1787826600
             },
             "venue": {
                 "id": null,
@@ -86,10 +156,10 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 4
             }
         },
         "league": {
@@ -107,27 +177,27 @@
                 "id": 21215,
                 "name": "Rainbow",
                 "logo": "https://media.api-sports.io/football/teams/21215.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 21608,
                 "name": "Peerless",
                 "logo": "https://media.api-sports.io/football/teams/21608.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 6
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 3
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 6
             },
             "extratime": {
                 "home": null,
@@ -147,8 +217,8 @@
             "date": "2026-08-27T05:30:00-04:00",
             "timestamp": 1787823000,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1787823000,
+                "second": 1787826600
             },
             "venue": {
                 "id": null,
@@ -156,10 +226,10 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 9
             }
         },
         "league": {
@@ -187,17 +257,17 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 2,
+            "away": 2
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -217,8 +287,8 @@
             "date": "2026-08-27T06:00:00-04:00",
             "timestamp": 1787824800,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1787824800,
+                "second": 1787828400
             },
             "venue": {
                 "id": null,
@@ -226,10 +296,10 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 6
             }
         },
         "league": {
@@ -247,27 +317,27 @@
                 "id": 4551,
                 "name": "Ekibastuz",
                 "logo": "https://media.api-sports.io/football/teams/4551.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 21502,
                 "name": "Turan Turkistan",
                 "logo": "https://media.api-sports.io/football/teams/21502.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 2,
+            "away": 4
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 4
             },
             "extratime": {
                 "home": null,
@@ -287,8 +357,8 @@
             "date": "2026-08-27T06:30:00-04:00",
             "timestamp": 1787826600,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1787826600,
+                "second": 1787830200
             },
             "venue": {
                 "id": null,
@@ -296,10 +366,10 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 4
             }
         },
         "league": {
@@ -317,27 +387,27 @@
                 "id": 6794,
                 "name": "Dinamo Barnaul",
                 "logo": "https://media.api-sports.io/football/teams/6794.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 665,
                 "name": "Irtysh Omsk",
                 "logo": "https://media.api-sports.io/football/teams/665.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 5,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 4,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 5,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -357,8 +427,8 @@
             "date": "2026-08-27T07:00:00-04:00",
             "timestamp": 1787828400,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1787828400,
+                "second": 1787832000
             },
             "venue": {
                 "id": null,
@@ -366,10 +436,10 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 4
             }
         },
         "league": {
@@ -387,27 +457,27 @@
                 "id": 27635,
                 "name": "Yelimay Semey 2",
                 "logo": "https://media.api-sports.io/football/teams/27635.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 4566,
                 "name": "Shakhter Karagandy",
                 "logo": "https://media.api-sports.io/football/teams/4566.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 3
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 2
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 3
             },
             "extratime": {
                 "home": null,
@@ -436,8 +506,8 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
+                "long": "Time To Be Defined",
+                "short": "TBD",
                 "elapsed": null,
                 "extra": null
             }
@@ -497,8 +567,8 @@
             "date": "2026-08-27T08:00:00-04:00",
             "timestamp": 1787832000,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1787832000,
+                "second": 1787835600
             },
             "venue": {
                 "id": null,
@@ -506,9 +576,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 71,
                 "extra": null
             }
         },
@@ -527,23 +597,23 @@
                 "id": 4556,
                 "name": "Sport Academy Kairat",
                 "logo": "https://media.api-sports.io/football/teams/4556.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 10414,
                 "name": "Arys",
                 "logo": "https://media.api-sports.io/football/teams/10414.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
@@ -567,8 +637,8 @@
             "date": "2026-08-27T08:00:00-04:00",
             "timestamp": 1787832000,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1787832000,
+                "second": 1787835600
             },
             "venue": {
                 "id": null,
@@ -576,9 +646,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 61,
                 "extra": null
             }
         },
@@ -607,83 +677,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1627022,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-08-27T08:00:00-04:00",
-            "timestamp": 1787832000,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 667,
-            "name": "Friendlies Clubs",
-            "country": "World",
-            "logo": "https://media.api-sports.io/football/leagues/667.png",
-            "flag": null,
-            "season": 2026,
-            "round": "Club Friendlies",
-            "standings": false
-        },
-        "teams": {
-            "home": {
-                "id": 9719,
-                "name": "Unión Adarve",
-                "logo": "https://media.api-sports.io/football/teams/9719.png",
-                "winner": null
-            },
-            "away": {
-                "id": 9572,
-                "name": "Getafe II",
-                "logo": "https://media.api-sports.io/football/teams/9572.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "fulltime": {
                 "home": null,
@@ -777,7 +777,7 @@
             "date": "2026-08-27T08:30:00-04:00",
             "timestamp": 1787833800,
             "periods": {
-                "first": null,
+                "first": 1787833800,
                 "second": null
             },
             "venue": {
@@ -786,10 +786,10 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
+                "extra": 6
             }
         },
         "league": {
@@ -807,23 +807,23 @@
                 "id": 3508,
                 "name": "Merani Tbilisi",
                 "logo": "https://media.api-sports.io/football/teams/3508.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 13851,
                 "name": "Gardabani",
                 "logo": "https://media.api-sports.io/football/teams/13851.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
@@ -847,7 +847,7 @@
             "date": "2026-08-27T08:30:00-04:00",
             "timestamp": 1787833800,
             "periods": {
-                "first": null,
+                "first": 1787833800,
                 "second": null
             },
             "venue": {
@@ -856,9 +856,9 @@
                 "city": "Khashuri"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
                 "extra": null
             }
         },
@@ -877,23 +877,23 @@
                 "id": 16507,
                 "name": "Irao",
                 "logo": "https://media.api-sports.io/football/teams/16507.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 13853,
                 "name": "Kolkheti Khobi",
                 "logo": "https://media.api-sports.io/football/teams/13853.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
@@ -917,7 +917,7 @@
             "date": "2026-08-27T08:30:00-04:00",
             "timestamp": 1787833800,
             "periods": {
-                "first": null,
+                "first": 1787833800,
                 "second": null
             },
             "venue": {
@@ -926,10 +926,10 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
+                "extra": 1
             }
         },
         "league": {
@@ -957,13 +957,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
@@ -1057,7 +1057,7 @@
             "date": "2026-08-27T09:00:00-04:00",
             "timestamp": 1787835600,
             "periods": {
-                "first": null,
+                "first": 1787835600,
                 "second": null
             },
             "venue": {
@@ -1066,9 +1066,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 24,
                 "extra": null
             }
         },
@@ -1087,23 +1087,23 @@
                 "id": 27633,
                 "name": "Kaspij Aktau 2",
                 "logo": "https://media.api-sports.io/football/teams/27633.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 4545,
                 "name": "Akademiya Ontustik",
                 "logo": "https://media.api-sports.io/football/teams/4545.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
                 "home": null,
@@ -1127,7 +1127,7 @@
             "date": "2026-08-27T09:00:00-04:00",
             "timestamp": 1787835600,
             "periods": {
-                "first": null,
+                "first": 1787835600,
                 "second": null
             },
             "venue": {
@@ -1136,9 +1136,9 @@
                 "city": "Kigoma"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 26,
                 "extra": null
             }
         },
@@ -1167,13 +1167,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
@@ -1197,7 +1197,7 @@
             "date": "2026-08-27T09:00:00-04:00",
             "timestamp": 1787835600,
             "periods": {
-                "first": null,
+                "first": 1787835600,
                 "second": null
             },
             "venue": {
@@ -1206,9 +1206,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 26,
                 "extra": null
             }
         },
@@ -1237,13 +1237,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
