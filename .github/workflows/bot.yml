@@ -15,6 +15,7 @@ on:
     # 4. Turno Nocturno (Proyección AM): 02:00 UTC (21:00 hrs de Chile)
     - cron: '0 1 * * *'
 
+
 jobs:
   analizar_partidos:
     runs-on: ubuntu-latest
