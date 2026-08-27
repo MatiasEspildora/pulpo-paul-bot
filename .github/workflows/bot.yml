@@ -2,18 +2,18 @@ name: Pulpo Paul Diario
 
 on:
   workflow_dispatch:
-  #schedule:
+  schedule:
     # 1. Turno Mañana (Apertura Europa): 12:30 UTC (08:00 hrs de Chile)
-    #- cron: '0 12 * * *'
+    - cron: '0 12 * * *'
     
     # 2. Turno Mediodía (Cierre Europa): 16:30 UTC (12:00 hrs de Chile)
-    #- cron: '0 16 * * *'
+    - cron: '0 16 * * *'
 
     # 3. Turno Latam (Sudamérica/MLS): 19:30 UTC (15:00 hrs de Chile)
-    #- cron: '0 19 * * *'
+    - cron: '0 19 * * *'
 
     # 4. Turno Nocturno (Proyección AM): 02:00 UTC (21:00 hrs de Chile)
-    #- cron: '0 1 * * *'
+    - cron: '0 1 * * *'
 
 jobs:
   analizar_partidos:
