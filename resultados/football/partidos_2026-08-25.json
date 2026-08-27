@@ -4636,8 +4636,8 @@
                 "city": "Elva"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
+                "long": "Match Postponed",
+                "short": "PST",
                 "elapsed": null,
                 "extra": null
             }
@@ -4663,216 +4663,6 @@
                 "id": 3529,
                 "name": "Tallinna Kalev",
                 "logo": "https://media.api-sports.io/football/teams/3529.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1629898,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-08-25T12:00:00-04:00",
-            "timestamp": 1787673600,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": "Tamme Stadium",
-                "city": "Tartu"
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 657,
-            "name": "Cup",
-            "country": "Estonia",
-            "logo": "https://media.api-sports.io/football/leagues/657.png",
-            "flag": "https://media.api-sports.io/flags/ee.svg",
-            "season": 2026,
-            "round": "Round of 16",
-            "standings": false
-        },
-        "teams": {
-            "home": {
-                "id": 3530,
-                "name": "Tammeka",
-                "logo": "https://media.api-sports.io/football/teams/3530.png",
-                "winner": null
-            },
-            "away": {
-                "id": 14340,
-                "name": "Viimsi",
-                "logo": "https://media.api-sports.io/football/teams/14340.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1630747,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-08-25T12:00:00-04:00",
-            "timestamp": 1787673600,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": 2334,
-                "name": "Kuressaare Linnastaadion",
-                "city": "Kuressaare"
-            },
-            "status": {
-                "long": "Match Postponed",
-                "short": "PST",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 657,
-            "name": "Cup",
-            "country": "Estonia",
-            "logo": "https://media.api-sports.io/football/leagues/657.png",
-            "flag": "https://media.api-sports.io/flags/ee.svg",
-            "season": 2026,
-            "round": "Round of 16",
-            "standings": false
-        },
-        "teams": {
-            "home": {
-                "id": 3526,
-                "name": "Kuressaare",
-                "logo": "https://media.api-sports.io/football/teams/3526.png",
-                "winner": null
-            },
-            "away": {
-                "id": 14329,
-                "name": "Saku Sporting",
-                "logo": "https://media.api-sports.io/football/teams/14329.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1630748,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-08-25T12:00:00-04:00",
-            "timestamp": 1787673600,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": "Tallinn"
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 657,
-            "name": "Cup",
-            "country": "Estonia",
-            "logo": "https://media.api-sports.io/football/leagues/657.png",
-            "flag": "https://media.api-sports.io/flags/ee.svg",
-            "season": 2026,
-            "round": "Round of 16",
-            "standings": false
-        },
-        "teams": {
-            "home": {
-                "id": 10059,
-                "name": "Nõmme United",
-                "logo": "https://media.api-sports.io/football/teams/10059.png",
-                "winner": null
-            },
-            "away": {
-                "id": 3525,
-                "name": "Vaprus",
-                "logo": "https://media.api-sports.io/football/teams/3525.png",
                 "winner": null
             }
         },
@@ -6302,7 +6092,7 @@
     {
         "fixture": {
             "id": 1600321,
-            "referee": "Luxolo Badi, South Africa",
+            "referee": "L. Badi",
             "timezone": "America/Santiago",
             "date": "2026-08-25T13:30:00-04:00",
             "timestamp": 1787679000,
@@ -6372,7 +6162,7 @@
     {
         "fixture": {
             "id": 1600322,
-            "referee": "Eugene Mdluli, South Africa",
+            "referee": "E. Mdluli",
             "timezone": "America/Santiago",
             "date": "2026-08-25T13:30:00-04:00",
             "timestamp": 1787679000,
@@ -6442,7 +6232,7 @@
     {
         "fixture": {
             "id": 1600323,
-            "referee": "Philangenkosi Khumalo, South Africa",
+            "referee": "P. Khumalo",
             "timezone": "America/Santiago",
             "date": "2026-08-25T13:30:00-04:00",
             "timestamp": 1787679000,
@@ -6452,8 +6242,8 @@
             },
             "venue": {
                 "id": null,
-                "name": "Orlando Amstel Arena",
-                "city": "Soweto"
+                "name": "Orlando Stadium",
+                "city": "Johannesburg"
             },
             "status": {
                 "long": "Match Finished",
@@ -6512,7 +6302,7 @@
     {
         "fixture": {
             "id": 1600324,
-            "referee": "Jelly Chavani, South Africa",
+            "referee": "J. Chavani",
             "timezone": "America/Santiago",
             "date": "2026-08-25T13:30:00-04:00",
             "timestamp": 1787679000,
@@ -7542,8 +7332,8 @@
         },
         "score": {
             "halftime": {
-                "home": 0,
-                "away": 1
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
                 "home": 4,
@@ -8110,8 +7900,8 @@
                 "away": 2
             },
             "extratime": {
-                "home": 0,
-                "away": 0
+                "home": null,
+                "away": null
             },
             "penalty": {
                 "home": 2,
@@ -8682,7 +8472,7 @@
     {
         "fixture": {
             "id": 1623086,
-            "referee": "James Bell, England",
+            "referee": "J. Bell",
             "timezone": "America/Santiago",
             "date": "2026-08-25T14:00:00-04:00",
             "timestamp": 1787680800,
@@ -8962,7 +8752,7 @@
     {
         "fixture": {
             "id": 1623087,
-            "referee": "Edward Duckworth, England",
+            "referee": "E. Duckworth",
             "timezone": "America/Santiago",
             "date": "2026-08-25T14:30:00-04:00",
             "timestamp": 1787682600,
@@ -9462,8 +9252,8 @@
             },
             "venue": {
                 "id": null,
-                "name": null,
-                "city": null
+                "name": "Central Park",
+                "city": "Cowdenbeath"
             },
             "status": {
                 "long": "Match Finished",
@@ -9532,8 +9322,8 @@
             },
             "venue": {
                 "id": null,
-                "name": null,
-                "city": null
+                "name": "Broadwood Stadium",
+                "city": "Cumbernauld"
             },
             "status": {
                 "long": "Match Finished",
@@ -9767,23 +9557,23 @@
                 "id": 4250,
                 "name": "Forfar Athletic",
                 "logo": "https://media.api-sports.io/football/teams/4250.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 6768,
                 "name": "Formartine United",
                 "logo": "https://media.api-sports.io/football/teams/6768.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": 0,
+            "home": 1,
             "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
                 "home": 1,
@@ -11132,7 +10922,7 @@
     {
         "fixture": {
             "id": 1623081,
-            "referee": "Leigh Doughty, England",
+            "referee": "L. Doughty",
             "timezone": "America/Santiago",
             "date": "2026-08-25T14:45:00-04:00",
             "timestamp": 1787683500,
@@ -11142,7 +10932,7 @@
             },
             "venue": {
                 "id": null,
-                "name": "Oakwell Ground",
+                "name": "Oakwell",
                 "city": "Barnsley"
             },
             "status": {
@@ -11202,7 +10992,7 @@
     {
         "fixture": {
             "id": 1623083,
-            "referee": "Harry Wager, England",
+            "referee": "H. Wager",
             "timezone": "America/Santiago",
             "date": "2026-08-25T14:45:00-04:00",
             "timestamp": 1787683500,
@@ -11272,7 +11062,7 @@
     {
         "fixture": {
             "id": 1623085,
-            "referee": "Paul Howard, England",
+            "referee": "P. Howard",
             "timezone": "America/Santiago",
             "date": "2026-08-25T14:45:00-04:00",
             "timestamp": 1787683500,
@@ -11282,7 +11072,7 @@
             },
             "venue": {
                 "id": null,
-                "name": "Cledara Abbey Stadium",
+                "name": "Abbey Stadium",
                 "city": "Cambridge"
             },
             "status": {
@@ -11342,7 +11132,7 @@
     {
         "fixture": {
             "id": 1623088,
-            "referee": "Lewis Smith, England",
+            "referee": "L. Smith",
             "timezone": "America/Santiago",
             "date": "2026-08-25T14:45:00-04:00",
             "timestamp": 1787683500,
@@ -11352,7 +11142,7 @@
             },
             "venue": {
                 "id": null,
-                "name": "Portman Road Stadium",
+                "name": "Portman Road",
                 "city": "Ipswich"
             },
             "status": {
@@ -11412,7 +11202,7 @@
     {
         "fixture": {
             "id": 1623090,
-            "referee": "Ruebyn Ricardo, England",
+            "referee": "R. Ricardo",
             "timezone": "America/Santiago",
             "date": "2026-08-25T14:45:00-04:00",
             "timestamp": 1787683500,
@@ -11482,7 +11272,7 @@
     {
         "fixture": {
             "id": 1623091,
-            "referee": "Richard Eley, England",
+            "referee": "R. Eley",
             "timezone": "America/Santiago",
             "date": "2026-08-25T14:45:00-04:00",
             "timestamp": 1787683500,
@@ -11492,7 +11282,7 @@
             },
             "venue": {
                 "id": null,
-                "name": "Broadhall Way",
+                "name": "Lamex Stadium",
                 "city": "Stevenage"
             },
             "status": {
@@ -11552,7 +11342,7 @@
     {
         "fixture": {
             "id": 1623093,
-            "referee": "David Webb, England",
+            "referee": "D. Webb",
             "timezone": "America/Santiago",
             "date": "2026-08-25T14:45:00-04:00",
             "timestamp": 1787683500,
@@ -11622,7 +11412,7 @@
     {
         "fixture": {
             "id": 1623094,
-            "referee": "Thomas Parsons, England",
+            "referee": "T. Parsons",
             "timezone": "America/Santiago",
             "date": "2026-08-25T14:45:00-04:00",
             "timestamp": 1787683500,
@@ -11692,7 +11482,7 @@
     {
         "fixture": {
             "id": 1623095,
-            "referee": "Elliott Swallow, England",
+            "referee": "E. Swallow",
             "timezone": "America/Santiago",
             "date": "2026-08-25T14:45:00-04:00",
             "timestamp": 1787683500,
@@ -11762,7 +11552,7 @@
     {
         "fixture": {
             "id": 1623096,
-            "referee": "Benjamin Speedie, England",
+            "referee": "B. Speedie",
             "timezone": "America/Santiago",
             "date": "2026-08-25T14:45:00-04:00",
             "timestamp": 1787683500,
@@ -11832,7 +11622,7 @@
     {
         "fixture": {
             "id": 1623097,
-            "referee": "John Busby, England",
+            "referee": "J. Busby",
             "timezone": "America/Santiago",
             "date": "2026-08-25T14:45:00-04:00",
             "timestamp": 1787683500,
@@ -11842,8 +11632,8 @@
             },
             "venue": {
                 "id": null,
-                "name": "bet365 Stadium",
-                "city": "Stoke"
+                "name": "Bet365 Stadium",
+                "city": "Stoke on Trent"
             },
             "status": {
                 "long": "Match Finished",
@@ -11890,8 +11680,8 @@
                 "away": 1
             },
             "extratime": {
-                "home": 0,
-                "away": 0
+                "home": null,
+                "away": null
             },
             "penalty": {
                 "home": 4,
@@ -11902,7 +11692,7 @@
     {
         "fixture": {
             "id": 1623098,
-            "referee": "Andrew Humphries, England",
+            "referee": "A. Humphries",
             "timezone": "America/Santiago",
             "date": "2026-08-25T14:45:00-04:00",
             "timestamp": 1787683500,
@@ -11960,8 +11750,8 @@
                 "away": 0
             },
             "extratime": {
-                "home": 0,
-                "away": 0
+                "home": null,
+                "away": null
             },
             "penalty": {
                 "home": 5,
@@ -11972,7 +11762,7 @@
     {
         "fixture": {
             "id": 1623099,
-            "referee": "Isaac Searle, England",
+            "referee": "I. Searle",
             "timezone": "America/Santiago",
             "date": "2026-08-25T14:45:00-04:00",
             "timestamp": 1787683500,
@@ -12112,7 +11902,7 @@
     {
         "fixture": {
             "id": 1570342,
-            "referee": "Jon Ander Gonzalez Esteban, Spain",
+            "referee": "J. A. Gonzalez Esteban",
             "timezone": "America/Santiago",
             "date": "2026-08-25T15:00:00-04:00",
             "timestamp": 1787684400,
@@ -12380,8 +12170,8 @@
                 "away": 2
             },
             "extratime": {
-                "home": 0,
-                "away": 0
+                "home": null,
+                "away": null
             },
             "penalty": {
                 "home": 2,
@@ -12392,7 +12182,7 @@
     {
         "fixture": {
             "id": 1618988,
-            "referee": null,
+            "referee": "J. Aleman",
             "timezone": "America/Santiago",
             "date": "2026-08-25T15:00:00-04:00",
             "timestamp": 1787684400,
@@ -12532,7 +12322,7 @@
     {
         "fixture": {
             "id": 1623082,
-            "referee": "Tim Robinson, England",
+            "referee": "T. Robinson",
             "timezone": "America/Santiago",
             "date": "2026-08-25T15:00:00-04:00",
             "timestamp": 1787684400,
@@ -12602,7 +12392,7 @@
     {
         "fixture": {
             "id": 1623100,
-            "referee": "Andrew Kitchen, England",
+            "referee": "A. Kitchen",
             "timezone": "America/Santiago",
             "date": "2026-08-25T15:00:00-04:00",
             "timestamp": 1787684400,
@@ -12800,8 +12590,8 @@
                 "away": 1
             },
             "extratime": {
-                "home": 0,
-                "away": 0
+                "home": null,
+                "away": null
             },
             "penalty": {
                 "home": 5,
@@ -12822,8 +12612,8 @@
             },
             "venue": {
                 "id": null,
-                "name": null,
-                "city": null
+                "name": "Estadio El Condor",
+                "city": "La Vega"
             },
             "status": {
                 "long": "Match Finished",
@@ -13092,7 +12882,7 @@
     {
         "fixture": {
             "id": 1628885,
-            "referee": "Mario Diaz De Vivar, Paraguay",
+            "referee": "M. D. de Vivar",
             "timezone": "America/Santiago",
             "date": "2026-08-25T17:30:00-04:00",
             "timestamp": 1787693400,
@@ -13232,7 +13022,7 @@
     {
         "fixture": {
             "id": 1520831,
-            "referee": "Wagner do Nascimento Magalhaes, Brazil",
+            "referee": "W. do Nascimento",
             "timezone": "America/Santiago",
             "date": "2026-08-25T18:30:00-04:00",
             "timestamp": 1787697000,
@@ -13302,7 +13092,7 @@
     {
         "fixture": {
             "id": 1520835,
-            "referee": "Daiane Caroline Muniz Dos Santos, Brazil",
+            "referee": "D. C. Muniz dos Santos",
             "timezone": "America/Santiago",
             "date": "2026-08-25T18:30:00-04:00",
             "timestamp": 1787697000,
@@ -13312,7 +13102,7 @@
             },
             "venue": {
                 "id": null,
-                "name": "Estádio Alfredo Jaconi",
+                "name": "Estadio Alfredo Jaconi",
                 "city": "Caxias do Sul"
             },
             "status": {
@@ -13522,8 +13312,8 @@
             },
             "venue": {
                 "id": null,
-                "name": null,
-                "city": null
+                "name": "Estadio Cibao FC",
+                "city": "Santiago"
             },
             "status": {
                 "long": "Match Finished",
@@ -13582,7 +13372,7 @@
     {
         "fixture": {
             "id": 1618989,
-            "referee": null,
+            "referee": "I. N. Mendez Chavez",
             "timezone": "America/Santiago",
             "date": "2026-08-25T19:00:00-04:00",
             "timestamp": 1787698800,
@@ -13722,7 +13512,7 @@
     {
         "fixture": {
             "id": 1623069,
-            "referee": "Flavio Rodrigues De Souza, Brazil",
+            "referee": "F. Rodrigues",
             "timezone": "America/Santiago",
             "date": "2026-08-25T20:00:00-04:00",
             "timestamp": 1787702400,
@@ -13932,7 +13722,7 @@
     {
         "fixture": {
             "id": 1627558,
-            "referee": "Rubiel Vazquez, USA",
+            "referee": "R. Vazquez",
             "timezone": "America/Santiago",
             "date": "2026-08-25T20:30:00-04:00",
             "timestamp": 1787704200,
@@ -14002,7 +13792,7 @@
     {
         "fixture": {
             "id": 1549747,
-            "referee": "Alejandro Moncada Sanchez, Colombia",
+            "referee": "A. Moncada",
             "timezone": "America/Santiago",
             "date": "2026-08-25T21:00:00-04:00",
             "timestamp": 1787706000,
@@ -14142,7 +13932,7 @@
     {
         "fixture": {
             "id": 1548368,
-            "referee": null,
+            "referee": "J. C. de Jesus Luna Guzman",
             "timezone": "America/Santiago",
             "date": "2026-08-25T22:30:00-04:00",
             "timestamp": 1787711400,
@@ -14212,7 +14002,7 @@
     {
         "fixture": {
             "id": 1548369,
-            "referee": null,
+            "referee": "J. Ugalde",
             "timezone": "America/Santiago",
             "date": "2026-08-25T22:30:00-04:00",
             "timestamp": 1787711400,
@@ -14282,7 +14072,7 @@
     {
         "fixture": {
             "id": 1627559,
-            "referee": "Steven Madrigal, Costa Rica",
+            "referee": "S. Madrigal",
             "timezone": "America/Santiago",
             "date": "2026-08-25T22:30:00-04:00",
             "timestamp": 1787711400,
