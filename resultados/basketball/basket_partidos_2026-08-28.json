@@ -9,8 +9,8 @@
         "week": null,
         "venue": "Barclays Center",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -40,20 +40,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 19,
+                "quarter_2": 11,
+                "quarter_3": 17,
+                "quarter_4": 13,
                 "over_time": null,
-                "total": null
+                "total": 60
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 21,
+                "quarter_2": 21,
+                "quarter_3": 17,
+                "quarter_4": 20,
                 "over_time": null,
-                "total": null
+                "total": 79
             }
         }
     },
@@ -67,9 +67,9 @@
         "week": "1",
         "venue": "Arena Roberto Duran",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
-            "timer": null
+            "long": "Quarter 3",
+            "short": "Q3",
+            "timer": "2"
         },
         "league": {
             "id": 281,
@@ -98,78 +98,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
+                "quarter_1": 14,
+                "quarter_2": 20,
+                "quarter_3": 6,
                 "quarter_4": null,
                 "over_time": null,
-                "total": null
+                "total": 40
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
+                "quarter_1": 14,
+                "quarter_2": 23,
+                "quarter_3": 7,
                 "quarter_4": null,
                 "over_time": null,
-                "total": null
-            }
-        }
-    },
-    {
-        "id": 503423,
-        "date": "2026-08-28T01:40:00+00:00",
-        "time": "01:40",
-        "timestamp": 1787881200,
-        "timezone": "UTC",
-        "stage": null,
-        "week": "1",
-        "venue": null,
-        "status": {
-            "long": "Not Started",
-            "short": "NS",
-            "timer": null
-        },
-        "league": {
-            "id": 281,
-            "name": "World Cup",
-            "type": "cup",
-            "season": 2027,
-            "logo": "https://media.api-sports.io/basketball/leagues/281.png"
-        },
-        "country": {
-            "id": 62,
-            "name": "World",
-            "code": " ",
-            "flag": "https://media.api-sports.io/flags/ .svg"
-        },
-        "teams": {
-            "home": {
-                "id": 3022,
-                "name": "Mexico",
-                "logo": "https://media.api-sports.io/basketball/teams/3022.png"
-            },
-            "away": {
-                "id": 4074,
-                "name": "Colombia",
-                "logo": "https://media.api-sports.io/basketball/teams/4074.png"
-            }
-        },
-        "scores": {
-            "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": null
-            },
-            "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": null
+                "total": 44
             }
         }
     },
@@ -183,9 +125,9 @@
         "week": null,
         "venue": "Mortgage Matchup Center",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
-            "timer": null
+            "long": "Quarter 2",
+            "short": "Q2",
+            "timer": "7"
         },
         "league": {
             "id": 13,
@@ -214,20 +156,78 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
+                "quarter_1": 18,
+                "quarter_2": 9,
                 "quarter_3": null,
                 "quarter_4": null,
                 "over_time": null,
-                "total": null
+                "total": 27
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
+                "quarter_1": 20,
+                "quarter_2": 16,
                 "quarter_3": null,
                 "quarter_4": null,
                 "over_time": null,
-                "total": null
+                "total": 36
+            }
+        }
+    },
+    {
+        "id": 503423,
+        "date": "2026-08-28T02:10:00+00:00",
+        "time": "02:10",
+        "timestamp": 1787883000,
+        "timezone": "UTC",
+        "stage": null,
+        "week": "1",
+        "venue": null,
+        "status": {
+            "long": "Quarter 2",
+            "short": "Q2",
+            "timer": "7"
+        },
+        "league": {
+            "id": 281,
+            "name": "World Cup",
+            "type": "cup",
+            "season": 2027,
+            "logo": "https://media.api-sports.io/basketball/leagues/281.png"
+        },
+        "country": {
+            "id": 62,
+            "name": "World",
+            "code": " ",
+            "flag": "https://media.api-sports.io/flags/ .svg"
+        },
+        "teams": {
+            "home": {
+                "id": 3022,
+                "name": "Mexico",
+                "logo": "https://media.api-sports.io/basketball/teams/3022.png"
+            },
+            "away": {
+                "id": 4074,
+                "name": "Colombia",
+                "logo": "https://media.api-sports.io/basketball/teams/4074.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 28,
+                "quarter_2": 17,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": 45
+            },
+            "away": {
+                "quarter_1": 25,
+                "quarter_2": 12,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": 37
             }
         }
     },
