@@ -18,10 +18,19 @@ def cargar_banderas():
 
 BANDERAS = cargar_banderas()
 
-def enviar_mensaje_telegram(mensaje, token_override=None):
+def enviar_mensaje_telegram(mensaje, token_override=None, chat_id_especifico=None):
     token_activo = token_override or os.environ.get("TELEGRAM_BOT_TOKEN")
-    chat_id = os.environ.get("TELEGRAM_CHAT_ID")
-    if token_activo and chat_id:
+    chats_crudos = os.environ.get("TELEGRAM_CHAT_ID")
+    
+    if not token_activo or not chats_crudos:
+        print("⚠️ Faltan credenciales de Telegram.")
+        return
+
+    # Si se pasa un chat_id_especifico (para reintentos), usamos ese. 
+    # Si no, separamos la variable de entorno por comas y limpiamos los espacios.
+    lista_chats = [chat_id_especifico] if chat_id_especifico else [c.strip() for c in chats_crudos.split(",") if c.strip()]
+
+    for chat_id in lista_chats:
         try:
             res = requests.post(
                 f"https://api.telegram.org/bot{token_activo}/sendMessage", 
@@ -31,16 +40,21 @@ def enviar_mensaje_telegram(mensaje, token_override=None):
             if res.status_code == 429:
                 error_data = res.json()
                 espera = error_data.get("parameters", {}).get("retry_after", 5)
-                print(f"⏳ Límite de Telegram. Esperando {espera} segundos...")
+                print(f"⏳ Límite de Telegram para {chat_id}. Esperando {espera} segundos...")
                 time.sleep(espera)
-                return enviar_mensaje_telegram(mensaje, token_override=token_override)
+                # Reintenta el envío SOLO para el ID que falló
+                enviar_mensaje_telegram(mensaje, token_override=token_override, chat_id_especifico=chat_id)
+                continue
 
             if not res.ok:
-                print(f"⚠️ Error al enviar a Telegram: {res.text}")
+                print(f"⚠️ Error al enviar a Telegram ({chat_id}): {res.text}")
+                
         except Exception as e:
-            print(f"⚠️ Excepción al conectar con Telegram: {e}")
-    else:
-        print("⚠️ Faltan credenciales de Telegram.")
+            print(f"⚠️ Excepción al conectar con Telegram ({chat_id}): {e}")
+        
+        # Pausa de seguridad para no saturar la API si envías a múltiples usuarios
+        if len(lista_chats) > 1:
+            time.sleep(0.2)
 
 def agrupar_por_pais(proyecciones_dict):
     agrupado = {}
@@ -208,7 +222,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             msg += f"📅 `{p.get('fecha_str', '')}` | 🕒 `{p.get('hora', '')}`{es_mata_mata}\n"
             msg += f"⚽ *{p['local']}*{l_tag} vs *{p['visita']}*{v_tag}\n"
             msg += f"📈 Global: L `{p.get('home_form')}` ({p.get('home_ppg')}p) | V `{p.get('away_form')}` ({p.get('away_ppg')}p)\n"
-            msg += f"🏟️ Casa/Fuera: L `{p.get('home_venue_form')}` ({p.get('home_venue_ppg')}p) | V `{p.get('away_venue_form')}` ({p.get('away_venue_ppg')}p)\n"
+            msg += f"🏟️ Casa/Fuera: L `{p.get('home_venue_form')}` ({p.get('home_venue_ppg')}p) | V `{p.get('away_venue_form')}` ({m.get('away_venue_ppg')}p)\n"
             msg += f"📊 1X2: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
             msg += f"🛡️ Doble Op: 1X ({p.get('prob_1X',0):.0%}) | 12 ({p.get('prob_12',0):.0%}) | X2 ({p.get('prob_X2',0):.0%})\n"
             msg += f"🎯 Ambos Anotan: Sí ({p.get('btts',0):.0%}) | No ({p.get('btts_no',0):.0%})\n"
