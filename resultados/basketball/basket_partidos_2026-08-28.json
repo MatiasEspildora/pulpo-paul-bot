@@ -241,8 +241,8 @@
         "week": "1",
         "venue": "Mall of Asia Arena",
         "status": {
-            "long": "Game Finished",
-            "short": "FT",
+            "long": "After Over Time",
+            "short": "AOT",
             "timer": null
         },
         "league": {
@@ -276,7 +276,7 @@
                 "quarter_2": 20,
                 "quarter_3": 22,
                 "quarter_4": 19,
-                "over_time": null,
+                "over_time": 11,
                 "total": 91
             },
             "away": {
@@ -284,7 +284,7 @@
                 "quarter_2": 17,
                 "quarter_3": 28,
                 "quarter_4": 14,
-                "over_time": null,
+                "over_time": 13,
                 "total": 93
             }
         }
@@ -763,8 +763,8 @@
         "week": "1",
         "venue": "Mall of Asia Arena",
         "status": {
-            "long": "Game Finished",
-            "short": "FT",
+            "long": "After Over Time",
+            "short": "AOT",
             "timer": null
         },
         "league": {
@@ -798,7 +798,7 @@
                 "quarter_2": 16,
                 "quarter_3": 14,
                 "quarter_4": 14,
-                "over_time": null,
+                "over_time": 9,
                 "total": 81
             },
             "away": {
@@ -806,7 +806,7 @@
                 "quarter_2": 25,
                 "quarter_3": 15,
                 "quarter_4": 18,
-                "over_time": null,
+                "over_time": 10,
                 "total": 82
             }
         }
@@ -976,8 +976,8 @@
                 "total": 61
             },
             "away": {
-                "quarter_1": 22,
-                "quarter_2": 24,
+                "quarter_1": 23,
+                "quarter_2": 23,
                 "quarter_3": 17,
                 "quarter_4": 18,
                 "over_time": null,
@@ -1156,6 +1156,64 @@
                 "quarter_4": 17,
                 "over_time": null,
                 "total": 76
+            }
+        }
+    },
+    {
+        "id": 515246,
+        "date": "2026-08-28T17:00:00+00:00",
+        "time": "17:00",
+        "timestamp": 1787936400,
+        "timezone": "UTC",
+        "stage": null,
+        "week": null,
+        "venue": null,
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 290,
+            "name": "Friendly International Women",
+            "type": "League",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/290.png"
+        },
+        "country": {
+            "id": 62,
+            "name": "World",
+            "code": " ",
+            "flag": "https://media.api-sports.io/flags/ .svg"
+        },
+        "teams": {
+            "home": {
+                "id": 3040,
+                "name": "France W",
+                "logo": "https://media.api-sports.io/basketball/teams/3040.png"
+            },
+            "away": {
+                "id": 4180,
+                "name": "Italy W",
+                "logo": "https://media.api-sports.io/basketball/teams/4180.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": 72
+            },
+            "away": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": 75
             }
         }
     },
@@ -1388,6 +1446,64 @@
                 "quarter_4": 12,
                 "over_time": null,
                 "total": 73
+            }
+        }
+    },
+    {
+        "id": 515247,
+        "date": "2026-08-28T18:30:00+00:00",
+        "time": "18:30",
+        "timestamp": 1787941800,
+        "timezone": "UTC",
+        "stage": null,
+        "week": null,
+        "venue": "Jacobs G.",
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 290,
+            "name": "Friendly International Women",
+            "type": "League",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/290.png"
+        },
+        "country": {
+            "id": 62,
+            "name": "World",
+            "code": " ",
+            "flag": "https://media.api-sports.io/flags/ .svg"
+        },
+        "teams": {
+            "home": {
+                "id": 3036,
+                "name": "Belgium W",
+                "logo": "https://media.api-sports.io/basketball/teams/3036.png"
+            },
+            "away": {
+                "id": 3042,
+                "name": "Japan W",
+                "logo": "https://media.api-sports.io/basketball/teams/3042.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 21,
+                "quarter_2": 18,
+                "quarter_3": 26,
+                "quarter_4": 13,
+                "over_time": null,
+                "total": 78
+            },
+            "away": {
+                "quarter_1": 18,
+                "quarter_2": 9,
+                "quarter_3": 24,
+                "quarter_4": 26,
+                "over_time": null,
+                "total": 77
             }
         }
     },

@@ -9,9 +9,9 @@
         "week": null,
         "venue": "Michelob Ultra Arena",
         "status": {
-            "long": "Quarter 2",
-            "short": "Q2",
-            "timer": "10"
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
         },
         "league": {
             "id": 13,
@@ -42,18 +42,18 @@
             "home": {
                 "quarter_1": 27,
                 "quarter_2": 29,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_3": 18,
+                "quarter_4": 19,
                 "over_time": null,
-                "total": 56
+                "total": 93
             },
             "away": {
                 "quarter_1": 17,
                 "quarter_2": 22,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_3": 16,
+                "quarter_4": 18,
                 "over_time": null,
-                "total": 39
+                "total": 73
             }
         }
     },
@@ -67,9 +67,9 @@
         "week": null,
         "venue": "Crypto.com Arena",
         "status": {
-            "long": "Quarter 2",
-            "short": "Q2",
-            "timer": "9"
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
         },
         "league": {
             "id": 13,
@@ -99,19 +99,19 @@
         "scores": {
             "home": {
                 "quarter_1": 23,
-                "quarter_2": 26,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_2": 28,
+                "quarter_3": 17,
+                "quarter_4": 14,
                 "over_time": null,
-                "total": 49
+                "total": 82
             },
             "away": {
                 "quarter_1": 23,
-                "quarter_2": 12,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_2": 17,
+                "quarter_3": 25,
+                "quarter_4": 23,
                 "over_time": null,
-                "total": 35
+                "total": 88
             }
         }
     },
@@ -125,9 +125,9 @@
         "week": "15",
         "venue": "Auditorio Hermanos Carreon",
         "status": {
-            "long": "Quarter 1",
-            "short": "Q1",
-            "timer": "9"
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
         },
         "league": {
             "id": 63,
@@ -156,20 +156,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": 31,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 33,
+                "quarter_2": 26,
+                "quarter_3": 23,
+                "quarter_4": 29,
                 "over_time": null,
-                "total": 31
+                "total": 111
             },
             "away": {
-                "quarter_1": 26,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 29,
+                "quarter_2": 15,
+                "quarter_3": 14,
+                "quarter_4": 20,
                 "over_time": null,
-                "total": 26
+                "total": 78
             }
         }
     },
@@ -384,6 +384,64 @@
                 "id": 163,
                 "name": "Chicago Sky W",
                 "logo": "https://media.api-sports.io/basketball/teams/163.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            },
+            "away": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            }
+        }
+    },
+    {
+        "id": 515248,
+        "date": "2026-08-29T18:00:00+00:00",
+        "time": "18:00",
+        "timestamp": 1788026400,
+        "timezone": "UTC",
+        "stage": null,
+        "week": null,
+        "venue": null,
+        "status": {
+            "long": "Not Started",
+            "short": "NS",
+            "timer": null
+        },
+        "league": {
+            "id": 290,
+            "name": "Friendly International Women",
+            "type": "League",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/290.png"
+        },
+        "country": {
+            "id": 62,
+            "name": "World",
+            "code": " ",
+            "flag": "https://media.api-sports.io/flags/ .svg"
+        },
+        "teams": {
+            "home": {
+                "id": 3048,
+                "name": "Spain W",
+                "logo": "https://media.api-sports.io/basketball/teams/3048.png"
+            },
+            "away": {
+                "id": 4016,
+                "name": "Mali W",
+                "logo": "https://media.api-sports.io/basketball/teams/4016.png"
             }
         },
         "scores": {
