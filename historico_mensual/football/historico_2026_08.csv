@@ -1,38 +1,183 @@
 League,Date,HomeTeam,AwayTeam,FTHG,FTAG,HC,AC,HY,AY,HR,AR,HS,AS,LeagueId,Country,Round,EsEliminatoria,HomeTeamId,AwayTeamId,HTHG,HTAG
-Capital Territory NPL,2026-08-29,Cooma Tigers FC,Canberra Juventus,4.0,2.0,,,,,,,,,189,Australia,Quarter-finals,True,1452.0,23517.0,0.0,2.0
-New South Wales NPL 2,2026-08-29,Canterbury Bankstown,Macarthur Rams,3.0,2.0,,,,,,,,,835,Australia,Regular Season - 30,False,20791.0,20796.0,2.0,2.0
-New South Wales NPL 2,2026-08-29,Hills Brumbies,Central Coast II,8.0,0.0,,,,,,,,,835,Australia,Regular Season - 30,False,16773.0,16772.0,5.0,0.0
-New South Wales NPL 2,2026-08-29,Inter Lions,Hakoah Sydney City,1.0,2.0,,,,,,,,,835,Australia,Regular Season - 30,False,20795.0,3766.0,1.0,1.0
-Northern NSW NPL,2026-08-29,Broadmeadow Magic,Weston Bears,0.0,3.0,,,,,,,,,481,Australia,Quarter-finals,True,10202.0,10210.0,0.0,0.0
-Northern NSW NPL,2026-08-29,Kahibah,New Lambton,3.0,0.0,,,,,,,,,481,Australia,Semi-finals,True,23502.0,20789.0,1.0,0.0
-South Australia NPL,2026-08-29,Playford City Patriots,Adelaide City,1.0,2.0,,,,,,,,,194,Australia,Semi-finals,True,16768.0,3785.0,1.0,2.0
-South Australia State League 1,2026-08-29,Adelaide Blue Eagles,Adelaide Raiders,0.0,3.0,,,,,,,,,834,Australia,Semi-finals,True,3784.0,3788.0,0.0,2.0
-Tasmania NPL,2026-08-29,South Hobart,Kingborough Lions,4.0,2.0,,,,,,,,,648,Australia,Semi-finals,True,14106.0,14102.0,1.0,2.0
-Victoria NPL,2026-08-29,Avondale,Hume City,2.0,0.0,,,,,,,,,195,Australia,Regular Season - 26,False,3798.0,3804.0,1.0,0.0
-Victoria NPL,2026-08-29,Heidelberg United,Bentleigh Greens,2.0,0.0,,,,,,,,,195,Australia,Regular Season - 26,False,3803.0,3799.0,2.0,0.0
-Victoria NPL,2026-08-29,Melbourne City II,Green Gully,1.0,2.0,,,,,,,,,195,Australia,Regular Season - 26,False,20783.0,3802.0,1.0,0.0
-Victoria NPL,2026-08-29,Oakleigh Cannons,Dandenong City,2.0,3.0,,,,,,,,,195,Australia,Regular Season - 26,False,3808.0,3800.0,1.0,2.0
-Victoria NPL,2026-08-29,Preston Lions,Altona Magic,1.0,1.0,,,,,,,,,195,Australia,Regular Season - 26,False,19705.0,3797.0,0.0,0.0
-Victoria NPL,2026-08-29,St. Albans Saints,Dandenong Thunder,6.0,0.0,,,,,,,,,195,Australia,Regular Season - 26,False,9978.0,3801.0,4.0,0.0
-Victoria NPL,2026-08-29,Sunshine Georgies,South Melbourne,1.0,0.0,,,,,,,,,195,Australia,Regular Season - 26,False,21921.0,3811.0,1.0,0.0
-Victoria Premier League 2,2026-08-29,Eastern Lions,Kingston City,2.0,2.0,,,,,,,,,1226,Australia,Regular Season - 26,False,9977.0,3806.0,1.0,2.0
-Victoria Premier League 2,2026-08-29,Goulburn Valley Suns,Box Hill,3.0,0.0,,,,,,,,,1226,Australia,Regular Season - 26,False,16782.0,27695.0,2.0,0.0
-Victoria Premier League 2,2026-08-29,Keilor Park,Altona City,2.0,1.0,,,,,,,,,1226,Australia,Regular Season - 26,False,27697.0,27693.0,1.0,1.0
-Victoria Premier League 2,2026-08-29,Malvern,Werribee City,4.0,1.0,,,,,,,,,1226,Australia,Regular Season - 26,False,27698.0,16789.0,2.0,0.0
-Victoria Premier League 2,2026-08-29,Moreland City,Essendon Royals SC,2.0,2.0,,,,,,,,,1226,Australia,Regular Season - 26,False,16785.0,27696.0,1.0,1.0
-Victoria Premier League 2,2026-08-29,Springvale,Bayside Argonauts,0.0,1.0,,,,,,,,,1226,Australia,Regular Season - 26,False,27699.0,27694.0,0.0,1.0
-Victoria Premier League 2,2026-08-29,Whittlesea United,Nunawading,2.0,2.0,,,,,,,,,1226,Australia,Regular Season - 26,False,27700.0,26150.0,0.0,2.0
-Second League - Group 3,2026-08-29,SKA Khabarovsk II,Arsenal Tula II,0.0,0.0,,,,,,,,,650,Russia,Group 3 - 21,False,17721.0,17720.0,0.0,0.0
-Supreme Division Women,2026-08-29,Yenisey W,Rostov W,1.0,2.0,,,,,,,,,649,Russia,Regular Season - 17,False,14133.0,16490.0,1.0,2.0
-K4 League,2026-08-29,Seosan Pioneer,Namyangju,1.0,2.0,,,,,,,,,1234,South-Korea,Regular Season - 20,False,27865.0,23089.0,0.0,2.0
+Capital Territory NPL,2026-08-29,Cooma Tigers FC,Canberra Juventus,4.0,2.0,,,,,,,,,189.0,Australia,Quarter-finals,True,1452.0,23517.0,0.0,2.0
+Capital Territory NPL,2026-08-29,Tuggeranong United,Queanbeyan City,0.0,2.0,,,,,,,,,189,Australia,Quarter-finals,True,1447.0,23519.0,0.0,1.0
+New South Wales NPL 2,2026-08-29,Bulls Academy,Blacktown Spartans,2.0,2.0,,,,,,,,,835,Australia,Regular Season - 30,False,20798.0,16771.0,1.0,0.0
+New South Wales NPL 2,2026-08-29,Canterbury Bankstown,Macarthur Rams,3.0,2.0,,,,,,,,,835.0,Australia,Regular Season - 30,False,20791.0,20796.0,2.0,2.0
+New South Wales NPL 2,2026-08-29,Hills Brumbies,Central Coast II,8.0,0.0,,,,,,,,,835.0,Australia,Regular Season - 30,False,16773.0,16772.0,5.0,0.0
+New South Wales NPL 2,2026-08-29,Inter Lions,Hakoah Sydney City,1.0,2.0,,,,,,,,,835.0,Australia,Regular Season - 30,False,20795.0,3766.0,1.0,1.0
+New South Wales NPL 2,2026-08-29,Mt Druitt Town,Northern Tigers,0.0,3.0,,,,,,,,,835,Australia,Regular Season - 30,False,3769.0,16776.0,0.0,1.0
+New South Wales NPL 2,2026-08-29,Rydalmere Lions,Dulwich Hill,3.0,2.0,,,,,,,,,835,Australia,Regular Season - 30,False,20797.0,20793.0,2.0,1.0
+Northern NSW NPL,2026-08-29,Broadmeadow Magic,Weston Bears,0.0,3.0,,,,,,,,,481.0,Australia,Quarter-finals,True,10202.0,10210.0,0.0,0.0
+Northern NSW NPL,2026-08-29,Kahibah,New Lambton,3.0,0.0,,,,,,,,,481.0,Australia,Semi-finals,True,23502.0,20789.0,1.0,0.0
+Queensland NPL,2026-08-29,Moreton City Excelsior,Gold Coast Knights,2.0,0.0,,,,,,,,,482,Australia,Quarter-finals,True,22916.0,10215.0,0.0,0.0
+Queensland Premier League,2026-08-29,Brisbane Strikers,Broadbeach United,1.0,0.0,,,,,,,,,833,Australia,Quarter-finals,True,10213.0,20850.0,0.0,0.0
+South Australia NPL,2026-08-29,MetroStars,West Torrens Birkalla,2.0,2.0,,,,,,,,,194,Australia,Semi-finals,True,3793.0,16769.0,1.0,1.0
+South Australia NPL,2026-08-29,Playford City Patriots,Adelaide City,1.0,2.0,,,,,,,,,194.0,Australia,Semi-finals,True,16768.0,3785.0,1.0,2.0
+South Australia State League 1,2026-08-29,Adelaide Blue Eagles,Adelaide Raiders,0.0,3.0,,,,,,,,,834.0,Australia,Semi-finals,True,3784.0,3788.0,0.0,2.0
+Tasmania NPL,2026-08-29,South Hobart,Kingborough Lions,4.0,2.0,,,,,,,,,648.0,Australia,Semi-finals,True,14106.0,14102.0,1.0,2.0
+Tasmania Northern Championship,2026-08-29,Launceston United U21,Devonport U21,1.0,11.0,,,,,,,,,1091,Australia,Regular Season - 20,False,23510.0,23508.0,1.0,6.0
+Victoria NPL,2026-08-29,Avondale,Hume City,2.0,0.0,,,,,,,,,195.0,Australia,Regular Season - 26,False,3798.0,3804.0,1.0,0.0
+Victoria NPL,2026-08-29,Heidelberg United,Bentleigh Greens,2.0,0.0,,,,,,,,,195.0,Australia,Regular Season - 26,False,3803.0,3799.0,2.0,0.0
+Victoria NPL,2026-08-29,Melbourne City II,Green Gully,1.0,2.0,,,,,,,,,195.0,Australia,Regular Season - 26,False,20783.0,3802.0,1.0,0.0
+Victoria NPL,2026-08-29,Oakleigh Cannons,Dandenong City,2.0,3.0,,,,,,,,,195.0,Australia,Regular Season - 26,False,3808.0,3800.0,1.0,2.0
+Victoria NPL,2026-08-29,Preston Lions,Altona Magic,1.0,1.0,,,,,,,,,195.0,Australia,Regular Season - 26,False,19705.0,3797.0,0.0,0.0
+Victoria NPL,2026-08-29,St. Albans Saints,Dandenong Thunder,6.0,0.0,,,,,,,,,195.0,Australia,Regular Season - 26,False,9978.0,3801.0,4.0,0.0
+Victoria NPL,2026-08-29,Sunshine Georgies,South Melbourne,1.0,0.0,,,,,,,,,195.0,Australia,Regular Season - 26,False,21921.0,3811.0,1.0,0.0
+Victoria Premier League 2,2026-08-29,Eastern Lions,Kingston City,2.0,2.0,,,,,,,,,1226.0,Australia,Regular Season - 26,False,9977.0,3806.0,1.0,2.0
+Victoria Premier League 2,2026-08-29,Goulburn Valley Suns,Box Hill,3.0,0.0,,,,,,,,,1226.0,Australia,Regular Season - 26,False,16782.0,27695.0,2.0,0.0
+Victoria Premier League 2,2026-08-29,Keilor Park,Altona City,2.0,1.0,,,,,,,,,1226.0,Australia,Regular Season - 26,False,27697.0,27693.0,1.0,1.0
+Victoria Premier League 2,2026-08-29,Malvern,Werribee City,4.0,1.0,,,,,,,,,1226.0,Australia,Regular Season - 26,False,27698.0,16789.0,2.0,0.0
+Victoria Premier League 2,2026-08-29,Moreland City,Essendon Royals SC,2.0,2.0,,,,,,,,,1226.0,Australia,Regular Season - 26,False,16785.0,27696.0,1.0,1.0
+Victoria Premier League 2,2026-08-29,Springvale,Bayside Argonauts,0.0,1.0,,,,,,,,,1226.0,Australia,Regular Season - 26,False,27699.0,27694.0,0.0,1.0
+Victoria Premier League 2,2026-08-29,Whittlesea United,Nunawading,2.0,2.0,,,,,,,,,1226.0,Australia,Regular Season - 26,False,27700.0,26150.0,0.0,2.0
+Super League,2026-08-29,Qingdao Jonoon,Wuhan Three Towns,1.0,5.0,,,,,,,,,169,China,Regular Season - 25,False,1431.0,5695.0,0.0,2.0
+1. Liga U19,2026-08-29,Hradec Králové U19,Pardubice U19,2.0,0.0,,,,,,,,,668,Czech-Republic,Regular Season - 4,False,14831.0,14836.0,1.0,0.0
+1. Liga U19,2026-08-29,Sigma Olomouc U19,Viktoria Plzeň U19,0.0,3.0,,,,,,,,,668,Czech-Republic,Regular Season - 4,False,7969.0,7970.0,0.0,2.0
+1. Liga U19,2026-08-29,Slavia Praha U19,České Budějovice U19,3.0,3.0,,,,,,,,,668,Czech-Republic,Regular Season - 4,False,7933.0,14841.0,1.0,0.0
+1. Liga U19,2026-08-29,Slovácko U19,Zlín U19,5.0,2.0,,,,,,,,,668,Czech-Republic,Regular Season - 4,False,14838.0,14840.0,3.0,0.0
+1. Liga U19,2026-08-29,Sparta Praha U19,Teplice U19,1.0,2.0,,,,,,,,,668,Czech-Republic,Regular Season - 4,False,7995.0,27891.0,1.0,0.0
+1. Liga U19,2026-08-29,Zbrojovka Brno U19,Karviná U19,3.0,0.0,,,,,,,,,668,Czech-Republic,Regular Season - 4,False,14839.0,14832.0,2.0,0.0
+1. Liga Women,2026-08-29,Slovácko W,Sparta Praha W,0.0,3.0,,,,,,,,,669,Czech-Republic,Regular Season - 3,False,14847.0,10925.0,0.0,1.0
+3. liga - CFL A,2026-08-29,Aritma Praha,Králův Dvůr,0.0,2.0,,,,,,,,,348,Czech-Republic,Group A - 4,False,7269.0,7312.0,0.0,1.0
+3. liga - CFL A,2026-08-29,Benešov,Povltava FA,3.0,1.0,,,,,,,,,348,Czech-Republic,Group A - 4,False,7273.0,14005.0,2.0,1.0
+3. liga - CFL B,2026-08-29,Chrudim,Baník Souš,1.0,2.0,,,,,,,,,685,Czech-Republic,Group B - 4,False,3722.0,7271.0,0.0,0.0
+3. liga - CFL B,2026-08-29,Horní Ředice,Hradec Králové II,1.0,0.0,,,,,,,,,685,Czech-Republic,Group B - 4,False,24191.0,14495.0,1.0,0.0
+3. liga - CFL B,2026-08-29,Neratovice-Byškovice,Varnsdorf,1.0,2.0,,,,,,,,,685,Czech-Republic,Group B - 4,False,7320.0,3728.0,0.0,1.0
+3. liga - CFL B,2026-08-29,Slovan Liberec II,Teplice II,0.0,4.0,,,,,,,,,685,Czech-Republic,Group B - 4,False,12855.0,12877.0,0.0,3.0
+3. liga - CFL B,2026-08-29,Velké Hamry,Mladá Boleslav II,0.0,3.0,,,,,,,,,685,Czech-Republic,Group B - 4,False,7372.0,12816.0,0.0,2.0
+4. liga - Divizie A,2026-08-29,Křimice,Komárov,1.0,2.0,,,,,,,,,350,Czech-Republic,Group A - 4,False,26228.0,7310.0,1.0,2.0
+4. liga - Divizie B,2026-08-29,Brandýs nad Labem,Tempo Praha,1.0,2.0,,,,,,,,,351,Czech-Republic,Group B - 4,False,7278.0,21985.0,0.0,1.0
+4. liga - Divizie B,2026-08-29,Chomutov,Meteor Praha,4.0,0.0,,,,,,,,,351,Czech-Republic,Group B - 4,False,7282.0,7318.0,1.0,0.0
+4. liga - Divizie B,2026-08-29,Slavoj Vyšehrad,Hvězda Cheb,1.0,2.0,,,,,,,,,351,Czech-Republic,Group B - 4,False,4258.0,7302.0,1.0,1.0
+4. liga - Divizie B,2026-08-29,Újezd Praha 4,Ostrov,3.0,2.0,,,,,,,,,351,Czech-Republic,Group B - 4,False,19439.0,7328.0,1.0,2.0
+4. liga - Divizie B,2026-08-29,Ústí nad Labem II,Sokol Hostouň,0.0,4.0,,,,,,,,,351,Czech-Republic,Group B - 4,False,24194.0,7350.0,0.0,2.0
+4. liga - Divizie C,2026-08-29,Hlinsko,Vykan,2.0,1.0,,,,,,,,,352,Czech-Republic,Group C - 4,False,7295.0,27889.0,1.0,1.0
+4. liga - Divizie C,2026-08-29,Slavia Hradec Králové,Ústí nad Orlicí,3.0,1.0,,,,,,,,,352,Czech-Republic,Group C - 4,False,21648.0,7381.0,2.0,1.0
+4. liga - Divizie F,2026-08-29,Břidličná,Bílovec,3.0,1.0,,,,,,,,,686,Czech-Republic,Group F - 5,False,19421.0,16875.0,1.0,0.0
+4. liga - Divizie F,2026-08-29,Opava II,Kravare,0.0,3.0,,,,,,,,,686,Czech-Republic,Group F - 5,False,15135.0,21912.0,0.0,0.0
+U18 Premier League - North,2026-08-29,Everton U18,Manchester United U18,0.0,3.0,,,,,,,,,695,England,North,False,15378.0,15382.0,0.0,1.0
+U18 Premier League - North,2026-08-29,Nottingham Forest U18,Stoke City U18,3.0,1.0,,,,,,,,,695,England,North,False,17426.0,15385.0,1.0,0.0
+U18 Premier League - South,2026-08-29,Aston Villa U18,Crystal Palace U18,1.0,0.0,,,,,,,,,696,England,South,False,15389.0,15392.0,1.0,0.0
+U18 Premier League - South,2026-08-29,Chelsea U18,Reading U18,6.0,1.0,,,,,,,,,696,England,South,False,15391.0,15396.0,4.0,1.0
+U18 Premier League - South,2026-08-29,Ipswich Town U18,AFC Bournemouth U18,6.0,2.0,,,,,,,,,696,England,South,False,23179.0,23159.0,2.0,2.0
+U18 Premier League - South,2026-08-29,Southampton U18,Norwich City U18,7.0,4.0,,,,,,,,,696,England,South,False,15397.0,15395.0,5.0,3.0
+U18 Premier League - South,2026-08-29,West Ham United U18,Brentford U18,5.0,4.0,,,,,,,,,696,England,South,False,15400.0,23164.0,1.0,2.0
+Esiliiga A,2026-08-29,FC Tallinn,Nõmme Kalju II,0.0,2.0,,,,,,,,,328,Estonia,Regular Season - 26,False,14287.0,13826.0,0.0,1.0
+Esiliiga A,2026-08-29,Flora II,Tallinna Kalev,5.0,0.0,,,,,,,,,328,Estonia,Regular Season - 26,False,3518.0,3529.0,3.0,0.0
+Esiliiga A,2026-08-29,Maardu,FCI Levadia II,4.0,2.0,,,,,,,,,328,Estonia,Regular Season - 26,False,3527.0,3517.0,2.0,2.0
+DFB Junioren Pokal,2026-08-29,BAK 07 U19,Karlsruher SC U19,1.0,2.0,,,,,,,,,715,Germany,Round of 32,True,19441.0,10263.0,1.0,0.0
+DFB Junioren Pokal,2026-08-29,Kaiserslautern U19,Holstein Kiel U19,3.0,1.0,,,,,,,,,715,Germany,Round of 32,True,10262.0,10260.0,1.0,1.0
+DFB Junioren Pokal,2026-08-29,Stuttgart U19,Freiburg U19,3.0,2.0,,,,,,,,,715,Germany,Round of 32,True,10273.0,10255.0,1.0,0.0
+DFB Junioren Pokal,2026-08-29,Wehen Wiesbaden U19,Hamburger SV U19,2.0,4.0,,,,,,,,,715,Germany,Round of 32,True,13964.0,10257.0,0.0,3.0
+Frauen Bundesliga,2026-08-29,SC Freiburg W,Union Berlin W,1.0,0.0,,,,,,,,,82,Germany,Regular Season - 2,False,1867.0,24133.0,0.0,0.0
+Premier League,2026-08-29,North District,Kitchee,0.0,0.0,,,,,,,,,380,Hong-Kong,Regular Season - 2,False,6401.0,4453.0,0.0,0.0
+Premier League,2026-08-29,Southern District,Kowloon City,2.0,1.0,,,,,,,,,380,Hong-Kong,Regular Season - 2,False,4456.0,20392.0,1.0,0.0
+NB III - Northeast,2026-08-29,Eger,Kisvárda II,1.0,1.0,,,,,,,,,633,Hungary,Northeast - 6,False,5089.0,14122.0,0.0,1.0
+NB III - Southwest,2026-08-29,Paksi SE II,MTK Budapest II,2.0,4.0,,,,,,,,,634,Hungary,Southwest - 6,False,11856.0,17064.0,1.0,2.0
+Calcutta Premier Division,2026-08-29,Bidhannagar,George Telegraph,0.0,1.0,,,,,,,,,1020,India,Regular season,False,28010.0,21604.0,0.0,1.0
+Calcutta Premier Division,2026-08-29,Patha Chakra,Bhawanipore,0.0,2.0,,,,,,,,,1020,India,Regular season,False,21607.0,15749.0,0.0,1.0
+Calcutta Premier Division,2026-08-29,Railway,Mohun Bagan,1.0,3.0,,,,,,,,,1020,India,Regular season,False,21609.0,3467.0,1.0,1.0
+Campionato Primavera - 1,2026-08-29,Internazionale U20,Empoli U20,2.0,2.0,,,,,,,,,705,Italy,Regular Season - 2,False,24734.0,24730.0,1.0,1.0
+Coppa Italia Primavera,2026-08-29,Bari U19,Padova U19,1.0,0.0,,,,,,,,,704,Italy,1/128-finals,True,22403.0,19856.0,1.0,0.0
+J1 League,2026-08-29,Gamba Osaka,Sanfrecce Hiroshima,0.0,0.0,,,,,,,,,98,Japan,Regular Season - 4,False,293.0,282.0,0.0,0.0
+J1 League,2026-08-29,Kawasaki Frontale,JEF United Chiba,4.0,2.0,,,,,,,,,98,Japan,Regular Season - 4,False,294.0,301.0,4.0,2.0
+J1 League,2026-08-29,Kyoto Sanga,Avispa Fukuoka,2.0,1.0,,,,,,,,,98,Japan,Regular Season - 4,False,302.0,316.0,1.0,0.0
+J1 League,2026-08-29,Mito Hollyhock,Machida Zelvia,1.0,1.0,,,,,,,,,98,Japan,Regular Season - 4,False,305.0,303.0,1.0,1.0
+J1 League,2026-08-29,Nagoya Grampus,Fagiano Okayama,2.0,1.0,,,,,,,,,98,Japan,Regular Season - 4,False,288.0,310.0,1.0,1.0
+J1 League,2026-08-29,Shimizu S-pulse,Kashiwa Reysol,0.0,1.0,,,,,,,,,98,Japan,Regular Season - 4,False,283.0,281.0,0.0,0.0
+J1 League,2026-08-29,Tokyo Verdy,Kashima,0.0,2.0,,,,,,,,,98,Japan,Regular Season - 4,False,306.0,290.0,0.0,1.0
+J1 League,2026-08-29,Urawa,Yokohama F. Marinos,3.0,2.0,,,,,,,,,98,Japan,Regular Season - 4,False,287.0,296.0,1.0,1.0
+J1 League,2026-08-29,V-varen Nagasaki,FC Tokyo,0.0,3.0,,,,,,,,,98,Japan,Regular Season - 4,False,285.0,292.0,0.0,2.0
+J1 League,2026-08-29,Vissel Kobe,Cerezo Osaka,1.0,0.0,,,,,,,,,98,Japan,Regular Season - 4,False,289.0,291.0,0.0,0.0
+J2 League,2026-08-29,Imabari,Montedio Yamagata,0.0,3.0,,,,,,,,,99,Japan,Regular Season - 4,False,10075.0,312.0,0.0,0.0
+J2 League,2026-08-29,Iwaki,Albirex Niigata,2.0,3.0,,,,,,,,,99,Japan,Regular Season - 4,False,7127.0,311.0,1.0,1.0
+J2 League,2026-08-29,Kataller Toyama,Fujieda MYFC,2.0,3.0,,,,,,,,,99,Japan,Regular Season - 4,False,4322.0,4317.0,1.0,3.0
+J2 League,2026-08-29,Omiya Ardija,Shonan Bellmare,2.0,2.0,,,,,,,,,99,Japan,Regular Season - 4,False,313.0,284.0,0.0,2.0
+J2 League,2026-08-29,Tochigi City,Jubilo Iwata,1.0,3.0,,,,,,,,,99,Japan,Regular Season - 4,False,7145.0,280.0,0.0,3.0
+J2 League,2026-08-29,Tokushima Vortis,Oita Trinita,1.0,0.0,,,,,,,,,99,Japan,Regular Season - 4,False,299.0,298.0,0.0,0.0
+J2 League,2026-08-29,Vanraure Hachinohe,Blaublitz Akita,1.0,0.0,,,,,,,,,99,Japan,Regular Season - 4,False,4326.0,4315.0,0.0,0.0
+J2 League,2026-08-29,Vegalta Sendai,Tegevajaro Miyazaki,4.0,2.0,,,,,,,,,99,Japan,Regular Season - 4,False,286.0,10409.0,3.0,1.0
+J2 League,2026-08-29,Ventforet Kofu,Consadole Sapporo,2.0,1.0,,,,,,,,,99,Japan,Regular Season - 4,False,308.0,279.0,0.0,1.0
+J2 League,2026-08-29,Yokohama FC,Sagan Tosu,2.0,2.0,,,,,,,,,99,Japan,Regular Season - 4,False,307.0,295.0,1.0,1.0
+J3 League,2026-08-29,FC Gifu,Tochigi SC,4.0,1.0,,,,,,,,,100,Japan,Regular Season - 4,False,297.0,315.0,3.0,0.0
+J3 League,2026-08-29,FC Ryukyu,Sagamihara,2.0,1.0,,,,,,,,,100,Japan,Regular Season - 4,False,2235.0,4324.0,2.0,0.0
+J3 League,2026-08-29,Fukushima United,Nara Club,2.0,2.0,,,,,,,,,100,Japan,Regular Season - 4,False,4318.0,7135.0,0.0,0.0
+J3 League,2026-08-29,Kamatamare Sanuki,Kagoshima United,3.0,4.0,,,,,,,,,100,Japan,Regular Season - 4,False,317.0,2236.0,1.0,0.0
+WE League,2026-08-29,Parceiro Nagano W,Tokyo Verdy Beleza W,1.0,4.0,,,,,,,,,854,Japan,Regular Season - 2,False,16954.0,16951.0,1.0,1.0
+WE League,2026-08-29,Sanfrecce Hiroshima W,Omiya Ardija Ventus W,2.0,0.0,,,,,,,,,854,Japan,Regular Season - 2,False,16955.0,16950.0,1.0,0.0
+1. Liga,2026-08-29,Leevon / PPK,Super Nova 2,2.0,1.0,,,,,,,,,364,Latvia,Regular Season - 18,False,23266.0,27565.0,2.0,1.0
+1 Lyga,2026-08-29,Garliava,Babrungas,0.0,1.0,,,,,,,,,361,Lithuania,Regular Season - 22,False,16674.0,14382.0,0.0,1.0
+Super League,2026-08-29,Kelantan Red Warrior FC,Kuching FA,0.0,5.0,,,,,,,,,278,Malaysia,Regular Season - 2,False,27373.0,10108.0,0.0,3.0
+Super League,2026-08-29,Kuala Lumpur FA,DPMM FC Brunei,1.0,0.0,,,,,,,,,278,Malaysia,Regular Season - 2,False,2517.0,4202.0,0.0,0.0
+National League,2026-08-29,Ayeyawady United,I.S.P.E,2.0,1.0,,,,,,,,,588,Myanmar,Regular Season - 1,False,12523.0,12526.0,2.0,1.0
+National League,2026-08-29,Dagon,Hantharwady United,2.0,0.0,,,,,,,,,588,Myanmar,Regular Season - 1,False,12532.0,12525.0,1.0,0.0
+Central Youth League,2026-08-29,Arka Gdynia U19,Jagiellonia U19,2.0,2.0,,,,,,,,,676,Poland,Regular Season - 4,False,20587.0,20590.0,1.0,0.0
+Central Youth League,2026-08-29,Escola Varsovia U19,Arkonia U19,1.0,0.0,,,,,,,,,676,Poland,Regular Season - 4,False,20589.0,26374.0,1.0,0.0
+Central Youth League,2026-08-29,Raków Częstochowa U19,Miedź Legnica U19,0.0,1.0,,,,,,,,,676,Poland,Regular Season - 4,False,20594.0,20592.0,0.0,1.0
+Central Youth League,2026-08-29,Wisła Kraków U19,Talent Warszawa U19,4.0,0.0,,,,,,,,,676,Poland,Regular Season - 4,False,20595.0,28017.0,2.0,0.0
+Ekstraklasa,2026-08-29,Radomiak Radom,Cracovia Krakow,2.0,1.0,,,,,,,,,106,Poland,Regular Season - 6,False,4248.0,350.0,0.0,0.0
+II Liga - East,2026-08-29,Śląsk Wrocław II,Znicz Pruszków,2.0,3.0,,,,,,,,,109,Poland,Regular Season - 6,False,12900.0,6964.0,1.0,2.0
+III Liga - Group 1,2026-08-29,Jagiellonia II,Lechia T. Mazowiecki,1.0,1.0,,,,,,,,,780,Poland,Group I - 6,False,16236.0,16238.0,0.0,0.0
+III Liga - Group 1,2026-08-29,Wisła Płock II,Mławianka Mława,5.0,3.0,,,,,,,,,780,Poland,Group I - 6,False,23046.0,19618.0,3.0,0.0
+III Liga - Group 2,2026-08-29,Lech Poznań II,Grom Nowy Staw,2.0,4.0,,,,,,,,,781,Poland,Group II - 6,False,9133.0,24786.0,2.0,0.0
+III Liga - Group 3,2026-08-29,Sparta Katowice,Zaglebie Sosnowiec,1.0,0.0,,,,,,,,,782,Poland,Group III - 6,False,22910.0,342.0,0.0,0.0
+III Liga - Group 4,2026-08-29,Korona Kielce II,Busko-Zdroj,4.0,1.0,,,,,,,,,783,Poland,Group IV - 6,False,16267.0,27900.0,2.0,1.0
+Júniores U19,2026-08-29,Torreense U19,Sporting CP U19,1.0,2.0,,,,,,,,,1041,Portugal,Regular Season - 4,False,22519.0,7997.0,1.0,1.0
+Segunda Liga,2026-08-29,Portimonense,Leixoes,0.0,2.0,,,,,,,,,95,Portugal,Regular Season - 4,False,216.0,244.0,0.0,1.0
+Liga II,2026-08-29,Bihor Oradea,Ştefăneşti,4.0,0.0,,,,,,,,,284,Romania,Regular Season - 5,False,20033.0,21686.0,2.0,0.0
+Liga II,2026-08-29,CS Afumati,Unirea Slobozia,2.0,1.0,,,,,,,,,284,Romania,Regular Season - 5,False,2608.0,6916.0,1.0,1.0
+Liga II,2026-08-29,CS Dinamo București,Viitorul Şelimbăr,0.0,1.0,,,,,,,,,284,Romania,Regular Season - 5,False,19170.0,6927.0,0.0,1.0
+Liga II,2026-08-29,CSM Reşiţa,CSA Steaua Bucureşti,2.0,1.0,,,,,,,,,284,Romania,Regular Season - 5,False,6229.0,7466.0,1.0,0.0
+Liga II,2026-08-29,Cetatea Suceava,Popești-Leordeni,1.0,1.0,,,,,,,,,284,Romania,Regular Season - 5,False,26674.0,6891.0,0.0,1.0
+Liga II,2026-08-29,Dumbrăviţa,CSM Ramnicu Valcea,0.0,1.0,,,,,,,,,284,Romania,Regular Season - 5,False,7469.0,2616.0,0.0,0.0
+Liga II,2026-08-29,Gloria Bistriţa,CSM Satu Mare,1.0,0.0,,,,,,,,,284,Romania,Regular Season - 5,False,22824.0,16279.0,0.0,0.0
+Liga II,2026-08-29,Metaloglobus,Concordia,1.0,3.0,,,,,,,,,284,Romania,Regular Season - 5,False,2604.0,2580.0,0.0,1.0
+Liga II,2026-08-29,Metalul Buzău,Chindia Targoviste,1.0,3.0,,,,,,,,,284,Romania,Regular Season - 5,False,6875.0,2586.0,1.0,1.0
+Second League - Group 3,2026-08-29,Avangard Kursk,Rodina Moskva III,0.0,2.0,,,,,,,,,650,Russia,Group 3 - 21,False,2009.0,19448.0,0.0,0.0
+Second League - Group 3,2026-08-29,SKA Khabarovsk II,Arsenal Tula II,0.0,0.0,,,,,,,,,650.0,Russia,Group 3 - 21,False,17721.0,17720.0,0.0,0.0
+Supreme Division Women,2026-08-29,CSKA Moskva W,Rubin Kazan W,4.0,1.0,,,,,,,,,649,Russia,Regular Season - 17,False,14131.0,16491.0,2.0,0.0
+Supreme Division Women,2026-08-29,Lokomotiv Moskva W,Chertanovo W,2.0,1.0,,,,,,,,,649,Russia,Regular Season - 17,False,14132.0,10885.0,0.0,0.0
+Supreme Division Women,2026-08-29,Yenisey W,Rostov W,1.0,2.0,,,,,,,,,649.0,Russia,Regular Season - 17,False,14133.0,16490.0,1.0,2.0
+U19 league,2026-08-29,IMT Novi Beograd U19,Jedinstvo U. U19,3.0,1.0,,,,,,,,,1241,Serbia,Regular Season - 4,False,24982.0,28267.0,0.0,0.0
+3. liga - West,2026-08-29,DAC II,Častkovce,1.0,3.0,,,,,,,,,644,Slovakia,West - 4,False,26244.0,14066.0,1.0,1.0
+I Liga - Women,2026-08-29,Komárno W,Trenčín W,1.0,2.0,,,,,,,,,733,Slovakia,Regular Season - 3,False,24078.0,15976.0,1.0,0.0
+K League 1,2026-08-29,Bucheon FC 1995,FC Anyang,1.0,1.0,,,,,,,,,292,South-Korea,Regular Season - 26,False,2745.0,2748.0,0.0,0.0
+K League 1,2026-08-29,Ulsan Hyundai FC,Gimcheon Sangmu FC,3.0,1.0,,,,,,,,,292,South-Korea,Regular Season - 26,False,2767.0,2768.0,1.0,1.0
+K League 2,2026-08-29,Gimpo Citizen,Suwon Bluewings,1.0,4.0,,,,,,,,,293,South-Korea,Regular Season - 24,False,7078.0,2765.0,0.0,1.0
+K League 2,2026-08-29,Gyeongnam FC,Paju Citizen,1.0,0.0,,,,,,,,,293,South-Korea,Regular Season - 24,False,2751.0,7098.0,0.0,0.0
+K League 2,2026-08-29,Hwaseong,Cheongju,2.0,1.0,,,,,,,,,293,South-Korea,Regular Season - 24,False,7087.0,7061.0,0.0,0.0
+K League 2,2026-08-29,Seongnam FC,Seoul E-Land FC,1.0,1.0,,,,,,,,,293,South-Korea,Regular Season - 24,False,2757.0,2749.0,0.0,0.0
+K3 League,2026-08-29,Daejeon Korail,Yangpyeong,2.0,1.0,,,,,,,,,295,South-Korea,Regular Season - 20,False,7068.0,7111.0,0.0,0.0
+K3 League,2026-08-29,Dangjin Citizen,Chuncheon,3.0,4.0,,,,,,,,,295,South-Korea,Regular Season - 20,False,18653.0,7064.0,1.0,0.0
+K3 League,2026-08-29,Gangneung City,Jeonbuk Motors II,2.0,1.0,,,,,,,,,295,South-Korea,Regular Season - 20,False,7075.0,25717.0,1.0,0.0
+K4 League,2026-08-29,Haman,Pyeongchang United,2.0,3.0,,,,,,,,,1234,South-Korea,Regular Season - 20,False,27859.0,18656.0,1.0,0.0
+K4 League,2026-08-29,Pyeongtaek Citizen,Gijang United,2.0,3.0,,,,,,,,,1234,South-Korea,Regular Season - 20,False,7101.0,25719.0,0.0,1.0
+K4 League,2026-08-29,Seosan Pioneer,Namyangju,1.0,2.0,,,,,,,,,1234.0,South-Korea,Regular Season - 20,False,27865.0,23089.0,0.0,2.0
+WK-League,2026-08-29,Boeun Sangmu W,Gumi Sportstoto W,0.0,1.0,,,,,,,,,660,South-Korea,Regular Season - 22,False,14372.0,14374.0,0.0,0.0
+WK-League,2026-08-29,Changnyeong W,Hwacheon KSPO W,1.0,1.0,,,,,,,,,660,South-Korea,Regular Season - 22,False,14373.0,14376.0,1.0,1.0
+Primera División Femenina,2026-08-29,Deportivo de La Coruña W,Sevilla W,0.0,1.0,,,,,,,,,142,Spain,Regular Season - 1,False,6376.0,1920.0,0.0,1.0
+Primera División Femenina,2026-08-29,Real Sociedad W,Edf Logrono W,0.0,2.0,,,,,,,,,142,Spain,Regular Season - 1,False,1912.0,1923.0,0.0,0.0
+Division 2 - Norra Svealand,2026-08-29,Gute,Lidingö,1.0,0.0,,,,,,,,,593,Sweden,Norra Svealand - 19,False,6671.0,6685.0,1.0,0.0
+Druha Liga,2026-08-29,Lozova,Atlet,2.0,3.0,,,,,,,,,336,Ukraine,Regular Season - 4,False,26758.0,26187.0,0.0,1.0
+Druha Liga,2026-08-29,Podillya Khmelnytskyi,Dinaz Vyshhorod,1.0,1.0,,,,,,,,,336,Ukraine,Regular Season - 4,False,6495.0,6487.0,1.0,1.0
+Druha Liga,2026-08-29,Rebel,Metalurh Zaporizhya,2.0,1.0,,,,,,,,,336,Ukraine,Regular Season - 4,False,26190.0,5627.0,1.0,0.0
+Druha Liga,2026-08-29,Trostianets,Karbon Cherkasy,0.0,0.0,,,,,,,,,336,Ukraine,Regular Season - 4,False,17167.0,26451.0,0.0,0.0
+Persha Liga,2026-08-29,Polissya II,Prykarpattia,1.0,2.0,,,,,,,,,334,Ukraine,Regular Season - 5,False,24589.0,3631.0,0.0,0.0
+Persha Liga,2026-08-29,UCSA,Inhulets,1.0,2.0,,,,,,,,,334,Ukraine,Regular Season - 5,False,21957.0,3625.0,0.0,1.0
+Premier League,2026-08-29,Kudrivka,Epitsentr Dunayivtsi,0.0,3.0,,,,,,,,,333,Ukraine,Regular Season - 4,False,21953.0,14434.0,0.0,1.0
+Friendlies Clubs,2026-08-29,Derio,Sestao River,0.0,1.0,,,,,,,,,667,World,Club Friendlies,False,22135.0,9413.0,0.0,0.0
+Friendlies Clubs,2026-08-29,Gimnástica Segoviana,Real Madrid III,0.0,1.0,,,,,,,,,667,World,Club Friendlies,False,9387.0,22142.0,0.0,0.0
+Friendlies Clubs,2026-08-29,Illescas,Pozuelo Alarcón,0.0,1.0,,,,,,,,,667,World,Club Friendlies,False,9901.0,9713.0,0.0,1.0
+Friendlies Clubs,2026-08-29,Lagun Onak,Beasain,2.0,2.0,,,,,,,,,667,World,Club Friendlies,False,9660.0,9657.0,2.0,1.0
 Girabola,2026-08-28,Interclube,FC Luanda,2.0,1.0,,,,,,,,,397.0,Angola,Regular Season - 2,False,4920.0,28229.0,0.0,0.0
 Liga Profesional Argentina,2026-08-28,Boca Juniors,Lanus,1.0,0.0,,,,,,,,,128.0,Argentina,Clausura - 7,False,451.0,446.0,0.0,0.0
 Liga Profesional Argentina,2026-08-28,Union Santa Fe,Sarmiento Junin,4.0,1.0,,,,,,,,,128.0,Argentina,Clausura - 7,False,441.0,474.0,1.0,0.0
-Primera Nacional,2026-08-28,Gimnasia Y Tiro,Chacarita Juniors,1.0,0.0,,,,,,,,,129,Argentina,Regular Season - 27,False,1928.0,447.0,0.0,0.0
+Primera Nacional,2026-08-28,Gimnasia Y Tiro,Chacarita Juniors,1.0,0.0,,,,,,,,,129.0,Argentina,Regular Season - 27,False,1928.0,447.0,0.0,0.0
 Torneo Promocional Amateur,2026-08-28,Buenos Aires City,Barrancas UMET,1.0,0.0,,,,,,,,,1067.0,Argentina,Regular Season - 17,False,27786.0,23095.0,,
 Premier League,2026-08-28,FC Urartu,Alashkert,1.0,1.0,,,,,,,,,342.0,Armenia,Regular Season - 5,False,2276.0,582.0,1.0,0.0
 New South Wales NPL 2,2026-08-28,Prospect United,Hurstville FC,3.0,0.0,,,,,,,,,835.0,Australia,Regular Season - 30,False,27463.0,27462.0,1.0,0.0
 South Australia State League 1,2026-08-28,Adelaide Olympic,Modbury Jets,0.0,4.0,,,,,,,,,834.0,Australia,Semi-finals,True,3787.0,10010.0,0.0,3.0
+Tasmania Northern Championship,2026-08-28,Riverside Olympic U21,Burnie Utd.,0.0,3.0,,,,,,,,,1091,Australia,Regular Season - 20,False,23512.0,23507.0,0.0,1.0
 2. Liga,2026-08-28,First Vienna,SKU Amstetten,1.0,0.0,,,,,,,,,219.0,Austria,Regular Season - 5,False,4990.0,1404.0,1.0,0.0
 2. Liga,2026-08-28,SKN ST. Polten,Austria Salzburg,1.0,0.0,,,,,,,,,219.0,Austria,Regular Season - 5,False,1027.0,5000.0,0.0,0.0
 2. Liga,2026-08-28,SV Kapfenberg,FC BW Linz,2.0,1.0,,,,,,,,,219.0,Austria,Regular Season - 5,False,1401.0,1394.0,1.0,0.0
@@ -85,9 +230,9 @@ Super League,2026-08-28,Dalian Zhixing,Beijing Guoan,1.0,1.0,,,,,,,,,169.0,China
 Super League,2026-08-28,Shanghai Shenhua,Shandong Luneng,2.0,3.0,,,,,,,,,169.0,China,Regular Season - 25,False,833.0,844.0,2.0,1.0
 Super League,2026-08-28,Sichuan Jiuniu,SHANGHAI SIPG,0.0,1.0,,,,,,,,,169.0,China,Regular Season - 25,False,5686.0,836.0,0.0,0.0
 Primera B,2026-08-28,Ind. Yumbo,Leones FC,1.0,0.0,,,,,,,,,240.0,Colombia,Clausura - 7,False,27411.0,1143.0,1.0,0.0
-Primera B,2026-08-28,Union Magdalena,Quindio,0.0,2.0,,,,,,,,,240,Colombia,Clausura - 7,False,1465.0,1461.0,0.0,0.0
+Primera B,2026-08-28,Union Magdalena,Quindio,0.0,2.0,,,,,,,,,240.0,Colombia,Clausura - 7,False,1465.0,1461.0,0.0,0.0
 Liga de Ascenso,2026-08-28,AD Carmelita,Aserri FC,1.0,2.0,,,,,,,,,163.0,Costa-Rica,Regular Season - 5,False,814.0,2056.0,1.0,0.0
-Primera División,2026-08-28,Sporting San Jose,Inter San Carlos,2.0,0.0,,,,,,,,,162,Costa-Rica,Apertura - 6,False,2047.0,24391.0,1.0,0.0
+Primera División,2026-08-28,Sporting San Jose,Inter San Carlos,2.0,0.0,,,,,,,,,162.0,Costa-Rica,Apertura - 6,False,2047.0,24391.0,1.0,0.0
 First NL,2026-08-28,Bsk Bijelo Brdo,HNK Cibalia,1.0,1.0,,,,,,,,,211.0,Croatia,Regular Season - 2,False,1487.0,1021.0,0.0,1.0
 First NL,2026-08-28,Dubrava Zagreb,Croatia Zmijavci,1.0,2.0,,,,,,,,,211.0,Croatia,Regular Season - 2,False,6255.0,6254.0,1.0,0.0
 First NL,2026-08-28,Sesvete,Dugopolje,1.0,2.0,,,,,,,,,211.0,Croatia,Regular Season - 2,False,1479.0,1471.0,1.0,2.0
@@ -218,8 +363,8 @@ Regionalliga - West,2026-08-28,Bonner SC,Bochum II,3.0,3.0,,,,,,,,,87.0,Germany,
 Regionalliga - West,2026-08-28,SV Rodinghausen,Sportfreunde Siegen,1.0,2.0,,,,,,,,,87.0,Germany,West - 5,False,1650.0,13935.0,1.0,1.0
 Regionalliga - West,2026-08-28,Westfalia Rhynern,FC Gutersloh,1.0,1.0,,,,,,,,,87.0,Germany,West - 5,False,14826.0,14485.0,0.0,0.0
 Premier Division,2026-08-28,St Joseph S Fc,Mons Calpe,2.0,1.0,,,,,,,,,758.0,Gibraltar,Regular Season - 2,False,698.0,16137.0,1.0,0.0
-Liga Nacional,2026-08-28,Suchitepéquez,Cobán Imperial,3.0,2.0,,,,,,,,,339,Guatemala,Regular Season - 6,False,3653.0,3657.0,2.0,1.0
-Liga Nacional,2026-08-28,Juticalpa,Lobos Upnfm,1.0,0.0,,,,,,,,,234,Honduras,Apertura - 5,False,1053.0,1059.0,0.0,0.0
+Liga Nacional,2026-08-28,Suchitepéquez,Cobán Imperial,3.0,2.0,,,,,,,,,339.0,Guatemala,Regular Season - 6,False,3653.0,3657.0,2.0,1.0
+Liga Nacional,2026-08-28,Juticalpa,Lobos Upnfm,1.0,0.0,,,,,,,,,234.0,Honduras,Apertura - 5,False,1053.0,1059.0,0.0,0.0
 NB I,2026-08-28,Debreceni VSC,MTK Budapest,2.0,2.0,,,,,,,,,271.0,Hungary,Regular Season - 6,False,2392.0,2396.0,1.0,2.0
 1. Deild,2026-08-28,Fylkir,Grotta,3.0,1.0,,,,,,,,,165.0,Iceland,Regular Season - 21,False,267.0,2121.0,1.0,0.0
 1. Deild,2026-08-28,Throttur Reykjavik,Ægir,7.0,2.0,,,,,,,,,165.0,Iceland,Regular Season - 21,False,829.0,4167.0,3.0,2.0
@@ -265,17 +410,17 @@ Super League,2026-08-28,Sabah FA,Penang,2.0,0.0,,,,,,,,,278.0,Malaysia,Regular S
 Super League,2026-08-28,Terengganu,Selangor,0.0,3.0,,,,,,,,,278.0,Malaysia,Regular Season - 2,False,2518.0,2526.0,0.0,0.0
 Premier League,2026-08-28,Hibernians,Zabbar St. Patrick,1.0,1.0,,,,,,,,,393.0,Malta,Regular Season - 3,False,3884.0,4622.0,1.0,0.0
 Premier League,2026-08-28,Valletta FC,Marsaxlokk,1.0,2.0,,,,,,,,,393.0,Malta,Regular Season - 3,False,659.0,14507.0,0.0,2.0
-Liga MX,2026-08-28,Atlante FC,Leon,1.0,1.0,,,,,,,,,262,Mexico,Apertura - 6,False,2312.0,2289.0,0.0,0.0
-Liga MX,2026-08-28,Club Tijuana,U.N.A.M. - Pumas,2.0,0.0,,,,,,,,,262,Mexico,Apertura - 6,False,2280.0,2286.0,0.0,0.0
-Liga MX,2026-08-28,Necaxa,Cruz Azul,1.0,3.0,,,,,,,,,262,Mexico,Apertura - 6,False,2288.0,2295.0,0.0,1.0
+Liga MX,2026-08-28,Atlante FC,Leon,1.0,1.0,,,,,,,,,262.0,Mexico,Apertura - 6,False,2312.0,2289.0,0.0,0.0
+Liga MX,2026-08-28,Club Tijuana,U.N.A.M. - Pumas,2.0,0.0,,,,,,,,,262.0,Mexico,Apertura - 6,False,2280.0,2286.0,0.0,0.0
+Liga MX,2026-08-28,Necaxa,Cruz Azul,1.0,3.0,,,,,,,,,262.0,Mexico,Apertura - 6,False,2288.0,2295.0,0.0,1.0
 Liga MX Femenil,2026-08-28,Toluca W,León W,1.0,0.0,,,,,,,,,673.0,Mexico,Regular Season - 5,False,14885.0,14877.0,0.0,0.0
 Liga MX U21,2026-08-28,Atlante U21,Club Leon U21,0.0,2.0,,,,,,,,,1200.0,Mexico,Regular Season - 6,False,28004.0,26830.0,0.0,0.0
 Liga MX U21,2026-08-28,Club Tijuana U21,UNAM Pumas U21,2.0,1.0,,,,,,,,,1200.0,Mexico,Regular Season - 6,False,26831.0,26844.0,2.0,1.0
 Liga MX U21,2026-08-28,Necaxa U21,Cruz Azul U21,2.0,1.0,,,,,,,,,1200.0,Mexico,Regular Season - 6,False,26837.0,26832.0,1.0,0.0
-Liga de Expansión MX,2026-08-28,Correcaminos Uat,Durango,0.0,0.0,,,,,,,,,263,Mexico,Apertura - 6,False,2313.0,15941.0,0.0,0.0
-Liga de Expansión MX,2026-08-28,Dorados,Monarcas,0.0,1.0,,,,,,,,,263,Mexico,Apertura - 6,False,2297.0,2284.0,0.0,1.0
+Liga de Expansión MX,2026-08-28,Correcaminos Uat,Durango,0.0,0.0,,,,,,,,,263.0,Mexico,Apertura - 6,False,2313.0,15941.0,0.0,0.0
+Liga de Expansión MX,2026-08-28,Dorados,Monarcas,0.0,1.0,,,,,,,,,263.0,Mexico,Apertura - 6,False,2297.0,2284.0,0.0,1.0
 Primera Premier,2026-08-28,Chapulineros,Jaguares de Chiapas,0.0,1.0,,,,,,,,,1242.0,Mexico,Regular Season - 1,False,26525.0,2293.0,0.0,0.0
-Primera Premier,2026-08-28,Tigres de Alica,Zacatepec 1948,3.0,1.0,,,,,,,,,1242,Mexico,Regular Season - 1,False,24952.0,2303.0,2.0,0.0
+Primera Premier,2026-08-28,Tigres de Alica,Zacatepec 1948,3.0,1.0,,,,,,,,,1242.0,Mexico,Regular Season - 1,False,24952.0,2303.0,2.0,0.0
 Primera Premier,2026-08-28,Tritons Vallarta,Reboceros La Piedad,0.0,1.0,,,,,,,,,1242.0,Mexico,Regular Season - 1,False,17790.0,15937.0,0.0,0.0
 Liga 1,2026-08-28,FCM Ungheni,Iskra,2.0,3.0,,,,,,,,,395.0,Moldova,Regular Season - 5,False,14894.0,5372.0,2.0,0.0
 Liga 1,2026-08-28,Victoria Bardar,FC National Ialoveni,0.0,2.0,,,,,,,,,395.0,Moldova,Regular Season - 5,False,5384.0,26757.0,0.0,1.0
@@ -301,7 +446,7 @@ Championship,2026-08-28,Strabane Athletic,Newington Youth,1.0,2.0,,,,,,,,,407.0,
 Premiership,2026-08-28,Portadown,Coleraine FC,0.0,3.0,,,,,,,,,408.0,Northern-Ireland,Regular Season - 4,False,5348.0,669.0,0.0,2.0
 Premiership Women,2026-08-28,Linfield W,Crusaders W,7.0,1.0,,,,,,,,,1103.0,Northern-Ireland,Group Stage,False,10918.0,21488.0,4.0,1.0
 Premiership Women,2026-08-28,Lisburn Rangers W,Larne W,5.0,1.0,,,,,,,,,1103.0,Northern-Ireland,Group Stage,False,23630.0,23629.0,5.0,1.0
-Liga Panameña de Fútbol,2026-08-28,Tauro FC,Independiente de La Chorrera,2.0,1.0,,,,,,,,,304,Panama,Apertura - 6,False,2885.0,2890.0,1.0,0.0
+Liga Panameña de Fútbol,2026-08-28,Tauro FC,Independiente de La Chorrera,2.0,1.0,,,,,,,,,304.0,Panama,Apertura - 6,False,2885.0,2890.0,1.0,0.0
 Division Intermedia,2026-08-28,3 de Noviembre,Independiente F.b.c.,5.0,2.0,,,,,,,,,251.0,Paraguay,Regular Season - 21,False,21374.0,1186.0,3.0,0.0
 Division Intermedia,2026-08-28,General Caballero,Deportivo Capiata,2.0,1.0,,,,,,,,,251.0,Paraguay,Regular Season - 21,False,1181.0,1180.0,2.0,1.0
 Division Profesional - Clausura,2026-08-28,Club Sp. San Lorenzo,Nacional Asuncion,0.0,3.0,,,,,,,,,252.0,Paraguay,Clausura - 7,False,2125.0,1175.0,0.0,1.0
@@ -423,7 +568,7 @@ MLS Next Pro,2026-08-28,Inter Miami II,Atlanta United II,1.0,1.0,,,,,,,,,909.0,U
 MLS Next Pro,2026-08-28,St. Louis City II,North Texas,1.0,1.0,,,,,,,,,909.0,USA,Group Stage,False,18740.0,10282.0,1.0,1.0
 MLS Next Pro,2026-08-28,Toronto II,New York City II,2.0,0.0,,,,,,,,,909.0,USA,Group Stage,False,4025.0,18815.0,2.0,0.0
 NWSL Women,2026-08-28,NJ/NY Gotham FC W,Portland Thorns W,1.0,1.0,,,,,,,,,254.0,USA,Group Stage,False,3003.0,3001.0,0.0,0.0
-NWSL Women,2026-08-28,San Diego Wave W,Racing Louisville W,3.0,2.0,,,,,,,,,254,USA,Group Stage,False,18451.0,16488.0,0.0,2.0
+NWSL Women,2026-08-28,San Diego Wave W,Racing Louisville W,3.0,2.0,,,,,,,,,254.0,USA,Group Stage,False,18451.0,16488.0,0.0,2.0
 USL League One,2026-08-28,Charlotte Independence,Alta,5.0,0.0,,,,,,,,,489.0,USA,Group Stage,False,3991.0,25838.0,4.0,0.0
 USL Super League,2026-08-28,Fort Lauderdale United W,Brooklyn W,1.0,0.0,,,,,,,,,1130.0,USA,Group Stage,False,24661.0,24657.0,0.0,0.0
 Premier League,2026-08-28,Vipers,Entebbe UPPC,0.0,1.0,,,,,,,,,585.0,Uganda,Regular Season - 1,False,8114.0,26700.0,0.0,1.0
