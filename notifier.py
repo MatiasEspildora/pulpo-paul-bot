@@ -26,8 +26,6 @@ def enviar_mensaje_telegram(mensaje, token_override=None, chat_id_especifico=Non
         print("⚠️ Faltan credenciales de Telegram.")
         return
 
-    # Si se pasa un chat_id_especifico (para reintentos), usamos ese. 
-    # Si no, separamos la variable de entorno por comas y limpiamos los espacios.
     lista_chats = [chat_id_especifico] if chat_id_especifico else [c.strip() for c in chats_crudos.split(",") if c.strip()]
 
     for chat_id in lista_chats:
@@ -42,7 +40,6 @@ def enviar_mensaje_telegram(mensaje, token_override=None, chat_id_especifico=Non
                 espera = error_data.get("parameters", {}).get("retry_after", 5)
                 print(f"⏳ Límite de Telegram para {chat_id}. Esperando {espera} segundos...")
                 time.sleep(espera)
-                # Reintenta el envío SOLO para el ID que falló
                 enviar_mensaje_telegram(mensaje, token_override=token_override, chat_id_especifico=chat_id)
                 continue
 
@@ -52,7 +49,6 @@ def enviar_mensaje_telegram(mensaje, token_override=None, chat_id_especifico=Non
         except Exception as e:
             print(f"⚠️ Excepción al conectar con Telegram ({chat_id}): {e}")
         
-        # Pausa de seguridad para no saturar la API si envías a múltiples usuarios
         if len(lista_chats) > 1:
             time.sleep(0.2)
 
@@ -97,7 +93,6 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
                     p['liga_nombre'] = liga
                     p['pais_nombre'] = pais
                     p['bandera'] = BANDERAS.get(pais, "🏴")
-                    # Asignamos un ID único al diccionario para rastrearlo de forma segura
                     p['_id_interno'] = f"{p['local_id']}_{p['visita_id']}_{p['fecha_str']}" 
                     partidos_validos.append(p)
                     
@@ -112,17 +107,29 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     for p in partidos_validos:
         if p.get('btts_no', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('btts_no'), 'sel': 'Ambos Anotan (NO)'})
         if p.get('btts', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('btts'), 'sel': 'Ambos Anotan (SÍ)'})
+        if p.get('home_clean_sheet', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('home_clean_sheet'), 'sel': f"Clean Sheet {p['local']}"})
+        if p.get('away_clean_sheet', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('away_clean_sheet'), 'sel': f"Clean Sheet {p['visita']}"})
+        
         if p.get('under_2_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('under_2_5'), 'sel': '-2.5 Goles'})
         if p.get('under_3_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('under_3_5'), 'sel': '-3.5 Goles'})
+        if p.get('under_4_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('under_4_5'), 'sel': '-4.5 Goles'})
+        if p.get('under_5_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('under_5_5'), 'sel': '-5.5 Goles'})
+        
         if p.get('over_1_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_1_5'), 'sel': '+1.5 Goles'})
         if p.get('over_2_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_2_5'), 'sel': '+2.5 Goles'})
+        if p.get('over_3_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_3_5'), 'sel': '+3.5 Goles'})
+        if p.get('over_4_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_4_5'), 'sel': '+4.5 Goles'})
+        if p.get('over_5_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_5_5'), 'sel': '+5.5 Goles'})
+        
         if p.get('prob_over_0_5_ht', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('prob_over_0_5_ht'), 'sel': '+0.5 Goles HT'})
         if p.get('prob_under_1_5_ht', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('prob_under_1_5_ht'), 'sel': '-1.5 Goles HT'})
         
         if p.get('home_over_0_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('home_over_0_5'), 'sel': f"{p['local']} +0.5 Goles"})
         if p.get('home_over_1_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('home_over_1_5'), 'sel': f"{p['local']} +1.5 Goles"})
+        if p.get('home_over_2_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('home_over_2_5'), 'sel': f"{p['local']} +2.5 Goles"})
         if p.get('away_over_0_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('away_over_0_5'), 'sel': f"{p['visita']} +0.5 Goles"})
         if p.get('away_over_1_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('away_over_1_5'), 'sel': f"{p['visita']} +1.5 Goles"})
+        if p.get('away_over_2_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('away_over_2_5'), 'sel': f"{p['visita']} +2.5 Goles"})
         
         prob_gana = max(p['probs'][0], p['probs'][2])
         sel_gana = p['local'] if p['probs'][0] > p['probs'][2] else p['visita']
@@ -146,7 +153,6 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     dobles.sort(key=lambda x: x['prob'], reverse=True)
     goles.sort(key=lambda x: x['prob'], reverse=True)
 
-    # Identificamos los IDs de todos los partidos que aparecieron en el menú
     seleccionados = set()
     for item in bb_list[:12]: seleccionados.add(item['match']['_id_interno'])
     for item in ganadores[:5]: seleccionados.add(item['match']['_id_interno'])
@@ -192,19 +198,16 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     msg += "\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
     msg += "🩸 *LA AUTOPSIA (Código Fuente)*\n\n"
 
-    # Agrupamos los seleccionados por liga para la autopsia
     autopsia_dict = {}
     for p in partidos_validos:
         if p['_id_interno'] in seleccionados:
             liga_key = f"{p['bandera']} {p['pais_nombre']} - {p['liga_nombre']}"
             autopsia_dict.setdefault(liga_key, []).append(p)
             
-    # Ordenamos el diccionario alfabéticamente por la llave (la liga)
     for liga_key in sorted(autopsia_dict.keys()):
         projs = autopsia_dict[liga_key]
         msg += f"📌 *{liga_key}*\n"
         
-        # Opcional: También ordenamos los partidos dentro de la liga por hora
         projs.sort(key=lambda x: x.get('hora', '00:00'))
         
         for p in projs:
@@ -225,9 +228,13 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             msg += f"🏟️ Casa/Fuera: L `{p.get('home_venue_form')}` ({p.get('home_venue_ppg')}p) | V `{p.get('away_venue_form')}` ({m.get('away_venue_ppg')}p)\n"
             msg += f"📊 1X2: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
             msg += f"🛡️ Doble Op: 1X ({p.get('prob_1X',0):.0%}) | 12 ({p.get('prob_12',0):.0%}) | X2 ({p.get('prob_X2',0):.0%})\n"
-            msg += f"🎯 Ambos Anotan: Sí ({p.get('btts',0):.0%}) | No ({p.get('btts_no',0):.0%})\n"
-            msg += f"⚽ B/A: -2.5 ({p.get('under_2_5',0):.0%}) | -3.5 ({p.get('under_3_5',0):.0%}) | +1.5 ({p.get('over_1_5',0):.0%}) | +2.5 ({p.get('over_2_5',0):.0%})\n"
+            
+            msg += f"🎯 Ambos Anotan (BTTS): Sí ({p.get('btts',0):.0%}) | No ({p.get('btts_no',0):.0%})\n"
+            msg += f"🧱 Portería a Cero (CS): L ({p.get('home_clean_sheet',0):.0%}) | V ({p.get('away_clean_sheet',0):.0%})\n"
+            msg += f"⚽ Bajas: -2.5 ({p.get('under_2_5',0):.0%}) | -3.5 ({p.get('under_3_5',0):.0%}) | -4.5 ({p.get('under_4_5',0):.0%}) | -5.5 ({p.get('under_5_5',0):.0%})\n"
+            msg += f"🔥 Altas: +1.5 ({p.get('over_1_5',0):.0%}) | +2.5 ({p.get('over_2_5',0):.0%}) | +3.5 ({p.get('over_3_5',0):.0%}) | +4.5 ({p.get('over_4_5',0):.0%}) | +5.5 ({p.get('over_5_5',0):.0%})\n"
             msg += f"⏱️ +0.5 Goles HT: {p.get('prob_over_0_5_ht',0):.0%}\n"
+            
             msg += f"📐 Promedios ({s_l.get('count',0)}p | {s_v.get('count',0)}p):\n"
             msg += f"  ⚽ A favor: {s_l.get('goles_favor',0):.1f} | {s_v.get('goles_favor',0):.1f}\n"
             msg += f"  🛡️ En contra: {s_l.get('goles_contra',0):.1f} | {s_v.get('goles_contra',0):.1f}\n\n"
@@ -432,3 +439,4 @@ def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, to
         time.sleep(2)
         
     enviar_resumen_mejores_apuestas_basket(proyecciones_dict, titulo_bloque, analyzer, token_override)
+
