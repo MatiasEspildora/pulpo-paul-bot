@@ -7,7 +7,7 @@
             "date": "2026-08-30T00:00:00-04:00",
             "timestamp": 1788062400,
             "periods": {
-                "first": null,
+                "first": 1788062400,
                 "second": null
             },
             "venue": {
@@ -16,10 +16,10 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
+                "extra": 4
             }
         },
         "league": {
@@ -47,13 +47,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "fulltime": {
                 "home": null,
@@ -59600,7 +59600,7 @@
             "flag": "https://media.api-sports.io/flags/mx.svg",
             "season": 2026,
             "round": "Apertura - 1",
-            "standings": false
+            "standings": true
         },
         "teams": {
             "home": {
