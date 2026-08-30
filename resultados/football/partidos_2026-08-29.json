@@ -63287,8 +63287,8 @@
             "date": "2026-08-29T11:00:00-04:00",
             "timestamp": 1788015600,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1788015600,
+                "second": 1788019200
             },
             "venue": {
                 "id": null,
@@ -63406,8 +63406,8 @@
                 "away": null
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 3
             },
             "extratime": {
                 "home": null,
@@ -63427,8 +63427,8 @@
             "date": "2026-08-29T11:00:00-04:00",
             "timestamp": 1788015600,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1788015600,
+                "second": 1788019200
             },
             "venue": {
                 "id": null,
@@ -63497,8 +63497,8 @@
             "date": "2026-08-29T11:00:00-04:00",
             "timestamp": 1788015600,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1788015600,
+                "second": 1788019200
             },
             "venue": {
                 "id": null,
@@ -63567,8 +63567,8 @@
             "date": "2026-08-29T11:00:00-04:00",
             "timestamp": 1788015600,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1788015600,
+                "second": 1788019200
             },
             "venue": {
                 "id": null,
@@ -70460,9 +70460,9 @@
                 "winner": false
             },
             "away": {
-                "id": 10701,
-                "name": "Mogren",
-                "logo": "https://media.api-sports.io/football/teams/10701.png",
+                "id": 28347,
+                "name": "Budva",
+                "logo": "https://media.api-sports.io/football/teams/28347.png",
                 "winner": true
             }
         },
@@ -71122,7 +71122,7 @@
     {
         "fixture": {
             "id": 1582321,
-            "referee": null,
+            "referee": "S. Gauzolino",
             "timezone": "America/Santiago",
             "date": "2026-08-29T12:00:00-04:00",
             "timestamp": 1788019200,
@@ -74067,8 +74067,8 @@
             "date": "2026-08-29T12:00:00-04:00",
             "timestamp": 1788019200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1788019200,
+                "second": 1788022800
             },
             "venue": {
                 "id": null,
@@ -74117,7 +74117,7 @@
             },
             "fulltime": {
                 "home": 2,
-                "away": 3
+                "away": 2
             },
             "extratime": {
                 "home": 0,
@@ -83932,7 +83932,7 @@
     {
         "fixture": {
             "id": 1582317,
-            "referee": null,
+            "referee": "M. Frasynyak",
             "timezone": "America/Santiago",
             "date": "2026-08-29T14:30:00-04:00",
             "timestamp": 1788028200,
@@ -87067,7 +87067,7 @@
             },
             "fulltime": {
                 "home": 0,
-                "away": 1
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -89531,76 +89531,6 @@
     },
     {
         "fixture": {
-            "id": 1632241,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-08-29T16:00:00-04:00",
-            "timestamp": 1788033600,
-            "periods": {
-                "first": 1788033600,
-                "second": 1788037200
-            },
-            "venue": {
-                "id": 1651,
-                "name": "Hermanos Ghersi",
-                "city": "Maracay"
-            },
-            "status": {
-                "long": "Match Finished",
-                "short": "FT",
-                "elapsed": 90,
-                "extra": 5
-            }
-        },
-        "league": {
-            "id": 300,
-            "name": "Segunda División",
-            "country": "Venezuela",
-            "logo": "https://media.api-sports.io/football/leagues/300.png",
-            "flag": "https://media.api-sports.io/flags/ve.svg",
-            "season": 2026,
-            "round": "Regular Season - 20",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 2817,
-                "name": "Aragua FC",
-                "logo": "https://media.api-sports.io/football/teams/2817.png",
-                "winner": true
-            },
-            "away": {
-                "id": 2858,
-                "name": "Dinamo de Puerto La Cruz",
-                "logo": "https://media.api-sports.io/football/teams/2858.png",
-                "winner": false
-            }
-        },
-        "goals": {
-            "home": 2,
-            "away": 0
-        },
-        "score": {
-            "halftime": {
-                "home": 0,
-                "away": 0
-            },
-            "fulltime": {
-                "home": 2,
-                "away": 0
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
             "id": 1632315,
             "referee": null,
             "timezone": "America/Santiago",
@@ -89686,9 +89616,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -89707,27 +89637,27 @@
                 "id": 12281,
                 "name": "Vilhena",
                 "logo": "https://media.api-sports.io/football/teams/12281.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 25483,
                 "name": "Rolim de Moura",
                 "logo": "https://media.api-sports.io/football/teams/25483.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 4
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 4
             },
             "extratime": {
                 "home": null,
@@ -89882,7 +89812,7 @@
     {
         "fixture": {
             "id": 1490421,
-            "referee": "Ismail Elfath, USA",
+            "referee": "I. Elfath",
             "timezone": "America/Santiago",
             "date": "2026-08-29T16:30:00-04:00",
             "timestamp": 1788035400,
@@ -93452,7 +93382,7 @@
     {
         "fixture": {
             "id": 1490422,
-            "referee": "Elijio Arreguin, USA",
+            "referee": "E. Arreguin",
             "timezone": "America/Santiago",
             "date": "2026-08-29T19:30:00-04:00",
             "timestamp": 1788046200,
@@ -93522,7 +93452,7 @@
     {
         "fixture": {
             "id": 1490423,
-            "referee": "Sergii Demianchuk, USA",
+            "referee": "S. Demianchuk",
             "timezone": "America/Santiago",
             "date": "2026-08-29T19:30:00-04:00",
             "timestamp": 1788046200,
@@ -93592,7 +93522,7 @@
     {
         "fixture": {
             "id": 1490424,
-            "referee": "Drew Fischer, Canada",
+            "referee": "D. Fischer",
             "timezone": "America/Santiago",
             "date": "2026-08-29T19:30:00-04:00",
             "timestamp": 1788046200,
@@ -93662,7 +93592,7 @@
     {
         "fixture": {
             "id": 1490425,
-            "referee": "Malik Badawi, USA",
+            "referee": "M. Badawi",
             "timezone": "America/Santiago",
             "date": "2026-08-29T19:30:00-04:00",
             "timestamp": 1788046200,
@@ -93732,7 +93662,7 @@
     {
         "fixture": {
             "id": 1490426,
-            "referee": "Victor Rivas, USA",
+            "referee": "V. Rivas",
             "timezone": "America/Santiago",
             "date": "2026-08-29T19:30:00-04:00",
             "timestamp": 1788046200,
@@ -94516,8 +94446,8 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
+                "long": "Match Postponed",
+                "short": "PST",
                 "elapsed": null,
                 "extra": null
             }
@@ -94922,7 +94852,7 @@
     {
         "fixture": {
             "id": 1490428,
-            "referee": "Armando Villarrea, USA",
+            "referee": "A. Villarreal",
             "timezone": "America/Santiago",
             "date": "2026-08-29T20:30:00-04:00",
             "timestamp": 1788049800,
@@ -94992,7 +94922,7 @@
     {
         "fixture": {
             "id": 1490429,
-            "referee": "Marcos de Oliveira, USA",
+            "referee": "M. De Oliveira",
             "timezone": "America/Santiago",
             "date": "2026-08-29T20:30:00-04:00",
             "timestamp": 1788049800,
@@ -95062,7 +94992,7 @@
     {
         "fixture": {
             "id": 1490430,
-            "referee": "Allen Chapman, USA",
+            "referee": "A. Chapman",
             "timezone": "America/Santiago",
             "date": "2026-08-29T20:30:00-04:00",
             "timestamp": 1788049800,
@@ -95132,7 +95062,7 @@
     {
         "fixture": {
             "id": 1490431,
-            "referee": "Pierre-Luc Lauziere, USA",
+            "referee": "P. Lauziere",
             "timezone": "America/Santiago",
             "date": "2026-08-29T20:30:00-04:00",
             "timestamp": 1788049800,
@@ -96112,7 +96042,7 @@
     {
         "fixture": {
             "id": 1490432,
-            "referee": "Rosendo Mendoza, USA",
+            "referee": "R. Mendoza",
             "timezone": "America/Santiago",
             "date": "2026-08-29T21:30:00-04:00",
             "timestamp": 1788053400,
@@ -96602,7 +96532,7 @@
     {
         "fixture": {
             "id": 1490433,
-            "referee": "Tori Penso, USA",
+            "referee": "T. Penso",
             "timezone": "America/Santiago",
             "date": "2026-08-29T22:30:00-04:00",
             "timestamp": 1788057000,
@@ -96672,7 +96602,7 @@
     {
         "fixture": {
             "id": 1490434,
-            "referee": "Guido Gonzales Jr, USA",
+            "referee": "G. Gonzales",
             "timezone": "America/Santiago",
             "date": "2026-08-29T22:30:00-04:00",
             "timestamp": 1788057000,
