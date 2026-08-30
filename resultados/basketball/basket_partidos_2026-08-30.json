@@ -296,12 +296,12 @@
         "timestamp": 1788055200,
         "timezone": "UTC",
         "stage": null,
-        "week": "15",
+        "week": null,
         "venue": "Inforum Irapuato",
         "status": {
-            "long": "Over Time ",
-            "short": "OT",
-            "timer": "5"
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
         },
         "league": {
             "id": 63,
@@ -335,7 +335,7 @@
                 "quarter_3": 27,
                 "quarter_4": 20,
                 "over_time": null,
-                "total": 91
+                "total": 117
             },
             "away": {
                 "quarter_1": 27,
@@ -343,7 +343,7 @@
                 "quarter_3": 15,
                 "quarter_4": 17,
                 "over_time": null,
-                "total": 91
+                "total": 129
             }
         }
     },
@@ -415,8 +415,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -446,20 +446,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 17,
+                "quarter_2": 9,
+                "quarter_3": 20,
+                "quarter_4": 22,
                 "over_time": null,
-                "total": null
+                "total": 68
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 26,
+                "quarter_2": 31,
+                "quarter_3": 23,
+                "quarter_4": 29,
                 "over_time": null,
-                "total": null
+                "total": 109
             }
         }
     },
@@ -473,8 +473,8 @@
         "week": "2",
         "venue": "Mall of Asia Arena",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -504,20 +504,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 31,
+                "quarter_2": 34,
+                "quarter_3": 34,
+                "quarter_4": 27,
                 "over_time": null,
-                "total": null
+                "total": 126
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 19,
+                "quarter_2": 24,
+                "quarter_3": 12,
+                "quarter_4": 19,
                 "over_time": null,
-                "total": null
+                "total": 74
             }
         }
     },
@@ -531,9 +531,9 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
-            "timer": null
+            "long": "Quarter 2",
+            "short": "Q2",
+            "timer": "1"
         },
         "league": {
             "id": 301,
@@ -562,20 +562,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
+                "quarter_1": 19,
+                "quarter_2": 0,
                 "quarter_3": null,
                 "quarter_4": null,
                 "over_time": null,
-                "total": null
+                "total": 19
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
+                "quarter_1": 11,
+                "quarter_2": 0,
                 "quarter_3": null,
                 "quarter_4": null,
                 "over_time": null,
-                "total": null
+                "total": 11
             }
         }
     },
@@ -1834,6 +1834,64 @@
                 "id": 3152,
                 "name": "Slovakia",
                 "logo": "https://media.api-sports.io/basketball/teams/3152.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            },
+            "away": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            }
+        }
+    },
+    {
+        "id": 515249,
+        "date": "2026-08-30T16:15:00+00:00",
+        "time": "16:15",
+        "timestamp": 1788106500,
+        "timezone": "UTC",
+        "stage": null,
+        "week": null,
+        "venue": null,
+        "status": {
+            "long": "Not Started",
+            "short": "NS",
+            "timer": null
+        },
+        "league": {
+            "id": 290,
+            "name": "Friendly International Women",
+            "type": "League",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/290.png"
+        },
+        "country": {
+            "id": 62,
+            "name": "World",
+            "code": " ",
+            "flag": "https://media.api-sports.io/flags/ .svg"
+        },
+        "teams": {
+            "home": {
+                "id": 3036,
+                "name": "Belgium W",
+                "logo": "https://media.api-sports.io/basketball/teams/3036.png"
+            },
+            "away": {
+                "id": 3042,
+                "name": "Japan W",
+                "logo": "https://media.api-sports.io/basketball/teams/3042.png"
             }
         },
         "scores": {
