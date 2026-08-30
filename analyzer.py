@@ -155,7 +155,7 @@ class MatchAnalyzer:
         lambda_home_ht = (home_ht_scored_avg + away_ht_concede_avg) / 2
         lambda_away_ht = (away_ht_scored_avg + home_ht_concede_avg) / 2
 
-        max_goals = 5
+        max_goals = 8
         p_home = [poisson.pmf(i, lambda_home) for i in range(max_goals + 1)]
         p_away = [poisson.pmf(j, lambda_away) for j in range(max_goals + 1)]
 
@@ -189,19 +189,27 @@ class MatchAnalyzer:
         prob_under_2_5 = poisson.cdf(2, lam_total)
         prob_under_3_5 = poisson.cdf(3, lam_total)
         prob_under_4_5 = poisson.cdf(4, lam_total)
+        prob_under_5_5 = poisson.cdf(5, lam_total)
         
         prob_over_0_5_ht = 1 - poisson.cdf(0, lam_ht_total)
         prob_under_1_5_ht = poisson.cdf(1, lam_ht_total) 
 
         home_under_0_5 = p_home[0]
         home_over_0_5 = 1 - home_under_0_5
-        home_under_1_5 = p_home[0] + p_home[1]
+        home_under_1_5 = sum(p_home[:2])
         home_over_1_5 = 1 - home_under_1_5
+        home_under_2_5 = sum(p_home[:3])
+        home_over_2_5 = 1 - home_under_2_5
 
         away_under_0_5 = p_away[0]
         away_over_0_5 = 1 - away_under_0_5
-        away_under_1_5 = p_away[0] + p_away[1]
+        away_under_1_5 = sum(p_away[:2])
         away_over_1_5 = 1 - away_under_1_5
+        away_under_2_5 = sum(p_away[:3])
+        away_over_2_5 = 1 - away_under_2_5
+        
+        home_clean_sheet = p_away[0]
+        away_clean_sheet = p_home[0]
 
         return {
             'local': home_team,
@@ -228,12 +236,18 @@ class MatchAnalyzer:
             'under_3_5': prob_under_3_5,
             'over_4_5': 1 - prob_under_4_5,
             'under_4_5': prob_under_4_5,
+            'over_5_5': 1 - prob_under_5_5,
+            'under_5_5': prob_under_5_5,
             'prob_over_0_5_ht': prob_over_0_5_ht,
             'prob_under_1_5_ht': prob_under_1_5_ht,
             'home_over_0_5': home_over_0_5,
             'home_over_1_5': home_over_1_5,
+            'home_over_2_5': home_over_2_5,
             'away_over_0_5': away_over_0_5,
             'away_over_1_5': away_over_1_5,
+            'away_over_2_5': away_over_2_5,
+            'home_clean_sheet': home_clean_sheet,
+            'away_clean_sheet': away_clean_sheet,
             'home_form': home_form_str,
             'home_ppg': home_ppg,
             'away_form': away_form_str,
@@ -270,7 +284,6 @@ class MatchAnalyzer:
         }
 
     def get_basketball_projections(self, home_team, away_team, home_id, away_id, match_data=None):
-        # Tracker de rachas para Básquetbol
         def get_form_tracker(df_subset, team_id):
             if df_subset.empty: return "N/A", 0.0
             form = []
@@ -281,7 +294,7 @@ class MatchAnalyzer:
                 if pd.isna(hg) or pd.isna(ag): continue
                 if row["HomeTeamId"] == team_id:
                     if hg > ag: form.append('V'); pts += 3
-                    elif hg == ag: form.append('E'); pts += 1 # Raro en básquet, pero puede pasar sin OT
+                    elif hg == ag: form.append('E'); pts += 1
                     else: form.append('D')
                 else:
                     if ag > hg: form.append('V'); pts += 3
@@ -293,7 +306,6 @@ class MatchAnalyzer:
             ppg = pts / len(form) if form else 0.0
             return form_str, round(ppg, 1)
 
-        # Time-Decay (Ponderación) para Puntos de Básquetbol
         def get_avg_points_decay(df_subset, team_id):
             if df_subset.empty: return 105.0, 105.0
             base_weights = [0.35, 0.25, 0.20, 0.12, 0.08]
@@ -372,8 +384,6 @@ class MatchAnalyzer:
             'puntos_proyectados': total_projected_points,
             'has_overtime': has_overtime,
             'score_value': max(prob_home, prob_away),
-            
-            # Form Data Basketball
             'home_form': home_form_str,
             'home_ppg': home_ppg,
             'away_form': away_form_str,
