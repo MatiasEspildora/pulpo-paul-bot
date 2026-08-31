@@ -169,7 +169,8 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     if bb_list:
         for i, item in enumerate(bb_list[:12], 1): 
             m = item['match']
-            msg += f"*{i}.* ⚽ {m['bandera']} {m['pais_nombre']} - {m['local']} vs {m['visita']} | 🧩 *{item['sel']}* ({item['prob']:.0%})\n"
+            es_mata_mata = " ⚔️" if m.get('es_eliminatoria') else ""
+            msg += f"*{i}.* ⚽ {m['bandera']} {m['pais_nombre']} - {m['local']} vs {m['visita']}{es_mata_mata} | 🧩 *{item['sel']}* ({item['prob']:.0%})\n"
     else:
         msg += "_Ninguna variable pura superó el 80% hoy._\n"
     
@@ -177,7 +178,8 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     msg += "🏆 *TOP 5 - GANADOR DIRECTO*\n"
     for i, item in enumerate(ganadores[:5], 1):
         m = item['match']
-        msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']} | 🎯 Gana *{item['sel']}* ({item['prob']:.0%})\n"
+        es_mata_mata = " ⚔️" if m.get('es_eliminatoria') else ""
+        msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{es_mata_mata} | 🎯 Gana *{item['sel']}* ({item['prob']:.0%})\n"
         msg += f"   📈 Forma Global: L `{m.get('home_form')}` ({m.get('home_ppg')}p) | V `{m.get('away_form')}` ({m.get('away_ppg')}p)\n"
         msg += f"   🏟️ Casa/Fuera: L `{m.get('home_venue_form')}` ({m.get('home_venue_ppg')}p) | V `{m.get('away_venue_form')}` ({m.get('away_venue_ppg')}p)\n"
 
@@ -185,7 +187,8 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     msg += "🛡️ *TOP 5 - DOBLE OPORTUNIDAD*\n"
     for i, item in enumerate(dobles[:5], 1):
         m = item['match']
-        msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']} | 🛡️ *{item['sel']}* ({item['prob']:.0%})\n"
+        es_mata_mata = " ⚔️" if m.get('es_eliminatoria') else ""
+        msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{es_mata_mata} | 🛡️ *{item['sel']}* ({item['prob']:.0%})\n"
         msg += f"   📈 Forma Global: L `{m.get('home_form')}` ({m.get('home_ppg')}p) | V `{m.get('away_form')}` ({m.get('away_ppg')}p)\n"
         msg += f"   🏟️ Casa/Fuera: L `{m.get('home_venue_form')}` ({m.get('home_venue_ppg')}p) | V `{m.get('away_venue_form')}` ({m.get('away_venue_ppg')}p)\n"
 
@@ -193,7 +196,8 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     msg += "🔥 *TOP 5 - MERCADOS DE GOLES*\n"
     for i, item in enumerate(goles[:5], 1):
         m = item['match']
-        msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']} | 🔥 *{item['sel']}* ({item['prob']:.0%})\n"
+        es_mata_mata = " ⚔️" if m.get('es_eliminatoria') else ""
+        msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{es_mata_mata} | 🔥 *{item['sel']}* ({item['prob']:.0%})\n"
 
     msg += "\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
     msg += "🩸 *LA AUTOPSIA (Código Fuente)*\n\n"
@@ -225,7 +229,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             msg += f"📅 `{p.get('fecha_str', '')}` | 🕒 `{p.get('hora', '')}`{es_mata_mata}\n"
             msg += f"⚽ *{p['local']}*{l_tag} vs *{p['visita']}*{v_tag}\n"
             msg += f"📈 Global: L `{p.get('home_form')}` ({p.get('home_ppg')}p) | V `{p.get('away_form')}` ({p.get('away_ppg')}p)\n"
-            msg += f"🏟️ Casa/Fuera: L `{p.get('home_venue_form')}` ({p.get('home_venue_ppg')}p) | V `{p.get('away_venue_form')}` ({m.get('away_venue_ppg')}p)\n"
+            msg += f"🏟️ Casa/Fuera: L `{p.get('home_venue_form')}` ({p.get('home_venue_ppg')}p) | V `{p.get('away_venue_form')}` ({p.get('away_venue_ppg')}p)\n"
             msg += f"📊 1X2: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
             msg += f"🛡️ Doble Op: 1X ({p.get('prob_1X',0):.0%}) | 12 ({p.get('prob_12',0):.0%}) | X2 ({p.get('prob_X2',0):.0%})\n"
             
@@ -439,4 +443,3 @@ def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, to
         time.sleep(2)
         
     enviar_resumen_mejores_apuestas_basket(proyecciones_dict, titulo_bloque, analyzer, token_override)
-
