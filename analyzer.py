@@ -12,7 +12,7 @@ class MatchAnalyzer:
         matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)]
         matches = matches.dropna(subset=["FTHG", "FTAG"])
         matches = matches.sort_values(by="Date", ascending=False)
-        recent = matches.head(5)
+        recent = matches.head(10)
 
         count = len(recent)
         if recent.empty or count == 0:
@@ -85,7 +85,8 @@ class MatchAnalyzer:
         def get_avg_goals_decay(df_subset, team_id, is_ht=False):
             if df_subset.empty: return 1.2 if not is_ht else 0.5, 1.2 if not is_ht else 0.5
             
-            base_weights = [0.35, 0.25, 0.20, 0.12, 0.08]
+            # Nueva curva de 10 pesos
+            base_weights = [0.20, 0.16, 0.14, 0.12, 0.10, 0.08, 0.07, 0.06, 0.04, 0.03]
             goles_f, goles_c = [], []
             
             col_fthg = "HTHG" if is_ht else "FTHG"
@@ -113,16 +114,16 @@ class MatchAnalyzer:
             return float(avg_f), float(avg_c)
 
         home_global = self.df[(self.df['HomeTeamId'] == home_id) | (self.df['AwayTeamId'] == home_id)]
-        home_global = home_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
+        home_global = home_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
 
         away_global = self.df[(self.df['HomeTeamId'] == away_id) | (self.df['AwayTeamId'] == away_id)]
-        away_global = away_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
+        away_global = away_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
         
         home_form_str, home_ppg = get_form_tracker(home_global, home_id)
         away_form_str, away_ppg = get_form_tracker(away_global, away_id)
 
-        home_venue = self.df[self.df['HomeTeamId'] == home_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
-        away_venue = self.df[self.df['AwayTeamId'] == away_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
+        home_venue = self.df[self.df['HomeTeamId'] == home_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
+        away_venue = self.df[self.df['AwayTeamId'] == away_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
 
         home_venue_form_str, home_venue_ppg = get_form_tracker(home_venue, home_id)
         away_venue_form_str, away_venue_ppg = get_form_tracker(away_venue, away_id)
@@ -262,7 +263,7 @@ class MatchAnalyzer:
         matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)]
         matches = matches.dropna(subset=["FTHG", "FTAG"]) 
         matches = matches.sort_values(by="Date", ascending=False)
-        recent = matches.head(5)
+        recent = matches.head(10)
 
         count = len(recent)
         if recent.empty or count == 0:
@@ -308,7 +309,8 @@ class MatchAnalyzer:
 
         def get_avg_points_decay(df_subset, team_id):
             if df_subset.empty: return 105.0, 105.0
-            base_weights = [0.35, 0.25, 0.20, 0.12, 0.08]
+            
+            base_weights = [0.20, 0.16, 0.14, 0.12, 0.10, 0.08, 0.07, 0.06, 0.04, 0.03]
             pts_f, pts_c = [], []
             
             for _, row in df_subset.iterrows():
@@ -333,16 +335,16 @@ class MatchAnalyzer:
             return float(avg_f), float(avg_c)
 
         home_global = self.df[(self.df['HomeTeamId'] == home_id) | (self.df['AwayTeamId'] == home_id)]
-        home_global = home_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
+        home_global = home_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
         
         away_global = self.df[(self.df['HomeTeamId'] == away_id) | (self.df['AwayTeamId'] == away_id)]
-        away_global = away_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
+        away_global = away_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
 
         home_form_str, home_ppg = get_form_tracker(home_global, home_id)
         away_form_str, away_ppg = get_form_tracker(away_global, away_id)
 
-        home_venue = self.df[self.df['HomeTeamId'] == home_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
-        away_venue = self.df[self.df['AwayTeamId'] == away_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
+        home_venue = self.df[self.df['HomeTeamId'] == home_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
+        away_venue = self.df[self.df['AwayTeamId'] == away_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
 
         home_venue_form_str, home_venue_ppg = get_form_tracker(home_venue, home_id)
         away_venue_form_str, away_venue_ppg = get_form_tracker(away_venue, away_id)
@@ -397,7 +399,7 @@ class MatchAnalyzer:
     def get_basketball_overtime_stats(self, team_name, team_id):
         matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)]
         matches = matches.sort_values(by="Date", ascending=False)
-        recent = matches.head(5)
+        recent = matches.head(10)
 
         count = len(recent)
         if recent.empty or count == 0:
