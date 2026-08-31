@@ -153,11 +153,11 @@ def run_process(df_externo=None):
                 
                 file_path = f"resultados/basketball/basket_partidos_{f_str}.json"
                 partidos_del_dia = None
-                origen_datos = "🌐 API" # Inicializamos el flag por defecto
+                origen_datos = "🌐 API" 
                 
                 try:
                     data = api.get_data("games", {"date": f_str})
-                    time.sleep(1.5) # ⏱️ PAUSA DE SEGURIDAD PARA EVITAR BANEOS (Reemplaza el sleep(1) de abajo)
+                    time.sleep(1.5) 
                 except Exception as e:
                     print(f"⚠️ [BASKETBALL] Error al consultar API para {f_str}: {e}")
                     data = None
@@ -170,7 +170,7 @@ def run_process(df_externo=None):
                     except Exception as e:
                         print(f"⚠️ [BASKETBALL] Error al guardar caché: {e}")
                 else:
-                    origen_datos = "📂 LOCAL" # Cambiamos el flag si falla la API
+                    origen_datos = "📂 LOCAL" 
                     if os.path.exists(file_path):
                         try:
                             with open(file_path, "r", encoding="utf-8") as f:
@@ -180,7 +180,6 @@ def run_process(df_externo=None):
                             partidos_del_dia = None
                     
                 if partidos_del_dia:
-                    # Imprimimos el flag para confirmar visualmente de dónde viene la data
                     print(f"✔️ [BASKETBALL] {f_str} procesado desde {origen_datos} ({len(partidos_del_dia)} partidos).")
                     datos_fechas[f_str] = partidos_del_dia
                     df = actualizar_maestro_con_partidos(df, partidos_del_dia, f_str, statuses_map)
@@ -209,7 +208,6 @@ def run_process(df_externo=None):
                             
                         dt_obj = datetime.fromisoformat(game_date.replace("Z", "+00:00")).astimezone(zona)
                         
-                        # Filtro temporal: Evita partidos que ya comenzaron
                         if dt_obj < now:
                             continue
 
@@ -221,8 +219,15 @@ def run_process(df_externo=None):
                         a_name = a_team_info.get("name")
                         h_id = h_team_info.get("id")
                         a_id = a_team_info.get("id")
+
+                        league_id_raw = match.get("league", {}).get("id")
+                        league_id_str = str(league_id_raw) if league_id_raw is not None else None
                         
-                        proj = analyzer.get_basketball_projections(h_name, a_name, h_id, a_id, match)
+                        proj = analyzer.get_basketball_projections(
+                            h_name, a_name, h_id, a_id, 
+                            league_id=league_id_str, 
+                            match_data=match
+                        )
                         
                         proj['fecha_str'] = dt_obj.strftime("%Y-%m-%d")
                         proj['hora'] = dt_obj.strftime("%H:%M")
