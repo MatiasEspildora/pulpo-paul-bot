@@ -59,7 +59,7 @@ class MatchAnalyzer:
             "count": count,
         }
 
-    def get_projections(self, home_team, away_team, home_id, away_id):
+    def get_projections(self, home_team, away_team, home_id, away_id, league_id=None):
         def get_form_tracker(df_subset, team_id):
             if df_subset.empty: return "N/A", 0.0
             form = []
@@ -85,7 +85,6 @@ class MatchAnalyzer:
         def get_avg_goals_decay(df_subset, team_id, is_ht=False):
             if df_subset.empty: return 1.2 if not is_ht else 0.5, 1.2 if not is_ht else 0.5
             
-            # Curva de 15 pesos (Time-Decay optimizado para 15 partidos)
             base_weights = [0.15, 0.12, 0.10, 0.09, 0.08, 0.07, 0.06, 0.05, 0.05, 0.04, 0.04, 0.03, 0.03, 0.02, 0.02]
             goles_f, goles_c = [], []
             
@@ -113,6 +112,7 @@ class MatchAnalyzer:
             avg_c = sum(g * w_i for g, w_i in zip(goles_c, w))
             return float(avg_f), float(avg_c)
 
+        # 1. FORMA GLOBAL (15 partidos)
         home_global = self.df[(self.df['HomeTeamId'] == home_id) | (self.df['AwayTeamId'] == home_id)]
         home_global = home_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(15)
 
@@ -122,34 +122,73 @@ class MatchAnalyzer:
         home_form_str, home_ppg = get_form_tracker(home_global, home_id)
         away_form_str, away_ppg = get_form_tracker(away_global, away_id)
 
+        # 2. FORMA CASA/FUERA
         home_venue = self.df[self.df['HomeTeamId'] == home_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(15)
         away_venue = self.df[self.df['AwayTeamId'] == away_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(15)
 
         home_venue_form_str, home_venue_ppg = get_form_tracker(home_venue, home_id)
         away_venue_form_str, away_venue_ppg = get_form_tracker(away_venue, away_id)
 
+        # 3. CARA A CARA (H2H)
+        h2h_df = self.df[((self.df['HomeTeamId'] == home_id) & (self.df['AwayTeamId'] == away_id)) | 
+                         ((self.df['HomeTeamId'] == away_id) & (self.df['AwayTeamId'] == home_id))]
+        h2h_df = h2h_df.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
+
+        # Base calculations (Global + Venue)
         hg_f_glob, hg_c_glob = get_avg_goals_decay(home_global, home_id)
         ag_f_glob, ag_c_glob = get_avg_goals_decay(away_global, away_id)
-
-        hht_f_glob, hht_c_glob = get_avg_goals_decay(home_global, home_id, is_ht=True)
-        aht_f_glob, aht_c_glob = get_avg_goals_decay(away_global, away_id, is_ht=True)
 
         hg_f_ven, hg_c_ven = get_avg_goals_decay(home_venue, home_id)
         ag_f_ven, ag_c_ven = get_avg_goals_decay(away_venue, away_id)
 
+        # Matrices de factores dinámicos
+        home_scored_factors = [hg_f_glob, hg_f_ven]
+        home_concede_factors = [hg_c_glob, hg_c_ven]
+        away_scored_factors = [ag_f_glob, ag_f_ven]
+        away_concede_factors = [ag_c_glob, ag_c_ven]
+
+        # Inyección de Torneo (Si se proporciona el LeagueId)
+        if league_id:
+            home_league = home_global[home_global['LeagueId'] == league_id]
+            if not home_league.empty:
+                hl_f, hl_c = get_avg_goals_decay(home_league, home_id)
+                home_scored_factors.extend([hl_f, hl_f]) # Peso doble al torneo actual
+                home_concede_factors.extend([hl_c, hl_c])
+                
+            away_league = away_global[away_global['LeagueId'] == league_id]
+            if not away_league.empty:
+                al_f, al_c = get_avg_goals_decay(away_league, away_id)
+                away_scored_factors.extend([al_f, al_f]) # Peso doble al torneo actual
+                away_concede_factors.extend([al_c, al_c])
+
+        # Inyección de Cara a Cara (H2H)
+        if not h2h_df.empty:
+            h2h_hf, h2h_hc = get_avg_goals_decay(h2h_df, home_id)
+            h2h_af, h2h_ac = get_avg_goals_decay(h2h_df, away_id)
+            
+            home_scored_factors.append(h2h_hf)
+            home_concede_factors.append(h2h_hc)
+            away_scored_factors.append(h2h_af)
+            away_concede_factors.append(h2h_ac)
+
+        # Promedios finales integrados
+        home_scored_avg = np.mean(home_scored_factors)
+        home_concede_avg = np.mean(home_concede_factors)
+        away_scored_avg = np.mean(away_scored_factors)
+        away_concede_avg = np.mean(away_concede_factors)
+
+        # Medio Tiempo (Mantenemos promedio Global + Venue para simpleza en HT)
+        hht_f_glob, hht_c_glob = get_avg_goals_decay(home_global, home_id, is_ht=True)
+        aht_f_glob, aht_c_glob = get_avg_goals_decay(away_global, away_id, is_ht=True)
         hht_f_ven, hht_c_ven = get_avg_goals_decay(home_venue, home_id, is_ht=True)
         aht_f_ven, aht_c_ven = get_avg_goals_decay(away_venue, away_id, is_ht=True)
-
-        home_scored_avg = (hg_f_glob + hg_f_ven) / 2
-        home_concede_avg = (hg_c_glob + hg_c_ven) / 2
-        away_scored_avg = (ag_f_glob + ag_f_ven) / 2
-        away_concede_avg = (ag_c_glob + ag_c_ven) / 2
 
         home_ht_scored_avg = (hht_f_glob + hht_f_ven) / 2
         home_ht_concede_avg = (hht_c_glob + hht_c_ven) / 2
         away_ht_scored_avg = (aht_f_glob + aht_f_ven) / 2
         away_ht_concede_avg = (aht_c_glob + aht_c_ven) / 2
 
+        # Algoritmo Poisson
         lambda_home = (home_scored_avg + away_concede_avg) / 2
         lambda_away = (away_scored_avg + home_concede_avg) / 2
         
@@ -284,7 +323,7 @@ class MatchAnalyzer:
             "count": count,
         }
 
-    def get_basketball_projections(self, home_team, away_team, home_id, away_id, match_data=None):
+    def get_basketball_projections(self, home_team, away_team, home_id, away_id, league_id=None, match_data=None):
         def get_form_tracker(df_subset, team_id):
             if df_subset.empty: return "N/A", 0.0
             form = []
@@ -349,20 +388,45 @@ class MatchAnalyzer:
         home_venue_form_str, home_venue_ppg = get_form_tracker(home_venue, home_id)
         away_venue_form_str, away_venue_ppg = get_form_tracker(away_venue, away_id)
 
+        h2h_df = self.df[((self.df['HomeTeamId'] == home_id) & (self.df['AwayTeamId'] == away_id)) | 
+                         ((self.df['HomeTeamId'] == away_id) & (self.df['AwayTeamId'] == home_id))]
+        h2h_df = h2h_df.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(5)
+
         hg_f_glob, hg_c_glob = get_avg_points_decay(home_global, home_id)
         ag_f_glob, ag_c_glob = get_avg_points_decay(away_global, away_id)
 
         hg_f_ven, hg_c_ven = get_avg_points_decay(home_venue, home_id)
         ag_f_ven, ag_c_ven = get_avg_points_decay(away_venue, away_id)
 
-        home_avg_scored = (hg_f_glob + hg_f_ven) / 2
-        home_avg_conceded = (hg_c_glob + hg_c_ven) / 2
-        
-        away_avg_scored = (ag_f_glob + ag_f_ven) / 2
-        away_avg_conceded = (ag_c_glob + ag_c_ven) / 2
+        home_scored_factors = [hg_f_glob, hg_f_ven]
+        home_concede_factors = [hg_c_glob, hg_c_ven]
+        away_scored_factors = [ag_f_glob, ag_f_ven]
+        away_concede_factors = [ag_c_glob, ag_c_ven]
 
-        exp_home_score = (home_avg_scored + away_avg_conceded) / 2
-        exp_away_score = (away_avg_scored + home_avg_conceded) / 2
+        if league_id:
+            home_league = home_global[home_global['LeagueId'] == league_id]
+            if not home_league.empty:
+                hl_f, hl_c = get_avg_points_decay(home_league, home_id)
+                home_scored_factors.extend([hl_f, hl_f]) 
+                home_concede_factors.extend([hl_c, hl_c])
+                
+            away_league = away_global[away_global['LeagueId'] == league_id]
+            if not away_league.empty:
+                al_f, al_c = get_avg_points_decay(away_league, away_id)
+                away_scored_factors.extend([al_f, al_f])
+                away_concede_factors.extend([al_c, al_c])
+
+        if not h2h_df.empty:
+            h2h_hf, h2h_hc = get_avg_points_decay(h2h_df, home_id)
+            h2h_af, h2h_ac = get_avg_points_decay(h2h_df, away_id)
+            
+            home_scored_factors.append(h2h_hf)
+            home_concede_factors.append(h2h_hc)
+            away_scored_factors.append(h2h_af)
+            away_concede_factors.append(h2h_ac)
+
+        exp_home_score = (np.mean(home_scored_factors) + np.mean(away_concede_factors)) / 2
+        exp_away_score = (np.mean(away_scored_factors) + np.mean(home_concede_factors)) / 2
         total_projected_points = exp_home_score + exp_away_score
 
         diff = exp_home_score - exp_away_score
