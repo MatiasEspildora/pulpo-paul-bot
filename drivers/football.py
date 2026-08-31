@@ -116,7 +116,6 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
             df_hist = pd.concat([df_hist, pd.DataFrame([nuevo])], ignore_index=True)
     return df_hist
 
-# 🔥 NUEVA FUNCIÓN: Infiere la liga local del equipo desde la Base de Datos
 def obtener_liga_domestica(df, team_id, team_name):
     if df is None or df.empty: return ""
     try:
@@ -125,13 +124,11 @@ def obtener_liga_domestica(df, team_id, team_name):
         else:
             mask = (df['HomeTeam'] == team_name) | (df['AwayTeam'] == team_name)
         
-        # Filtramos partidos de Copa/Mata-Mata para encontrar su liga habitual
         mask_league = mask & (df['EsEliminatoria'] == False) & (~df['League'].fillna("").str.contains("Cup|Copa|Pokal|Trophy|Taça|Coppa|Coupe|Shield", case=False))
         df_team = df[mask_league]
         
         if not df_team.empty:
             liga = df_team['League'].mode().iloc[0]
-            # Pequeña limpieza visual
             liga = str(liga).replace("Primera División", "1ra").replace("Segunda División", "2da")
             return liga
     except Exception:
@@ -234,7 +231,10 @@ def run_process(df_externo=None):
                         h_id = match.get("teams", {}).get("home", {}).get("id")
                         a_id = match.get("teams", {}).get("away", {}).get("id")
                         
-                        proj = analyzer.get_projections(h_name, a_name, h_id, a_id)
+                        league_id_raw = match.get("league", {}).get("id")
+                        league_id_str = str(league_id_raw) if league_id_raw is not None else None
+                        
+                        proj = analyzer.get_projections(h_name, a_name, h_id, a_id, league_id=league_id_str)
                         
                         proj['fecha_str'] = dt_obj.strftime("%Y-%m-%d")
                         proj['hora'] = dt_obj.strftime("%H:%M")
@@ -246,7 +246,6 @@ def run_process(df_externo=None):
                         palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "play-off", "qualifying"]
                         proj['es_eliminatoria'] = any(palabra in ronda_texto for palabra in palabras_clave)
                         
-                        # 🔥 AÑADIMOS LA LIGA DOMÉSTICA PARA LA AUTOPSIA
                         proj['local_league'] = obtener_liga_domestica(df, h_id, h_name)
                         proj['visita_league'] = obtener_liga_domestica(df, a_id, a_name)
                         
