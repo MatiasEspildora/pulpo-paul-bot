@@ -896,8 +896,8 @@
                 "away": null
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 3
             },
             "extratime": {
                 "home": null,
@@ -1267,8 +1267,8 @@
             "date": "2026-08-30T03:00:00-04:00",
             "timestamp": 1788073200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1788073200,
+                "second": 1788076800
             },
             "venue": {
                 "id": null,
@@ -4971,76 +4971,6 @@
     },
     {
         "fixture": {
-            "id": 1636617,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-08-30T05:00:00-04:00",
-            "timestamp": 1788080400,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 765,
-            "name": "PFL",
-            "country": "Philippines",
-            "logo": "https://media.api-sports.io/football/leagues/765.png",
-            "flag": "https://media.api-sports.io/flags/ph.svg",
-            "season": 2027,
-            "round": "Group Stage",
-            "standings": false
-        },
-        "teams": {
-            "home": {
-                "id": 16192,
-                "name": "Mendiola",
-                "logo": "https://media.api-sports.io/football/teams/16192.png",
-                "winner": null
-            },
-            "away": {
-                "id": 16191,
-                "name": "Maharlika",
-                "logo": "https://media.api-sports.io/football/teams/16191.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
             "id": 1555678,
             "referee": null,
             "timezone": "America/Santiago",
@@ -5308,6 +5238,76 @@
             "fulltime": {
                 "home": 1,
                 "away": 2
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1637165,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-30T05:30:00-04:00",
+            "timestamp": 1788082200,
+            "periods": {
+                "first": 1788082200,
+                "second": 1788085800
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 1243,
+            "name": "Super League Women",
+            "country": "South-Africa",
+            "logo": "https://media.api-sports.io/football/leagues/1243.png",
+            "flag": "https://media.api-sports.io/flags/za.svg",
+            "season": 2026,
+            "round": "Regular season",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 28357,
+                "name": "Ramatlaohle W",
+                "logo": "https://media.api-sports.io/football/teams/28357.png",
+                "winner": true
+            },
+            "away": {
+                "id": 28354,
+                "name": "First Touch W",
+                "logo": "https://media.api-sports.io/football/teams/28354.png",
+                "winner": false
+            }
+        },
+        "goals": {
+            "home": 1,
+            "away": 0
+        },
+        "score": {
+            "halftime": {
+                "home": 1,
+                "away": 0
+            },
+            "fulltime": {
+                "home": 1,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -14771,146 +14771,6 @@
     },
     {
         "fixture": {
-            "id": 1629401,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-08-30T08:00:00-04:00",
-            "timestamp": 1788091200,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 1240,
-            "name": "U19 league",
-            "country": "Turkey",
-            "logo": "https://media.api-sports.io/football/leagues/1240.png",
-            "flag": "https://media.api-sports.io/flags/tr.svg",
-            "season": 2026,
-            "round": "Regular Season - 3",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 28241,
-                "name": "Amedspor U19",
-                "logo": "https://media.api-sports.io/football/teams/28241.png",
-                "winner": null
-            },
-            "away": {
-                "id": 17701,
-                "name": "Trabzonspor U19",
-                "logo": "https://media.api-sports.io/football/teams/17701.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1629403,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-08-30T08:00:00-04:00",
-            "timestamp": 1788091200,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 1240,
-            "name": "U19 league",
-            "country": "Turkey",
-            "logo": "https://media.api-sports.io/football/leagues/1240.png",
-            "flag": "https://media.api-sports.io/flags/tr.svg",
-            "season": 2026,
-            "round": "Regular Season - 3",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 7973,
-                "name": "Beşiktaş U19",
-                "logo": "https://media.api-sports.io/football/teams/7973.png",
-                "winner": null
-            },
-            "away": {
-                "id": 28242,
-                "name": "Corum U19",
-                "logo": "https://media.api-sports.io/football/teams/28242.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
             "id": 1629405,
             "referee": null,
             "timezone": "America/Santiago",
@@ -23101,6 +22961,76 @@
     },
     {
         "fixture": {
+            "id": 1637166,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-30T09:00:00-04:00",
+            "timestamp": 1788094800,
+            "periods": {
+                "first": 1788094800,
+                "second": 1788098400
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 1243,
+            "name": "Super League Women",
+            "country": "South-Africa",
+            "logo": "https://media.api-sports.io/football/leagues/1243.png",
+            "flag": "https://media.api-sports.io/flags/za.svg",
+            "season": 2026,
+            "round": "Regular season",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 28361,
+                "name": "Tshwane University W",
+                "logo": "https://media.api-sports.io/football/teams/28361.png",
+                "winner": null
+            },
+            "away": {
+                "id": 28362,
+                "name": "University of Fort Hare W",
+                "logo": "https://media.api-sports.io/football/teams/28362.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": 0,
+            "away": 0
+        },
+        "score": {
+            "halftime": {
+                "home": 0,
+                "away": 0
+            },
+            "fulltime": {
+                "home": 0,
+                "away": 0
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1497220,
             "referee": null,
             "timezone": "America/Santiago",
@@ -28058,76 +27988,6 @@
             "fulltime": {
                 "home": 1,
                 "away": 0
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1627255,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-08-30T10:00:00-04:00",
-            "timestamp": 1788098400,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 397,
-            "name": "Girabola",
-            "country": "Angola",
-            "logo": "https://media.api-sports.io/football/leagues/397.png",
-            "flag": "https://media.api-sports.io/flags/ao.svg",
-            "season": 2026,
-            "round": "Regular Season - 2",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 4924,
-                "name": "Recreativo do Libolo",
-                "logo": "https://media.api-sports.io/football/teams/4924.png",
-                "winner": null
-            },
-            "away": {
-                "id": 4921,
-                "name": "Bravos do Maquis FC",
-                "logo": "https://media.api-sports.io/football/teams/4921.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
             },
             "extratime": {
                 "home": null,
@@ -34021,76 +33881,6 @@
     },
     {
         "fixture": {
-            "id": 1565459,
-            "referee": "K. Zabroda",
-            "timezone": "America/Santiago",
-            "date": "2026-08-30T11:00:00-04:00",
-            "timestamp": 1788102000,
-            "periods": {
-                "first": 1788102000,
-                "second": 1788105600
-            },
-            "venue": {
-                "id": null,
-                "name": "Stadion Valerija Lobanovskoho",
-                "city": "Kyiv"
-            },
-            "status": {
-                "long": "Match Suspended",
-                "short": "SUSP",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 333,
-            "name": "Premier League",
-            "country": "Ukraine",
-            "logo": "https://media.api-sports.io/football/leagues/333.png",
-            "flag": "https://media.api-sports.io/flags/ua.svg",
-            "season": 2026,
-            "round": "Regular Season - 4",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 599,
-                "name": "Zorya Luhansk",
-                "logo": "https://media.api-sports.io/football/teams/599.png",
-                "winner": false
-            },
-            "away": {
-                "id": 3628,
-                "name": "FC Kharkiv",
-                "logo": "https://media.api-sports.io/football/teams/3628.png",
-                "winner": true
-            }
-        },
-        "goals": {
-            "home": 0,
-            "away": 1
-        },
-        "score": {
-            "halftime": {
-                "home": 0,
-                "away": 1
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
             "id": 1568152,
             "referee": null,
             "timezone": "America/Santiago",
@@ -35272,76 +35062,6 @@
             "extratime": {
                 "home": 0,
                 "away": 0
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1621294,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-08-30T11:00:00-04:00",
-            "timestamp": 1788102000,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": 3908,
-                "name": "Umuahia Township Stadium",
-                "city": "Umuahia"
-            },
-            "status": {
-                "long": "Match Suspended",
-                "short": "SUSP",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 399,
-            "name": "NPFL",
-            "country": "Nigeria",
-            "logo": "https://media.api-sports.io/football/leagues/399.png",
-            "flag": "https://media.api-sports.io/flags/ng.svg",
-            "season": 2027,
-            "round": "Regular Season - 1",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 5171,
-                "name": "Abia Warriors",
-                "logo": "https://media.api-sports.io/football/teams/5171.png",
-                "winner": null
-            },
-            "away": {
-                "id": 26401,
-                "name": "Kun Khalifat FC",
-                "logo": "https://media.api-sports.io/football/teams/26401.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": 0,
-            "away": 0
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
             },
             "penalty": {
                 "home": null,
@@ -38291,76 +38011,6 @@
     },
     {
         "fixture": {
-            "id": 1632237,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-08-30T11:40:00-04:00",
-            "timestamp": 1788104400,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 330,
-            "name": "Premier League",
-            "country": "Kuwait",
-            "logo": "https://media.api-sports.io/football/leagues/330.png",
-            "flag": "https://media.api-sports.io/flags/kw.svg",
-            "season": 2026,
-            "round": "Regular Season - 2",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 3540,
-                "name": "Kazma",
-                "logo": "https://media.api-sports.io/football/teams/3540.png",
-                "winner": null
-            },
-            "away": {
-                "id": 3542,
-                "name": "Al Sahel",
-                "logo": "https://media.api-sports.io/football/teams/3542.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
             "id": 1547619,
             "referee": "M. Lukjancukas",
             "timezone": "America/Santiago",
@@ -39832,7 +39482,7 @@
     {
         "fixture": {
             "id": 1582318,
-            "referee": null,
+            "referee": "D. Mirabella",
             "timezone": "America/Santiago",
             "date": "2026-08-30T12:00:00-04:00",
             "timestamp": 1788105600,
@@ -39902,7 +39552,7 @@
     {
         "fixture": {
             "id": 1582320,
-            "referee": null,
+            "referee": "M. Faye",
             "timezone": "America/Santiago",
             "date": "2026-08-30T12:00:00-04:00",
             "timestamp": 1788105600,
@@ -39972,7 +39622,7 @@
     {
         "fixture": {
             "id": 1582322,
-            "referee": null,
+            "referee": "S. Palmieri",
             "timezone": "America/Santiago",
             "date": "2026-08-30T12:00:00-04:00",
             "timestamp": 1788105600,
@@ -51732,7 +51382,7 @@
     {
         "fixture": {
             "id": 1582319,
-            "referee": null,
+            "referee": "J. Gallorini",
             "timezone": "America/Santiago",
             "date": "2026-08-30T14:30:00-04:00",
             "timestamp": 1788114600,
