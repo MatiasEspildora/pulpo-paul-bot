@@ -237,9 +237,10 @@ def run_process(df_externo=None):
                         liga = match.get("league", {}).get("name", "Unknown")
                         proj['pais'] = pais
                         
-                        target = proyecciones_mañana if dt_obj.strftime("%Y-%m-%d") > fecha_mañana_str else proyecciones_hoy
+                        target = proyecciones_mañana if dt_obj.strftime("%Y-%m-%d") > fecha_hoy_str else proyecciones_hoy
                         target.setdefault((pais, liga), []).append(proj)
-                except Exception:
+                except Exception as e:
+                    print(f"⚠️ [BASKETBALL] Error procesando partido: {e}")
                     continue
 
         print("🏀 [BASKETBALL] Generando proyecciones globales...")
