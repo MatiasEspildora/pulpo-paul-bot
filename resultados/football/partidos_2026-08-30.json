@@ -23031,6 +23031,76 @@
     },
     {
         "fixture": {
+            "id": 1637426,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-30T09:00:00-04:00",
+            "timestamp": 1788094800,
+            "periods": {
+                "first": 1788094800,
+                "second": 1788098400
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 1244,
+            "name": "B-Liga Women",
+            "country": "Denmark",
+            "logo": "https://media.api-sports.io/football/leagues/1244.png",
+            "flag": "https://media.api-sports.io/flags/dk.svg",
+            "season": 2026,
+            "round": "Regular Season - 3",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 28371,
+                "name": "Esbjerg W",
+                "logo": "https://media.api-sports.io/football/teams/28371.png",
+                "winner": false
+            },
+            "away": {
+                "id": 28373,
+                "name": "Viborg W",
+                "logo": "https://media.api-sports.io/football/teams/28373.png",
+                "winner": true
+            }
+        },
+        "goals": {
+            "home": 0,
+            "away": 3
+        },
+        "score": {
+            "halftime": {
+                "home": 0,
+                "away": 2
+            },
+            "fulltime": {
+                "home": 0,
+                "away": 3
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1497220,
             "referee": null,
             "timezone": "America/Santiago",
