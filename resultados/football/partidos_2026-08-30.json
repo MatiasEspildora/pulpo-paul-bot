@@ -60216,10 +60216,10 @@
                 "city": "Santa Ana"
             },
             "status": {
-                "long": "Match Interrupted",
-                "short": "INT",
-                "elapsed": null,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 6
             }
         },
         "league": {
@@ -60248,7 +60248,7 @@
         },
         "goals": {
             "home": 3,
-            "away": 0
+            "away": 1
         },
         "score": {
             "halftime": {
@@ -60256,8 +60256,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -60496,9 +60496,9 @@
                 "city": "Coquimbo"
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 75,
+                "long": "Match Interrupted",
+                "short": "INT",
+                "elapsed": null,
                 "extra": null
             }
         },
@@ -60566,10 +60566,10 @@
                 "city": "Cusco"
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 79,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 6
             }
         },
         "league": {
@@ -60606,8 +60606,8 @@
                 "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -60636,10 +60636,10 @@
                 "city": "Toluca"
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 74,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 5
             }
         },
         "league": {
@@ -60667,7 +60667,7 @@
             }
         },
         "goals": {
-            "home": 3,
+            "home": 4,
             "away": 0
         },
         "score": {
@@ -60676,8 +60676,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 4,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -60706,10 +60706,10 @@
                 "city": null
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 77,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 5
             }
         },
         "league": {
@@ -60746,8 +60746,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -60776,10 +60776,10 @@
                 "city": "Mendoza"
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 47,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 5
             }
         },
         "league": {
@@ -60797,17 +60797,17 @@
                 "id": 473,
                 "name": "Independ. Rivadavia",
                 "logo": "https://media.api-sports.io/football/teams/473.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 436,
                 "name": "Racing Club",
                 "logo": "https://media.api-sports.io/football/teams/436.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": 1,
+            "home": 3,
             "away": 1
         },
         "score": {
@@ -60816,8 +60816,8 @@
                 "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -60838,7 +60838,7 @@
             "timestamp": 1788138000,
             "periods": {
                 "first": 1788138000,
-                "second": null
+                "second": 1788141600
             },
             "venue": {
                 "id": 2465,
@@ -60846,9 +60846,9 @@
                 "city": "Quetzaltenango"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 34,
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 59,
                 "extra": null
             }
         },
@@ -60877,7 +60877,7 @@
             }
         },
         "goals": {
-            "home": 1,
+            "home": 2,
             "away": 0
         },
         "score": {
@@ -60908,7 +60908,7 @@
             "timestamp": 1788138000,
             "periods": {
                 "first": 1788138000,
-                "second": null
+                "second": 1788141600
             },
             "venue": {
                 "id": null,
@@ -60916,9 +60916,9 @@
                 "city": null
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 36,
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 68,
                 "extra": null
             }
         },
@@ -60948,7 +60948,7 @@
         },
         "goals": {
             "home": 0,
-            "away": 1
+            "away": 2
         },
         "score": {
             "halftime": {
@@ -60978,7 +60978,7 @@
             "timestamp": 1788139200,
             "periods": {
                 "first": 1788139200,
-                "second": null
+                "second": 1788142800
             },
             "venue": {
                 "id": 376,
@@ -60986,9 +60986,9 @@
                 "city": "Palmira"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 17,
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 48,
                 "extra": null
             }
         },
@@ -61056,10 +61056,10 @@
                 "city": null
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 3,
-                "extra": null
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
+                "extra": 2
             }
         },
         "league": {
@@ -61117,7 +61117,7 @@
             "date": "2026-08-30T22:10:00-04:00",
             "timestamp": 1788142200,
             "periods": {
-                "first": null,
+                "first": 1788142200,
                 "second": null
             },
             "venue": {
@@ -61126,9 +61126,9 @@
                 "city": "Monterrey"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 16,
                 "extra": null
             }
         },
@@ -61147,23 +61147,23 @@
                 "id": 2282,
                 "name": "Monterrey",
                 "logo": "https://media.api-sports.io/football/teams/2282.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 2314,
                 "name": "Atletico San Luis",
                 "logo": "https://media.api-sports.io/football/teams/2314.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
                 "home": null,
