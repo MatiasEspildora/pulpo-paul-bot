@@ -3,17 +3,17 @@ name: Pulpo Paul Diario
 on:
   workflow_dispatch:
   schedule:
-    # 1. Apertura Europa (08:15 hrs Chile en GMT-3) -> 11:15 UTC
-    - cron: '00 11 * * *'
+    # 1. Apertura Europa -> Se ejecuta a las 11:13 UTC para evitar el tráfico de la hora punta
+    - cron: '13 11 * * *'
     
-    # 2. Previa Champions/Tarde Europa (13:15 hrs Chile en GMT-3) -> 16:15 UTC
-    - cron: '00 16 * * *'
+    # 2. Previa Champions/Tarde Europa -> 16:17 UTC
+    - cron: '17 16 * * *'
 
-    # 3. Previa Latam/Libertadores (17:15 hrs Chile en GMT-3) -> 20:15 UTC
-    - cron: '00 20 * * *'
+    # 3. Previa Latam/Libertadores -> 20:13 UTC
+    - cron: '13 20 * * *'
 
-    # 4. Cierre del día y recálculo (23:15 hrs Chile en GMT-3) -> 02:15 UTC
-    - cron: '00 2 * * *'
+    # 4. Cierre del día y recálculo -> 02:17 UTC
+    - cron: '17 2 * * *'
 
 jobs:
   analizar_partidos:
