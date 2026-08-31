@@ -156,7 +156,7 @@ def run_process(df_externo=None):
                 origen_datos = "🌐 API" 
                 
                 try:
-                    data = api.get_data("games", {"date": f_str})
+                    data = api.get_data("games", {"date": f_str, "timezone": "America/Santiago"} )
                     time.sleep(1.5) 
                 except Exception as e:
                     print(f"⚠️ [BASKETBALL] Error al consultar API para {f_str}: {e}")
