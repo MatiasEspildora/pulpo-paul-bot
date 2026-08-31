@@ -369,7 +369,7 @@ class MatchAnalyzer:
             "count": count,
         }
 
-    def get_basketball_projections(self, home_team, away_team, home_id, away_id, match_data=None):
+    def get_basketball_projections(self, home_team, away_team, home_id, away_id, league_id=None, match_data=None):
         def get_form_tracker(df_subset, team_id):
             if df_subset.empty: return "N/A", 0.0
             form = []
