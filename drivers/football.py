@@ -234,18 +234,23 @@ def run_process(df_externo=None):
                         league_id_raw = match.get("league", {}).get("id")
                         league_id_str = str(league_id_raw) if league_id_raw is not None else None
                         
-                        proj = analyzer.get_projections(h_name, a_name, h_id, a_id, league_id=league_id_str)
+                        # Extraemos si es eliminatoria ANTES del analyzer
+                        ronda_texto = (match.get("league", {}).get("round") or "").lower()
+                        palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "play-off", "qualifying"]
+                        es_elimi = any(palabra in ronda_texto for palabra in palabras_clave)
+                        
+                        proj = analyzer.get_projections(
+                            h_name, a_name, h_id, a_id, 
+                            league_id=league_id_str, 
+                            es_eliminatoria=es_elimi
+                        )
                         
                         proj['fecha_str'] = dt_obj.strftime("%Y-%m-%d")
                         proj['hora'] = dt_obj.strftime("%H:%M")
                         pais = match.get("league", {}).get("country", "World")
                         liga = match.get("league", {}).get("name", "Unknown")
                         proj['pais'] = pais
-                        
-                        ronda_texto = (match.get("league", {}).get("round") or "").lower()
-                        palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "play-off", "qualifying"]
-                        proj['es_eliminatoria'] = any(palabra in ronda_texto for palabra in palabras_clave)
-                        
+                        proj['es_eliminatoria'] = es_elimi
                         proj['local_league'] = obtener_liga_domestica(df, h_id, h_name)
                         proj['visita_league'] = obtener_liga_domestica(df, a_id, a_name)
                         
