@@ -1,13 +1,83 @@
 [
     {
         "fixture": {
+            "id": 1636845,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-31T01:00:00-04:00",
+            "timestamp": 1788152400,
+            "periods": {
+                "first": 1788152400,
+                "second": 1788156000
+            },
+            "venue": {
+                "id": null,
+                "name": "MFF Football Centre",
+                "city": "Ulaanbaatar"
+            },
+            "status": {
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 965,
+            "name": "AFC U20 Asian Cup",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/965.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 1",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 25106,
+                "name": "Northern Mariana Islands U20",
+                "logo": "https://media.api-sports.io/football/teams/25106.png",
+                "winner": false
+            },
+            "away": {
+                "id": 25103,
+                "name": "Mongolia U20",
+                "logo": "https://media.api-sports.io/football/teams/25103.png",
+                "winner": true
+            }
+        },
+        "goals": {
+            "home": 0,
+            "away": 7
+        },
+        "score": {
+            "halftime": {
+                "home": 0,
+                "away": 2
+            },
+            "fulltime": {
+                "home": 0,
+                "away": 7
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1630064,
             "referee": null,
             "timezone": "America/Santiago",
             "date": "2026-08-31T04:00:00-04:00",
             "timestamp": 1788163200,
             "periods": {
-                "first": null,
+                "first": 1788163200,
                 "second": null
             },
             "venue": {
@@ -16,9 +86,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 21,
                 "extra": null
             }
         },
@@ -43,6 +113,356 @@
                 "id": 23030,
                 "name": "Crvena Zvezda U18",
                 "logo": "https://media.api-sports.io/football/teams/23030.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": 1,
+            "away": 1
+        },
+        "score": {
+            "halftime": {
+                "home": 1,
+                "away": 1
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1636846,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-31T04:30:00-04:00",
+            "timestamp": 1788165000,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": "Chonburi Daikin Stadium",
+                "city": "Chonburi"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 965,
+            "name": "AFC U20 Asian Cup",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/965.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 1",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 19626,
+                "name": "Iraq U20",
+                "logo": "https://media.api-sports.io/football/teams/19626.png",
+                "winner": null
+            },
+            "away": {
+                "id": 25112,
+                "name": "Turkmenistan U20",
+                "logo": "https://media.api-sports.io/football/teams/25112.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1636847,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-31T05:00:00-04:00",
+            "timestamp": 1788166800,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": "Changlimithang Stadium",
+                "city": "Thimphu"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 965,
+            "name": "AFC U20 Asian Cup",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/965.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 1",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 25094,
+                "name": "Chinese Taipei U20",
+                "logo": "https://media.api-sports.io/football/teams/25094.png",
+                "winner": null
+            },
+            "away": {
+                "id": 25100,
+                "name": "Macau U20",
+                "logo": "https://media.api-sports.io/football/teams/25100.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1636848,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-31T05:00:00-04:00",
+            "timestamp": 1788166800,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": "New Laos National Stadium",
+                "city": "Vientiane"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 965,
+            "name": "AFC U20 Asian Cup",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/965.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 1",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 21057,
+                "name": "Indonesia U20",
+                "logo": "https://media.api-sports.io/football/teams/21057.png",
+                "winner": null
+            },
+            "away": {
+                "id": 25101,
+                "name": "Malaysia U20",
+                "logo": "https://media.api-sports.io/football/teams/25101.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1636849,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-31T05:00:00-04:00",
+            "timestamp": 1788166800,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 965,
+            "name": "AFC U20 Asian Cup",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/965.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 1",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 10312,
+                "name": "Iran U20",
+                "logo": "https://media.api-sports.io/football/teams/10312.png",
+                "winner": null
+            },
+            "away": {
+                "id": 19630,
+                "name": "Palestine U20",
+                "logo": "https://media.api-sports.io/football/teams/19630.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1636850,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-31T05:00:00-04:00",
+            "timestamp": 1788166800,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": "Morodok Techo National Sports Complex",
+                "city": "Phnom Penh"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 965,
+            "name": "AFC U20 Asian Cup",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/965.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 1",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 10290,
+                "name": "Japan U20",
+                "logo": "https://media.api-sports.io/football/teams/10290.png",
+                "winner": null
+            },
+            "away": {
+                "id": 25098,
+                "name": "Kuwait U20",
+                "logo": "https://media.api-sports.io/football/teams/25098.png",
                 "winner": null
             }
         },
@@ -281,6 +701,146 @@
     },
     {
         "fixture": {
+            "id": 1636851,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-31T05:30:00-04:00",
+            "timestamp": 1788168600,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": "Thuwunna Stadium",
+                "city": "Yangon"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 965,
+            "name": "AFC U20 Asian Cup",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/965.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 1",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 25104,
+                "name": "Myanmar U20",
+                "logo": "https://media.api-sports.io/football/teams/25104.png",
+                "winner": null
+            },
+            "away": {
+                "id": 25109,
+                "name": "Sri Lanka U20",
+                "logo": "https://media.api-sports.io/football/teams/25109.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1636852,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-31T06:00:00-04:00",
+            "timestamp": 1788170400,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": "Dolen Omurzakov Stadium",
+                "city": "Bishkek"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 965,
+            "name": "AFC U20 Asian Cup",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/965.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 1",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 19628,
+                "name": "Lebanon U20",
+                "logo": "https://media.api-sports.io/football/teams/19628.png",
+                "winner": null
+            },
+            "away": {
+                "id": 10291,
+                "name": "Korea Republic U20",
+                "logo": "https://media.api-sports.io/football/teams/10291.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1630061,
             "referee": null,
             "timezone": "America/Santiago",
@@ -323,6 +883,76 @@
                 "id": 28271,
                 "name": "Usce U19",
                 "logo": "https://media.api-sports.io/football/teams/28271.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1636853,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-31T07:00:00-04:00",
+            "timestamp": 1788174000,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": "Dustlik Stadium",
+                "city": "Tashkent"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 965,
+            "name": "AFC U20 Asian Cup",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/965.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 1",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 21059,
+                "name": "Syria U20",
+                "logo": "https://media.api-sports.io/football/teams/21059.png",
+                "winner": null
+            },
+            "away": {
+                "id": 25097,
+                "name": "India U20",
+                "logo": "https://media.api-sports.io/football/teams/25097.png",
                 "winner": null
             }
         },
@@ -953,6 +1583,426 @@
                 "id": 19476,
                 "name": "APS Bomet",
                 "logo": "https://media.api-sports.io/football/teams/19476.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1636854,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-31T08:00:00-04:00",
+            "timestamp": 1788177600,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": "New Laos National Stadium",
+                "city": "Vientiane"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 965,
+            "name": "AFC U20 Asian Cup",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/965.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 1",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 21056,
+                "name": "Australia U20",
+                "logo": "https://media.api-sports.io/football/teams/21056.png",
+                "winner": null
+            },
+            "away": {
+                "id": 25099,
+                "name": "Laos U20",
+                "logo": "https://media.api-sports.io/football/teams/25099.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1636855,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-31T08:00:00-04:00",
+            "timestamp": 1788177600,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": "Changlimithang Stadium",
+                "city": "Thimphu"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 965,
+            "name": "AFC U20 Asian Cup",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/965.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 1",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 25108,
+                "name": "Singapore U20",
+                "logo": "https://media.api-sports.io/football/teams/25108.png",
+                "winner": null
+            },
+            "away": {
+                "id": 25091,
+                "name": "Bhutan U20",
+                "logo": "https://media.api-sports.io/football/teams/25091.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1636856,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-31T08:00:00-04:00",
+            "timestamp": 1788177600,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 965,
+            "name": "AFC U20 Asian Cup",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/965.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 1",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 10315,
+                "name": "Vietnam U20",
+                "logo": "https://media.api-sports.io/football/teams/10315.png",
+                "winner": null
+            },
+            "away": {
+                "id": 25113,
+                "name": "Korea DPR U20",
+                "logo": "https://media.api-sports.io/football/teams/25113.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1636857,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-31T08:00:00-04:00",
+            "timestamp": 1788177600,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": "Morodok Techo National Sports Complex",
+                "city": "Phnom Penh"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 965,
+            "name": "AFC U20 Asian Cup",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/965.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 1",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 19633,
+                "name": "Yemen U20",
+                "logo": "https://media.api-sports.io/football/teams/19633.png",
+                "winner": null
+            },
+            "away": {
+                "id": 25093,
+                "name": "Cambodia U20",
+                "logo": "https://media.api-sports.io/football/teams/25093.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1636858,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-31T08:30:00-04:00",
+            "timestamp": 1788179400,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": "Thuwunna Stadium",
+                "city": "Yangon"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 965,
+            "name": "AFC U20 Asian Cup",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/965.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 1",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 25102,
+                "name": "Maldives U20",
+                "logo": "https://media.api-sports.io/football/teams/25102.png",
+                "winner": null
+            },
+            "away": {
+                "id": 25092,
+                "name": "Brunei U20",
+                "logo": "https://media.api-sports.io/football/teams/25092.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1636859,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-31T08:30:00-04:00",
+            "timestamp": 1788179400,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": "Chonburi Daikin Stadium",
+                "city": "Chonburi"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 965,
+            "name": "AFC U20 Asian Cup",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/965.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 1",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 25110,
+                "name": "Thailand U20",
+                "logo": "https://media.api-sports.io/football/teams/25110.png",
+                "winner": null
+            },
+            "away": {
+                "id": 19632,
+                "name": "UAE U20",
+                "logo": "https://media.api-sports.io/football/teams/19632.png",
                 "winner": null
             }
         },
@@ -9031,6 +10081,146 @@
     },
     {
         "fixture": {
+            "id": 1636860,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-31T10:00:00-04:00",
+            "timestamp": 1788184800,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": "Khalifa Sports City Stadium",
+                "city": "Isa Town"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 965,
+            "name": "AFC U20 Asian Cup",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/965.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 1",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 19627,
+                "name": "Jordan U20",
+                "logo": "https://media.api-sports.io/football/teams/19627.png",
+                "winner": null
+            },
+            "away": {
+                "id": 25089,
+                "name": "Afghanistan U20",
+                "logo": "https://media.api-sports.io/football/teams/25089.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1636861,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-31T10:00:00-04:00",
+            "timestamp": 1788184800,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": "Dustlik Stadium",
+                "city": "Tashkent"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 965,
+            "name": "AFC U20 Asian Cup",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/965.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 1",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 21061,
+                "name": "Uzbekistan U20",
+                "logo": "https://media.api-sports.io/football/teams/21061.png",
+                "winner": null
+            },
+            "away": {
+                "id": 25090,
+                "name": "Bangladesh U20",
+                "logo": "https://media.api-sports.io/football/teams/25090.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1606534,
             "referee": null,
             "timezone": "America/Santiago",
@@ -11761,6 +12951,146 @@
     },
     {
         "fixture": {
+            "id": 1636862,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-31T12:00:00-04:00",
+            "timestamp": 1788192000,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": "Abdullah bin Khalifa Stadium",
+                "city": "Doha"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 965,
+            "name": "AFC U20 Asian Cup",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/965.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 1",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 10300,
+                "name": "Qatar U20",
+                "logo": "https://media.api-sports.io/football/teams/10300.png",
+                "winner": null
+            },
+            "away": {
+                "id": 19629,
+                "name": "Oman U20",
+                "logo": "https://media.api-sports.io/football/teams/19629.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1636863,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-31T12:00:00-04:00",
+            "timestamp": 1788192000,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": "Hamad bin Khalifa Stadium",
+                "city": "Doha"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 965,
+            "name": "AFC U20 Asian Cup",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/965.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 1",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 10301,
+                "name": "Saudi Arabia U20",
+                "logo": "https://media.api-sports.io/football/teams/10301.png",
+                "winner": null
+            },
+            "away": {
+                "id": 25096,
+                "name": "Hong Kong, China U20",
+                "logo": "https://media.api-sports.io/football/teams/25096.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1603982,
             "referee": null,
             "timezone": "America/Santiago",
@@ -14211,7 +15541,7 @@
     },
     {
         "fixture": {
-            "id": 1600765,
+            "id": 1636864,
             "referee": null,
             "timezone": "America/Santiago",
             "date": "2026-08-31T13:30:00-04:00",
@@ -14221,9 +15551,9 @@
                 "second": null
             },
             "venue": {
-                "id": 7771,
-                "name": "Kaitaba Stadium",
-                "city": "Bukoba"
+                "id": null,
+                "name": "Khalifa Sports City Stadium",
+                "city": "Isa Town"
             },
             "status": {
                 "long": "Not Started",
@@ -14233,26 +15563,26 @@
             }
         },
         "league": {
-            "id": 567,
-            "name": "Ligi kuu Bara",
-            "country": "Tanzania",
-            "logo": "https://media.api-sports.io/football/leagues/567.png",
-            "flag": "https://media.api-sports.io/flags/tz.svg",
+            "id": 965,
+            "name": "AFC U20 Asian Cup",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/965.png",
+            "flag": null,
             "season": 2026,
-            "round": "Regular Season - 5",
-            "standings": true
+            "round": "Group Stage - 1",
+            "standings": false
         },
         "teams": {
             "home": {
-                "id": 12191,
-                "name": "Kagera Sugar",
-                "logo": "https://media.api-sports.io/football/teams/12191.png",
+                "id": 21060,
+                "name": "Tajikistan U20",
+                "logo": "https://media.api-sports.io/football/teams/21060.png",
                 "winner": null
             },
             "away": {
-                "id": 8057,
-                "name": "Azam",
-                "logo": "https://media.api-sports.io/football/teams/8057.png",
+                "id": 19624,
+                "name": "Bahrain U20",
+                "logo": "https://media.api-sports.io/football/teams/19624.png",
                 "winner": null
             }
         },
@@ -15233,6 +16563,76 @@
                 "id": 425,
                 "name": "Jong Ajax",
                 "logo": "https://media.api-sports.io/football/teams/425.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1600765,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-31T14:00:00-04:00",
+            "timestamp": 1788199200,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": 7771,
+                "name": "Kaitaba Stadium",
+                "city": "Bukoba"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 567,
+            "name": "Ligi kuu Bara",
+            "country": "Tanzania",
+            "logo": "https://media.api-sports.io/football/leagues/567.png",
+            "flag": "https://media.api-sports.io/flags/tz.svg",
+            "season": 2026,
+            "round": "Regular Season - 5",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 12191,
+                "name": "Kagera Sugar",
+                "logo": "https://media.api-sports.io/football/teams/12191.png",
+                "winner": null
+            },
+            "away": {
+                "id": 8057,
+                "name": "Azam",
+                "logo": "https://media.api-sports.io/football/teams/8057.png",
                 "winner": null
             }
         },
