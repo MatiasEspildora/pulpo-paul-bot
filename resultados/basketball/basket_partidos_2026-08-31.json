@@ -879,8 +879,8 @@
         "week": "2",
         "venue": "Telekom Center Athens",
         "status": {
-            "long": "Game Finished",
-            "short": "FT",
+            "long": "After Over Time",
+            "short": "AOT",
             "timer": null
         },
         "league": {
@@ -914,7 +914,7 @@
                 "quarter_2": 24,
                 "quarter_3": 24,
                 "quarter_4": 19,
-                "over_time": null,
+                "over_time": 22,
                 "total": 108
             },
             "away": {
@@ -922,7 +922,7 @@
                 "quarter_2": 22,
                 "quarter_3": 16,
                 "quarter_4": 28,
-                "over_time": null,
+                "over_time": 20,
                 "total": 106
             }
         }
@@ -1160,64 +1160,6 @@
         }
     },
     {
-        "id": 509280,
-        "date": "2026-08-31T18:00:00-04:00",
-        "time": "18:00",
-        "timestamp": 1788213600,
-        "timezone": "America/Santiago",
-        "stage": null,
-        "week": "7",
-        "venue": "Suwag Energie Arena",
-        "status": {
-            "long": "Not Started",
-            "short": "NS",
-            "timer": null
-        },
-        "league": {
-            "id": 40,
-            "name": "BBL",
-            "type": "League",
-            "season": "2026-2027",
-            "logo": "https://media.api-sports.io/basketball/leagues/40.png"
-        },
-        "country": {
-            "id": 17,
-            "name": "Germany",
-            "code": "DE",
-            "flag": "https://media.api-sports.io/flags/de.svg"
-        },
-        "teams": {
-            "home": {
-                "id": 526,
-                "name": "Frankfurt",
-                "logo": "https://media.api-sports.io/basketball/teams/526.png"
-            },
-            "away": {
-                "id": 561,
-                "name": "Rostock",
-                "logo": "https://media.api-sports.io/basketball/teams/561.png"
-            }
-        },
-        "scores": {
-            "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": null
-            },
-            "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": null
-            }
-        }
-    },
-    {
         "id": 510713,
         "date": "2026-08-31T18:30:00-04:00",
         "time": "18:30",
@@ -1227,8 +1169,8 @@
         "week": null,
         "venue": "Estadio FBA",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Postponed",
+            "short": "POST",
             "timer": null
         },
         "league": {
@@ -1691,9 +1633,9 @@
         "week": "2",
         "venue": "Gimnasio Marcelino Gonzalez",
         "status": {
-            "long": "Quarter 1",
-            "short": "Q1",
-            "timer": "8"
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
         },
         "league": {
             "id": 281,
@@ -1722,20 +1664,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": 18,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 24,
+                "quarter_2": 30,
+                "quarter_3": 13,
+                "quarter_4": 12,
                 "over_time": null,
-                "total": 18
+                "total": 79
             },
             "away": {
-                "quarter_1": 15,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 23,
+                "quarter_2": 21,
+                "quarter_3": 14,
+                "quarter_4": 16,
                 "over_time": null,
-                "total": 15
+                "total": 74
             }
         }
     }
