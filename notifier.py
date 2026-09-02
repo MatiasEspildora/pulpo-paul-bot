@@ -111,9 +111,8 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         if p.get('away_clean_sheet', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('away_clean_sheet'), 'sel': f"Clean Sheet {p['visita']}"})
         
         if p.get('under_2_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('under_2_5'), 'sel': '-2.5 Goles'})
-        if p.get('under_3_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('under_3_5'), 'sel': '-3.5 Goles'})
-        if p.get('under_4_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('under_4_5'), 'sel': '-4.5 Goles'})
-        if p.get('under_5_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('under_5_5'), 'sel': '-5.5 Goles'})
+        # Aumentamos exigencia del -3.5 a 85% y eliminamos -4.5 y -5.5 para evitar cuotas sin valor
+        if p.get('under_3_5', 0) > 0.85: bb_list.append({'match': p, 'prob': p.get('under_3_5'), 'sel': '-3.5 Goles'})
         
         if p.get('over_1_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_1_5'), 'sel': '+1.5 Goles'})
         if p.get('over_2_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_2_5'), 'sel': '+2.5 Goles'})
@@ -154,10 +153,10 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     goles.sort(key=lambda x: x['prob'], reverse=True)
 
     seleccionados = set()
-    for item in bb_list[:12]: seleccionados.add(item['match']['_id_interno'])
-    for item in ganadores[:5]: seleccionados.add(item['match']['_id_interno'])
-    for item in dobles[:5]: seleccionados.add(item['match']['_id_interno'])
-    for item in goles[:5]: seleccionados.add(item['match']['_id_interno'])
+    for item in bb_list[:15]: seleccionados.add(item['match']['_id_interno'])
+    for item in ganadores[:15]: seleccionados.add(item['match']['_id_interno'])
+    for item in dobles[:15]: seleccionados.add(item['match']['_id_interno'])
+    for item in goles[:15]: seleccionados.add(item['match']['_id_interno'])
 
     etiqueta_ventana = f" | {titulo_bloque}" if titulo_bloque else ""
     
@@ -167,7 +166,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
 
     msg += "🧱 *PIEZAS BET BUILDER (Filtro Titanio > 80%)*\n"
     if bb_list:
-        for i, item in enumerate(bb_list[:12], 1): 
+        for i, item in enumerate(bb_list[:15], 1): 
             m = item['match']
             es_mata_mata = " ⚔️" if m.get('es_eliminatoria') else ""
             msg += f"*{i}.* ⚽ {m['bandera']} {m['pais_nombre']} - {m['local']} vs {m['visita']}{es_mata_mata} | 🧩 *{item['sel']}* ({item['prob']:.0%})\n"
@@ -175,8 +174,8 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         msg += "_Ninguna variable pura superó el 80% hoy._\n"
     
     msg += "\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    msg += "🏆 *TOP 5 - GANADOR DIRECTO*\n"
-    for i, item in enumerate(ganadores[:5], 1):
+    msg += "🏆 *TOP 15 - GANADOR DIRECTO*\n"
+    for i, item in enumerate(ganadores[:15], 1):
         m = item['match']
         es_mata_mata = " ⚔️" if m.get('es_eliminatoria') else ""
         msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{es_mata_mata} | 🎯 Gana *{item['sel']}* ({item['prob']:.0%})\n"
@@ -184,8 +183,8 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         msg += f"   🏟️ Casa/Fuera: L `{m.get('home_venue_form')}` ({m.get('home_venue_ppg')}p) | V `{m.get('away_venue_form')}` ({m.get('away_venue_ppg')}p)\n"
 
     msg += "\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    msg += "🛡️ *TOP 5 - DOBLE OPORTUNIDAD*\n"
-    for i, item in enumerate(dobles[:5], 1):
+    msg += "🛡️ *TOP 15 - DOBLE OPORTUNIDAD*\n"
+    for i, item in enumerate(dobles[:15], 1):
         m = item['match']
         es_mata_mata = " ⚔️" if m.get('es_eliminatoria') else ""
         msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{es_mata_mata} | 🛡️ *{item['sel']}* ({item['prob']:.0%})\n"
@@ -193,8 +192,8 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         msg += f"   🏟️ Casa/Fuera: L `{m.get('home_venue_form')}` ({m.get('home_venue_ppg')}p) | V `{m.get('away_venue_form')}` ({m.get('away_venue_ppg')}p)\n"
 
     msg += "\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    msg += "🔥 *TOP 5 - MERCADOS DE GOLES*\n"
-    for i, item in enumerate(goles[:5], 1):
+    msg += "🔥 *TOP 15 - MERCADOS DE GOLES*\n"
+    for i, item in enumerate(goles[:15], 1):
         m = item['match']
         es_mata_mata = " ⚔️" if m.get('es_eliminatoria') else ""
         msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{es_mata_mata} | 🔥 *{item['sel']}* ({item['prob']:.0%})\n"
@@ -328,7 +327,8 @@ def _generar_y_enviar_menu_basket(proyecciones_dict, etiqueta_dia, analyzer, tok
     mensaje_resumen += "━"*24 + "\n\n"
 
     basket_lista.sort(key=lambda x: x['prob'], reverse=True)
-    for i, item in enumerate(basket_lista[:10], 1):
+    # Aumentado a Top 15
+    for i, item in enumerate(basket_lista[:15], 1):
         p = item['match']
         mensaje_resumen += f"*{i}.* 🏀 {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n"
         mensaje_resumen += f"   🎯 *Pick:* Gana {item['seleccion']} ({item['prob']:.0%}) | 🔥 Pts: `{p.get('puntos_proyectados', 0):.1f}`\n"
