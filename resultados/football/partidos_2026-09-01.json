@@ -13596,10 +13596,10 @@
                 "city": "Quito"
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 86,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 7
             }
         },
         "league": {
@@ -13636,8 +13636,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -13666,10 +13666,10 @@
                 "city": "Belo Horizonte"
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 78,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 9
             }
         },
         "league": {
@@ -13687,17 +13687,17 @@
                 "id": 1062,
                 "name": "Atletico-MG",
                 "logo": "https://media.api-sports.io/football/teams/1062.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 135,
                 "name": "Cruzeiro",
                 "logo": "https://media.api-sports.io/football/teams/135.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": 1,
+            "home": 2,
             "away": 1
         },
         "score": {
@@ -13706,8 +13706,8 @@
                 "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -13722,24 +13722,24 @@
     {
         "fixture": {
             "id": 1549758,
-            "referee": null,
+            "referee": "Bismark Elias Santiago Pitalua, Colombia",
             "timezone": "America/Santiago",
             "date": "2026-09-01T21:00:00-04:00",
             "timestamp": 1788310800,
             "periods": {
                 "first": 1788310800,
-                "second": null
+                "second": 1788314400
             },
             "venue": {
                 "id": null,
                 "name": "Estadio Metropolitano de Techo",
-                "city": null
+                "city": "Bogota"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 45,
-                "extra": 2
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 4
             }
         },
         "league": {
@@ -13757,18 +13757,18 @@
                 "id": 1147,
                 "name": "Fortaleza FC",
                 "logo": "https://media.api-sports.io/football/teams/1147.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 1136,
                 "name": "Once Caldas",
                 "logo": "https://media.api-sports.io/football/teams/1136.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
             "home": 1,
-            "away": 1
+            "away": 2
         },
         "score": {
             "halftime": {
@@ -13776,8 +13776,8 @@
                 "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 2
             },
             "extratime": {
                 "home": null,

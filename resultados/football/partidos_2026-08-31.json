@@ -2811,7 +2811,7 @@
                 "second": 1788186600
             },
             "venue": {
-                "id": null,
+                "id": 1671,
                 "name": "Old Road",
                 "city": "Briton Ferry"
             },
@@ -12042,7 +12042,7 @@
     {
         "fixture": {
             "id": 1495770,
-            "referee": "Oliver Reitala, Finland",
+            "referee": "O. Reitala",
             "timezone": "America/Santiago",
             "date": "2026-08-31T12:00:00-04:00",
             "timestamp": 1788192000,
@@ -12112,7 +12112,7 @@
     {
         "fixture": {
             "id": 1495771,
-            "referee": "Amir Hajizadeh, Finland",
+            "referee": "A. Hajizadeh",
             "timezone": "America/Santiago",
             "date": "2026-08-31T12:00:00-04:00",
             "timestamp": 1788192000,
@@ -12122,7 +12122,7 @@
             },
             "venue": {
                 "id": null,
-                "name": "Tammela Stadium",
+                "name": "Tammelan Stadion",
                 "city": "Tampere"
             },
             "status": {
@@ -12322,7 +12322,7 @@
     {
         "fixture": {
             "id": 1495774,
-            "referee": "Dennis Antamo, Finland",
+            "referee": "D. Antamo",
             "timezone": "America/Santiago",
             "date": "2026-08-31T12:00:00-04:00",
             "timestamp": 1788192000,
@@ -18551,6 +18551,76 @@
     },
     {
         "fixture": {
+            "id": 1635389,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-08-31T15:00:00-04:00",
+            "timestamp": 1788202800,
+            "periods": {
+                "first": 1788202800,
+                "second": 1788206400
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 710,
+            "name": "Nacional B",
+            "country": "Bolivia",
+            "logo": "https://media.api-sports.io/football/leagues/710.png",
+            "flag": "https://media.api-sports.io/flags/bo.svg",
+            "season": 2026,
+            "round": "Regular Season - 2",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 28295,
+                "name": "Virginia",
+                "logo": "https://media.api-sports.io/football/teams/28295.png",
+                "winner": true
+            },
+            "away": {
+                "id": 20254,
+                "name": "Universitario Beni",
+                "logo": "https://media.api-sports.io/football/teams/20254.png",
+                "winner": false
+            }
+        },
+        "goals": {
+            "home": 2,
+            "away": 0
+        },
+        "score": {
+            "halftime": {
+                "home": 0,
+                "away": 0
+            },
+            "fulltime": {
+                "home": 2,
+                "away": 0
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1508848,
             "referee": "E. I. Arnason",
             "timezone": "America/Santiago",
@@ -20162,7 +20232,7 @@
     {
         "fixture": {
             "id": 1508529,
-            "referee": "M. Hassan",
+            "referee": "Muhammad Hassan, USA",
             "timezone": "America/Santiago",
             "date": "2026-08-31T20:00:00-04:00",
             "timestamp": 1788220800,
