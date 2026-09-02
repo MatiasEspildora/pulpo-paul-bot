@@ -244,32 +244,30 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
 
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n✅ *FIN DEL REPORTE* ✅\n"
 
-    max_len = 4000
+    # NUEVA LÓGICA DE ENVÍO DE MENSAJES LARGOS
+    max_len = 3900 # Margen de seguridad para Telegram
     if len(msg) > max_len:
-        parts = msg.split("🩸 *LA AUTOPSIA (Código Fuente)*\n\n")
-        if len(parts) == 2:
-            enviar_mensaje_telegram(parts[0], token_override=token_override)
-            time.sleep(1.5)
-            autopsia_text = "🩸 *LA AUTOPSIA (Código Fuente)*\n\n" + parts[1]
-            
-            if len(autopsia_text) > max_len:
-                subparts = autopsia_text.split("📌")
-                current_chunk = subparts[0]
-                for sp in subparts[1:]:
-                    if len(current_chunk) + len("📌" + sp) > max_len:
-                        enviar_mensaje_telegram(current_chunk, token_override=token_override)
-                        time.sleep(1.5)
-                        current_chunk = "📌" + sp
-                    else:
-                        current_chunk += "📌" + sp
-                if current_chunk:
-                    enviar_mensaje_telegram(current_chunk, token_override=token_override)
+        mensajes_a_enviar = []
+        # Dividimos inteligentemente por doble salto de línea para no romper formatos
+        bloques = msg.split("\n\n")
+        chunk_actual = ""
+        
+        for bloque in bloques:
+            # Si al sumar el nuevo bloque nos pasamos del límite, guardamos el chunk actual y empezamos uno nuevo
+            if len(chunk_actual) + len(bloque) + 2 > max_len:
+                mensajes_a_enviar.append(chunk_actual)
+                chunk_actual = bloque + "\n\n"
             else:
-                enviar_mensaje_telegram(autopsia_text, token_override=token_override)
-        else:
-            for i in range(0, len(msg), max_len):
-                enviar_mensaje_telegram(msg[i:i+max_len], token_override=token_override)
-                time.sleep(1.5)
+                chunk_actual += bloque + "\n\n"
+                
+        # Guardamos el último pedazo si quedó algo
+        if chunk_actual.strip():
+            mensajes_a_enviar.append(chunk_actual)
+            
+        # Enviamos secuencialmente con pausas para no saturar el bot
+        for chunk in mensajes_a_enviar:
+            enviar_mensaje_telegram(chunk, token_override=token_override)
+            time.sleep(1.5)
     else:
         enviar_mensaje_telegram(msg, token_override=token_override)
         
