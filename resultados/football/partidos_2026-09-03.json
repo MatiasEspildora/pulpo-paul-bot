@@ -7,7 +7,7 @@
             "date": "2026-09-03T01:00:00-04:00",
             "timestamp": 1788411600,
             "periods": {
-                "first": null,
+                "first": 1788411600,
                 "second": null
             },
             "venue": {
@@ -16,9 +16,9 @@
                 "city": "Ulaanbaatar"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
                 "extra": null
             }
         },
@@ -37,23 +37,23 @@
                 "id": 25095,
                 "name": "Guam U20",
                 "logo": "https://media.api-sports.io/football/teams/25095.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 25106,
                 "name": "Northern Mariana Islands U20",
                 "logo": "https://media.api-sports.io/football/teams/25106.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
@@ -3012,7 +3012,7 @@
     {
         "fixture": {
             "id": 1516125,
-            "referee": null,
+            "referee": "N. Qosimov",
             "timezone": "America/Santiago",
             "date": "2026-09-03T10:00:00-04:00",
             "timestamp": 1788444000,
@@ -4902,7 +4902,7 @@
     {
         "fixture": {
             "id": 1553144,
-            "referee": null,
+            "referee": "P. Raczkowski",
             "timezone": "America/Santiago",
             "date": "2026-09-03T12:00:00-04:00",
             "timestamp": 1788451200,
@@ -5882,7 +5882,7 @@
     {
         "fixture": {
             "id": 1607531,
-            "referee": null,
+            "referee": "I. Christodoulou",
             "timezone": "America/Santiago",
             "date": "2026-09-03T12:30:00-04:00",
             "timestamp": 1788453000,
@@ -7912,7 +7912,7 @@
     {
         "fixture": {
             "id": 1553140,
-            "referee": null,
+            "referee": "S. Marciniak",
             "timezone": "America/Santiago",
             "date": "2026-09-03T14:30:00-04:00",
             "timestamp": 1788460200,
@@ -8682,7 +8682,7 @@
     {
         "fixture": {
             "id": 1570392,
-            "referee": null,
+            "referee": "V. Garcia",
             "timezone": "America/Santiago",
             "date": "2026-09-03T15:00:00-04:00",
             "timestamp": 1788462000,
@@ -9311,76 +9311,6 @@
     },
     {
         "fixture": {
-            "id": 1638063,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-03T16:00:00-04:00",
-            "timestamp": 1788465600,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": 0,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 299,
-            "name": "Primera División",
-            "country": "Venezuela",
-            "logo": "https://media.api-sports.io/football/leagues/299.png",
-            "flag": "https://media.api-sports.io/flags/ve.svg",
-            "season": 2026,
-            "round": "Clausura - 7",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 2818,
-                "name": "Estudiantes de Merida FC",
-                "logo": "https://media.api-sports.io/football/teams/2818.png",
-                "winner": null
-            },
-            "away": {
-                "id": 2840,
-                "name": "UCV",
-                "logo": "https://media.api-sports.io/football/teams/2840.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
             "id": 1632423,
             "referee": null,
             "timezone": "America/Santiago",
@@ -9801,7 +9731,7 @@
     },
     {
         "fixture": {
-            "id": 1638064,
+            "id": 1638063,
             "referee": null,
             "timezone": "America/Santiago",
             "date": "2026-09-03T18:00:00-04:00",
@@ -9834,15 +9764,15 @@
         },
         "teams": {
             "home": {
-                "id": 2827,
-                "name": "Puerto Cabello",
-                "logo": "https://media.api-sports.io/football/teams/2827.png",
+                "id": 2818,
+                "name": "Estudiantes de Merida FC",
+                "logo": "https://media.api-sports.io/football/teams/2818.png",
                 "winner": null
             },
             "away": {
-                "id": 2813,
-                "name": "Deportivo La Guaira",
-                "logo": "https://media.api-sports.io/football/teams/2813.png",
+                "id": 2840,
+                "name": "UCV",
+                "logo": "https://media.api-sports.io/football/teams/2840.png",
                 "winner": null
             }
         },
@@ -10333,6 +10263,76 @@
                 "id": 4641,
                 "name": "Diriangén",
                 "logo": "https://media.api-sports.io/football/teams/4641.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1638064,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-03T19:00:00-04:00",
+            "timestamp": 1788476400,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": 0,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 299,
+            "name": "Primera División",
+            "country": "Venezuela",
+            "logo": "https://media.api-sports.io/football/leagues/299.png",
+            "flag": "https://media.api-sports.io/flags/ve.svg",
+            "season": 2026,
+            "round": "Clausura - 7",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 2827,
+                "name": "Puerto Cabello",
+                "logo": "https://media.api-sports.io/football/teams/2827.png",
+                "winner": null
+            },
+            "away": {
+                "id": 2813,
+                "name": "Deportivo La Guaira",
+                "logo": "https://media.api-sports.io/football/teams/2813.png",
                 "winner": null
             }
         },
