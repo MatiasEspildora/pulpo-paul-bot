@@ -9326,10 +9326,10 @@
                 "city": "Quito"
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
+                "long": "Match Finished",
+                "short": "FT",
                 "elapsed": 90,
-                "extra": 1
+                "extra": 4
             }
         },
         "league": {
@@ -9366,8 +9366,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 4,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -9398,7 +9398,7 @@
             "status": {
                 "long": "Second Half",
                 "short": "2H",
-                "elapsed": 59,
+                "elapsed": 73,
                 "extra": null
             }
         },
@@ -9427,7 +9427,7 @@
             }
         },
         "goals": {
-            "home": 2,
+            "home": 3,
             "away": 0
         },
         "score": {
@@ -9466,10 +9466,10 @@
                 "city": "Ibarra"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
+                "long": "Halftime",
+                "short": "HT",
                 "elapsed": 45,
-                "extra": 6
+                "extra": null
             }
         },
         "league": {
@@ -9536,9 +9536,9 @@
                 "city": null
             },
             "status": {
-                "long": "Halftime",
-                "short": "HT",
-                "elapsed": 45,
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 47,
                 "extra": null
             }
         },
@@ -9608,7 +9608,7 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 22,
+                "elapsed": 36,
                 "extra": null
             }
         },
@@ -9627,22 +9627,22 @@
                 "id": 18681,
                 "name": "Boca Juniors Res.",
                 "logo": "https://media.api-sports.io/football/teams/18681.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 27413,
                 "name": "Quilmes 2",
                 "logo": "https://media.api-sports.io/football/teams/27413.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": 0,
+            "home": 1,
             "away": 0
         },
         "score": {
             "halftime": {
-                "home": 0,
+                "home": 1,
                 "away": 0
             },
             "fulltime": {
@@ -9678,7 +9678,7 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 20,
+                "elapsed": 34,
                 "extra": null
             }
         },
@@ -9748,7 +9748,7 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 20,
+                "elapsed": 34,
                 "extra": null
             }
         },
@@ -9767,22 +9767,22 @@
                 "id": 2818,
                 "name": "Estudiantes de Merida FC",
                 "logo": "https://media.api-sports.io/football/teams/2818.png",
-                "winner": false
+                "winner": null
             },
             "away": {
                 "id": 2840,
                 "name": "UCV",
                 "logo": "https://media.api-sports.io/football/teams/2840.png",
-                "winner": true
+                "winner": null
             }
         },
         "goals": {
-            "home": 0,
+            "home": 1,
             "away": 1
         },
         "score": {
             "halftime": {
-                "home": 0,
+                "home": 1,
                 "away": 1
             },
             "fulltime": {
