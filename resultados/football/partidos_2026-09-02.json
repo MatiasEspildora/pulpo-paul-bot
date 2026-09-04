@@ -4307,13 +4307,13 @@
                 "id": 17625,
                 "name": "FC Stăuceni",
                 "logo": "https://media.api-sports.io/football/teams/17625.png",
-                "winner": false
+                "winner": null
             },
             "away": {
                 "id": 22186,
                 "name": "FC Chișinău",
                 "logo": "https://media.api-sports.io/football/teams/22186.png",
-                "winner": true
+                "winner": null
             }
         },
         "goals": {
@@ -4867,17 +4867,17 @@
                 "id": 7898,
                 "name": "Dynamo Kyiv U19",
                 "logo": "https://media.api-sports.io/football/teams/7898.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 23077,
                 "name": "LNZ Cherkasy U19",
                 "logo": "https://media.api-sports.io/football/teams/23077.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": 1,
+            "home": 4,
             "away": 1
         },
         "score": {
@@ -4886,7 +4886,7 @@
                 "away": 1
             },
             "fulltime": {
-                "home": 1,
+                "home": 4,
                 "away": 1
             },
             "extratime": {
@@ -9078,20 +9078,20 @@
         },
         "goals": {
             "home": 2,
-            "away": 3
+            "away": 2
         },
         "score": {
             "halftime": {
-                "home": 2,
-                "away": 0
+                "home": 0,
+                "away": 2
             },
             "fulltime": {
                 "home": 2,
-                "away": 3
+                "away": 2
             },
             "extratime": {
-                "home": 0,
-                "away": 0
+                "home": null,
+                "away": null
             },
             "penalty": {
                 "home": null,
@@ -9802,7 +9802,7 @@
     {
         "fixture": {
             "id": 1603988,
-            "referee": null,
+            "referee": "F. Al Saadoun",
             "timezone": "America/Santiago",
             "date": "2026-09-02T11:40:00-04:00",
             "timestamp": 1788363600,
@@ -11902,7 +11902,7 @@
     {
         "fixture": {
             "id": 1603989,
-            "referee": null,
+            "referee": "F. Al-Zahrani",
             "timezone": "America/Santiago",
             "date": "2026-09-02T12:15:00-04:00",
             "timestamp": 1788365700,
@@ -14492,7 +14492,7 @@
     {
         "fixture": {
             "id": 1603990,
-            "referee": null,
+            "referee": "F. Al Jaloud",
             "timezone": "America/Santiago",
             "date": "2026-09-02T13:40:00-04:00",
             "timestamp": 1788370800,
@@ -17902,8 +17902,8 @@
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 2
             },
             "fulltime": {
                 "home": 0,
@@ -20302,7 +20302,7 @@
     {
         "fixture": {
             "id": 1619659,
-            "referee": null,
+            "referee": "G. Vera",
             "timezone": "America/Santiago",
             "date": "2026-09-02T15:00:00-04:00",
             "timestamp": 1788375600,
@@ -21422,7 +21422,7 @@
     {
         "fixture": {
             "id": 1610966,
-            "referee": null,
+            "referee": "S. Greene",
             "timezone": "America/Santiago",
             "date": "2026-09-02T18:00:00-04:00",
             "timestamp": 1788386400,
@@ -21620,8 +21620,8 @@
                 "away": 1
             },
             "extratime": {
-                "home": 0,
-                "away": 0
+                "home": null,
+                "away": null
             },
             "penalty": {
                 "home": null,
@@ -21772,7 +21772,7 @@
     {
         "fixture": {
             "id": 1607190,
-            "referee": null,
+            "referee": "C. Ortega",
             "timezone": "America/Santiago",
             "date": "2026-09-02T18:30:00-04:00",
             "timestamp": 1788388200,
@@ -21830,8 +21830,8 @@
                 "away": 1
             },
             "extratime": {
-                "home": 0,
-                "away": 0
+                "home": null,
+                "away": null
             },
             "penalty": {
                 "home": 3,
@@ -22682,7 +22682,7 @@
     {
         "fixture": {
             "id": 1610967,
-            "referee": null,
+            "referee": "E. De La Cruz",
             "timezone": "America/Santiago",
             "date": "2026-09-02T20:00:00-04:00",
             "timestamp": 1788393600,
