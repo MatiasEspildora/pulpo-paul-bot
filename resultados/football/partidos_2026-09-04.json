@@ -10782,13 +10782,13 @@
     {
         "fixture": {
             "id": 1509176,
-            "referee": null,
+            "referee": "G. Avazashvili",
             "timezone": "America/Santiago",
             "date": "2026-09-04T12:00:00-04:00",
             "timestamp": 1788537600,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1788537600,
+                "second": 1788541200
             },
             "venue": {
                 "id": null,
@@ -24291,6 +24291,146 @@
     },
     {
         "fixture": {
+            "id": 1638341,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-04T14:00:00-04:00",
+            "timestamp": 1788544800,
+            "periods": {
+                "first": 1788544800,
+                "second": 1788548400
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 710,
+            "name": "Nacional B",
+            "country": "Bolivia",
+            "logo": "https://media.api-sports.io/football/leagues/710.png",
+            "flag": "https://media.api-sports.io/flags/bo.svg",
+            "season": 2026,
+            "round": "Regular Season - 3",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 28291,
+                "name": "Deportivo Tigres",
+                "logo": "https://media.api-sports.io/football/teams/28291.png",
+                "winner": null
+            },
+            "away": {
+                "id": 3875,
+                "name": "Club Universitario",
+                "logo": "https://media.api-sports.io/football/teams/3875.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": 1,
+            "away": 1
+        },
+        "score": {
+            "halftime": {
+                "home": 0,
+                "away": 1
+            },
+            "fulltime": {
+                "home": 1,
+                "away": 1
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1638342,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-04T14:00:00-04:00",
+            "timestamp": 1788544800,
+            "periods": {
+                "first": 1788544800,
+                "second": 1788548400
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 710,
+            "name": "Nacional B",
+            "country": "Bolivia",
+            "logo": "https://media.api-sports.io/football/leagues/710.png",
+            "flag": "https://media.api-sports.io/flags/bo.svg",
+            "season": 2026,
+            "round": "Regular Season - 3",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 28288,
+                "name": "26 de Febrero",
+                "logo": "https://media.api-sports.io/football/teams/28288.png",
+                "winner": true
+            },
+            "away": {
+                "id": 26484,
+                "name": "Ingenieros",
+                "logo": "https://media.api-sports.io/football/teams/26484.png",
+                "winner": false
+            }
+        },
+        "goals": {
+            "home": 4,
+            "away": 1
+        },
+        "score": {
+            "halftime": {
+                "home": 1,
+                "away": 1
+            },
+            "fulltime": {
+                "home": 4,
+                "away": 1
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1568777,
             "referee": null,
             "timezone": "America/Santiago",
@@ -31227,8 +31367,8 @@
             "date": "2026-09-04T20:00:00-04:00",
             "timestamp": 1788566400,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1788566400,
+                "second": 1788570000
             },
             "venue": {
                 "id": null,
@@ -31236,9 +31376,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -31257,27 +31397,27 @@
                 "id": 22055,
                 "name": "FC Santiago",
                 "logo": "https://media.api-sports.io/football/teams/22055.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 26526,
                 "name": "Héroes de Zaci",
                 "logo": "https://media.api-sports.io/football/teams/26526.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 3,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -31851,76 +31991,6 @@
     },
     {
         "fixture": {
-            "id": 1550948,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-04T21:00:00-04:00",
-            "timestamp": 1788570000,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": "Puebla"
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 262,
-            "name": "Liga MX",
-            "country": "Mexico",
-            "logo": "https://media.api-sports.io/football/leagues/262.png",
-            "flag": "https://media.api-sports.io/flags/mx.svg",
-            "season": 2026,
-            "round": "Apertura - 7",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 2291,
-                "name": "Puebla",
-                "logo": "https://media.api-sports.io/football/teams/2291.png",
-                "winner": null
-            },
-            "away": {
-                "id": 2281,
-                "name": "Toluca",
-                "logo": "https://media.api-sports.io/football/teams/2281.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
             "id": 1559625,
             "referee": null,
             "timezone": "America/Santiago",
@@ -32207,8 +32277,8 @@
             "date": "2026-09-04T21:00:00-04:00",
             "timestamp": 1788570000,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1788570000,
+                "second": 1788573600
             },
             "venue": {
                 "id": null,
@@ -32216,9 +32286,9 @@
                 "city": "La Piedad de Cabadas"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -32237,27 +32307,27 @@
                 "id": 15937,
                 "name": "Reboceros La Piedad",
                 "logo": "https://media.api-sports.io/football/teams/15937.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 28340,
                 "name": "H2O Purepechas",
                 "logo": "https://media.api-sports.io/football/teams/28340.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 3,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -32762,13 +32832,13 @@
     {
         "fixture": {
             "id": 1550949,
-            "referee": null,
+            "referee": "K. I. Garcia Mendoza",
             "timezone": "America/Santiago",
             "date": "2026-09-04T23:00:00-04:00",
             "timestamp": 1788577200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1788577200,
+                "second": 1788580800
             },
             "venue": {
                 "id": null,
