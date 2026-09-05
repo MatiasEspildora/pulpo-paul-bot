@@ -77,7 +77,7 @@ class MatchAnalyzer:
         matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)]
         matches = matches.dropna(subset=["FTHG", "FTAG"])
         matches = matches.sort_values(by="Date", ascending=False)
-        recent = matches.head(15)
+        recent = matches.head(10) # Reajuste a Top 10
 
         count = len(recent)
         if recent.empty or count == 0:
@@ -150,7 +150,8 @@ class MatchAnalyzer:
         def get_avg_goals_decay(df_subset, team_id, is_ht=False):
             if df_subset.empty: return 1.2 if not is_ht else 0.5, 1.2 if not is_ht else 0.5
             
-            base_weights = [0.15, 0.12, 0.10, 0.09, 0.08, 0.07, 0.06, 0.05, 0.05, 0.04, 0.04, 0.03, 0.03, 0.02, 0.02]
+            # Pesos ajustados para 10 partidos
+            base_weights = [0.15, 0.12, 0.10, 0.09, 0.08, 0.07, 0.06, 0.05, 0.05, 0.04]
             goles_f, goles_c = [], []
             
             col_fthg = "HTHG" if is_ht else "FTHG"
@@ -177,17 +178,18 @@ class MatchAnalyzer:
             avg_c = sum(g * w_i for g, w_i in zip(goles_c, w))
             return float(avg_f), float(avg_c)
 
+        # Muestra Estadística reajustada a Top 10
         home_global = self.df[(self.df['HomeTeamId'] == home_id) | (self.df['AwayTeamId'] == home_id)]
-        home_global = home_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(15)
+        home_global = home_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
 
         away_global = self.df[(self.df['HomeTeamId'] == away_id) | (self.df['AwayTeamId'] == away_id)]
-        away_global = away_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(15)
-        
+        away_global = away_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
+
+        home_venue = self.df[self.df['HomeTeamId'] == home_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
+        away_venue = self.df[self.df['AwayTeamId'] == away_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
+
         home_form_str, home_ppg = get_form_tracker(home_global, home_id)
         away_form_str, away_ppg = get_form_tracker(away_global, away_id)
-
-        home_venue = self.df[self.df['HomeTeamId'] == home_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(15)
-        away_venue = self.df[self.df['AwayTeamId'] == away_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(15)
 
         home_venue_form_str, home_venue_ppg = get_form_tracker(home_venue, home_id)
         away_venue_form_str, away_venue_ppg = get_form_tracker(away_venue, away_id)
@@ -217,7 +219,6 @@ class MatchAnalyzer:
         lambda_home_base = (home_scored_avg + away_concede_avg) / 2
         lambda_away_base = (away_scored_avg + home_concede_avg) / 2
         
-        # 🧠 INYECCIÓN: Filtro Mata-Mata
         if es_eliminatoria:
             lambda_home, lambda_away = self._apply_knockout_context(home_id, away_id, league_id, lambda_home_base, lambda_away_base)
         else:
@@ -227,9 +228,41 @@ class MatchAnalyzer:
         lambda_away_ht = (away_ht_scored_avg + home_ht_concede_avg) / 2
 
         max_goals = 8
-        
-        # 🧠 INYECCIÓN: Matriz Dixon-Coles
         prob_matrix = self._calculate_exact_scores(lambda_home, lambda_away, max_goals)
+
+        # 🧠 INYECCIÓN SGBB: Suma de probabilidades conjuntas dependientes desde la Matriz
+        def get_joint_prob(matrix, condition_func):
+            prob = 0.0
+            for i in range(matrix.shape[0]):
+                for j in range(matrix.shape[1]):
+                    if condition_func(i, j): prob += matrix[i, j]
+            return prob
+
+        sgbb_conjunto = {
+            '1X_U25': get_joint_prob(prob_matrix, lambda i, j: i >= j and i+j <= 2),
+            '1X_U35': get_joint_prob(prob_matrix, lambda i, j: i >= j and i+j <= 3),
+            '1X_U45': get_joint_prob(prob_matrix, lambda i, j: i >= j and i+j <= 4),
+            '1X_O15': get_joint_prob(prob_matrix, lambda i, j: i >= j and i+j >= 2),
+            '1X_O25': get_joint_prob(prob_matrix, lambda i, j: i >= j and i+j >= 3),
+            'X2_U25': get_joint_prob(prob_matrix, lambda i, j: j >= i and i+j <= 2),
+            'X2_U35': get_joint_prob(prob_matrix, lambda i, j: j >= i and i+j <= 3),
+            'X2_U45': get_joint_prob(prob_matrix, lambda i, j: j >= i and i+j <= 4),
+            'X2_O15': get_joint_prob(prob_matrix, lambda i, j: j >= i and i+j >= 2),
+            'X2_O25': get_joint_prob(prob_matrix, lambda i, j: j >= i and i+j >= 3),
+            '1_U25': get_joint_prob(prob_matrix, lambda i, j: i > j and i+j <= 2),
+            '1_U35': get_joint_prob(prob_matrix, lambda i, j: i > j and i+j <= 3),
+            '1_U45': get_joint_prob(prob_matrix, lambda i, j: i > j and i+j <= 4),
+            '1_O15': get_joint_prob(prob_matrix, lambda i, j: i > j and i+j >= 2),
+            '1_O25': get_joint_prob(prob_matrix, lambda i, j: i > j and i+j >= 3),
+            '2_U25': get_joint_prob(prob_matrix, lambda i, j: j > i and i+j <= 2),
+            '2_U35': get_joint_prob(prob_matrix, lambda i, j: j > i and i+j <= 3),
+            '2_U45': get_joint_prob(prob_matrix, lambda i, j: j > i and i+j <= 4),
+            '2_O15': get_joint_prob(prob_matrix, lambda i, j: j > i and i+j >= 2),
+            '2_O25': get_joint_prob(prob_matrix, lambda i, j: j > i and i+j >= 3),
+            'BTTS_O25': get_joint_prob(prob_matrix, lambda i, j: i > 0 and j > 0 and i+j >= 3),
+            'BTTS_No_U25': get_joint_prob(prob_matrix, lambda i, j: (i == 0 or j == 0) and i+j <= 2),
+            'BTTS_No_U35': get_joint_prob(prob_matrix, lambda i, j: (i == 0 or j == 0) and i+j <= 3),
+        }
 
         prob_home = np.tril(prob_matrix, -1).sum()
         prob_draw = np.diag(prob_matrix).sum()
@@ -253,46 +286,29 @@ class MatchAnalyzer:
         prob_DNB_L = (prob_home / suma_sin_empate) if suma_sin_empate > 0 else 0
         prob_DNB_V = (prob_away / suma_sin_empate) if suma_sin_empate > 0 else 0
 
-        # Función de apoyo para calcular Over/Unders desde la Matriz
-        def get_under_prob(matrix, limit):
-            prob = 0
-            for i in range(matrix.shape[0]):
-                for j in range(matrix.shape[1]):
-                    if i + j <= limit:
-                        prob += matrix[i, j]
-            return prob
-            
-        prob_under_0_5 = get_under_prob(prob_matrix, 0)
-        prob_under_1_5 = get_under_prob(prob_matrix, 1)
-        prob_under_2_5 = get_under_prob(prob_matrix, 2)
-        prob_under_3_5 = get_under_prob(prob_matrix, 3)
-        prob_under_4_5 = get_under_prob(prob_matrix, 4)
-        prob_under_5_5 = get_under_prob(prob_matrix, 5)
+        prob_under_0_5 = get_joint_prob(prob_matrix, lambda i, j: i + j <= 0)
+        prob_under_1_5 = get_joint_prob(prob_matrix, lambda i, j: i + j <= 1)
+        prob_under_2_5 = get_joint_prob(prob_matrix, lambda i, j: i + j <= 2)
+        prob_under_3_5 = get_joint_prob(prob_matrix, lambda i, j: i + j <= 3)
+        prob_under_4_5 = get_joint_prob(prob_matrix, lambda i, j: i + j <= 4)
+        prob_under_5_5 = get_joint_prob(prob_matrix, lambda i, j: i + j <= 5)
         
         lam_ht_total = lambda_home_ht + lambda_away_ht
         prob_over_0_5_ht = 1 - poisson.cdf(0, lam_ht_total)
         prob_under_1_5_ht = poisson.cdf(1, lam_ht_total) 
 
-        # Extraemos distribuciones marginales (por equipo) de la matriz Dixon-Coles
         p_home_marginal = prob_matrix.sum(axis=1)
         p_away_marginal = prob_matrix.sum(axis=0)
 
         home_under_0_5 = p_home_marginal[0]
         home_over_0_5 = 1 - home_under_0_5
-        home_under_1_5 = p_home_marginal[:2].sum()
-        home_over_1_5 = 1 - home_under_1_5
-        home_under_2_5 = p_home_marginal[:3].sum()
-        home_over_2_5 = 1 - home_under_2_5
+        home_over_1_5 = 1 - p_home_marginal[:2].sum()
+        home_over_2_5 = 1 - p_home_marginal[:3].sum()
 
         away_under_0_5 = p_away_marginal[0]
         away_over_0_5 = 1 - away_under_0_5
-        away_under_1_5 = p_away_marginal[:2].sum()
-        away_over_1_5 = 1 - away_under_1_5
-        away_under_2_5 = p_away_marginal[:3].sum()
-        away_over_2_5 = 1 - away_under_2_5
-        
-        home_clean_sheet = away_under_0_5
-        away_clean_sheet = home_under_0_5
+        away_over_1_5 = 1 - p_away_marginal[:2].sum()
+        away_over_2_5 = 1 - p_away_marginal[:3].sum()
 
         return {
             'local': home_team,
@@ -329,8 +345,8 @@ class MatchAnalyzer:
             'away_over_0_5': away_over_0_5,
             'away_over_1_5': away_over_1_5,
             'away_over_2_5': away_over_2_5,
-            'home_clean_sheet': home_clean_sheet,
-            'away_clean_sheet': away_clean_sheet,
+            'home_clean_sheet': away_under_0_5,
+            'away_clean_sheet': home_under_0_5,
             'home_form': home_form_str,
             'home_ppg': home_ppg,
             'away_form': away_form_str,
@@ -338,7 +354,8 @@ class MatchAnalyzer:
             'home_venue_form': home_venue_form_str,
             'home_venue_ppg': home_venue_ppg,
             'away_venue_form': away_venue_form_str,
-            'away_venue_ppg': away_venue_ppg
+            'away_venue_ppg': away_venue_ppg,
+            'sgbb': sgbb_conjunto
         }
 
     # ==========================================
@@ -348,7 +365,7 @@ class MatchAnalyzer:
         matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)]
         matches = matches.dropna(subset=["FTHG", "FTAG"]) 
         matches = matches.sort_values(by="Date", ascending=False)
-        recent = matches.head(15)
+        recent = matches.head(10) # Reajuste a Top 10
 
         count = len(recent)
         if recent.empty or count == 0:
@@ -395,7 +412,8 @@ class MatchAnalyzer:
         def get_avg_points_decay(df_subset, team_id):
             if df_subset.empty: return 105.0, 105.0
             
-            base_weights = [0.15, 0.12, 0.10, 0.09, 0.08, 0.07, 0.06, 0.05, 0.05, 0.04, 0.04, 0.03, 0.03, 0.02, 0.02]
+            # Pesos ajustados para 10 partidos
+            base_weights = [0.15, 0.12, 0.10, 0.09, 0.08, 0.07, 0.06, 0.05, 0.05, 0.04]
             pts_f, pts_c = [], []
             
             for _, row in df_subset.iterrows():
@@ -420,16 +438,16 @@ class MatchAnalyzer:
             return float(avg_f), float(avg_c)
 
         home_global = self.df[(self.df['HomeTeamId'] == home_id) | (self.df['AwayTeamId'] == home_id)]
-        home_global = home_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(15)
+        home_global = home_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
         
         away_global = self.df[(self.df['HomeTeamId'] == away_id) | (self.df['AwayTeamId'] == away_id)]
-        away_global = away_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(15)
+        away_global = away_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
+
+        home_venue = self.df[self.df['HomeTeamId'] == home_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
+        away_venue = self.df[self.df['AwayTeamId'] == away_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
 
         home_form_str, home_ppg = get_form_tracker(home_global, home_id)
         away_form_str, away_ppg = get_form_tracker(away_global, away_id)
-
-        home_venue = self.df[self.df['HomeTeamId'] == home_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(15)
-        away_venue = self.df[self.df['AwayTeamId'] == away_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(15)
 
         home_venue_form_str, home_venue_ppg = get_form_tracker(home_venue, home_id)
         away_venue_form_str, away_venue_ppg = get_form_tracker(away_venue, away_id)
@@ -484,7 +502,7 @@ class MatchAnalyzer:
     def get_basketball_overtime_stats(self, team_name, team_id):
         matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)]
         matches = matches.sort_values(by="Date", ascending=False)
-        recent = matches.head(15)
+        recent = matches.head(10)
 
         count = len(recent)
         if recent.empty or count == 0:
