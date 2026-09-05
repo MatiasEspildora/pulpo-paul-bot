@@ -5741,6 +5741,76 @@
     },
     {
         "fixture": {
+            "id": 1519631,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-03T12:30:00-04:00",
+            "timestamp": 1788453000,
+            "periods": {
+                "first": 1788453000,
+                "second": 1788456600
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": "Tallinn"
+            },
+            "status": {
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 6
+            }
+        },
+        "league": {
+            "id": 328,
+            "name": "Esiliiga A",
+            "country": "Estonia",
+            "logo": "https://media.api-sports.io/football/leagues/328.png",
+            "flag": "https://media.api-sports.io/flags/ee.svg",
+            "season": 2026,
+            "round": "Regular Season - 26",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 25755,
+                "name": "Nõmme United II",
+                "logo": "https://media.api-sports.io/football/teams/25755.png",
+                "winner": false
+            },
+            "away": {
+                "id": 3516,
+                "name": "Elva",
+                "logo": "https://media.api-sports.io/football/teams/3516.png",
+                "winner": true
+            }
+        },
+        "goals": {
+            "home": 0,
+            "away": 1
+        },
+        "score": {
+            "halftime": {
+                "home": 0,
+                "away": 1
+            },
+            "fulltime": {
+                "home": 0,
+                "away": 1
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1563653,
             "referee": null,
             "timezone": "America/Santiago",
@@ -7632,7 +7702,7 @@
     {
         "fixture": {
             "id": 1635491,
-            "referee": null,
+            "referee": "K. Tsetsilas",
             "timezone": "America/Santiago",
             "date": "2026-09-03T14:00:00-04:00",
             "timestamp": 1788458400,
@@ -8766,8 +8836,8 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
+                "long": "Match Postponed",
+                "short": "PST",
                 "elapsed": null,
                 "extra": null
             }
@@ -10502,7 +10572,7 @@
     {
         "fixture": {
             "id": 1549113,
-            "referee": null,
+            "referee": "R. Encarnacion",
             "timezone": "America/Santiago",
             "date": "2026-09-03T20:00:00-04:00",
             "timestamp": 1788480000,
@@ -10712,7 +10782,7 @@
     {
         "fixture": {
             "id": 1581412,
-            "referee": null,
+            "referee": "A. Barba",
             "timezone": "America/Santiago",
             "date": "2026-09-03T21:00:00-04:00",
             "timestamp": 1788483600,
