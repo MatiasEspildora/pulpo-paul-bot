@@ -7,8 +7,8 @@
             "date": "2026-09-06T01:00:00-03:00",
             "timestamp": 1788667200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1788667200,
+                "second": 1788670800
             },
             "venue": {
                 "id": 0,
@@ -16,10 +16,10 @@
                 "city": "Sapporo"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 4
             }
         },
         "league": {
@@ -37,27 +37,27 @@
                 "id": 279,
                 "name": "Consadole Sapporo",
                 "logo": "https://media.api-sports.io/football/teams/279.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 7145,
                 "name": "Tochigi City",
                 "logo": "https://media.api-sports.io/football/teams/7145.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 4
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 2
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 4
             },
             "extratime": {
                 "home": null,
@@ -77,8 +77,8 @@
             "date": "2026-09-06T01:00:00-03:00",
             "timestamp": 1788667200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1788667200,
+                "second": 1788670800
             },
             "venue": {
                 "id": null,
@@ -86,10 +86,10 @@
                 "city": "Sydney"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 90,
+                "extra": 3
             }
         },
         "league": {
@@ -107,23 +107,23 @@
                 "id": 3776,
                 "name": "Sydney United",
                 "logo": "https://media.api-sports.io/football/teams/3776.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 3767,
                 "name": "Manly United",
                 "logo": "https://media.api-sports.io/football/teams/3767.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 3,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 1
             },
             "fulltime": {
                 "home": null,
@@ -147,8 +147,8 @@
             "date": "2026-09-06T02:00:00-03:00",
             "timestamp": 1788670800,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1788670800,
+                "second": 1788674400
             },
             "venue": {
                 "id": null,
@@ -156,9 +156,9 @@
                 "city": "Ulaanbaatar"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 46,
                 "extra": null
             }
         },
@@ -177,23 +177,23 @@
                 "id": 25103,
                 "name": "Mongolia U20",
                 "logo": "https://media.api-sports.io/football/teams/25103.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 25095,
                 "name": "Guam U20",
                 "logo": "https://media.api-sports.io/football/teams/25095.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 2,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
@@ -217,7 +217,7 @@
             "date": "2026-09-06T02:00:00-03:00",
             "timestamp": 1788670800,
             "periods": {
-                "first": null,
+                "first": 1788670800,
                 "second": null
             },
             "venue": {
@@ -226,10 +226,10 @@
                 "city": "Newcastle"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
+                "extra": 2
             }
         },
         "league": {
@@ -257,13 +257,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
@@ -46803,6 +46803,76 @@
                 "id": 5334,
                 "name": "Oman Club",
                 "logo": "https://media.api-sports.io/football/teams/5334.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1493671,
+            "referee": "M. Corrigan",
+            "timezone": "America/Santiago",
+            "date": "2026-09-06T12:00:00-03:00",
+            "timestamp": 1788706800,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": "Riccardo Silva Stadium",
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 255,
+            "name": "USL Championship",
+            "country": "USA",
+            "logo": "https://media.api-sports.io/football/leagues/255.png",
+            "flag": "https://media.api-sports.io/flags/us.svg",
+            "season": 2026,
+            "round": "Group Stage",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 9030,
+                "name": "Miami FC",
+                "logo": "https://media.api-sports.io/football/teams/9030.png",
+                "winner": null
+            },
+            "away": {
+                "id": 4010,
+                "name": "Pittsburgh Riverhounds",
+                "logo": "https://media.api-sports.io/football/teams/4010.png",
                 "winner": null
             }
         },
