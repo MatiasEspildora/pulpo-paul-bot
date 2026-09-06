@@ -1122,7 +1122,7 @@
     {
         "fixture": {
             "id": 1510435,
-            "referee": null,
+            "referee": "J. Park",
             "timezone": "America/Santiago",
             "date": "2026-09-04T06:30:00-04:00",
             "timestamp": 1788517800,
@@ -1192,7 +1192,7 @@
     {
         "fixture": {
             "id": 1510436,
-            "referee": null,
+            "referee": "Kim Yong-Woo",
             "timezone": "America/Santiago",
             "date": "2026-09-04T06:30:00-04:00",
             "timestamp": 1788517800,
@@ -1402,7 +1402,7 @@
     {
         "fixture": {
             "id": 1550707,
-            "referee": null,
+            "referee": "N. Fairuski",
             "timezone": "America/Santiago",
             "date": "2026-09-04T07:00:00-04:00",
             "timestamp": 1788519600,
@@ -2461,9 +2461,9 @@
                 "second": 1788526800
             },
             "venue": {
-                "id": null,
+                "id": 4816,
                 "name": "Rainbow Stadium",
-                "city": null
+                "city": "Pattani"
             },
             "status": {
                 "long": "Match Finished",
@@ -3302,13 +3302,13 @@
             },
             "venue": {
                 "id": null,
-                "name": "Sultan Hassanal Bolkiah Stadium",
-                "city": "B. S. Begawan"
+                "name": "Sultan Ibrahim Stadium",
+                "city": "Johor Bahru"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -3324,30 +3324,30 @@
         },
         "teams": {
             "home": {
-                "id": 4202,
-                "name": "DPMM FC Brunei",
-                "logo": "https://media.api-sports.io/football/teams/4202.png",
-                "winner": null
-            },
-            "away": {
                 "id": 2523,
                 "name": "Johor Darul Takzim FC",
                 "logo": "https://media.api-sports.io/football/teams/2523.png",
-                "winner": null
+                "winner": true
+            },
+            "away": {
+                "id": 4202,
+                "name": "DPMM FC Brunei",
+                "logo": "https://media.api-sports.io/football/teams/4202.png",
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 3,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -4468,6 +4468,76 @@
             "fulltime": {
                 "home": 1,
                 "away": 0
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1629410,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-04T09:00:00-04:00",
+            "timestamp": 1788526800,
+            "periods": {
+                "first": 1788526800,
+                "second": 1788530400
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 1240,
+            "name": "U19 league",
+            "country": "Turkey",
+            "logo": "https://media.api-sports.io/football/leagues/1240.png",
+            "flag": "https://media.api-sports.io/flags/tr.svg",
+            "season": 2026,
+            "round": "Regular Season - 4",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 16397,
+                "name": "İstanbul Başakşehir U19",
+                "logo": "https://media.api-sports.io/football/teams/16397.png",
+                "winner": true
+            },
+            "away": {
+                "id": 23031,
+                "name": "Galatasaray U18",
+                "logo": "https://media.api-sports.io/football/teams/23031.png",
+                "winner": false
+            }
+        },
+        "goals": {
+            "home": 3,
+            "away": 1
+        },
+        "score": {
+            "halftime": {
+                "home": 0,
+                "away": 0
+            },
+            "fulltime": {
+                "home": 3,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -5862,8 +5932,8 @@
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "fulltime": {
                 "home": 1,
@@ -6002,8 +6072,8 @@
         },
         "score": {
             "halftime": {
-                "home": 1,
-                "away": 0
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
                 "home": 1,
@@ -6092,7 +6162,7 @@
     {
         "fixture": {
             "id": 1601885,
-            "referee": null,
+            "referee": "R. Jabarov",
             "timezone": "America/Santiago",
             "date": "2026-09-04T10:00:00-04:00",
             "timestamp": 1788530400,
@@ -6148,76 +6218,6 @@
             "fulltime": {
                 "home": 2,
                 "away": 1
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1606137,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-04T10:00:00-04:00",
-            "timestamp": 1788530400,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": 11660,
-                "name": "efbet Arena",
-                "city": "Burgas"
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 177,
-            "name": "Third League - Southeast",
-            "country": "Bulgaria",
-            "logo": "https://media.api-sports.io/football/leagues/177.png",
-            "flag": "https://media.api-sports.io/flags/bg.svg",
-            "season": 2026,
-            "round": "Southeast - 5",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 1425,
-                "name": "Neftochimic Burgas",
-                "logo": "https://media.api-sports.io/football/teams/1425.png",
-                "winner": null
-            },
-            "away": {
-                "id": 17307,
-                "name": "Lokomotiv Plovdiv II",
-                "logo": "https://media.api-sports.io/football/teams/17307.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
             },
             "extratime": {
                 "home": null,
@@ -8133,7 +8133,7 @@
             "venue": {
                 "id": null,
                 "name": "Abdessalem Kazouz Stadium",
-                "city": "Zarzis"
+                "city": "Sfax"
             },
             "status": {
                 "long": "Match Finished",
@@ -8612,7 +8612,7 @@
     {
         "fixture": {
             "id": 1565471,
-            "referee": "Andrey Kovalenko, Ukraine",
+            "referee": "A. Kovalenko",
             "timezone": "America/Santiago",
             "date": "2026-09-04T11:00:00-04:00",
             "timestamp": 1788534000,
@@ -9160,8 +9160,8 @@
                 "away": 1
             },
             "extratime": {
-                "home": 0,
-                "away": 0
+                "home": null,
+                "away": null
             },
             "penalty": {
                 "home": 7,
@@ -9712,8 +9712,8 @@
         },
         "score": {
             "halftime": {
-                "home": 0,
-                "away": 1
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
                 "home": 3,
@@ -10082,7 +10082,7 @@
     {
         "fixture": {
             "id": 1504297,
-            "referee": null,
+            "referee": "K. Makinen",
             "timezone": "America/Santiago",
             "date": "2026-09-04T11:30:00-04:00",
             "timestamp": 1788535800,
@@ -10093,7 +10093,7 @@
             "venue": {
                 "id": null,
                 "name": null,
-                "city": null
+                "city": "Joensuu"
             },
             "status": {
                 "long": "Match Finished",
@@ -10712,7 +10712,7 @@
     {
         "fixture": {
             "id": 1504298,
-            "referee": null,
+            "referee": "J. Svraka",
             "timezone": "America/Santiago",
             "date": "2026-09-04T12:00:00-04:00",
             "timestamp": 1788537600,
@@ -11272,7 +11272,7 @@
     {
         "fixture": {
             "id": 1558204,
-            "referee": null,
+            "referee": "D. Krumplewski",
             "timezone": "America/Santiago",
             "date": "2026-09-04T12:00:00-04:00",
             "timestamp": 1788537600,
@@ -12232,8 +12232,8 @@
         },
         "score": {
             "halftime": {
-                "home": 0,
-                "away": 1
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
                 "home": 2,
@@ -12392,7 +12392,7 @@
     {
         "fixture": {
             "id": 1603554,
-            "referee": "Konstantinos Photiou, Cyprus",
+            "referee": "K. Fotiou",
             "timezone": "America/Santiago",
             "date": "2026-09-04T12:00:00-04:00",
             "timestamp": 1788537600,
@@ -12402,7 +12402,7 @@
             },
             "venue": {
                 "id": null,
-                "name": "Katokopia Epistrofi - Glafkos Klirides",
+                "name": "Katokopia Stadium",
                 "city": "Peristerona"
             },
             "status": {
@@ -12717,7 +12717,7 @@
             }
         },
         "goals": {
-            "home": 2,
+            "home": 1,
             "away": 1
         },
         "score": {
@@ -12726,12 +12726,12 @@
                 "away": 0
             },
             "fulltime": {
-                "home": 2,
+                "home": 1,
                 "away": 1
             },
             "extratime": {
-                "home": 0,
-                "away": 0
+                "home": null,
+                "away": null
             },
             "penalty": {
                 "home": null,
@@ -15312,8 +15312,8 @@
         },
         "score": {
             "halftime": {
-                "home": 1,
-                "away": 0
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
                 "home": 1,
@@ -15612,7 +15612,7 @@
     {
         "fixture": {
             "id": 1571114,
-            "referee": null,
+            "referee": "J. Martinez",
             "timezone": "America/Santiago",
             "date": "2026-09-04T13:00:00-04:00",
             "timestamp": 1788541200,
@@ -17762,8 +17762,8 @@
         },
         "score": {
             "halftime": {
-                "home": 0,
-                "away": 1
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
                 "home": 3,
@@ -23152,8 +23152,8 @@
         },
         "score": {
             "halftime": {
-                "home": 1,
-                "away": 0
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
                 "home": 1,
@@ -25412,7 +25412,7 @@
     {
         "fixture": {
             "id": 1609371,
-            "referee": null,
+            "referee": "A. Parker",
             "timezone": "America/Santiago",
             "date": "2026-09-04T14:30:00-04:00",
             "timestamp": 1788546600,
@@ -25421,9 +25421,9 @@
                 "second": 1788550200
             },
             "venue": {
-                "id": null,
-                "name": "Grosvenor Vale",
-                "city": "London"
+                "id": 596,
+                "name": "Vicarage Road",
+                "city": "Watford"
             },
             "status": {
                 "long": "Match Finished",
@@ -26302,8 +26302,8 @@
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": 2,
@@ -26372,8 +26372,8 @@
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
                 "home": 2,
@@ -27092,7 +27092,7 @@
     {
         "fixture": {
             "id": 1629910,
-            "referee": null,
+            "referee": "R. Hennessey",
             "timezone": "America/Santiago",
             "date": "2026-09-04T14:45:00-04:00",
             "timestamp": 1788547500,
@@ -27862,7 +27862,7 @@
     {
         "fixture": {
             "id": 1558211,
-            "referee": null,
+            "referee": "M. Myszka",
             "timezone": "America/Santiago",
             "date": "2026-09-04T15:00:00-04:00",
             "timestamp": 1788548400,
@@ -29316,8 +29316,8 @@
                 "away": null
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 3
             },
             "extratime": {
                 "home": null,
@@ -30312,7 +30312,7 @@
     {
         "fixture": {
             "id": 1635547,
-            "referee": "Augusto Olmos, Uruguay",
+            "referee": "A. Olmos",
             "timezone": "America/Santiago",
             "date": "2026-09-04T18:00:00-04:00",
             "timestamp": 1788559200,
@@ -31012,7 +31012,7 @@
     {
         "fixture": {
             "id": 1557197,
-            "referee": null,
+            "referee": "L. Aldrich",
             "timezone": "America/Santiago",
             "date": "2026-09-04T19:00:00-04:00",
             "timestamp": 1788562800,
@@ -31280,8 +31280,8 @@
                 "away": 2
             },
             "extratime": {
-                "home": 0,
-                "away": 0
+                "home": null,
+                "away": null
             },
             "penalty": {
                 "home": 4,
@@ -31902,16 +31902,16 @@
         },
         "score": {
             "halftime": {
-                "home": 1,
-                "away": 0
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
                 "home": 1,
                 "away": 1
             },
             "extratime": {
-                "home": 0,
-                "away": 0
+                "home": null,
+                "away": null
             },
             "penalty": {
                 "home": 4,
@@ -32610,8 +32610,8 @@
                 "away": 0
             },
             "extratime": {
-                "home": 0,
-                "away": 0
+                "home": null,
+                "away": null
             },
             "penalty": {
                 "home": 4,
@@ -32692,7 +32692,7 @@
     {
         "fixture": {
             "id": 1598812,
-            "referee": null,
+            "referee": "C. Ramirez",
             "timezone": "America/Santiago",
             "date": "2026-09-04T22:00:00-04:00",
             "timestamp": 1788573600,
@@ -32762,7 +32762,7 @@
     {
         "fixture": {
             "id": 1603345,
-            "referee": null,
+            "referee": "M. Ximena",
             "timezone": "America/Santiago",
             "date": "2026-09-04T22:06:00-04:00",
             "timestamp": 1788573960,
@@ -32972,7 +32972,7 @@
     {
         "fixture": {
             "id": 1603346,
-            "referee": null,
+            "referee": "E. Nevarez",
             "timezone": "America/Santiago",
             "date": "2026-09-04T23:00:00-04:00",
             "timestamp": 1788577200,
