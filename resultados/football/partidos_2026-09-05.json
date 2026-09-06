@@ -14491,76 +14491,6 @@
     },
     {
         "fixture": {
-            "id": 1621314,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-05T07:00:00-04:00",
-            "timestamp": 1788606000,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 496,
-            "name": "Liga Alef",
-            "country": "Israel",
-            "logo": "https://media.api-sports.io/football/leagues/496.png",
-            "flag": "https://media.api-sports.io/flags/il.svg",
-            "season": 2026,
-            "round": "North - 1",
-            "standings": false
-        },
-        "teams": {
-            "home": {
-                "id": 6149,
-                "name": "Hapoel Bnei Musmus",
-                "logo": "https://media.api-sports.io/football/teams/6149.png",
-                "winner": null
-            },
-            "away": {
-                "id": 20706,
-                "name": "Tzeirei Umm al-Fahm",
-                "logo": "https://media.api-sports.io/football/teams/20706.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
             "id": 1621954,
             "referee": null,
             "timezone": "America/Santiago",
@@ -31291,76 +31221,6 @@
     },
     {
         "fixture": {
-            "id": 1600771,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-05T09:00:00-04:00",
-            "timestamp": 1788613200,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": "Ushirika Stadium",
-                "city": "Moshi"
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 567,
-            "name": "Ligi kuu Bara",
-            "country": "Tanzania",
-            "logo": "https://media.api-sports.io/football/leagues/567.png",
-            "flag": "https://media.api-sports.io/flags/tz.svg",
-            "season": 2026,
-            "round": "Regular Season - 5",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 12199,
-                "name": "Polisi Tanzania",
-                "logo": "https://media.api-sports.io/football/teams/12199.png",
-                "winner": null
-            },
-            "away": {
-                "id": 12189,
-                "name": "Coastal Union",
-                "logo": "https://media.api-sports.io/football/teams/12189.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
             "id": 1601132,
             "referee": null,
             "timezone": "America/Santiago",
@@ -33542,8 +33402,8 @@
             },
             "venue": {
                 "id": 0,
-                "name": null,
-                "city": null
+                "name": "Ngezi Baobab Stadium",
+                "city": "Mhondoro-Ngezi"
             },
             "status": {
                 "long": "Match Finished",
@@ -33612,8 +33472,8 @@
             },
             "venue": {
                 "id": 0,
-                "name": null,
-                "city": null
+                "name": "Nyamhunga Stadium",
+                "city": "Kariba"
             },
             "status": {
                 "long": "Match Finished",
@@ -33682,8 +33542,8 @@
             },
             "venue": {
                 "id": 0,
-                "name": null,
-                "city": null
+                "name": "Gibbo Stadium",
+                "city": "Masvingo"
             },
             "status": {
                 "long": "Match Finished",
@@ -58292,8 +58152,8 @@
         },
         "score": {
             "halftime": {
-                "home": 0,
-                "away": 1
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
                 "home": 2,
@@ -93046,9 +92906,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -93067,27 +92927,27 @@
                 "id": 3739,
                 "name": "Lovćen",
                 "logo": "https://media.api-sports.io/football/teams/3739.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 3749,
                 "name": "Kom",
                 "logo": "https://media.api-sports.io/football/teams/3749.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 2
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -99267,8 +99127,8 @@
             "date": "2026-09-05T15:00:00-04:00",
             "timestamp": 1788634800,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1788634800,
+                "second": 1788638400
             },
             "venue": {
                 "id": null,
@@ -99276,9 +99136,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -99297,18 +99157,18 @@
                 "id": 7838,
                 "name": "4 de Julho",
                 "logo": "https://media.api-sports.io/football/teams/7838.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 26859,
                 "name": "Caicara",
                 "logo": "https://media.api-sports.io/football/teams/26859.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 3,
+            "away": 0
         },
         "score": {
             "halftime": {
@@ -99316,8 +99176,8 @@
                 "away": null
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -99668,76 +99528,6 @@
             "fulltime": {
                 "home": 2,
                 "away": 1
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1638345,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-05T15:00:00-04:00",
-            "timestamp": 1788634800,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 710,
-            "name": "Nacional B",
-            "country": "Bolivia",
-            "logo": "https://media.api-sports.io/football/leagues/710.png",
-            "flag": "https://media.api-sports.io/flags/bo.svg",
-            "season": 2026,
-            "round": "Regular Season - 3",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 26723,
-                "name": "CD Guadalajara",
-                "logo": "https://media.api-sports.io/football/teams/26723.png",
-                "winner": null
-            },
-            "away": {
-                "id": 26485,
-                "name": "Primero Mayo",
-                "logo": "https://media.api-sports.io/football/teams/26485.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
             },
             "extratime": {
                 "home": null,
@@ -109207,8 +108997,8 @@
             "date": "2026-09-05T23:00:00-04:00",
             "timestamp": 1788663600,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1788663600,
+                "second": 1788667200
             },
             "venue": {
                 "id": 20064,
@@ -109216,9 +109006,9 @@
                 "city": "Cabo San Lucas"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -109237,27 +109027,27 @@
                 "id": 19908,
                 "name": "Los Cabos United",
                 "logo": "https://media.api-sports.io/football/teams/19908.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 24952,
                 "name": "Tigres de Alica",
                 "logo": "https://media.api-sports.io/football/teams/24952.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 2
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 2
             },
             "extratime": {
                 "home": null,
