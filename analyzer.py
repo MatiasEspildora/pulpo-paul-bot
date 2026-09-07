@@ -188,7 +188,6 @@ class MatchAnalyzer:
             avg_c = sum(g * w_i for g, w_i in zip(goles_c, w))
             return float(avg_f), float(avg_c)
 
-        # Aplicando aislamiento de contexto por competición en las muestras
         home_matches = self._get_filtered_matches(home_id, league_id, es_eliminatoria)
         away_matches = self._get_filtered_matches(away_id, league_id, es_eliminatoria)
 
@@ -324,6 +323,8 @@ class MatchAnalyzer:
             'visita': away_team,
             'local_id': home_id,
             'visita_id': away_id,
+            'league_id': league_id,           
+            'es_eliminatoria': es_eliminatoria, 
             'probs': [prob_home, prob_draw, prob_away],
             'btts': btts_yes,
             'btts_no': btts_no,
