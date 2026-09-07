@@ -10,7 +10,7 @@ class MatchAnalyzer:
             self.df['Date'] = pd.to_datetime(self.df['Date'], errors='coerce')
 
     # ==========================================
-    # 🧠 NUEVAS FUNCIONES: CONTEXTO Y MATRIZ
+    # 🧠 FUNCIONES: CONTEXTO Y MATRIZ
     # ==========================================
     def _apply_knockout_context(self, h_id, a_id, league_id, home_xg, away_xg):
         if self.df.empty or pd.isna(league_id) or pd.isna(h_id) or pd.isna(a_id):
@@ -73,11 +73,22 @@ class MatchAnalyzer:
     # ==========================================
     # ⚽ MÓDULO FÚTBOL
     # ==========================================
-    def get_team_stats(self, team_name, team_id):
-        matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)]
-        matches = matches.dropna(subset=["FTHG", "FTAG"])
-        matches = matches.sort_values(by="Date", ascending=False)
-        recent = matches.head(10) # Reajuste a Top 10
+    def _get_filtered_matches(self, team_id, league_id, es_eliminatoria):
+        """Filtra el historial priorizando la misma liga si no es eliminatoria o copa."""
+        base_matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)]
+        base_matches = base_matches.dropna(subset=["FTHG", "FTAG"]).sort_values(by="Date", ascending=False)
+        
+        if not es_eliminatoria and pd.notna(league_id):
+            liga_matches = base_matches[base_matches["LeagueId"].astype(str) == str(league_id)]
+            # Si tiene al menos 3 partidos en la misma liga, usamos el filtro puro de competición
+            if len(liga_matches) >= 3:
+                return liga_matches
+                
+        return base_matches
+
+    def get_team_stats(self, team_name, team_id, league_id=None, es_eliminatoria=False):
+        matches = self._get_filtered_matches(team_id, league_id, es_eliminatoria)
+        recent = matches.head(10)
 
         count = len(recent)
         if recent.empty or count == 0:
@@ -150,7 +161,6 @@ class MatchAnalyzer:
         def get_avg_goals_decay(df_subset, team_id, is_ht=False):
             if df_subset.empty: return 1.2 if not is_ht else 0.5, 1.2 if not is_ht else 0.5
             
-            # Pesos ajustados para 10 partidos
             base_weights = [0.15, 0.12, 0.10, 0.09, 0.08, 0.07, 0.06, 0.05, 0.05, 0.04]
             goles_f, goles_c = [], []
             
@@ -178,15 +188,15 @@ class MatchAnalyzer:
             avg_c = sum(g * w_i for g, w_i in zip(goles_c, w))
             return float(avg_f), float(avg_c)
 
-        # Muestra Estadística reajustada a Top 10
-        home_global = self.df[(self.df['HomeTeamId'] == home_id) | (self.df['AwayTeamId'] == home_id)]
-        home_global = home_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
+        # Aplicando aislamiento de contexto por competición en las muestras
+        home_matches = self._get_filtered_matches(home_id, league_id, es_eliminatoria)
+        away_matches = self._get_filtered_matches(away_id, league_id, es_eliminatoria)
 
-        away_global = self.df[(self.df['HomeTeamId'] == away_id) | (self.df['AwayTeamId'] == away_id)]
-        away_global = away_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
+        home_global = home_matches.head(10)
+        away_global = away_matches.head(10)
 
-        home_venue = self.df[self.df['HomeTeamId'] == home_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
-        away_venue = self.df[self.df['AwayTeamId'] == away_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
+        home_venue = home_matches[home_matches['HomeTeamId'] == home_id].head(10)
+        away_venue = away_matches[away_matches['AwayTeamId'] == away_id].head(10)
 
         home_form_str, home_ppg = get_form_tracker(home_global, home_id)
         away_form_str, away_ppg = get_form_tracker(away_global, away_id)
@@ -230,7 +240,6 @@ class MatchAnalyzer:
         max_goals = 8
         prob_matrix = self._calculate_exact_scores(lambda_home, lambda_away, max_goals)
 
-        # 🧠 INYECCIÓN SGBB: Suma de probabilidades conjuntas dependientes desde la Matriz
         def get_joint_prob(matrix, condition_func):
             prob = 0.0
             for i in range(matrix.shape[0]):
@@ -365,7 +374,7 @@ class MatchAnalyzer:
         matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)]
         matches = matches.dropna(subset=["FTHG", "FTAG"]) 
         matches = matches.sort_values(by="Date", ascending=False)
-        recent = matches.head(10) # Reajuste a Top 10
+        recent = matches.head(10)
 
         count = len(recent)
         if recent.empty or count == 0:
@@ -412,7 +421,6 @@ class MatchAnalyzer:
         def get_avg_points_decay(df_subset, team_id):
             if df_subset.empty: return 105.0, 105.0
             
-            # Pesos ajustados para 10 partidos
             base_weights = [0.15, 0.12, 0.10, 0.09, 0.08, 0.07, 0.06, 0.05, 0.05, 0.04]
             pts_f, pts_c = [], []
             
