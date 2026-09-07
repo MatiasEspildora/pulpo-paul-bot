@@ -87,8 +87,8 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     for pais, ligas in agrupar_por_pais(proyecciones_dict).items():
         for liga, projs in ligas.items():
             for p in projs:
-                s_l = analyzer.get_team_stats(p['local'], p.get('local_id'))
-                s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'))
+                s_l = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=p.get('es_eliminatoria', False))
+                s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=p.get('es_eliminatoria', False))
                 if s_l.get('count', 0) >= 3 and s_v.get('count', 0) >= 3:
                     p['liga_nombre'] = liga
                     p['pais_nombre'] = pais
@@ -262,8 +262,9 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         projs.sort(key=lambda x: x.get('hora', '00:00'))
         
         for p in projs:
-            s_l = analyzer.get_team_stats(p['local'], p.get('local_id'))
-            s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'))
+            # Aquí también se inyectó el league_id y es_eliminatoria para La Autopsia
+            s_l = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=p.get('es_eliminatoria', False))
+            s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=p.get('es_eliminatoria', False))
             
             es_mata_mata = " ⚔️ *[MATA-MATA]*" if p.get('es_eliminatoria') else ""
             
