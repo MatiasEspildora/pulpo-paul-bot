@@ -90,6 +90,11 @@ def auditar_y_reportar():
         return
 
     df_log = pd.read_csv(log_path)
+    
+    # <--- NUEVO: Forzar el tipo de dato a 'object' (acepta texto y números)
+    df_log['ResultadoReal'] = df_log['ResultadoReal'].astype(object)
+    df_log['Acierto'] = df_log['Acierto'].astype(object)
+
     df_hist = cargar_historico_real()
 
     if df_hist.empty:
@@ -156,7 +161,7 @@ def auditar_y_reportar():
         if not df_merc.empty:
             tm, hm, pm = metricas(df_merc)
             icon = "🟢" if pm >= 80 else ("🟡" if pm >= 70 else "🔴")
-            mercados_stats += f"・ {mercado}: {pm:.1f}% ({hm}/{tm}) {icon}\n"
+            mercados_stats += f"・ {mercado}: {pm:.1f}% ({int(hm)}/{tm}) {icon}\n"
 
     # Generar Mensaje de Telegram
     msg = f"📊 ━━ *REPORTE DE EFECTIVIDAD* ━━ 📊\n\n"
