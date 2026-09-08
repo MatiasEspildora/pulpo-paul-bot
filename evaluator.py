@@ -84,7 +84,7 @@ def evaluar_pick(row, fthg, ftag):
     return None
 
 def auditar_y_reportar():
-    log_path = "resultados/football/predicciones_log.csv"
+    log_path = "kpi/football/predicciones_log.csv"
     if not os.path.exists(log_path):
         print("⚠️ No existe el archivo de proyecciones log.")
         return
