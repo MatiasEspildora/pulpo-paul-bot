@@ -47,7 +47,9 @@ jobs:
           API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
           API_BASKETBALL_KEY: ${{ secrets.API_BASKETBALL_KEY }}
           TELEGRAM_BOT_TOKEN_BASKET: ${{ secrets.TELEGRAM_BOT_TOKEN_BASKET }}
-          PROXY_URL: ${{ secrets.PROXY_URL }} 
+          PROXY_URL: ${{ secrets.PROXY_URL }}
+          TELEGRAM_KPI_CHAT_ID: ${{ secrets.TELEGRAM_KPI_CHAT_ID }}
+          TELEGRAM_KPI_BOT_TOKEN: ${{secrets.TELEGRAM_KPI_BOT_TOKEN }} 
         run: python main.py
 
       - name: Configurar Git
