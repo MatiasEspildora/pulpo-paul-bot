@@ -892,8 +892,8 @@
         },
         "score": {
             "halftime": {
-                "home": 0,
-                "away": 1
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
                 "home": 3,
@@ -2172,7 +2172,7 @@
     {
         "fixture": {
             "id": 1621310,
-            "referee": null,
+            "referee": "M. Iqballuddin",
             "timezone": "America/Santiago",
             "date": "2026-09-06T05:30:00-03:00",
             "timestamp": 1788683400,
@@ -7422,7 +7422,7 @@
     {
         "fixture": {
             "id": 1565466,
-            "referee": "Oleksandr Omelchenko, Ukraine",
+            "referee": "O. Omelchenko",
             "timezone": "America/Santiago",
             "date": "2026-09-06T07:00:00-03:00",
             "timestamp": 1788688800,
@@ -7432,7 +7432,7 @@
             },
             "venue": {
                 "id": null,
-                "name": "Valeriy Lobanovskyi",
+                "name": "Stadion Valerija Lobanovskoho",
                 "city": "Kyiv"
             },
             "status": {
@@ -12392,7 +12392,7 @@
     {
         "fixture": {
             "id": 1523263,
-            "referee": "Zhiliang Jia, China",
+            "referee": "J. Zhiliang",
             "timezone": "America/Santiago",
             "date": "2026-09-06T08:00:00-03:00",
             "timestamp": 1788692400,
@@ -12402,7 +12402,7 @@
             },
             "venue": {
                 "id": 19669,
-                "name": "Chongqing Longxing Football Stadium",
+                "name": "Longxing Football Stadium",
                 "city": "Chongqing"
             },
             "status": {
@@ -12462,7 +12462,7 @@
     {
         "fixture": {
             "id": 1528704,
-            "referee": null,
+            "referee": "Y. Hu",
             "timezone": "America/Santiago",
             "date": "2026-09-06T08:00:00-03:00",
             "timestamp": 1788692400,
@@ -12532,7 +12532,7 @@
     {
         "fixture": {
             "id": 1528705,
-            "referee": null,
+            "referee": "P. Li",
             "timezone": "America/Santiago",
             "date": "2026-09-06T08:00:00-03:00",
             "timestamp": 1788692400,
@@ -15122,7 +15122,7 @@
     {
         "fixture": {
             "id": 1528706,
-            "referee": null,
+            "referee": "H. Xin",
             "timezone": "America/Santiago",
             "date": "2026-09-06T08:30:00-03:00",
             "timestamp": 1788694200,
@@ -15682,7 +15682,7 @@
     {
         "fixture": {
             "id": 1598018,
-            "referee": null,
+            "referee": "P. Phansamo",
             "timezone": "America/Santiago",
             "date": "2026-09-06T08:30:00-03:00",
             "timestamp": 1788694200,
@@ -15892,7 +15892,7 @@
     {
         "fixture": {
             "id": 1523264,
-            "referee": "Yinhao Shen, China",
+            "referee": "Y. Shen",
             "timezone": "America/Santiago",
             "date": "2026-09-06T08:35:00-03:00",
             "timestamp": 1788694500,
@@ -15962,7 +15962,7 @@
     {
         "fixture": {
             "id": 1523265,
-            "referee": "Wei Wang, China",
+            "referee": "W. Wang",
             "timezone": "America/Santiago",
             "date": "2026-09-06T08:35:00-03:00",
             "timestamp": 1788694500,
@@ -16592,7 +16592,7 @@
     {
         "fixture": {
             "id": 1523266,
-            "referee": "Jing Wang, China",
+            "referee": "W. Jing",
             "timezone": "America/Santiago",
             "date": "2026-09-06T09:00:00-03:00",
             "timestamp": 1788696000,
@@ -16602,7 +16602,7 @@
             },
             "venue": {
                 "id": null,
-                "name": "TEDA Football Stadium",
+                "name": "Olympic Sports Center Stadium",
                 "city": "Tianjin"
             },
             "status": {
@@ -16942,7 +16942,7 @@
     {
         "fixture": {
             "id": 1555051,
-            "referee": null,
+            "referee": "H. Sanli",
             "timezone": "America/Santiago",
             "date": "2026-09-06T09:00:00-03:00",
             "timestamp": 1788696000,
@@ -18552,7 +18552,7 @@
     {
         "fixture": {
             "id": 1598017,
-            "referee": null,
+            "referee": "A. Khonwai",
             "timezone": "America/Santiago",
             "date": "2026-09-06T09:00:00-03:00",
             "timestamp": 1788696000,
@@ -18622,7 +18622,7 @@
     {
         "fixture": {
             "id": 1598019,
-            "referee": null,
+            "referee": "P. Seejen",
             "timezone": "America/Santiago",
             "date": "2026-09-06T09:00:00-03:00",
             "timestamp": 1788696000,
@@ -18846,9 +18846,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -18867,27 +18867,27 @@
                 "id": 1864,
                 "name": "Borussia Monchengladbach W",
                 "logo": "https://media.api-sports.io/football/teams/1864.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 27444,
                 "name": "Hertha Berlin W",
                 "logo": "https://media.api-sports.io/football/teams/27444.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 2,
+            "away": 3
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 2
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 3
             },
             "extratime": {
                 "home": null,
@@ -19532,7 +19532,7 @@
     {
         "fixture": {
             "id": 1621311,
-            "referee": null,
+            "referee": "Y. Supriyanto",
             "timezone": "America/Santiago",
             "date": "2026-09-06T09:00:00-03:00",
             "timestamp": 1788696000,
@@ -19602,7 +19602,7 @@
     {
         "fixture": {
             "id": 1621312,
-            "referee": null,
+            "referee": "M. Santoso",
             "timezone": "America/Santiago",
             "date": "2026-09-06T09:00:00-03:00",
             "timestamp": 1788696000,
@@ -21002,7 +21002,7 @@
     {
         "fixture": {
             "id": 1565472,
-            "referee": "Roman Blavatskiy, Ukraine",
+            "referee": "R. Blavatsky",
             "timezone": "America/Santiago",
             "date": "2026-09-06T09:30:00-03:00",
             "timestamp": 1788697800,
@@ -21012,7 +21012,7 @@
             },
             "venue": {
                 "id": null,
-                "name": "Avanhard Stadium",
+                "name": "Avangard",
                 "city": "Rivne"
             },
             "status": {
@@ -22402,7 +22402,7 @@
     {
         "fixture": {
             "id": 1547624,
-            "referee": null,
+            "referee": "R. Smitas",
             "timezone": "America/Santiago",
             "date": "2026-09-06T10:00:00-03:00",
             "timestamp": 1788699600,
@@ -27232,7 +27232,7 @@
     {
         "fixture": {
             "id": 1608251,
-            "referee": null,
+            "referee": "M. Cavacini",
             "timezone": "America/Santiago",
             "date": "2026-09-06T10:00:00-03:00",
             "timestamp": 1788699600,
@@ -27302,7 +27302,7 @@
     {
         "fixture": {
             "id": 1608255,
-            "referee": null,
+            "referee": "G. Rossini",
             "timezone": "America/Santiago",
             "date": "2026-09-06T10:00:00-03:00",
             "timestamp": 1788699600,
@@ -27372,7 +27372,7 @@
     {
         "fixture": {
             "id": 1608632,
-            "referee": null,
+            "referee": "A. Silvestri",
             "timezone": "America/Santiago",
             "date": "2026-09-06T10:00:00-03:00",
             "timestamp": 1788699600,
@@ -27442,7 +27442,7 @@
     {
         "fixture": {
             "id": 1608639,
-            "referee": null,
+            "referee": "F. R. Luongo",
             "timezone": "America/Santiago",
             "date": "2026-09-06T10:00:00-03:00",
             "timestamp": 1788699600,
@@ -27512,7 +27512,7 @@
     {
         "fixture": {
             "id": 1609020,
-            "referee": null,
+            "referee": "M. Nigro",
             "timezone": "America/Santiago",
             "date": "2026-09-06T10:00:00-03:00",
             "timestamp": 1788699600,
@@ -34582,7 +34582,7 @@
     {
         "fixture": {
             "id": 1637275,
-            "referee": null,
+            "referee": "C. Deretti",
             "timezone": "America/Santiago",
             "date": "2026-09-06T10:00:00-03:00",
             "timestamp": 1788699600,
@@ -34652,7 +34652,7 @@
     {
         "fixture": {
             "id": 1637276,
-            "referee": null,
+            "referee": "A. Twanyanyukwa",
             "timezone": "America/Santiago",
             "date": "2026-09-06T10:00:00-03:00",
             "timestamp": 1788699600,
@@ -34842,8 +34842,8 @@
         },
         "score": {
             "halftime": {
-                "home": 1,
-                "away": 0
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
                 "home": 1,
@@ -44116,9 +44116,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -44137,27 +44137,27 @@
                 "id": 5427,
                 "name": "Prisons XI",
                 "logo": "https://media.api-sports.io/football/teams/5427.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 5416,
                 "name": "BDF XI",
                 "logo": "https://media.api-sports.io/football/teams/5416.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -47543,7 +47543,7 @@
             "venue": {
                 "id": null,
                 "name": "Boisko ul. Pilkarska 8",
-                "city": null
+                "city": "Bytom"
             },
             "status": {
                 "long": "Match Finished",
@@ -49107,13 +49107,13 @@
                 "id": 26844,
                 "name": "UNAM Pumas U21",
                 "logo": "https://media.api-sports.io/football/teams/26844.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 26830,
                 "name": "Club Leon U21",
                 "logo": "https://media.api-sports.io/football/teams/26830.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
@@ -49130,8 +49130,8 @@
                 "away": 1
             },
             "extratime": {
-                "home": 0,
-                "away": 0
+                "home": null,
+                "away": null
             },
             "penalty": {
                 "home": null,
@@ -53636,9 +53636,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -53657,18 +53657,18 @@
                 "id": 28097,
                 "name": "Andes",
                 "logo": "https://media.api-sports.io/football/teams/28097.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 9621,
                 "name": "Colunga",
                 "logo": "https://media.api-sports.io/football/teams/9621.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 2
         },
         "score": {
             "halftime": {
@@ -53676,8 +53676,8 @@
                 "away": null
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -54742,7 +54742,7 @@
     {
         "fixture": {
             "id": 1547625,
-            "referee": null,
+            "referee": "M. Lukjancukas",
             "timezone": "America/Santiago",
             "date": "2026-09-06T12:45:00-03:00",
             "timestamp": 1788709500,
@@ -55442,7 +55442,7 @@
     {
         "fixture": {
             "id": 1547626,
-            "referee": null,
+            "referee": "K. Drungilas",
             "timezone": "America/Santiago",
             "date": "2026-09-06T13:00:00-03:00",
             "timestamp": 1788710400,
@@ -56912,7 +56912,7 @@
     {
         "fixture": {
             "id": 1582264,
-            "referee": null,
+            "referee": "I. Barbara",
             "timezone": "America/Santiago",
             "date": "2026-09-06T13:00:00-03:00",
             "timestamp": 1788710400,
@@ -59642,7 +59642,7 @@
     {
         "fixture": {
             "id": 1608256,
-            "referee": null,
+            "referee": "A. Mazzer",
             "timezone": "America/Santiago",
             "date": "2026-09-06T13:00:00-03:00",
             "timestamp": 1788710400,
@@ -59712,7 +59712,7 @@
     {
         "fixture": {
             "id": 1608635,
-            "referee": null,
+            "referee": "G. Vingo",
             "timezone": "America/Santiago",
             "date": "2026-09-06T13:00:00-03:00",
             "timestamp": 1788710400,
@@ -59782,7 +59782,7 @@
     {
         "fixture": {
             "id": 1608637,
-            "referee": null,
+            "referee": "G. Renzi",
             "timezone": "America/Santiago",
             "date": "2026-09-06T13:00:00-03:00",
             "timestamp": 1788710400,
@@ -59852,7 +59852,7 @@
     {
         "fixture": {
             "id": 1608638,
-            "referee": null,
+            "referee": "G. M. Manzo",
             "timezone": "America/Santiago",
             "date": "2026-09-06T13:00:00-03:00",
             "timestamp": 1788710400,
@@ -59922,7 +59922,7 @@
     {
         "fixture": {
             "id": 1609011,
-            "referee": null,
+            "referee": "L. Maccarini",
             "timezone": "America/Santiago",
             "date": "2026-09-06T13:00:00-03:00",
             "timestamp": 1788710400,
@@ -61462,7 +61462,7 @@
     {
         "fixture": {
             "id": 1637277,
-            "referee": null,
+            "referee": "S. Gasperotti",
             "timezone": "America/Santiago",
             "date": "2026-09-06T13:00:00-03:00",
             "timestamp": 1788710400,
@@ -61532,7 +61532,7 @@
     {
         "fixture": {
             "id": 1637278,
-            "referee": null,
+            "referee": "C. Reibelt",
             "timezone": "America/Santiago",
             "date": "2026-09-06T13:00:00-03:00",
             "timestamp": 1788710400,
@@ -63156,9 +63156,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -63174,30 +63174,30 @@
         },
         "teams": {
             "home": {
-                "id": 20279,
-                "name": "Atlético Pueblonuevo",
-                "logo": "https://media.api-sports.io/football/teams/20279.png",
-                "winner": null
-            },
-            "away": {
                 "id": 18094,
                 "name": "Jaraíz",
                 "logo": "https://media.api-sports.io/football/teams/18094.png",
                 "winner": null
+            },
+            "away": {
+                "id": 20279,
+                "name": "Atlético Pueblonuevo",
+                "logo": "https://media.api-sports.io/football/teams/20279.png",
+                "winner": null
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 2,
+            "away": 2
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 2
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -71542,7 +71542,7 @@
     {
         "fixture": {
             "id": 1582266,
-            "referee": null,
+            "referee": "E. Barbara",
             "timezone": "America/Santiago",
             "date": "2026-09-06T15:30:00-03:00",
             "timestamp": 1788719400,
@@ -73572,7 +73572,7 @@
     {
         "fixture": {
             "id": 1608253,
-            "referee": null,
+            "referee": "M. Picardi",
             "timezone": "America/Santiago",
             "date": "2026-09-06T16:00:00-03:00",
             "timestamp": 1788721200,
@@ -73642,7 +73642,7 @@
     {
         "fixture": {
             "id": 1608254,
-            "referee": null,
+            "referee": "C. Zito",
             "timezone": "America/Santiago",
             "date": "2026-09-06T16:00:00-03:00",
             "timestamp": 1788721200,
@@ -73712,7 +73712,7 @@
     {
         "fixture": {
             "id": 1608257,
-            "referee": null,
+            "referee": "G. Sciolti",
             "timezone": "America/Santiago",
             "date": "2026-09-06T16:00:00-03:00",
             "timestamp": 1788721200,
@@ -73782,7 +73782,7 @@
     {
         "fixture": {
             "id": 1608636,
-            "referee": null,
+            "referee": "A. Migliorini",
             "timezone": "America/Santiago",
             "date": "2026-09-06T16:00:00-03:00",
             "timestamp": 1788721200,
@@ -73922,7 +73922,7 @@
     {
         "fixture": {
             "id": 1609016,
-            "referee": null,
+            "referee": "L. Mastrodomenico",
             "timezone": "America/Santiago",
             "date": "2026-09-06T16:00:00-03:00",
             "timestamp": 1788721200,
@@ -76932,7 +76932,7 @@
     {
         "fixture": {
             "id": 1637834,
-            "referee": null,
+            "referee": "D. Serafim",
             "timezone": "America/Santiago",
             "date": "2026-09-06T18:30:00-03:00",
             "timestamp": 1788730200,
@@ -76942,7 +76942,7 @@
             },
             "venue": {
                 "id": null,
-                "name": null,
+                "name": "Arena Pernambuco",
                 "city": "Recife"
             },
             "status": {
@@ -77072,7 +77072,7 @@
     {
         "fixture": {
             "id": 1493984,
-            "referee": null,
+            "referee": "I. Bych",
             "timezone": "America/Santiago",
             "date": "2026-09-06T19:00:00-03:00",
             "timestamp": 1788732000,
@@ -79312,7 +79312,7 @@
     {
         "fixture": {
             "id": 1551681,
-            "referee": null,
+            "referee": "R. Vindas",
             "timezone": "America/Santiago",
             "date": "2026-09-06T22:00:00-03:00",
             "timestamp": 1788742800,
