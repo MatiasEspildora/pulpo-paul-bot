@@ -67,8 +67,8 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Postponed",
+            "short": "POST",
             "timer": null
         },
         "league": {
@@ -357,9 +357,9 @@
         "week": null,
         "venue": "Uber Arena",
         "status": {
-            "long": "Quarter 1",
-            "short": "Q1",
-            "timer": "1"
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
         },
         "league": {
             "id": 284,
@@ -388,20 +388,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": 2,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 23,
+                "quarter_2": 23,
+                "quarter_3": 22,
+                "quarter_4": 26,
                 "over_time": null,
-                "total": 2
+                "total": 94
             },
             "away": {
-                "quarter_1": 0,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 14,
+                "quarter_2": 15,
+                "quarter_3": 11,
+                "quarter_4": 16,
                 "over_time": null,
-                "total": 0
+                "total": 56
             }
         }
     },
