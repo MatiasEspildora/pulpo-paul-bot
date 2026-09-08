@@ -12,6 +12,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from api_client import FootballAPI
 from analyzer import MatchAnalyzer
+from bet_builder import BetBuilderEngine  # <--- NUEVO: El cerebro financiero
 from notifier import enviar_mensaje_telegram, enviar_bloque_reportes
 
 def cargar_configuracion():
@@ -315,11 +316,15 @@ def run_process(df_externo=None):
                         palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "play-off", "qualifying"]
                         es_elimi = any(palabra in ronda_texto for palabra in palabras_clave)
                         
-                        proj = analyzer.get_projections(
+                        # 1. El Analizador solo hace la matemática
+                        raw_proj = analyzer.get_projections(
                             h_name, a_name, h_id, a_id, 
                             league_id=league_id_str, 
                             es_eliminatoria=es_elimi
                         )
+                        
+                        # 2. El Constructor arma todos los mercados combinados
+                        proj = BetBuilderEngine.generar_mercados(raw_proj)
                         
                         proj['fecha_str'] = dt_obj.strftime("%Y-%m-%d")
                         proj['hora'] = dt_obj.strftime("%H:%M")
