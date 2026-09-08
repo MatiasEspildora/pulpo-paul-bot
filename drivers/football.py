@@ -194,7 +194,6 @@ def registrar_predicciones(proyecciones_dict):
     
     if os.path.exists(archivo_log):
         df_existente = pd.read_csv(archivo_log)
-        # Concatenar y eliminar duplicados manteniendo el más reciente (keep='last')
         df_combined = pd.concat([df_existente, df_nuevo]).drop_duplicates(subset=['MatchId', 'Seleccion'], keep='last')
         df_combined.to_csv(archivo_log, index=False, encoding='utf-8')
     else:
@@ -276,6 +275,16 @@ def run_process(df_externo=None):
                     continue 
 
         guardar_historico_mensual(df, meses_afectados)
+        
+        # ==========================================
+        # 📊 INYECCIÓN DE AUDITORÍA (KPIs)
+        # ==========================================
+        try:
+            import evaluator
+            print("📊 [AUDITORÍA] Evaluando predicciones pasadas...")
+            evaluator.auditar_y_reportar()
+        except Exception as e:
+            print(f"⚠️ [AUDITORÍA] Error al evaluar KPIs: {e}")
             
         analyzer = MatchAnalyzer(df)
         proyecciones_globales = {} 
@@ -335,7 +344,7 @@ def run_process(df_externo=None):
         else: titulo_bloque = "Turno Nocturno"
 
         if proyecciones_globales:
-            # 🧠 INYECCIÓN: Guardar las predicciones en CSV antes de notificar a Telegram
+            # Registrar proyecciones antes de notificar a Telegram
             registrar_predicciones(proyecciones_globales)
             
             enviar_bloque_reportes(proyecciones_globales, titulo_bloque, analyzer)
