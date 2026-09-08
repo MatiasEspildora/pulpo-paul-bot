@@ -1,16 +1,16 @@
 [
     {
         "id": 503884,
-        "date": "2026-09-08T04:00:00-03:00",
-        "time": "04:00",
-        "timestamp": 1788850800,
+        "date": "2026-09-08T06:00:00-03:00",
+        "time": "06:00",
+        "timestamp": 1788858000,
         "timezone": "America/Santiago",
         "stage": null,
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -40,78 +40,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 32,
+                "quarter_2": 33,
+                "quarter_3": 26,
+                "quarter_4": 23,
                 "over_time": null,
-                "total": null
+                "total": 114
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 27,
+                "quarter_2": 13,
+                "quarter_3": 24,
+                "quarter_4": 6,
                 "over_time": null,
-                "total": null
-            }
-        }
-    },
-    {
-        "id": 503199,
-        "date": "2026-09-08T06:00:00-03:00",
-        "time": "06:00",
-        "timestamp": 1788858000,
-        "timezone": "America/Santiago",
-        "stage": null,
-        "week": null,
-        "venue": null,
-        "status": {
-            "long": "Not Started",
-            "short": "NS",
-            "timer": null
-        },
-        "league": {
-            "id": 426,
-            "name": "MPBL",
-            "type": "League",
-            "season": 2026,
-            "logo": "https://media.api-sports.io/basketball/leagues/426.png"
-        },
-        "country": {
-            "id": 60,
-            "name": "Philippines",
-            "code": "PH",
-            "flag": "https://media.api-sports.io/flags/ph.svg"
-        },
-        "teams": {
-            "home": {
-                "id": 7421,
-                "name": "Marikina Shoemasters",
-                "logo": "https://media.api-sports.io/basketball/teams/7421.png"
-            },
-            "away": {
-                "id": 7350,
-                "name": "Bataan Risers",
-                "logo": "https://media.api-sports.io/basketball/teams/7350.png"
-            }
-        },
-        "scores": {
-            "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": null
-            },
-            "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": null
+                "total": 70
             }
         }
     },
@@ -152,6 +94,122 @@
                 "id": 7360,
                 "name": "Manila Batang Quiapo",
                 "logo": "https://media.api-sports.io/basketball/teams/7360.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            },
+            "away": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            }
+        }
+    },
+    {
+        "id": 503199,
+        "date": "2026-09-08T08:00:00-03:00",
+        "time": "08:00",
+        "timestamp": 1788865200,
+        "timezone": "America/Santiago",
+        "stage": null,
+        "week": null,
+        "venue": null,
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 426,
+            "name": "MPBL",
+            "type": "League",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/426.png"
+        },
+        "country": {
+            "id": 60,
+            "name": "Philippines",
+            "code": "PH",
+            "flag": "https://media.api-sports.io/flags/ph.svg"
+        },
+        "teams": {
+            "home": {
+                "id": 7421,
+                "name": "Marikina Shoemasters",
+                "logo": "https://media.api-sports.io/basketball/teams/7421.png"
+            },
+            "away": {
+                "id": 7350,
+                "name": "Bataan Risers",
+                "logo": "https://media.api-sports.io/basketball/teams/7350.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 14,
+                "quarter_2": 23,
+                "quarter_3": 14,
+                "quarter_4": 27,
+                "over_time": null,
+                "total": 78
+            },
+            "away": {
+                "quarter_1": 20,
+                "quarter_2": 22,
+                "quarter_3": 34,
+                "quarter_4": 23,
+                "over_time": null,
+                "total": 99
+            }
+        }
+    },
+    {
+        "id": 519446,
+        "date": "2026-09-08T12:45:00-03:00",
+        "time": "12:45",
+        "timestamp": 1788882300,
+        "timezone": "America/Santiago",
+        "stage": null,
+        "week": null,
+        "venue": "Uber Arena",
+        "status": {
+            "long": "Not Started",
+            "short": "NS",
+            "timer": null
+        },
+        "league": {
+            "id": 284,
+            "name": "World Cup Women",
+            "type": "League",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/284.png"
+        },
+        "country": {
+            "id": 62,
+            "name": "World",
+            "code": " ",
+            "flag": "https://media.api-sports.io/flags/ .svg"
+        },
+        "teams": {
+            "home": {
+                "id": 4179,
+                "name": "Hungary W",
+                "logo": "https://media.api-sports.io/basketball/teams/4179.png"
+            },
+            "away": {
+                "id": 3042,
+                "name": "Japan W",
+                "logo": "https://media.api-sports.io/basketball/teams/3042.png"
             }
         },
         "scores": {
@@ -268,6 +326,64 @@
                 "id": 688,
                 "name": "Nes Ziona",
                 "logo": "https://media.api-sports.io/basketball/teams/688.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            },
+            "away": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            }
+        }
+    },
+    {
+        "id": 519447,
+        "date": "2026-09-08T15:45:00-03:00",
+        "time": "15:45",
+        "timestamp": 1788893100,
+        "timezone": "America/Santiago",
+        "stage": null,
+        "week": null,
+        "venue": "Uber Arena",
+        "status": {
+            "long": "Not Started",
+            "short": "NS",
+            "timer": null
+        },
+        "league": {
+            "id": 284,
+            "name": "World Cup Women",
+            "type": "League",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/284.png"
+        },
+        "country": {
+            "id": 62,
+            "name": "World",
+            "code": " ",
+            "flag": "https://media.api-sports.io/flags/ .svg"
+        },
+        "teams": {
+            "home": {
+                "id": 4577,
+                "name": "Germany W",
+                "logo": "https://media.api-sports.io/basketball/teams/4577.png"
+            },
+            "away": {
+                "id": 3047,
+                "name": "South Korea W",
+                "logo": "https://media.api-sports.io/basketball/teams/3047.png"
             }
         },
         "scores": {
