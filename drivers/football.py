@@ -135,6 +135,74 @@ def obtener_liga_domestica(df, team_id, team_name):
         pass
     return ""
 
+# ==========================================
+# 📊 MÓDULO DE AUDITORÍA: REGISTRO DE PICKS
+# ==========================================
+def registrar_predicciones(proyecciones_dict):
+    """Guarda las proyecciones que superan los umbrales para evaluarlas post-partido."""
+    archivo_log = "resultados/football/predicciones_log.csv"
+    os.makedirs(os.path.dirname(archivo_log), exist_ok=True)
+    
+    filas = []
+    for key, projs in proyecciones_dict.items():
+        for p in projs:
+            match_id = f"{p.get('local_id', '')}_{p.get('visita_id', '')}_{p.get('fecha_str', '')}"
+            if not match_id or match_id == "__": continue
+            
+            base = {
+                'MatchId': match_id,
+                'Fecha': p.get('fecha_str', ''),
+                'Local': p.get('local', ''),
+                'Visita': p.get('visita', ''),
+                'HomeTeamId': p.get('local_id', ''),
+                'AwayTeamId': p.get('visita_id', ''),
+                'Estado': 'PENDIENTE',
+                'ResultadoReal': '',
+                'Acierto': ''
+            }
+            
+            # 1. Mega-Misiles SGBB (>85%)
+            sgbb = p.get('sgbb', {})
+            for sel, prob in sgbb.items():
+                if prob >= 0.85:
+                    filas.append({**base, 'Mercado': 'Mega-Misil SGBB', 'Seleccion': sel, 'Probabilidad': round(prob, 3)})
+            
+            # 2. Ganador Directo (>75% - umbral ligeramente más bajo para tener volumen de test)
+            probs_1x2 = p.get('probs', [0, 0, 0])
+            prob_gana = max(probs_1x2[0], probs_1x2[2])
+            sel_gana = p.get('local') if probs_1x2[0] > probs_1x2[2] else p.get('visita')
+            if prob_gana >= 0.75:
+                filas.append({**base, 'Mercado': 'Ganador Directo', 'Seleccion': f'Gana {sel_gana}', 'Probabilidad': round(prob_gana, 3)})
+                
+            # 3. Doble Oportunidad (>80%)
+            prob_doble = max(p.get('prob_1X', 0), p.get('prob_X2', 0))
+            sel_doble = "1X" if p.get('prob_1X', 0) > p.get('prob_X2', 0) else "X2"
+            if prob_doble >= 0.80:
+                filas.append({**base, 'Mercado': 'Doble Oportunidad', 'Seleccion': sel_doble, 'Probabilidad': round(prob_doble, 3)})
+                
+            # 4. Goles y BTTS (>80%)
+            if p.get('under_3_5', 0) >= 0.85: filas.append({**base, 'Mercado': 'Goles', 'Seleccion': '-3.5 Goles', 'Probabilidad': round(p['under_3_5'], 3)})
+            if p.get('over_1_5', 0) >= 0.80: filas.append({**base, 'Mercado': 'Goles', 'Seleccion': '+1.5 Goles', 'Probabilidad': round(p['over_1_5'], 3)})
+            if p.get('over_2_5', 0) >= 0.80: filas.append({**base, 'Mercado': 'Goles', 'Seleccion': '+2.5 Goles', 'Probabilidad': round(p['over_2_5'], 3)})
+            if p.get('btts', 0) >= 0.80: filas.append({**base, 'Mercado': 'Ambos Anotan', 'Seleccion': 'Sí', 'Probabilidad': round(p['btts'], 3)})
+            if p.get('btts_no', 0) >= 0.80: filas.append({**base, 'Mercado': 'Ambos Anotan', 'Seleccion': 'No', 'Probabilidad': round(p['btts_no'], 3)})
+
+    if not filas:
+        return
+
+    df_nuevo = pd.DataFrame(filas)
+    
+    if os.path.exists(archivo_log):
+        df_existente = pd.read_csv(archivo_log)
+        # Concatenar y eliminar duplicados manteniendo el más reciente (keep='last')
+        df_combined = pd.concat([df_existente, df_nuevo]).drop_duplicates(subset=['MatchId', 'Seleccion'], keep='last')
+        df_combined.to_csv(archivo_log, index=False, encoding='utf-8')
+    else:
+        df_nuevo.to_csv(archivo_log, index=False, encoding='utf-8')
+
+# ==========================================
+# ⚙️ NÚCLEO DE EJECUCIÓN
+# ==========================================
 def run_process(df_externo=None):
     os.makedirs("logs/football", exist_ok=True)
     os.makedirs("resultados/football", exist_ok=True)
@@ -234,7 +302,6 @@ def run_process(df_externo=None):
                         league_id_raw = match.get("league", {}).get("id")
                         league_id_str = str(league_id_raw) if league_id_raw is not None else None
                         
-                        # Extraemos si es eliminatoria ANTES del analyzer
                         ronda_texto = (match.get("league", {}).get("round") or "").lower()
                         palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "play-off", "qualifying"]
                         es_elimi = any(palabra in ronda_texto for palabra in palabras_clave)
@@ -268,6 +335,9 @@ def run_process(df_externo=None):
         else: titulo_bloque = "Turno Nocturno"
 
         if proyecciones_globales:
+            # 🧠 INYECCIÓN: Guardar las predicciones en CSV antes de notificar a Telegram
+            registrar_predicciones(proyecciones_globales)
+            
             enviar_bloque_reportes(proyecciones_globales, titulo_bloque, analyzer)
         else:
             enviar_mensaje_telegram(f"⚠️ No hay partidos proyectables en el {titulo_bloque}.")
