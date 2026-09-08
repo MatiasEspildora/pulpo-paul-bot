@@ -140,7 +140,7 @@ def obtener_liga_domestica(df, team_id, team_name):
 # ==========================================
 def registrar_predicciones(proyecciones_dict):
     """Guarda las proyecciones que superan los umbrales para evaluarlas post-partido."""
-    archivo_log = "resultados/football/predicciones_log.csv"
+    archivo_log = "kpi/football/predicciones_log.csv"
     os.makedirs(os.path.dirname(archivo_log), exist_ok=True)
     
     filas = []
