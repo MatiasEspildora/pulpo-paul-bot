@@ -5,7 +5,7 @@ import glob
 import requests
 from datetime import datetime, timedelta
 
-# Configuración de Telegram
+# Configuración de Telegram aislada para el Evaluador
 _kpi_token_env = os.environ.get("TELEGRAM_KPI_BOT_TOKEN", "").strip()
 _main_token_env = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
 KPI_TOKEN = _kpi_token_env if _kpi_token_env else _main_token_env
@@ -15,15 +15,30 @@ _main_chat_env = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
 KPI_CHAT_ID = _kpi_chat_env if _kpi_chat_env else _main_chat_env
 
 def get_flag(country_name):
-    # Ajusta esta ruta si tu archivo se llama diferente (ej. countries.json)
-    ruta_banderas = "config/football/flags.json" 
+    """Carga la bandera leyendo directamente el JSON, sin depender de notifier.py"""
+    ruta_banderas = os.path.join("config", "flags.json")
+    country_str = str(country_name).strip()
     
     try:
         with open(ruta_banderas, "r", encoding="utf-8") as f:
             flags = json.load(f)
-        return flags.get(str(country_name).strip(), "🏳️")
+            
+        # Intento directo
+        if country_str in flags:
+            return flags[country_str]
+            
+        # Mapeo de seguridad para nombres comunes que la API envía distinto
+        map_nombres = {
+            "South-Korea": "South Korea",
+            "Republic of Korea": "South Korea",
+            "Korea Republic": "South Korea",
+            "El-Salvador": "El Salvador"
+        }
+        
+        nombre_limpio = map_nombres.get(country_str, country_str)
+        return flags.get(nombre_limpio, "🏳️")
+        
     except Exception:
-        # Fallback de seguridad si el archivo no existe o no se puede leer
         return "🏳️"
 
 def enviar_reporte_telegram(mensaje):
