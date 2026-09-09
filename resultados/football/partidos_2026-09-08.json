@@ -239,7 +239,7 @@
             "logo": "https://media.api-sports.io/football/leagues/14.png",
             "flag": null,
             "season": 2026,
-            "round": "Regular Season - 1",
+            "round": "League Phase - 1",
             "standings": false
         },
         "teams": {
@@ -869,7 +869,7 @@
             "logo": "https://media.api-sports.io/football/leagues/14.png",
             "flag": null,
             "season": 2026,
-            "round": "Regular Season - 1",
+            "round": "League Phase - 1",
             "standings": false
         },
         "teams": {
@@ -1289,7 +1289,7 @@
             "logo": "https://media.api-sports.io/football/leagues/14.png",
             "flag": null,
             "season": 2026,
-            "round": "Regular Season - 1",
+            "round": "League Phase - 1",
             "standings": false
         },
         "teams": {
@@ -1318,76 +1318,6 @@
             "fulltime": {
                 "home": 5,
                 "away": 3
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1582814,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-08T09:15:00-03:00",
-            "timestamp": 1788869700,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": "Sultan Hassanal Bolkiah Stadium",
-                "city": "B. S. Begawan"
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 1132,
-            "name": "AFC Challenge League",
-            "country": "World",
-            "logo": "https://media.api-sports.io/football/leagues/1132.png",
-            "flag": null,
-            "season": 2026,
-            "round": "Preliminary Round",
-            "standings": false
-        },
-        "teams": {
-            "home": {
-                "id": 16066,
-                "name": "Kasuka",
-                "logo": "https://media.api-sports.io/football/teams/16066.png",
-                "winner": null
-            },
-            "away": {
-                "id": 27818,
-                "name": "Karketu Dili",
-                "logo": "https://media.api-sports.io/football/teams/27818.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
             },
             "extratime": {
                 "home": null,
@@ -2339,7 +2269,7 @@
             "logo": "https://media.api-sports.io/football/leagues/14.png",
             "flag": null,
             "season": 2026,
-            "round": "Regular Season - 1",
+            "round": "League Phase - 1",
             "standings": false
         },
         "teams": {
@@ -2759,7 +2689,7 @@
             "logo": "https://media.api-sports.io/football/leagues/14.png",
             "flag": null,
             "season": 2026,
-            "round": "Regular Season - 1",
+            "round": "League Phase - 1",
             "standings": false
         },
         "teams": {
@@ -2829,7 +2759,7 @@
             "logo": "https://media.api-sports.io/football/leagues/14.png",
             "flag": null,
             "season": 2026,
-            "round": "Regular Season - 1",
+            "round": "League Phase - 1",
             "standings": false
         },
         "teams": {
@@ -13632,8 +13562,8 @@
         },
         "score": {
             "halftime": {
-                "home": 0,
-                "away": 1
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
                 "home": 2,
@@ -14777,8 +14707,8 @@
             "date": "2026-09-08T15:45:00-03:00",
             "timestamp": 1788893100,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1788893100,
+                "second": 1788896700
             },
             "venue": {
                 "id": null,
