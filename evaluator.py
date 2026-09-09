@@ -1,4 +1,5 @@
 import os
+import json
 import pandas as pd
 import glob
 import requests
@@ -14,15 +15,16 @@ _main_chat_env = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
 KPI_CHAT_ID = _kpi_chat_env if _kpi_chat_env else _main_chat_env
 
 def get_flag(country_name):
-    flags = {
-        "South-Korea": "🇰🇷", "Republic of Korea": "🇰🇷", "Korea Republic": "🇰🇷", "South Korea": "🇰🇷",
-        "Portugal": "🇵🇹", "Bolivia": "🇧🇴", "Brazil": "🇧🇷", "Chile": "🇨🇱",
-        "Colombia": "🇨🇴", "USA": "🇺🇸", "El-Salvador": "🇸🇻", "Argentina": "🇦🇷",
-        "World": "🌍", "England": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Spain": "🇪🇸", "Italy": "🇮🇹", "Germany": "🇩🇪",
-        "France": "🇫🇷", "Mexico": "🇲🇽", "Peru": "🇵🇪", "Uruguay": "🇺🇾",
-        "Ecuador": "🇪🇨", "Venezuela": "🇻🇪", "Paraguay": "🇵🇾", "Japan": "🇯🇵"
-    }
-    return flags.get(str(country_name).strip(), "🏳️")
+    # Ajusta esta ruta si tu archivo se llama diferente (ej. countries.json)
+    ruta_banderas = "config/football/flags.json" 
+    
+    try:
+        with open(ruta_banderas, "r", encoding="utf-8") as f:
+            flags = json.load(f)
+        return flags.get(str(country_name).strip(), "🏳️")
+    except Exception:
+        # Fallback de seguridad si el archivo no existe o no se puede leer
+        return "🏳️"
 
 def enviar_reporte_telegram(mensaje):
     if not KPI_TOKEN or not KPI_CHAT_ID:
@@ -175,7 +177,7 @@ def auditar_y_reportar():
     total_pendientes = len(df_log[df_log['Estado'] == 'PENDIENTE'])
 
     desglose = [
-        ("Mega-Misiles SGBB", df_resueltos[df_resueltos['Mercado'] == 'Mega-Misil SGBB']),
+        ("Mega-Misil SGBB", df_resueltos[df_resueltos['Mercado'] == 'Mega-Misil SGBB']),
         ("Doble Oportunidad", df_resueltos[df_resueltos['Mercado'] == 'Doble Oportunidad']),
         ("Ganador Directo", df_resueltos[df_resueltos['Mercado'] == 'Ganador Directo']),
         ("Goles (Altas/Over)", df_resueltos[(df_resueltos['Mercado'] == 'Goles') & (df_resueltos['Seleccion'].str.contains(r'\+'))]),
