@@ -17236,10 +17236,10 @@
                 "city": null
             },
             "status": {
-                "long": "Break Time",
-                "short": "BT",
-                "elapsed": null,
-                "extra": 4
+                "long": "Match Finished",
+                "short": "PEN",
+                "elapsed": 120,
+                "extra": null
             }
         },
         "league": {
@@ -17257,13 +17257,13 @@
                 "id": 4017,
                 "name": "San Antonio",
                 "logo": "https://media.api-sports.io/football/teams/4017.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 4000,
                 "name": "Louisville City",
                 "logo": "https://media.api-sports.io/football/teams/4000.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
@@ -17276,16 +17276,16 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "extratime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "penalty": {
-                "home": null,
-                "away": null
+                "home": 7,
+                "away": 8
             }
         }
     },
