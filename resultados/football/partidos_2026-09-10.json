@@ -9468,7 +9468,7 @@
             "status": {
                 "long": "Second Half",
                 "short": "2H",
-                "elapsed": 67,
+                "elapsed": 82,
                 "extra": null
             }
         },
@@ -9538,7 +9538,7 @@
             "status": {
                 "long": "Second Half",
                 "short": "2H",
-                "elapsed": 68,
+                "elapsed": 83,
                 "extra": null
             }
         },
@@ -9608,7 +9608,7 @@
             "status": {
                 "long": "Second Half",
                 "short": "2H",
-                "elapsed": 72,
+                "elapsed": 87,
                 "extra": null
             }
         },
@@ -9637,7 +9637,7 @@
             }
         },
         "goals": {
-            "home": 10,
+            "home": 11,
             "away": 1
         },
         "score": {
@@ -9668,7 +9668,7 @@
             "timestamp": 1789074000,
             "periods": {
                 "first": 1789074000,
-                "second": null
+                "second": 1789077600
             },
             "venue": {
                 "id": null,
@@ -9676,10 +9676,10 @@
                 "city": "Amatitlan"
             },
             "status": {
-                "long": "Halftime",
-                "short": "HT",
-                "elapsed": 45,
-                "extra": 4
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 53,
+                "extra": null
             }
         },
         "league": {
@@ -9738,7 +9738,7 @@
             "timestamp": 1789074000,
             "periods": {
                 "first": 1789074000,
-                "second": null
+                "second": 1789077600
             },
             "venue": {
                 "id": null,
@@ -9746,10 +9746,10 @@
                 "city": null
             },
             "status": {
-                "long": "Halftime",
-                "short": "HT",
-                "elapsed": 45,
-                "extra": 7
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 52,
+                "extra": null
             }
         },
         "league": {
@@ -9807,7 +9807,7 @@
             "date": "2026-09-10T19:00:00-03:00",
             "timestamp": 1789077600,
             "periods": {
-                "first": null,
+                "first": 1789077600,
                 "second": null
             },
             "venue": {
@@ -9816,9 +9816,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 14,
                 "extra": null
             }
         },
@@ -9837,23 +9837,23 @@
                 "id": 18915,
                 "name": "Mercedes",
                 "logo": "https://media.api-sports.io/football/teams/18915.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 8381,
                 "name": "Deportivo Español",
                 "logo": "https://media.api-sports.io/football/teams/8381.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
                 "home": null,
@@ -9888,7 +9888,7 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 1,
+                "elapsed": 16,
                 "extra": null
             }
         },
@@ -9907,23 +9907,23 @@
                 "id": 1469,
                 "name": "Orsomarso",
                 "logo": "https://media.api-sports.io/football/teams/1469.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 1145,
                 "name": "Tigres FC",
                 "logo": "https://media.api-sports.io/football/teams/1145.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
             "home": 0,
-            "away": 0
+            "away": 1
         },
         "score": {
             "halftime": {
                 "home": 0,
-                "away": 0
+                "away": 1
             },
             "fulltime": {
                 "home": null,
@@ -9947,7 +9947,7 @@
             "date": "2026-09-10T19:00:00-03:00",
             "timestamp": 1789077600,
             "periods": {
-                "first": null,
+                "first": 1789077600,
                 "second": null
             },
             "venue": {
@@ -9956,9 +9956,9 @@
                 "city": "Tunja"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 15,
                 "extra": null
             }
         },
@@ -9987,13 +9987,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
@@ -10028,7 +10028,7 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 2,
+                "elapsed": 16,
                 "extra": null
             }
         },
@@ -10087,7 +10087,7 @@
             "date": "2026-09-10T19:00:00-03:00",
             "timestamp": 1789077600,
             "periods": {
-                "first": null,
+                "first": 1789077600,
                 "second": null
             },
             "venue": {
@@ -10096,9 +10096,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 15,
                 "extra": null
             }
         },
@@ -10127,13 +10127,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
