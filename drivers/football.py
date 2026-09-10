@@ -28,7 +28,14 @@ def cargar_ligas_con_estadisticas():
             try:
                 with open(ruta, "r", encoding="utf-8") as f:
                     coverage = json.load(f)
-                return {item.get("league_id", item.get("id")) for item in coverage if item.get("can_fetch_stats") is True}
+                
+                # Extraemos las ligas soportadas
+                ligas_soportadas = {item.get("league_id", item.get("id")) for item in coverage if item.get("can_fetch_stats") is True}
+                
+                # 🔥 Imprimimos el conteo en los logs de forma limpia
+                print(f"📊 [INFO] Cobertura Táctica Activa: {len(ligas_soportadas)} ligas configuradas para extracción de estadísticas.")
+                
+                return ligas_soportadas
             except Exception as e:
                 print(f"⚠️ Aviso: Error leyendo {ruta} ({e}).")
     
@@ -84,6 +91,8 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
     global STATS_DESCARGADAS_HOY
     ligas_soportadas = cargar_ligas_con_estadisticas()
     
+    partidos_cosechados_nombres = [] # Lista para guardar nombres y no saturar el log
+    
     for match in partidos_lista:
         liga = match.get("league") or {}
         liga_id = liga.get("id") if liga else None
@@ -127,9 +136,10 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
                     necesita_stats = True
                     
             if necesita_stats:
-                print(f"📥 Cosechando Táctica: {h_team} vs {a_team}...")
                 resp = api_client.get_fixture_statistics(match_id)
                 STATS_DESCARGADAS_HOY += 1
+                partidos_cosechados_nombres.append(f"{h_team} vs {a_team}")
+                
                 time.sleep(1.2) # Pausa obligatoria para evitar Rate Limit
                 
                 if resp and resp.get("response"):
@@ -187,6 +197,15 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
             nuevo.update(stats_dict)
             
             df_hist = pd.concat([df_hist, pd.DataFrame([nuevo])], ignore_index=True)
+            
+    # 🔥 Imprimimos un resumen limpio al terminar de procesar el lote
+    if partidos_cosechados_nombres:
+        if len(partidos_cosechados_nombres) <= 2:
+            detalle = " y ".join(partidos_cosechados_nombres)
+        else:
+            detalle = f"{partidos_cosechados_nombres[0]}, {partidos_cosechados_nombres[1]} y {len(partidos_cosechados_nombres) - 2} más"
+        print(f"📥 [FOOTBALL] Táctica cosechada: {len(partidos_cosechados_nombres)} partidos ({detalle}).")
+
     return df_hist
 
 def obtener_liga_domestica(df, team_id, team_name):
