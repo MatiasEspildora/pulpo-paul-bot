@@ -31,10 +31,7 @@ def cargar_ligas_con_estadisticas():
                 
                 # Extraemos las ligas soportadas
                 ligas_soportadas = {item.get("league_id", item.get("id")) for item in coverage if item.get("can_fetch_stats") is True}
-                
-                # 🔥 Imprimimos el conteo en los logs de forma limpia
                 print(f"📊 [INFO] Cobertura Táctica Activa: {len(ligas_soportadas)} ligas configuradas para extracción de estadísticas.")
-                
                 return ligas_soportadas
             except Exception as e:
                 print(f"⚠️ Aviso: Error leyendo {ruta} ({e}).")
@@ -82,16 +79,16 @@ def guardar_historico_mensual(df, meses_a_actualizar=None):
             sort_cols.extend(['HomeTeam', 'AwayTeam'])
             g_clean.sort_values(by=sort_cols, ascending=[False] + [True]*(len(sort_cols)-1)).to_csv(filename, index=False)
 
-
 # 🔥 Variable global para proteger límite de API (máximo 60 requests de estadísticas por ejecución)
 STATS_DESCARGADAS_HOY = 0 
 MAX_STATS_POR_RUN = 60
 
-def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses, api_client=None):
+def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses, api_client=None, ligas_soportadas=None, cosechar_stats=False):
     global STATS_DESCARGADAS_HOY
-    ligas_soportadas = cargar_ligas_con_estadisticas()
+    if ligas_soportadas is None: ligas_soportadas = set()
     
-    partidos_cosechados_nombres = [] # Lista para guardar nombres y no saturar el log
+    partidos_cosechados_nombres = []
+    total_finalizados = 0
     
     for match in partidos_lista:
         liga = match.get("league") or {}
@@ -100,6 +97,7 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
         match_id = match.get("fixture", {}).get("id")
 
         if match.get("fixture", {}).get("status", {}).get("short") in statuses["finished"]:
+            total_finalizados += 1
             h_id = match.get("teams", {}).get("home", {}).get("id")
             a_id = match.get("teams", {}).get("away", {}).get("id")
             h_team = match.get("teams", {}).get("home", {}).get("name")
@@ -126,8 +124,8 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
                     if legacy_mask.any():
                         idx_existente = df_hist[legacy_mask].index[0]
 
-            # Si es liga soportada, tenemos API, y no superamos el máximo
-            if liga_id in ligas_soportadas and api_client is not None and STATS_DESCARGADAS_HOY < MAX_STATS_POR_RUN:
+            # 🔥 REGLA FINANCIERA: ¿Es ayer (cosechar_stats)? ¿Es liga VIP? ¿Tenemos saldo de requests?
+            if cosechar_stats and liga_id in ligas_soportadas and api_client is not None and STATS_DESCARGADAS_HOY < MAX_STATS_POR_RUN:
                 ya_tiene_stats = False
                 if idx_existente is not None and 'HS' in df_hist.columns:
                     ya_tiene_stats = pd.notna(df_hist.at[idx_existente, 'HS'])
@@ -167,7 +165,6 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
                 df_hist.at[idx_existente, "HomeTeamId"] = h_id
                 df_hist.at[idx_existente, "AwayTeamId"] = a_id
                 
-                # Inyectamos stats extraídas
                 if necesita_stats:
                     for k, v in stats_dict.items():
                         df_hist.at[idx_existente, k] = v
@@ -193,18 +190,22 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
                 "HTHG": h_ht_score,
                 "HTAG": a_ht_score
             }
-            # Unimos los goles con las estadísticas extraídas
             nuevo.update(stats_dict)
             
             df_hist = pd.concat([df_hist, pd.DataFrame([nuevo])], ignore_index=True)
             
-    # 🔥 Imprimimos un resumen limpio al terminar de procesar el lote
-    if partidos_cosechados_nombres:
-        if len(partidos_cosechados_nombres) <= 2:
-            detalle = " y ".join(partidos_cosechados_nombres)
-        else:
-            detalle = f"{partidos_cosechados_nombres[0]}, {partidos_cosechados_nombres[1]} y {len(partidos_cosechados_nombres) - 2} más"
-        print(f"📥 [FOOTBALL] Táctica cosechada: {len(partidos_cosechados_nombres)} partidos ({detalle}).")
+    # 🔥 Imprimimos un resumen claro al terminar de procesar el día
+    if total_finalizados > 0:
+        cosechados = len(partidos_cosechados_nombres)
+        omitidos = total_finalizados - cosechados
+        print(f"✅ [RESUMEN] {fecha_str} - Terminados: {total_finalizados} | Táctica nueva (API Stats): {cosechados} | Básicos o listos: {omitidos}")
+        
+        if cosechados > 0:
+            if cosechados <= 2:
+                detalle = " y ".join(partidos_cosechados_nombres)
+            else:
+                detalle = f"{partidos_cosechados_nombres[0]}, {partidos_cosechados_nombres[1]} y {cosechados - 2} más"
+            print(f"   ↳ 📥 Extraídos: {detalle}")
 
     return df_hist
 
@@ -282,7 +283,6 @@ def registrar_predicciones(proyecciones_dict):
     else:
         df_nuevo.to_csv(archivo_log, index=False, encoding='utf-8')
 
-
 def run_process(df_externo=None):
     os.makedirs("logs/football", exist_ok=True)
     os.makedirs("resultados/football", exist_ok=True)
@@ -305,6 +305,9 @@ def run_process(df_externo=None):
         
         datos_fechas = {}
         meses_afectados = set()
+        
+        # 🔥 Carga las ligas soportadas UNA SOLA VEZ al inicio
+        ligas_soportadas = cargar_ligas_con_estadisticas()
         
         print(f"⚽ [FOOTBALL] Iniciando descarga para fechas: {fechas_a_procesar}")
         
@@ -346,8 +349,12 @@ def run_process(df_externo=None):
                         if f_str in fechas_a_procesar:
                             datos_fechas[f_str] = partidos_del_dia
                             
-                        # 🔥 AQUÍ SE PASA EL api_client PARA ACTIVAR LA EXTRACCIÓN DE ESTADÍSTICAS
-                        df = actualizar_maestro_con_partidos(df, partidos_del_dia, f_str, statuses_map, api_client=api)
+                        # 🔥 ACTIVAMOS EL INTERRUPTOR: Solo es True si estamos revisando el día de AYER (i == -1)
+                        es_ayer = (i == -1)
+                        df = actualizar_maestro_con_partidos(
+                            df, partidos_del_dia, f_str, statuses_map, 
+                            api_client=api, ligas_soportadas=ligas_soportadas, cosechar_stats=es_ayer
+                        )
                     else:
                         print(f"❌ [FOOTBALL] Sin datos para {f_str} (Ni API ni LOCAL).")
                         
