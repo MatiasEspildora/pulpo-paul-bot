@@ -7,8 +7,8 @@
             "date": "2026-09-10T00:06:00-03:00",
             "timestamp": 1789009560,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789009560,
+                "second": 1789013160
             },
             "venue": {
                 "id": null,
@@ -16,9 +16,9 @@
                 "city": "Tegucigalpa"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 88,
                 "extra": null
             }
         },
@@ -37,23 +37,23 @@
                 "id": 1055,
                 "name": "CD Motagua",
                 "logo": "https://media.api-sports.io/football/teams/1055.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 4299,
                 "name": "Alianza",
                 "logo": "https://media.api-sports.io/football/teams/4299.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 3,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
@@ -1692,7 +1692,7 @@
             },
             "venue": {
                 "id": null,
-                "name": null,
+                "name": "Kiira Road Police Arena",
                 "city": null
             },
             "status": {
@@ -1832,7 +1832,7 @@
             },
             "venue": {
                 "id": null,
-                "name": "Arena Sosnowiec",
+                "name": "ArcelorMittal Park",
                 "city": "Sosnowiec"
             },
             "status": {
@@ -3862,8 +3862,8 @@
             },
             "venue": {
                 "id": null,
-                "name": null,
-                "city": null
+                "name": "Stadion Partizana",
+                "city": "Belgrade"
             },
             "status": {
                 "long": "Not Started",
@@ -5402,7 +5402,7 @@
             },
             "venue": {
                 "id": null,
-                "name": "Arena Sosnowiec",
+                "name": "ArcelorMittal Park",
                 "city": "Sosnowiec"
             },
             "status": {
@@ -6511,6 +6511,76 @@
     },
     {
         "fixture": {
+            "id": 1621325,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-10T14:00:00-03:00",
+            "timestamp": 1789059600,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 496,
+            "name": "Liga Alef",
+            "country": "Israel",
+            "logo": "https://media.api-sports.io/football/leagues/496.png",
+            "flag": "https://media.api-sports.io/flags/il.svg",
+            "season": 2026,
+            "round": "North - 2",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 6210,
+                "name": "Tira",
+                "logo": "https://media.api-sports.io/football/teams/6210.png",
+                "winner": null
+            },
+            "away": {
+                "id": 22334,
+                "name": "Hapoel Ironi Arraba",
+                "logo": "https://media.api-sports.io/football/teams/22334.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1621328,
             "referee": null,
             "timezone": "America/Santiago",
@@ -6802,8 +6872,8 @@
             },
             "venue": {
                 "id": null,
-                "name": null,
-                "city": null
+                "name": "Al Nassr Stadium",
+                "city": "Riyadh"
             },
             "status": {
                 "long": "Not Started",
@@ -11033,76 +11103,6 @@
                 "id": 3657,
                 "name": "Cobán Imperial",
                 "logo": "https://media.api-sports.io/football/teams/3657.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1600593,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-10T23:00:00-03:00",
-            "timestamp": 1789092000,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": "San Salvador"
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 370,
-            "name": "Primera Division",
-            "country": "El-Salvador",
-            "logo": "https://media.api-sports.io/football/leagues/370.png",
-            "flag": "https://media.api-sports.io/flags/sv.svg",
-            "season": 2026,
-            "round": "Apertura - 9",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 4299,
-                "name": "Alianza",
-                "logo": "https://media.api-sports.io/football/teams/4299.png",
-                "winner": null
-            },
-            "away": {
-                "id": 22157,
-                "name": "Fuerte San Francisco",
-                "logo": "https://media.api-sports.io/football/teams/22157.png",
                 "winner": null
             }
         },
