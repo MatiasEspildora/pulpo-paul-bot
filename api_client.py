@@ -38,7 +38,6 @@ class FootballAPI(DataClient):
 
     def get_data(self, endpoint, params):
         try:
-            # 🔥 Añadimos el parámetro proxies y un timeout de seguridad
             response = requests.get(
                 f"{self.base_url}/{endpoint}", 
                 headers=self.headers, 
@@ -46,10 +45,26 @@ class FootballAPI(DataClient):
                 proxies=self.proxies,
                 timeout=20 
             )
-            response.raise_for_status() # Lanza error si el status no es 200
+            response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
             print(f"❌ Error conectando a API Football: {e}")
+            return None
+
+    # NUEVO: Endpoint específico para extraer la táctica post-partido
+    def get_fixture_statistics(self, fixture_id):
+        try:
+            response = requests.get(
+                f"{self.base_url}/fixtures/statistics", 
+                headers=self.headers, 
+                params={"fixture": fixture_id},
+                proxies=self.proxies,
+                timeout=15 
+            )
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            print(f"❌ Error conectando a API (Estadísticas {fixture_id}): {e}")
             return None
             
 class BasketballAPI(DataClient):
@@ -59,7 +74,6 @@ class BasketballAPI(DataClient):
             "x-rapidapi-key": key
         }
         
-        # 🔥 También protegemos las peticiones de Básquetbol
         self.proxy_url = os.environ.get("PROXY_URL")
         self.proxies = {
             "http": self.proxy_url,
@@ -68,7 +82,6 @@ class BasketballAPI(DataClient):
 
     def get_data(self, endpoint, params):
         try:
-            # 🔥 Añadimos el parámetro proxies y un timeout de seguridad
             response = requests.get(
                 f"{self.base_url}/{endpoint}", 
                 headers=self.headers, 
@@ -81,4 +94,3 @@ class BasketballAPI(DataClient):
         except requests.exceptions.RequestException as e:
             print(f"❌ Error conectando a API Basketball: {e}")
             return None
-
