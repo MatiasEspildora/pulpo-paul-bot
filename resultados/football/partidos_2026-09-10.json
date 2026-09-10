@@ -9326,10 +9326,10 @@
                 "city": "Algiers"
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 89,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 5
             }
         },
         "league": {
@@ -9366,8 +9366,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -9468,7 +9468,7 @@
             "status": {
                 "long": "Second Half",
                 "short": "2H",
-                "elapsed": 53,
+                "elapsed": 67,
                 "extra": null
             }
         },
@@ -9538,7 +9538,7 @@
             "status": {
                 "long": "Second Half",
                 "short": "2H",
-                "elapsed": 53,
+                "elapsed": 68,
                 "extra": null
             }
         },
@@ -9557,18 +9557,18 @@
                 "id": 16476,
                 "name": "Cumbayá",
                 "logo": "https://media.api-sports.io/football/teams/16476.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 1986,
                 "name": "Gualaceo SC",
                 "logo": "https://media.api-sports.io/football/teams/1986.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
             "home": 0,
-            "away": 0
+            "away": 1
         },
         "score": {
             "halftime": {
@@ -9608,7 +9608,7 @@
             "status": {
                 "long": "Second Half",
                 "short": "2H",
-                "elapsed": 57,
+                "elapsed": 72,
                 "extra": null
             }
         },
@@ -9637,7 +9637,7 @@
             }
         },
         "goals": {
-            "home": 9,
+            "home": 10,
             "away": 1
         },
         "score": {
@@ -9676,10 +9676,10 @@
                 "city": "Amatitlan"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 42,
-                "extra": null
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
+                "extra": 4
             }
         },
         "league": {
@@ -9746,10 +9746,10 @@
                 "city": null
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 44,
-                "extra": null
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
+                "extra": 7
             }
         },
         "league": {
@@ -9877,7 +9877,7 @@
             "date": "2026-09-10T19:00:00-03:00",
             "timestamp": 1789077600,
             "periods": {
-                "first": null,
+                "first": 1789077600,
                 "second": null
             },
             "venue": {
@@ -9886,9 +9886,9 @@
                 "city": "Barrancabermeja"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 1,
                 "extra": null
             }
         },
@@ -9917,13 +9917,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
@@ -10017,7 +10017,7 @@
             "date": "2026-09-10T19:00:00-03:00",
             "timestamp": 1789077600,
             "periods": {
-                "first": null,
+                "first": 1789077600,
                 "second": null
             },
             "venue": {
@@ -10026,9 +10026,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 2,
                 "extra": null
             }
         },
@@ -10057,13 +10057,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
