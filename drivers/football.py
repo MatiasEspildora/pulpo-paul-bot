@@ -81,7 +81,7 @@ def guardar_historico_mensual(df, meses_a_actualizar=None):
 
 # 🔥 Variable global para proteger límite de API (máximo 60 requests de estadísticas por ejecución)
 STATS_DESCARGADAS_HOY = 0 
-MAX_STATS_POR_RUN = 60
+MAX_STATS_POR_RUN = 400
 
 def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses, api_client=None, ligas_soportadas=None, cosechar_stats=False):
     global STATS_DESCARGADAS_HOY
