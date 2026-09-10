@@ -184,12 +184,23 @@ def auditar_y_reportar():
         pct = (hits / total * 100) if total > 0 else 0
         return total, hits, pct
 
+    # Métricas Globales
     t_hoy, h_hoy, p_hoy = metricas(df_hoy)
     t_ayer, h_ayer, p_ayer = metricas(df_ayer)
     t_acu, h_acu, p_acu = metricas(df_resueltos)
     
-    fallos_acu = t_acu - h_acu
+    # Cálculos Totales (Ganadas + Perdidas + Pendientes)
+    t_hoy_totales = len(df_hoy_total_picks)
+    p_hoy_pendientes = t_hoy_totales - t_hoy
+    p_hoy_perdidas = t_hoy - h_hoy
+    
+    t_ayer_totales = len(df_log[df_log['Fecha'] == fecha_ayer]) if fecha_ayer else 0
+    p_ayer_pendientes = t_ayer_totales - t_ayer
+    p_ayer_perdidas = t_ayer - h_ayer
+
+    t_acu_totales = len(df_log)
     total_pendientes = len(df_log[df_log['Estado'] == 'PENDIENTE'])
+    fallos_acu = t_acu - h_acu
 
     desglose = [
         ("Mega-Misil SGBB", df_resueltos[df_resueltos['Mercado'] == 'Mega-Misil SGBB']),
@@ -224,21 +235,22 @@ def auditar_y_reportar():
     msg += f"📅 *Último Lote:* {fecha_hoy}\n\n"
     
     msg += "📈 *RENDIMIENTO DIARIO (HOY vs AYER)*\n"
-    msg += f"・ *Hoy:* {p_hoy:.1f}% {'🟢' if p_hoy >= 75 else '🟡'}\n"
-    msg += f"  ↳ Apuestas Ganadas: {int(h_hoy)} | Perdidas: {int(t_hoy - h_hoy)}\n"
-    msg += f"  ↳ Partidos Aún Pendientes: {len(df_hoy_total_picks) - t_hoy}\n\n"
+    icono_hoy = '🟢' if p_hoy >= 75 else ('🟡' if p_hoy >= 70 else '🔴')
+    msg += f"・ *Hoy:* {p_hoy:.1f}% {icono_hoy}\n"
+    msg += f"  ↳ Total Pronósticos: {t_hoy_totales}\n"
+    msg += f"  ↳ ✅ Ganadas: {int(h_hoy)} | ❌ Perdidas: {int(p_hoy_perdidas)} | ⏳ Pendientes: {p_hoy_pendientes}\n\n"
     
-    if not df_ayer.empty:
+    if t_ayer_totales > 0:
         tendencia = "🔼" if p_hoy >= p_ayer else "🔽"
         msg += f"・ *Ayer ({fecha_ayer}):* {p_ayer:.1f}% {tendencia}\n"
-        msg += f"  ↳ Apuestas Ganadas: {int(h_ayer)} | Perdidas: {int(t_ayer - h_ayer)}\n\n"
+        msg += f"  ↳ Total Pronósticos: {t_ayer_totales}\n"
+        msg += f"  ↳ ✅ Ganadas: {int(h_ayer)} | ❌ Perdidas: {int(p_ayer_perdidas)} | ⏳ Pendientes: {p_ayer_pendientes}\n\n"
     else:
         msg += f"・ *Ayer ({fecha_ayer}):* Sin picks registrados.\n\n"
     
     msg += "📊 *RENDIMIENTO ACUMULADO (HISTÓRICO)*\n"
-    msg += f"・ Total Partidos Finalizados: {t_acu}\n"
-    msg += f"・ Partidos Aún Pendientes: {total_pendientes}\n"
-    msg += f"・ Apuestas Ganadas: {int(h_acu)} | Perdidas: {int(fallos_acu)}\n"
+    msg += f"・ Total Pronósticos: {t_acu_totales}\n"
+    msg += f"・ ✅ Ganadas: {int(h_acu)} | ❌ Perdidas: {int(fallos_acu)} | ⏳ Pendientes: {total_pendientes}\n"
     msg += f"・ *Efectividad Global:* {p_acu:.1f}% 🎯\n\n"
     
     msg += "💣 *DESGLOSE QUIRÚRGICO POR MERCADO*\n"
