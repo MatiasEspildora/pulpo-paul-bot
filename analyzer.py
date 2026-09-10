@@ -158,6 +158,33 @@ class MatchAnalyzer:
             w = [x / sum(w) for x in w]
             return sum(g * w_i for g, w_i in zip(goles_f, w)), sum(g * w_i for g, w_i in zip(goles_c, w))
 
+        # 🔥 FASE 2: MOTOR DE DOMINIO TÁCTICO (V3.6)
+        def get_tactical_dominance_index(df_subset, team_id):
+            if df_subset.empty: return False, 0.5
+            
+            sf, sa, cf, ca = 0, 0, 0, 0
+            count = 0
+            for _, row in df_subset.iterrows():
+                if pd.isna(row.get("HS")): continue
+                count += 1
+                if row["HomeTeamId"] == team_id:
+                    sf += float(row.get("HS", 0)); sa += float(row.get("AS", 0))
+                    cf += float(row.get("HC", 0)); ca += float(row.get("AC", 0))
+                else:
+                    sf += float(row.get("AS", 0)); sa += float(row.get("HS", 0))
+                    cf += float(row.get("AC", 0)); ca += float(row.get("HC", 0))
+                    
+            if count >= 3:
+                # Ratio de dominio: (A Favor) / (A Favor + En Contra). Protegido contra división por cero.
+                shots_ratio = sf / (sf + sa) if (sf + sa) > 0 else 0.5
+                corners_ratio = cf / (cf + ca) if (cf + ca) > 0 else 0.5
+                
+                # Ponderación: Los remates pesan un 75% en la fuerza, los córners un 25%
+                tactical_index = (shots_ratio * 0.75) + (corners_ratio * 0.25)
+                return True, tactical_index
+            
+            return False, 0.5
+
         home_matches = self._get_filtered_matches(home_id, league_id, es_eliminatoria)
         away_matches = self._get_filtered_matches(away_id, league_id, es_eliminatoria)
 
@@ -198,6 +225,24 @@ class MatchAnalyzer:
         else:
             lambda_home, lambda_away = lambda_home_base, lambda_away_base
             
+        # 🔥 APLICACIÓN V3.6: Multiplicadores Tácticos
+        h_has_tac, h_tac_idx = get_tactical_dominance_index(home_global, home_id)
+        a_has_tac, a_tac_idx = get_tactical_dominance_index(away_global, away_id)
+        
+        tactical_mod_home = 1.0
+        tactical_mod_away = 1.0
+        
+        if h_has_tac and a_has_tac:
+            diff = h_tac_idx - a_tac_idx
+            mod = diff * 0.35 # Ajuste del factor de impacto
+            mod = max(-0.20, min(0.20, mod)) # Tope máximo de 20% de castigo/bonificación para evitar explosión de Poisson
+            
+            tactical_mod_home += mod
+            tactical_mod_away -= mod
+            
+            lambda_home *= tactical_mod_home
+            lambda_away *= tactical_mod_away
+            
         lambda_home_ht = (home_ht_scored_avg + away_ht_concede_avg) / 2
         lambda_away_ht = (away_ht_scored_avg + home_ht_concede_avg) / 2
 
@@ -213,7 +258,10 @@ class MatchAnalyzer:
             'away_venue_form': away_venue_form_str, 'away_venue_ppg': away_venue_ppg,
             'prob_matrix': prob_matrix,
             'lambda_home_ht': lambda_home_ht,
-            'lambda_away_ht': lambda_away_ht
+            'lambda_away_ht': lambda_away_ht,
+            'tactics_applied': h_has_tac and a_has_tac,
+            'tactical_mod_home': round(tactical_mod_home, 2),
+            'tactical_mod_away': round(tactical_mod_away, 2)
         }
 
     # ==========================================
