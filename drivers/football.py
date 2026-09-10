@@ -12,13 +12,28 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from api_client import FootballAPI
 from analyzer import MatchAnalyzer
-from bet_builder import BetBuilderEngine  # <--- NUEVO: El cerebro financiero
+from bet_builder import BetBuilderEngine
 from notifier import enviar_mensaje_telegram, enviar_bloque_reportes
 
 def cargar_configuracion():
     with open("config/football/statuses.json", "r", encoding="utf-8") as f:
         statuses = json.load(f)["active_providers"]["api_football"]
     return {}, {}, statuses, {}
+
+def cargar_ligas_con_estadisticas():
+    """Lee el JSON de cobertura y devuelve un Set ultrarrápido con los IDs soportados."""
+    rutas_posibles = ["config/Active_Leagues_Coverage.json", "config/football/Active_Leagues_Coverage.json"]
+    for ruta in rutas_posibles:
+        if os.path.exists(ruta):
+            try:
+                with open(ruta, "r", encoding="utf-8") as f:
+                    coverage = json.load(f)
+                return {item.get("league_id", item.get("id")) for item in coverage if item.get("can_fetch_stats") is True}
+            except Exception as e:
+                print(f"⚠️ Aviso: Error leyendo {ruta} ({e}).")
+    
+    print("⚠️ Aviso: No se encontró Active_Leagues_Coverage.json. Se omitirán estadísticas.")
+    return set()
 
 def cargar_historico_mensual():
     all_files = glob.glob("historico_mensual/football/historico_*.csv")
@@ -60,11 +75,20 @@ def guardar_historico_mensual(df, meses_a_actualizar=None):
             sort_cols.extend(['HomeTeam', 'AwayTeam'])
             g_clean.sort_values(by=sort_cols, ascending=[False] + [True]*(len(sort_cols)-1)).to_csv(filename, index=False)
 
-def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses):
+
+# 🔥 Variable global para proteger límite de API (máximo 60 requests de estadísticas por ejecución)
+STATS_DESCARGADAS_HOY = 0 
+MAX_STATS_POR_RUN = 60
+
+def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses, api_client=None):
+    global STATS_DESCARGADAS_HOY
+    ligas_soportadas = cargar_ligas_con_estadisticas()
+    
     for match in partidos_lista:
         liga = match.get("league") or {}
         liga_id = liga.get("id") if liga else None
         liga_id_str = str(liga_id) if liga_id is not None else None
+        match_id = match.get("fixture", {}).get("id")
 
         if match.get("fixture", {}).get("status", {}).get("short") in statuses["finished"]:
             h_id = match.get("teams", {}).get("home", {}).get("id")
@@ -78,21 +102,66 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
             h_ht_score = match.get("score", {}).get("halftime", {}).get("home")
             a_ht_score = match.get("score", {}).get("halftime", {}).get("away")
 
+            # --- LÓGICA DE COSECHA DE ESTADÍSTICAS (Minero Silencioso) ---
+            stats_dict = {'HS': pd.NA, 'AS': pd.NA, 'HC': pd.NA, 'AC': pd.NA, 'HY': pd.NA, 'AY': pd.NA, 'HR': pd.NA, 'AR': pd.NA}
+            necesita_stats = False
+            
+            # Verificamos si ya existe el partido
+            idx_existente = None
             if not df_hist.empty and "HomeTeamId" in df_hist.columns:
                 base_mask = (df_hist["Date"] == fecha_str) & (df_hist["HomeTeamId"] == h_id) & (df_hist["AwayTeamId"] == a_id)
                 if base_mask.any():
-                    idx = df_hist[base_mask].index[0]
-                    df_hist.at[idx, "FTHG"], df_hist.at[idx, "FTAG"] = match.get("goals", {}).get("home"), match.get("goals", {}).get("away")
-                    df_hist.at[idx, "HTHG"], df_hist.at[idx, "HTAG"] = h_ht_score, a_ht_score
-                    continue
+                    idx_existente = df_hist[base_mask].index[0]
+                else:
+                    legacy_mask = (df_hist["Date"] == fecha_str) & (df_hist["HomeTeam"] == h_team) & (df_hist["AwayTeam"] == a_team)
+                    if legacy_mask.any():
+                        idx_existente = df_hist[legacy_mask].index[0]
+
+            # Si es liga soportada, tenemos API, y no superamos el máximo
+            if liga_id in ligas_soportadas and api_client is not None and STATS_DESCARGADAS_HOY < MAX_STATS_POR_RUN:
+                ya_tiene_stats = False
+                if idx_existente is not None and 'HS' in df_hist.columns:
+                    ya_tiene_stats = pd.notna(df_hist.at[idx_existente, 'HS'])
+                
+                if not ya_tiene_stats:
+                    necesita_stats = True
                     
-                legacy_mask = (df_hist["Date"] == fecha_str) & (df_hist["HomeTeam"] == h_team) & (df_hist["AwayTeam"] == a_team)
-                if legacy_mask.any():
-                    idx = df_hist[legacy_mask].index[0]
-                    df_hist.at[idx, "FTHG"], df_hist.at[idx, "FTAG"] = match.get("goals", {}).get("home"), match.get("goals", {}).get("away")
-                    df_hist.at[idx, "HTHG"], df_hist.at[idx, "HTAG"] = h_ht_score, a_ht_score
-                    df_hist.at[idx, "HomeTeamId"], df_hist.at[idx, "AwayTeamId"] = h_id, a_id
-                    continue
+            if necesita_stats:
+                print(f"📥 Cosechando Táctica: {h_team} vs {a_team}...")
+                resp = api_client.get_fixture_statistics(match_id)
+                STATS_DESCARGADAS_HOY += 1
+                time.sleep(1.2) # Pausa obligatoria para evitar Rate Limit
+                
+                if resp and resp.get("response"):
+                    datos_stats = resp["response"]
+                    for equipo_stats in datos_stats:
+                        es_local = equipo_stats.get("team", {}).get("id") == h_id
+                        prefijo = "H" if es_local else "A"
+                        
+                        for metrica in equipo_stats.get("statistics", []):
+                            tipo = str(metrica.get("type"))
+                            valor = metrica.get("value")
+                            if valor is None: valor = 0
+                                
+                            if tipo == "Total Shots": stats_dict[f'{prefijo}S'] = int(valor)
+                            elif tipo == "Corner Kicks": stats_dict[f'{prefijo}C'] = int(valor)
+                            elif tipo == "Yellow Cards": stats_dict[f'{prefijo}Y'] = int(valor)
+                            elif tipo == "Red Cards": stats_dict[f'{prefijo}R'] = int(valor)
+
+            # --- ACTUALIZACIÓN DEL DATAFRAME ---
+            if idx_existente is not None:
+                df_hist.at[idx_existente, "FTHG"] = match.get("goals", {}).get("home")
+                df_hist.at[idx_existente, "FTAG"] = match.get("goals", {}).get("away")
+                df_hist.at[idx_existente, "HTHG"] = h_ht_score
+                df_hist.at[idx_existente, "HTAG"] = a_ht_score
+                df_hist.at[idx_existente, "HomeTeamId"] = h_id
+                df_hist.at[idx_existente, "AwayTeamId"] = a_id
+                
+                # Inyectamos stats extraídas
+                if necesita_stats:
+                    for k, v in stats_dict.items():
+                        df_hist.at[idx_existente, k] = v
+                continue
 
             ronda_texto = (liga.get("round") or "").lower()
             palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "play-off", "qualifying"]
@@ -114,6 +183,9 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
                 "HTHG": h_ht_score,
                 "HTAG": a_ht_score
             }
+            # Unimos los goles con las estadísticas extraídas
+            nuevo.update(stats_dict)
+            
             df_hist = pd.concat([df_hist, pd.DataFrame([nuevo])], ignore_index=True)
     return df_hist
 
@@ -136,11 +208,7 @@ def obtener_liga_domestica(df, team_id, team_name):
         pass
     return ""
 
-# ==========================================
-# 📊 MÓDULO DE AUDITORÍA: REGISTRO DE PICKS
-# ==========================================
 def registrar_predicciones(proyecciones_dict):
-    """Guarda las proyecciones que superan los umbrales para evaluarlas post-partido."""
     archivo_log = "kpi/football/predicciones_log.csv"
     os.makedirs(os.path.dirname(archivo_log), exist_ok=True)
     
@@ -162,34 +230,29 @@ def registrar_predicciones(proyecciones_dict):
                 'Acierto': ''
             }
             
-            # 1. Mega-Misiles SGBB (>85%)
             sgbb = p.get('sgbb', {})
             for sel, prob in sgbb.items():
                 if prob >= 0.85:
                     filas.append({**base, 'Mercado': 'Mega-Misil SGBB', 'Seleccion': sel, 'Probabilidad': round(prob, 3)})
             
-            # 2. Ganador Directo (>75% - umbral ligeramente más bajo para tener volumen de test)
             probs_1x2 = p.get('probs', [0, 0, 0])
             prob_gana = max(probs_1x2[0], probs_1x2[2])
             sel_gana = p.get('local') if probs_1x2[0] > probs_1x2[2] else p.get('visita')
             if prob_gana >= 0.75:
                 filas.append({**base, 'Mercado': 'Ganador Directo', 'Seleccion': f'Gana {sel_gana}', 'Probabilidad': round(prob_gana, 3)})
                 
-            # 3. Doble Oportunidad (>80%)
             prob_doble = max(p.get('prob_1X', 0), p.get('prob_X2', 0))
             sel_doble = "1X" if p.get('prob_1X', 0) > p.get('prob_X2', 0) else "X2"
             if prob_doble >= 0.80:
                 filas.append({**base, 'Mercado': 'Doble Oportunidad', 'Seleccion': sel_doble, 'Probabilidad': round(prob_doble, 3)})
                 
-            # 4. Goles y BTTS (>80%)
             if p.get('under_3_5', 0) >= 0.85: filas.append({**base, 'Mercado': 'Goles', 'Seleccion': '-3.5 Goles', 'Probabilidad': round(p['under_3_5'], 3)})
             if p.get('over_1_5', 0) >= 0.80: filas.append({**base, 'Mercado': 'Goles', 'Seleccion': '+1.5 Goles', 'Probabilidad': round(p['over_1_5'], 3)})
             if p.get('over_2_5', 0) >= 0.80: filas.append({**base, 'Mercado': 'Goles', 'Seleccion': '+2.5 Goles', 'Probabilidad': round(p['over_2_5'], 3)})
             if p.get('btts', 0) >= 0.80: filas.append({**base, 'Mercado': 'Ambos Anotan', 'Seleccion': 'Sí', 'Probabilidad': round(p['btts'], 3)})
             if p.get('btts_no', 0) >= 0.80: filas.append({**base, 'Mercado': 'Ambos Anotan', 'Seleccion': 'No', 'Probabilidad': round(p['btts_no'], 3)})
 
-    if not filas:
-        return
+    if not filas: return
 
     df_nuevo = pd.DataFrame(filas)
     
@@ -200,9 +263,7 @@ def registrar_predicciones(proyecciones_dict):
     else:
         df_nuevo.to_csv(archivo_log, index=False, encoding='utf-8')
 
-# ==========================================
-# ⚙️ NÚCLEO DE EJECUCIÓN
-# ==========================================
+
 def run_process(df_externo=None):
     os.makedirs("logs/football", exist_ok=True)
     os.makedirs("resultados/football", exist_ok=True)
@@ -266,7 +327,8 @@ def run_process(df_externo=None):
                         if f_str in fechas_a_procesar:
                             datos_fechas[f_str] = partidos_del_dia
                             
-                        df = actualizar_maestro_con_partidos(df, partidos_del_dia, f_str, statuses_map)
+                        # 🔥 AQUÍ SE PASA EL api_client PARA ACTIVAR LA EXTRACCIÓN DE ESTADÍSTICAS
+                        df = actualizar_maestro_con_partidos(df, partidos_del_dia, f_str, statuses_map, api_client=api)
                     else:
                         print(f"❌ [FOOTBALL] Sin datos para {f_str} (Ni API ni LOCAL).")
                         
@@ -277,9 +339,6 @@ def run_process(df_externo=None):
 
         guardar_historico_mensual(df, meses_afectados)
         
-        # ==========================================
-        # 📊 INYECCIÓN DE AUDITORÍA (KPIs)
-        # ==========================================
         try:
             import evaluator
             print("📊 [AUDITORÍA] Evaluando predicciones pasadas...")
@@ -316,14 +375,12 @@ def run_process(df_externo=None):
                         palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "play-off", "qualifying"]
                         es_elimi = any(palabra in ronda_texto for palabra in palabras_clave)
                         
-                        # 1. El Analizador solo hace la matemática
                         raw_proj = analyzer.get_projections(
                             h_name, a_name, h_id, a_id, 
                             league_id=league_id_str, 
                             es_eliminatoria=es_elimi
                         )
                         
-                        # 2. El Constructor arma todos los mercados combinados
                         proj = BetBuilderEngine.generar_mercados(raw_proj)
                         
                         proj['fecha_str'] = dt_obj.strftime("%Y-%m-%d")
@@ -349,9 +406,7 @@ def run_process(df_externo=None):
         else: titulo_bloque = "Turno Nocturno"
 
         if proyecciones_globales:
-            # Registrar proyecciones antes de notificar a Telegram
             registrar_predicciones(proyecciones_globales)
-            
             enviar_bloque_reportes(proyecciones_globales, titulo_bloque, analyzer)
         else:
             enviar_mensaje_telegram(f"⚠️ No hay partidos proyectables en el {titulo_bloque}.")
