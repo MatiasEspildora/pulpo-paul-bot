@@ -203,7 +203,6 @@ class MatchAnalyzer:
 
         prob_matrix = self._calculate_exact_scores(lambda_home, lambda_away, max_goals=8)
 
-        # RETORNO PURO: Sin cálculos comerciales, solo la data para el BetBuilder
         return {
             'local': home_team, 'visita': away_team,
             'local_id': home_id, 'visita_id': away_id,
@@ -218,16 +217,170 @@ class MatchAnalyzer:
         }
 
     # ==========================================
-    # 🏀 BÁSQUETBOL MANTIENE SU LÓGICA (No modificado)
+    # 🏀 MÓDULO BÁSQUETBOL
     # ==========================================
     def get_basketball_team_stats(self, team_name, team_id):
-        pass # Mantén aquí tus funciones de basquet actuales
+        matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)]
+        matches = matches.dropna(subset=["FTHG", "FTAG"]) 
+        matches = matches.sort_values(by="Date", ascending=False)
+        recent = matches.head(10)
+
+        count = len(recent)
+        if recent.empty or count == 0:
+            return {"puntos_favor": 0, "puntos_contra": 0, "count": 0}
+
+        puntos_favor, puntos_contra = [], []
+        for _, row in recent.iterrows():
+            if row["HomeTeamId"] == team_id:
+                puntos_favor.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0)
+                puntos_contra.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0)
+            else:
+                puntos_favor.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0)
+                puntos_contra.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0)
+
+        return {
+            "puntos_favor": float(np.nanmean(puntos_favor)) if puntos_favor else 0,
+            "puntos_contra": float(np.nanmean(puntos_contra)) if puntos_contra else 0,
+            "count": count,
+        }
 
     def get_basketball_projections(self, home_team, away_team, home_id, away_id, league_id=None, match_data=None):
-        pass # Mantén aquí tus funciones de basquet actuales
+        def get_form_tracker(df_subset, team_id):
+            if df_subset.empty: return "N/A", 0.0
+            form = []
+            pts = 0
+            for _, row in df_subset.iterrows():
+                hg = row.get("FTHG")
+                ag = row.get("FTAG")
+                if pd.isna(hg) or pd.isna(ag): continue
+                if row["HomeTeamId"] == team_id:
+                    if hg > ag: form.append('V'); pts += 3
+                    elif hg == ag: form.append('E'); pts += 1
+                    else: form.append('D')
+                else:
+                    if ag > hg: form.append('V'); pts += 3
+                    elif ag == hg: form.append('E'); pts += 1
+                    else: form.append('D')
+            
+            form.reverse()
+            form_str = "[" + "-".join(form) + "]"
+            ppg = pts / len(form) if form else 0.0
+            return form_str, round(ppg, 1)
+
+        def get_avg_points_decay(df_subset, team_id):
+            if df_subset.empty: return 105.0, 105.0
+            
+            base_weights = [0.15, 0.12, 0.10, 0.09, 0.08, 0.07, 0.06, 0.05, 0.05, 0.04]
+            pts_f, pts_c = [], []
+            
+            for _, row in df_subset.iterrows():
+                h_val = row.get("FTHG")
+                a_val = row.get("FTAG")
+                if pd.isna(h_val) or pd.isna(a_val):
+                    h_val, a_val = 0.0, 0.0
+
+                if row["HomeTeamId"] == team_id:
+                    pts_f.append(float(h_val))
+                    pts_c.append(float(a_val))
+                else:
+                    pts_f.append(float(a_val))
+                    pts_c.append(float(h_val))
+                    
+            w = base_weights[:len(pts_f)]
+            w_sum = sum(w)
+            w = [x / w_sum for x in w]
+            
+            avg_f = sum(p * w_i for p, w_i in zip(pts_f, w))
+            avg_c = sum(p * w_i for p, w_i in zip(pts_c, w))
+            return float(avg_f), float(avg_c)
+
+        home_global = self.df[(self.df['HomeTeamId'] == home_id) | (self.df['AwayTeamId'] == home_id)]
+        home_global = home_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
+        
+        away_global = self.df[(self.df['HomeTeamId'] == away_id) | (self.df['AwayTeamId'] == away_id)]
+        away_global = away_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
+
+        home_venue = self.df[self.df['HomeTeamId'] == home_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
+        away_venue = self.df[self.df['AwayTeamId'] == away_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
+
+        home_form_str, home_ppg = get_form_tracker(home_global, home_id)
+        away_form_str, away_ppg = get_form_tracker(away_global, away_id)
+
+        home_venue_form_str, home_venue_ppg = get_form_tracker(home_venue, home_id)
+        away_venue_form_str, away_venue_ppg = get_form_tracker(away_venue, away_id)
+
+        hg_f_glob, hg_c_glob = get_avg_points_decay(home_global, home_id)
+        ag_f_glob, ag_c_glob = get_avg_points_decay(away_global, away_id)
+
+        hg_f_ven, hg_c_ven = get_avg_points_decay(home_venue, home_id)
+        ag_f_ven, ag_c_ven = get_avg_points_decay(away_venue, away_id)
+
+        home_avg_scored = (hg_f_glob + hg_f_ven) / 2
+        home_avg_conceded = (hg_c_glob + hg_c_ven) / 2
+        
+        away_avg_scored = (ag_f_glob + ag_f_ven) / 2
+        away_avg_conceded = (ag_c_glob + ag_c_ven) / 2
+
+        exp_home_score = (home_avg_scored + away_avg_conceded) / 2
+        exp_away_score = (away_avg_scored + home_avg_conceded) / 2
+        total_projected_points = exp_home_score + exp_away_score
+
+        diff = exp_home_score - exp_away_score
+        prob_home = 1 / (1 + np.exp(-diff / 10))
+        prob_away = 1 - prob_home
+
+        has_overtime = False
+        if match_data:
+            ot_home = match_data.get("scores", {}).get("home", {}).get("over_time")
+            ot_away = match_data.get("scores", {}).get("away", {}).get("over_time")
+            has_overtime = (ot_home is not None and ot_home > 0) or (ot_away is not None and ot_away > 0)
+
+        return {
+            'local': home_team,
+            'visita': away_team,
+            'local_id': home_id,    
+            'visita_id': away_id,   
+            'prob_home': prob_home,
+            'prob_away': prob_away,
+            'probs': [prob_home, 0.0, prob_away],
+            'puntos_proyectados': total_projected_points,
+            'has_overtime': has_overtime,
+            'score_value': max(prob_home, prob_away),
+            'home_form': home_form_str,
+            'home_ppg': home_ppg,
+            'away_form': away_form_str,
+            'away_ppg': away_ppg,
+            'home_venue_form': home_venue_form_str,
+            'home_venue_ppg': home_venue_ppg,
+            'away_venue_form': away_venue_form_str,
+            'away_venue_ppg': away_venue_ppg
+        }
 
     def get_basketball_overtime_stats(self, team_name, team_id):
-        pass # Mantén aquí tus funciones de basquet actuales
+        matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)]
+        matches = matches.sort_values(by="Date", ascending=False)
+        recent = matches.head(10)
+
+        count = len(recent)
+        if recent.empty or count == 0:
+            return {"partidos_ot": 0, "promedio_puntos_ot": 0.0, "total_partidos": 0}
+
+        partidos_ot = 0
+        puntos_ot_lista = []
+
+        for _, row in recent.iterrows():
+            is_ot = row.get("Status") == "AOT" if "Status" in row else False
+            if is_ot:
+                partidos_ot += 1
+                pts_extra = row.get("ExtraPoints", 0.0)
+                if pd.notna(pts_extra):
+                    puntos_ot_lista.append(float(pts_extra))
+
+        return {
+            "partidos_ot": partidos_ot,
+            "promedio_puntos_ot": float(np.nanmean(puntos_ot_lista)) if puntos_ot_lista else 0.0,
+            "total_partidos": count
+        }
 
     def get_top_by_league(self, proyecciones, n=None):
         sorted_projs = sorted(proyecciones, key=lambda x: x.get('score_value', 0), reverse=True)
