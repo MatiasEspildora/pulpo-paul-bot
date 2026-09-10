@@ -7217,8 +7217,8 @@
             "date": "2026-09-10T15:00:00-03:00",
             "timestamp": 1789063200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789063200,
+                "second": 1789066800
             },
             "venue": {
                 "id": null,
@@ -7226,9 +7226,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -7257,17 +7257,17 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 2,
+            "away": 2
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -9328,7 +9328,7 @@
             "status": {
                 "long": "Second Half",
                 "short": "2H",
-                "elapsed": 80,
+                "elapsed": 89,
                 "extra": null
             }
         },
@@ -9458,7 +9458,7 @@
             "timestamp": 1789072200,
             "periods": {
                 "first": 1789072200,
-                "second": null
+                "second": 1789075800
             },
             "venue": {
                 "id": null,
@@ -9466,10 +9466,10 @@
                 "city": null
             },
             "status": {
-                "long": "Halftime",
-                "short": "HT",
-                "elapsed": 45,
-                "extra": 3
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 53,
+                "extra": null
             }
         },
         "league": {
@@ -9528,7 +9528,7 @@
             "timestamp": 1789072200,
             "periods": {
                 "first": 1789072200,
-                "second": null
+                "second": 1789075800
             },
             "venue": {
                 "id": null,
@@ -9536,10 +9536,10 @@
                 "city": "Quito"
             },
             "status": {
-                "long": "Halftime",
-                "short": "HT",
-                "elapsed": 45,
-                "extra": 4
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 53,
+                "extra": null
             }
         },
         "league": {
@@ -9608,7 +9608,7 @@
             "status": {
                 "long": "Second Half",
                 "short": "2H",
-                "elapsed": 48,
+                "elapsed": 57,
                 "extra": null
             }
         },
@@ -9678,7 +9678,7 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 34,
+                "elapsed": 42,
                 "extra": null
             }
         },
@@ -9748,7 +9748,7 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 35,
+                "elapsed": 44,
                 "extra": null
             }
         },
