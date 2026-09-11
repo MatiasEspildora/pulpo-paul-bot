@@ -16,9 +16,9 @@
                 "city": "Mexico City"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 1,
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 83,
                 "extra": null
             }
         },
@@ -37,22 +37,22 @@
                 "id": 2286,
                 "name": "U.N.A.M. - Pumas",
                 "logo": "https://media.api-sports.io/football/teams/2286.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 2289,
                 "name": "Leon",
                 "logo": "https://media.api-sports.io/football/teams/2289.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": 0,
-            "away": 0
+            "home": 2,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": 0,
+                "home": 1,
                 "away": 0
             },
             "fulltime": {
@@ -77,8 +77,8 @@
             "date": "2026-09-11T00:06:00-03:00",
             "timestamp": 1789095960,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789095960,
+                "second": 1789099560
             },
             "venue": {
                 "id": null,
@@ -86,9 +86,9 @@
                 "city": "San Salvador"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 86,
                 "extra": null
             }
         },
@@ -107,23 +107,23 @@
                 "id": 4303,
                 "name": "Firpo",
                 "logo": "https://media.api-sports.io/football/teams/4303.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 1051,
                 "name": "CD Olimpia",
                 "logo": "https://media.api-sports.io/football/teams/1051.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 3
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
