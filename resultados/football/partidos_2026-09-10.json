@@ -351,76 +351,6 @@
     },
     {
         "fixture": {
-            "id": 1638874,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-10T06:30:00-03:00",
-            "timestamp": 1789032600,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 1020,
-            "name": "Calcutta Premier Division",
-            "country": "India",
-            "logo": "https://media.api-sports.io/football/leagues/1020.png",
-            "flag": "https://media.api-sports.io/flags/in.svg",
-            "season": 2026,
-            "round": "Regular season",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 8241,
-                "name": "United",
-                "logo": "https://media.api-sports.io/football/teams/8241.png",
-                "winner": null
-            },
-            "away": {
-                "id": 3463,
-                "name": "East Bengal",
-                "logo": "https://media.api-sports.io/football/teams/3463.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
             "id": 1635897,
             "referee": null,
             "timezone": "America/Santiago",
@@ -9018,6 +8948,76 @@
             "fulltime": {
                 "home": 2,
                 "away": 3
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1639071,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-10T16:00:00-03:00",
+            "timestamp": 1789066800,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 710,
+            "name": "Nacional B",
+            "country": "Bolivia",
+            "logo": "https://media.api-sports.io/football/leagues/710.png",
+            "flag": "https://media.api-sports.io/flags/bo.svg",
+            "season": 2026,
+            "round": "Regular Season - 4",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 28290,
+                "name": "Atletico Sucre",
+                "logo": "https://media.api-sports.io/football/teams/28290.png",
+                "winner": null
+            },
+            "away": {
+                "id": 15698,
+                "name": "EM Huanuni",
+                "logo": "https://media.api-sports.io/football/teams/15698.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
             },
             "extratime": {
                 "home": null,
