@@ -2,7 +2,7 @@
     {
         "fixture": {
             "id": 1636685,
-            "referee": null,
+            "referee": "C. Corado",
             "timezone": "America/Santiago",
             "date": "2026-09-10T00:06:00-03:00",
             "timestamp": 1789009560,
@@ -7156,9 +7156,9 @@
                 "city": "Riyadh"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -7177,27 +7177,27 @@
                 "id": 24884,
                 "name": "Al Nassr W",
                 "logo": "https://media.api-sports.io/football/teams/24884.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 27718,
                 "name": "Neom SC W",
                 "logo": "https://media.api-sports.io/football/teams/27718.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 3,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -9387,18 +9387,18 @@
             "date": "2026-09-10T17:00:00-03:00",
             "timestamp": 1789070400,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789070400,
+                "second": 1789074000
             },
             "venue": {
                 "id": null,
-                "name": null,
-                "city": null
+                "name": "Estadio Deportivo ESPOL",
+                "city": "Guayaquil"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -9417,27 +9417,27 @@
                 "id": 27663,
                 "name": "Astillero FC (Ecu)",
                 "logo": "https://media.api-sports.io/football/teams/27663.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 1157,
                 "name": "Universidad Catolica",
                 "logo": "https://media.api-sports.io/football/teams/1157.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -9466,10 +9466,10 @@
                 "city": null
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 82,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 4
             }
         },
         "league": {
@@ -9498,7 +9498,7 @@
         },
         "goals": {
             "home": 0,
-            "away": 1
+            "away": 3
         },
         "score": {
             "halftime": {
@@ -9506,8 +9506,8 @@
                 "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 3
             },
             "extratime": {
                 "home": null,
@@ -9536,10 +9536,10 @@
                 "city": "Quito"
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 83,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 5
             }
         },
         "league": {
@@ -9576,8 +9576,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -9606,10 +9606,10 @@
                 "city": null
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 87,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 2
             }
         },
         "league": {
@@ -9637,7 +9637,7 @@
             }
         },
         "goals": {
-            "home": 11,
+            "home": 13,
             "away": 1
         },
         "score": {
@@ -9646,8 +9646,8 @@
                 "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 13,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -9676,10 +9676,10 @@
                 "city": "Amatitlan"
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 53,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 9
             }
         },
         "league": {
@@ -9707,8 +9707,8 @@
             }
         },
         "goals": {
-            "home": 0,
-            "away": 1
+            "home": 1,
+            "away": 2
         },
         "score": {
             "halftime": {
@@ -9716,8 +9716,8 @@
                 "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -9746,10 +9746,10 @@
                 "city": null
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 52,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 8
             }
         },
         "league": {
@@ -9786,8 +9786,8 @@
                 "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -9808,7 +9808,7 @@
             "timestamp": 1789077600,
             "periods": {
                 "first": 1789077600,
-                "second": null
+                "second": 1789081200
             },
             "venue": {
                 "id": null,
@@ -9816,10 +9816,10 @@
                 "city": null
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 14,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 9
             }
         },
         "league": {
@@ -9837,17 +9837,17 @@
                 "id": 18915,
                 "name": "Mercedes",
                 "logo": "https://media.api-sports.io/football/teams/18915.png",
-                "winner": false
+                "winner": null
             },
             "away": {
                 "id": 8381,
                 "name": "Deportivo Español",
                 "logo": "https://media.api-sports.io/football/teams/8381.png",
-                "winner": true
+                "winner": null
             }
         },
         "goals": {
-            "home": 0,
+            "home": 1,
             "away": 1
         },
         "score": {
@@ -9856,8 +9856,8 @@
                 "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -9878,7 +9878,7 @@
             "timestamp": 1789077600,
             "periods": {
                 "first": 1789077600,
-                "second": null
+                "second": 1789081200
             },
             "venue": {
                 "id": 367,
@@ -9886,10 +9886,10 @@
                 "city": "Barrancabermeja"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 16,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 5
             }
         },
         "league": {
@@ -9918,7 +9918,7 @@
         },
         "goals": {
             "home": 0,
-            "away": 1
+            "away": 2
         },
         "score": {
             "halftime": {
@@ -9926,8 +9926,8 @@
                 "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -9948,7 +9948,7 @@
             "timestamp": 1789077600,
             "periods": {
                 "first": 1789077600,
-                "second": null
+                "second": 1789081200
             },
             "venue": {
                 "id": null,
@@ -9956,10 +9956,10 @@
                 "city": "Tunja"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 15,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 4
             }
         },
         "league": {
@@ -9977,27 +9977,27 @@
                 "id": 1140,
                 "name": "Patriotas",
                 "logo": "https://media.api-sports.io/football/teams/1140.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 1466,
                 "name": "Barranquilla",
                 "logo": "https://media.api-sports.io/football/teams/1466.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": 0,
-            "away": 0
+            "home": 3,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": 0,
+                "home": 2,
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -10018,7 +10018,7 @@
             "timestamp": 1789077600,
             "periods": {
                 "first": 1789077600,
-                "second": null
+                "second": 1789081200
             },
             "venue": {
                 "id": null,
@@ -10026,10 +10026,10 @@
                 "city": null
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 16,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 6
             }
         },
         "league": {
@@ -10057,17 +10057,17 @@
             }
         },
         "goals": {
-            "home": 0,
-            "away": 0
+            "home": 1,
+            "away": 1
         },
         "score": {
             "halftime": {
                 "home": 0,
-                "away": 0
+                "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -10088,7 +10088,7 @@
             "timestamp": 1789077600,
             "periods": {
                 "first": 1789077600,
-                "second": null
+                "second": 1789081200
             },
             "venue": {
                 "id": null,
@@ -10096,10 +10096,10 @@
                 "city": null
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 15,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 2
             }
         },
         "league": {
@@ -10117,27 +10117,27 @@
                 "id": 12959,
                 "name": "Galvez U20",
                 "logo": "https://media.api-sports.io/football/teams/12959.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 25442,
                 "name": "Santa Cruz AC U20",
                 "logo": "https://media.api-sports.io/football/teams/25442.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
             "home": 0,
-            "away": 0
+            "away": 5
         },
         "score": {
             "halftime": {
                 "home": 0,
-                "away": 0
+                "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 5
             },
             "extratime": {
                 "home": null,
@@ -10166,9 +10166,9 @@
                 "city": "Sao Bernardo"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -10187,27 +10187,27 @@
                 "id": 7865,
                 "name": "São Bernardo",
                 "logo": "https://media.api-sports.io/football/teams/7865.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 148,
                 "name": "Londrina",
                 "logo": "https://media.api-sports.io/football/teams/148.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 2
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -10236,9 +10236,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -10257,27 +10257,27 @@
                 "id": 142,
                 "name": "Vila Nova",
                 "logo": "https://media.api-sports.io/football/teams/142.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 151,
                 "name": "Goias",
                 "logo": "https://media.api-sports.io/football/teams/151.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 2,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -10292,13 +10292,13 @@
     {
         "fixture": {
             "id": 1619674,
-            "referee": null,
+            "referee": "C. Arteaga",
             "timezone": "America/Santiago",
             "date": "2026-09-10T19:30:00-03:00",
             "timestamp": 1789079400,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789079400,
+                "second": 1789083000
             },
             "venue": {
                 "id": 11130,
@@ -10306,10 +10306,10 @@
                 "city": "Tarija"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 6
             }
         },
         "league": {
@@ -10327,27 +10327,27 @@
                 "id": 15708,
                 "name": "Real Tomayapo",
                 "logo": "https://media.api-sports.io/football/teams/15708.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 3700,
                 "name": "Always Ready",
                 "logo": "https://media.api-sports.io/football/teams/3700.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 2,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -10367,8 +10367,8 @@
             "date": "2026-09-10T20:00:00-03:00",
             "timestamp": 1789081200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789081200,
+                "second": 1789084800
             },
             "venue": {
                 "id": null,
@@ -10376,10 +10376,10 @@
                 "city": "Antofagasta"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 6
             }
         },
         "league": {
@@ -10407,17 +10407,17 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -10446,9 +10446,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -10477,157 +10477,17 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 2,
+            "away": 2
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1560831,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-10T20:00:00-03:00",
-            "timestamp": 1789081200,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 1113,
-            "name": "Copa Venezuela",
-            "country": "Venezuela",
-            "logo": "https://media.api-sports.io/football/leagues/1113.png",
-            "flag": "https://media.api-sports.io/flags/ve.svg",
-            "season": 2026,
-            "round": "Round 1 - Group D",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 2812,
-                "name": "Deportivo Lara",
-                "logo": "https://media.api-sports.io/football/teams/2812.png",
-                "winner": null
-            },
-            "away": {
-                "id": 2815,
-                "name": "Trujillanos FC",
-                "logo": "https://media.api-sports.io/football/teams/2815.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1637545,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-10T20:00:00-03:00",
-            "timestamp": 1789081200,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 617,
-            "name": "Copa do Brasil U20",
-            "country": "Brazil",
-            "logo": "https://media.api-sports.io/football/leagues/617.png",
-            "flag": "https://media.api-sports.io/flags/br.svg",
-            "season": 2026,
-            "round": "Round of 64",
-            "standings": false
-        },
-        "teams": {
-            "home": {
-                "id": 12966,
-                "name": "Nacional AM U20",
-                "logo": "https://media.api-sports.io/football/teams/12966.png",
-                "winner": null
-            },
-            "away": {
-                "id": 27295,
-                "name": "SE União Cacoalense U20",
-                "logo": "https://media.api-sports.io/football/teams/27295.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -10644,11 +10504,11 @@
             "id": 1549115,
             "referee": null,
             "timezone": "America/Santiago",
-            "date": "2026-09-10T21:00:00-03:00",
-            "timestamp": 1789084800,
+            "date": "2026-09-10T20:00:00-03:00",
+            "timestamp": 1789081200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789081200,
+                "second": 1789084800
             },
             "venue": {
                 "id": null,
@@ -10656,10 +10516,10 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 6
             }
         },
         "league": {
@@ -10687,17 +10547,17 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -10711,14 +10571,14 @@
     },
     {
         "fixture": {
-            "id": 1559634,
+            "id": 1560831,
             "referee": null,
             "timezone": "America/Santiago",
-            "date": "2026-09-10T21:00:00-03:00",
-            "timestamp": 1789084800,
+            "date": "2026-09-10T20:00:00-03:00",
+            "timestamp": 1789081200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789081200,
+                "second": 1789084800
             },
             "venue": {
                 "id": null,
@@ -10726,10 +10586,150 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 6
+            }
+        },
+        "league": {
+            "id": 1113,
+            "name": "Copa Venezuela",
+            "country": "Venezuela",
+            "logo": "https://media.api-sports.io/football/leagues/1113.png",
+            "flag": "https://media.api-sports.io/flags/ve.svg",
+            "season": 2026,
+            "round": "Round 1 - Group D",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 2812,
+                "name": "Deportivo Lara",
+                "logo": "https://media.api-sports.io/football/teams/2812.png",
+                "winner": true
+            },
+            "away": {
+                "id": 2815,
+                "name": "Trujillanos FC",
+                "logo": "https://media.api-sports.io/football/teams/2815.png",
+                "winner": false
+            }
+        },
+        "goals": {
+            "home": 2,
+            "away": 1
+        },
+        "score": {
+            "halftime": {
+                "home": 1,
+                "away": 1
+            },
+            "fulltime": {
+                "home": 2,
+                "away": 1
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1637545,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-10T20:00:00-03:00",
+            "timestamp": 1789081200,
+            "periods": {
+                "first": 1789081200,
+                "second": 1789084800
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Match Finished",
+                "short": "PEN",
+                "elapsed": 120,
                 "extra": null
+            }
+        },
+        "league": {
+            "id": 617,
+            "name": "Copa do Brasil U20",
+            "country": "Brazil",
+            "logo": "https://media.api-sports.io/football/leagues/617.png",
+            "flag": "https://media.api-sports.io/flags/br.svg",
+            "season": 2026,
+            "round": "Round of 64",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 12966,
+                "name": "Nacional AM U20",
+                "logo": "https://media.api-sports.io/football/teams/12966.png",
+                "winner": true
+            },
+            "away": {
+                "id": 27295,
+                "name": "SE União Cacoalense U20",
+                "logo": "https://media.api-sports.io/football/teams/27295.png",
+                "winner": false
+            }
+        },
+        "goals": {
+            "home": 0,
+            "away": 0
+        },
+        "score": {
+            "halftime": {
+                "home": 0,
+                "away": 0
+            },
+            "fulltime": {
+                "home": 0,
+                "away": 0
+            },
+            "extratime": {
+                "home": 0,
+                "away": 0
+            },
+            "penalty": {
+                "home": 3,
+                "away": 0
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1559634,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-10T21:00:00-03:00",
+            "timestamp": 1789084800,
+            "periods": {
+                "first": 1789084800,
+                "second": 1789088400
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 5
             }
         },
         "league": {
@@ -10747,27 +10747,27 @@
                 "id": 3664,
                 "name": "Malacateco",
                 "logo": "https://media.api-sports.io/football/teams/3664.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 3656,
                 "name": "Antigua GFC",
                 "logo": "https://media.api-sports.io/football/teams/3656.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 2
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -10787,8 +10787,8 @@
             "date": "2026-09-10T21:00:00-03:00",
             "timestamp": 1789084800,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789084800,
+                "second": 1789088400
             },
             "venue": {
                 "id": null,
@@ -10796,10 +10796,10 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 6
             }
         },
         "league": {
@@ -10827,17 +10827,17 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -10866,9 +10866,9 @@
                 "city": "Recife"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -10887,27 +10887,27 @@
                 "id": 123,
                 "name": "Sport Recife",
                 "logo": "https://media.api-sports.io/football/teams/123.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 139,
                 "name": "Ponte Preta",
                 "logo": "https://media.api-sports.io/football/teams/139.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 2,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -10922,13 +10922,13 @@
     {
         "fixture": {
             "id": 1619675,
-            "referee": null,
+            "referee": "J. Mamani",
             "timezone": "America/Santiago",
             "date": "2026-09-10T21:30:00-03:00",
             "timestamp": 1789086600,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789086600,
+                "second": 1789090200
             },
             "venue": {
                 "id": 198,
@@ -10936,10 +10936,10 @@
                 "city": "La Paz"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 8
             }
         },
         "league": {
@@ -10967,17 +10967,17 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -11006,9 +11006,9 @@
                 "city": "Cusco"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -11027,27 +11027,27 @@
                 "id": 2562,
                 "name": "Cienciano",
                 "logo": "https://media.api-sports.io/football/teams/2562.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 2365,
                 "name": "Atletico Torque",
                 "logo": "https://media.api-sports.io/football/teams/2365.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 2,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -11076,9 +11076,9 @@
                 "city": "Quito"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -11097,27 +11097,27 @@
                 "id": 1153,
                 "name": "Independiente del Valle",
                 "logo": "https://media.api-sports.io/football/teams/1153.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 127,
                 "name": "Flamengo",
                 "logo": "https://media.api-sports.io/football/teams/127.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 2
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -11146,9 +11146,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -11177,17 +11177,17 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -11202,13 +11202,13 @@
     {
         "fixture": {
             "id": 1581416,
-            "referee": null,
+            "referee": "E. L. Sanchez M.",
             "timezone": "America/Santiago",
             "date": "2026-09-10T22:00:00-03:00",
             "timestamp": 1789088400,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789088400,
+                "second": 1789092000
             },
             "venue": {
                 "id": null,
@@ -11216,10 +11216,10 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 9
             }
         },
         "league": {
@@ -11237,27 +11237,27 @@
                 "id": 2300,
                 "name": "Alebrijes de Oaxaca",
                 "logo": "https://media.api-sports.io/football/teams/2300.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 15941,
                 "name": "Durango",
                 "logo": "https://media.api-sports.io/football/teams/15941.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -11277,8 +11277,8 @@
             "date": "2026-09-10T22:06:00-03:00",
             "timestamp": 1789088760,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789088760,
+                "second": 1789092360
             },
             "venue": {
                 "id": null,
@@ -11286,10 +11286,10 @@
                 "city": "San Pedro Sula"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 4
             }
         },
         "league": {
@@ -11317,17 +11317,17 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 2,
+            "away": 2
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -11347,7 +11347,7 @@
             "date": "2026-09-10T23:00:00-03:00",
             "timestamp": 1789092000,
             "periods": {
-                "first": null,
+                "first": 1789092000,
                 "second": null
             },
             "venue": {
@@ -11356,10 +11356,10 @@
                 "city": "Quetzaltenango"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
+                "extra": 5
             }
         },
         "league": {
@@ -11387,13 +11387,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
