@@ -8976,9 +8976,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -8997,27 +8997,27 @@
                 "id": 28290,
                 "name": "Atletico Sucre",
                 "logo": "https://media.api-sports.io/football/teams/28290.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 15698,
                 "name": "EM Huanuni",
                 "logo": "https://media.api-sports.io/football/teams/15698.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "extratime": {
                 "home": null,
