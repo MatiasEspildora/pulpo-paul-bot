@@ -50,7 +50,7 @@ jobs:
           PROXY_URL: ${{ secrets.PROXY_URL }}
           TELEGRAM_KPI_CHAT_ID: ${{ secrets.TELEGRAM_KPI_CHAT_ID }}
           TELEGRAM_KPI_BOT_TOKEN: ${{secrets.TELEGRAM_KPI_BOT_TOKEN }} 
-        run: python main.py
+        run: python - u main.py
 
       - name: Configurar Git
         run: |
