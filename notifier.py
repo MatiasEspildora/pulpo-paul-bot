@@ -76,7 +76,7 @@ def agrupar_por_pais(proyecciones_dict):
 
 
 # ==========================================
-# ⚽ FORMATO BENDER V3.0 (FÚTBOL)
+# ⚽ FORMATO BENDER V3.6 (FÚTBOL - MODO TÁCTICO)
 # ==========================================
 def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_bloque, analyzer, token_override=None):
     tz_chile = pytz.timezone('America/Santiago')
@@ -198,7 +198,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
 
     etiqueta_ventana = f" | {titulo_bloque}" if titulo_bloque else ""
     
-    msg = f"💎 ━━ *MENÚ BENDER V3.0: {fecha_bloque}{etiqueta_ventana}* ━━ 💎\n\n"
+    msg = f"💎 ━━ *MENÚ BENDER V3.6: {fecha_bloque}{etiqueta_ventana}* ━━ 💎\n\n"
     msg += f"📅 _Generado: {hora_generacion}_\n\n"
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
 
@@ -247,7 +247,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         msg += "_Ninguna combinación SGBB superó el 85% hoy._\n\n"
 
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
-    msg += "🩸 *LA AUTOPSIA (Código Fuente)*\n\n"
+    msg += "🩸 *LA AUTOPSIA TÁCTICA (Código Fuente)*\n\n"
 
     autopsia_dict = {}
     for p in partidos_validos:
@@ -262,7 +262,6 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         projs.sort(key=lambda x: x.get('hora', '00:00'))
         
         for p in projs:
-            # Aquí también se inyectó el league_id y es_eliminatoria para La Autopsia
             s_l = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=p.get('es_eliminatoria', False))
             s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=p.get('es_eliminatoria', False))
             
@@ -277,19 +276,28 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             msg += f"📅 `{p.get('fecha_str', '')}` | 🕒 `{p.get('hora', '')}`{es_mata_mata}\n"
             msg += f"⚽ *{p['local']}*{l_tag} vs *{p['visita']}*{v_tag}\n"
             msg += f"📈 Global: L `{p.get('home_form')}` ({p.get('home_ppg')}p) | V `{p.get('away_form')}` ({p.get('away_ppg')}p)\n"
-            msg += f"🏟️ Casa/Fuera: L `{p.get('home_venue_form')}` ({p.get('home_venue_ppg')}p) | V `{p.get('away_venue_form')}` ({m.get('away_venue_ppg', 0)}p)\n"
+            msg += f"🏟️ Casa/Fuera: L `{p.get('home_venue_form')}` ({p.get('home_venue_ppg')}p) | V `{p.get('away_venue_form')}` ({p.get('away_venue_ppg', 0)}p)\n"
             msg += f"📊 1X2: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
             msg += f"🛡️ Doble Op: 1X ({p.get('prob_1X',0):.0%}) | 12 ({p.get('prob_12',0):.0%}) | X2 ({p.get('prob_X2',0):.0%})\n"
             
             msg += f"🎯 Ambos Anotan (BTTS): Sí ({p.get('btts',0):.0%}) | No ({p.get('btts_no',0):.0%})\n"
             msg += f"🧱 Portería a Cero (CS): L ({p.get('home_clean_sheet',0):.0%}) | V ({p.get('away_clean_sheet',0):.0%})\n"
-            msg += f"⚽ Bajas: -2.5 ({p.get('under_2_5',0):.0%}) | -3.5 ({p.get('under_3_5',0):.0%}) | -4.5 ({p.get('under_4_5',0):.0%}) | -5.5 ({p.get('under_5_5',0):.0%})\n"
-            msg += f"🔥 Altas: +1.5 ({p.get('over_1_5',0):.0%}) | +2.5 ({p.get('over_2_5',0):.0%}) | +3.5 ({p.get('over_3_5',0):.0%}) | +4.5 ({p.get('over_4_5',0):.0%}) | +5.5 ({p.get('over_5_5',0):.0%})\n"
+            msg += f"⚽ Bajas: -2.5 ({p.get('under_2_5',0):.0%}) | -3.5 ({p.get('under_3_5',0):.0%}) | -4.5 ({p.get('under_4_5',0):.0%})\n"
+            msg += f"🔥 Altas: +1.5 ({p.get('over_1_5',0):.0%}) | +2.5 ({p.get('over_2_5',0):.0%}) | +3.5 ({p.get('over_3_5',0):.0%})\n"
             msg += f"⏱️ +0.5 Goles HT: {p.get('prob_over_0_5_ht',0):.0%}\n"
             
-            msg += f"📐 Promedios ({s_l.get('count',0)}p | {s_v.get('count',0)}p):\n"
-            msg += f"  ⚽ A favor: {s_l.get('goles_favor',0):.1f} | {s_v.get('goles_favor',0):.1f}\n"
-            msg += f"  🛡️ En contra: {s_l.get('goles_contra',0):.1f} | {s_v.get('goles_contra',0):.1f}\n\n"
+            msg += f"📐 Promedios Goles ({s_l.get('count',0)}p | {s_v.get('count',0)}p):\n"
+            msg += f"  L: ({s_l.get('goles_favor',0):.1f} F / {s_l.get('goles_contra',0):.1f} C) | V: ({s_v.get('goles_favor',0):.1f} F / {s_v.get('goles_contra',0):.1f} C)\n"
+            
+            # --- INYECCIÓN TÁCTICA V3.6 ---
+            if s_l.get('has_details') or s_v.get('has_details'):
+                msg += f"**--- 📋 RADIOGRAFÍA TÁCTICA ---**\n"
+                if s_l.get('has_details'):
+                    msg += f"👟 Remates a Favor: L ({s_l.get('remates',0):.1f}) | V ({s_v.get('remates',0):.1f})\n"
+                    msg += f"🚩 Córners a Favor: L ({s_l.get('corners',0):.1f}) | V ({s_v.get('corners',0):.1f})\n"
+                if p.get('tactics_applied'):
+                    msg += f"🔥 **Modificador V3.6 Aplicado:** L {p.get('tactical_mod_home',1.0):.2f}x | V {p.get('tactical_mod_away',1.0):.2f}x\n"
+            msg += "\n"
 
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n✅ *FIN DEL REPORTE* ✅\n\n"
 
