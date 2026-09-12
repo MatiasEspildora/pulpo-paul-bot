@@ -16,9 +16,9 @@
                 "city": "Mexico City"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 84,
                 "extra": null
             }
         },
@@ -37,23 +37,23 @@
                 "id": 2312,
                 "name": "Atlante FC",
                 "logo": "https://media.api-sports.io/football/teams/2312.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 2292,
                 "name": "CF Pachuca",
                 "logo": "https://media.api-sports.io/football/teams/2292.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 3
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 3
             },
             "fulltime": {
                 "home": null,
@@ -77,8 +77,8 @@
             "date": "2026-09-12T00:06:00-03:00",
             "timestamp": 1789182360,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789182360,
+                "second": 1789185960
             },
             "venue": {
                 "id": 1071,
@@ -86,9 +86,9 @@
                 "city": "Guadalajara"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 75,
                 "extra": null
             }
         },
@@ -107,23 +107,23 @@
                 "id": 14873,
                 "name": "Atlas W",
                 "logo": "https://media.api-sports.io/football/teams/14873.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 28036,
                 "name": "Atlante W",
                 "logo": "https://media.api-sports.io/football/teams/28036.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
@@ -156,9 +156,9 @@
                 "city": "Tijuana"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 74,
                 "extra": null
             }
         },
@@ -177,23 +177,23 @@
                 "id": 2280,
                 "name": "Club Tijuana",
                 "logo": "https://media.api-sports.io/football/teams/2280.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 2290,
                 "name": "Club Queretaro",
                 "logo": "https://media.api-sports.io/football/teams/2290.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
                 "home": null,
@@ -217,7 +217,7 @@
             "date": "2026-09-12T01:00:00-03:00",
             "timestamp": 1789185600,
             "periods": {
-                "first": null,
+                "first": 1789185600,
                 "second": null
             },
             "venue": {
@@ -226,9 +226,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 43,
                 "extra": null
             }
         },
@@ -247,23 +247,23 @@
                 "id": 17721,
                 "name": "SKA Khabarovsk II",
                 "logo": "https://media.api-sports.io/football/teams/17721.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 6815,
                 "name": "Metallurg Lipetsk",
                 "logo": "https://media.api-sports.io/football/teams/6815.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 2
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 2
             },
             "fulltime": {
                 "home": null,
@@ -38792,8 +38792,8 @@
             },
             "venue": {
                 "id": null,
-                "name": null,
-                "city": "Villarrica"
+                "name": "Municipal de Carapegua",
+                "city": "Carapegua"
             },
             "status": {
                 "long": "Not Started",
@@ -39832,7 +39832,7 @@
     {
         "fixture": {
             "id": 1558212,
-            "referee": null,
+            "referee": "L. Karski",
             "timezone": "America/Santiago",
             "date": "2026-09-12T10:30:00-03:00",
             "timestamp": 1789219800,
@@ -39902,7 +39902,7 @@
     {
         "fixture": {
             "id": 1558217,
-            "referee": null,
+            "referee": "S. Lezny",
             "timezone": "America/Santiago",
             "date": "2026-09-12T10:30:00-03:00",
             "timestamp": 1789219800,
@@ -39972,7 +39972,7 @@
     {
         "fixture": {
             "id": 1558220,
-            "referee": null,
+            "referee": "M. Kochanek",
             "timezone": "America/Santiago",
             "date": "2026-09-12T10:30:00-03:00",
             "timestamp": 1789219800,
@@ -42912,7 +42912,7 @@
     {
         "fixture": {
             "id": 1601893,
-            "referee": null,
+            "referee": "T. Qurbanov",
             "timezone": "America/Santiago",
             "date": "2026-09-12T10:30:00-03:00",
             "timestamp": 1789219800,
@@ -62231,6 +62231,76 @@
     },
     {
         "fixture": {
+            "id": 1609900,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-12T11:00:00-03:00",
+            "timestamp": 1789221600,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 317,
+            "name": "1st League - RS",
+            "country": "Bosnia",
+            "logo": "https://media.api-sports.io/football/leagues/317.png",
+            "flag": "https://media.api-sports.io/flags/ba.svg",
+            "season": 2026,
+            "round": "RS - 5",
+            "standings": false
+        },
+        "teams": {
+            "home": {
+                "id": 3378,
+                "name": "Slavija",
+                "logo": "https://media.api-sports.io/football/teams/3378.png",
+                "winner": null
+            },
+            "away": {
+                "id": 3377,
+                "name": "Rudar Prijedor",
+                "logo": "https://media.api-sports.io/football/teams/3377.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1610087,
             "referee": null,
             "timezone": "America/Santiago",
@@ -73221,76 +73291,6 @@
     },
     {
         "fixture": {
-            "id": 1609900,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-12T11:30:00-03:00",
-            "timestamp": 1789223400,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 317,
-            "name": "1st League - RS",
-            "country": "Bosnia",
-            "logo": "https://media.api-sports.io/football/leagues/317.png",
-            "flag": "https://media.api-sports.io/flags/ba.svg",
-            "season": 2026,
-            "round": "RS - 5",
-            "standings": false
-        },
-        "teams": {
-            "home": {
-                "id": 3378,
-                "name": "Slavija",
-                "logo": "https://media.api-sports.io/football/teams/3378.png",
-                "winner": null
-            },
-            "away": {
-                "id": 3377,
-                "name": "Rudar Prijedor",
-                "logo": "https://media.api-sports.io/football/teams/3377.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
             "id": 1610088,
             "referee": null,
             "timezone": "America/Santiago",
@@ -80712,7 +80712,7 @@
     {
         "fixture": {
             "id": 1601895,
-            "referee": null,
+            "referee": "A. Aliyev",
             "timezone": "America/Santiago",
             "date": "2026-09-12T12:45:00-03:00",
             "timestamp": 1789227900,
@@ -82462,7 +82462,7 @@
     {
         "fixture": {
             "id": 1582797,
-            "referee": null,
+            "referee": "D. Maric",
             "timezone": "America/Santiago",
             "date": "2026-09-12T13:00:00-03:00",
             "timestamp": 1789228800,
@@ -84772,7 +84772,7 @@
     {
         "fixture": {
             "id": 1603559,
-            "referee": null,
+            "referee": "C. Theouli",
             "timezone": "America/Santiago",
             "date": "2026-09-12T13:00:00-03:00",
             "timestamp": 1789228800,
@@ -84842,7 +84842,7 @@
     {
         "fixture": {
             "id": 1603560,
-            "referee": null,
+            "referee": "N. Liotatis",
             "timezone": "America/Santiago",
             "date": "2026-09-12T13:00:00-03:00",
             "timestamp": 1789228800,
@@ -92262,7 +92262,7 @@
     {
         "fixture": {
             "id": 1603563,
-            "referee": null,
+            "referee": "K. Athanassiou",
             "timezone": "America/Santiago",
             "date": "2026-09-12T14:00:00-03:00",
             "timestamp": 1789232400,
@@ -103742,7 +103742,7 @@
     {
         "fixture": {
             "id": 1582795,
-            "referee": null,
+            "referee": "A. Efendic",
             "timezone": "America/Santiago",
             "date": "2026-09-12T15:45:00-03:00",
             "timestamp": 1789238700,
