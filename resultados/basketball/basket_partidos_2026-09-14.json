@@ -986,6 +986,64 @@
         }
     },
     {
+        "id": 520737,
+        "date": "2026-09-14T20:00:00-03:00",
+        "time": "20:00",
+        "timestamp": 1789426800,
+        "timezone": "America/Santiago",
+        "stage": null,
+        "week": null,
+        "venue": "Estadio Palestino",
+        "status": {
+            "long": "Not Started",
+            "short": "NS",
+            "timer": null
+        },
+        "league": {
+            "id": 114,
+            "name": "LNB",
+            "type": "League",
+            "season": "2026-2027",
+            "logo": "https://media.api-sports.io/basketball/leagues/114.png"
+        },
+        "country": {
+            "id": 53,
+            "name": "Chile",
+            "code": "CL",
+            "flag": "https://media.api-sports.io/flags/cl.svg"
+        },
+        "teams": {
+            "home": {
+                "id": 1379,
+                "name": "Catolica",
+                "logo": "https://media.api-sports.io/basketball/teams/1379.png"
+            },
+            "away": {
+                "id": 1447,
+                "name": "Espanol de Talca",
+                "logo": "https://media.api-sports.io/basketball/teams/1447.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            },
+            "away": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            }
+        }
+    },
+    {
         "id": 520738,
         "date": "2026-09-14T20:00:00-03:00",
         "time": "20:00",
@@ -1138,64 +1196,6 @@
                 "id": 1377,
                 "name": "Ancud",
                 "logo": "https://media.api-sports.io/basketball/teams/1377.png"
-            }
-        },
-        "scores": {
-            "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": null
-            },
-            "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": null
-            }
-        }
-    },
-    {
-        "id": 520737,
-        "date": "2026-09-14T21:00:00-03:00",
-        "time": "21:00",
-        "timestamp": 1789430400,
-        "timezone": "America/Santiago",
-        "stage": null,
-        "week": null,
-        "venue": "Estadio Palestino",
-        "status": {
-            "long": "Not Started",
-            "short": "NS",
-            "timer": null
-        },
-        "league": {
-            "id": 114,
-            "name": "LNB",
-            "type": "League",
-            "season": "2026-2027",
-            "logo": "https://media.api-sports.io/basketball/leagues/114.png"
-        },
-        "country": {
-            "id": 53,
-            "name": "Chile",
-            "code": "CL",
-            "flag": "https://media.api-sports.io/flags/cl.svg"
-        },
-        "teams": {
-            "home": {
-                "id": 1379,
-                "name": "Catolica",
-                "logo": "https://media.api-sports.io/basketball/teams/1379.png"
-            },
-            "away": {
-                "id": 1447,
-                "name": "Espanol de Talca",
-                "logo": "https://media.api-sports.io/basketball/teams/1447.png"
             }
         },
         "scores": {
