@@ -89,6 +89,23 @@ class BetBuilderEngine:
             'X2_BTTS_Yes': cls._get_joint_prob(matrix, lambda i, j: j >= i and i > 0 and j > 0),
         }
 
+        # ==========================================
+        # 📐 MOTOR SECRETO V4.0: MERCADOS DE CÓRNERS (DURMIENDO)
+        # ==========================================
+        corners_markets = {'over_8_5_corners': 0.0, 'over_9_5_corners': 0.0}
+        if 'corners_matrix' in raw_data and raw_data['corners_matrix'] is not None:
+            c_matrix = raw_data['corners_matrix']
+            # Sumatoria de probabilidades donde los córners totales superan el umbral
+            under_7_5_c = cls._get_joint_prob(c_matrix, lambda i, j: i + j <= 7)
+            under_8_5_c = cls._get_joint_prob(c_matrix, lambda i, j: i + j <= 8)
+            under_9_5_c = cls._get_joint_prob(c_matrix, lambda i, j: i + j <= 9)
+            corners_markets = {
+                'under_8_5_corners': under_8_5_c,
+                'over_8_5_corners': 1 - under_8_5_c,
+                'under_9_5_corners': under_9_5_c,
+                'over_9_5_corners': 1 - under_9_5_c,
+            }
+
         # Construir y retornar el diccionario exacto que espera notifier.py
         result = raw_data.copy()
         result.update({
@@ -118,9 +135,11 @@ class BetBuilderEngine:
             'away_over_2_5': 1 - p_away_marginal[:3].sum(),
             'home_clean_sheet': away_under_0_5,
             'away_clean_sheet': home_under_0_5,
-            'sgbb': sgbb
+            'sgbb': sgbb,
+            **corners_markets  # Inyecta dinámicamente los mercados de córners
         })
         
-        # Opcional: Eliminar la matriz para ahorrar memoria antes de enviarlo
+        # Opcional: Eliminar las matrices para ahorrar memoria antes de enviarlo
         result.pop('prob_matrix', None)
+        result.pop('corners_matrix', None)
         return result
