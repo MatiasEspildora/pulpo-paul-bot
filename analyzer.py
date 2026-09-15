@@ -65,6 +65,16 @@ class MatchAnalyzer:
         
         return matrix / matrix.sum()
 
+    # ==========================================
+    # 📐 MOTOR V4.0: MATRIZ DE POISSON PARA CÓRNERS
+    # ==========================================
+    def _calculate_corners_matrix(self, home_corners_lambda, away_corners_lambda, max_corners=15):
+        matrix = np.zeros((max_corners + 1, max_corners + 1))
+        for i in range(max_corners + 1):
+            for j in range(max_corners + 1):
+                matrix[i, j] = poisson.pmf(i, home_corners_lambda) * poisson.pmf(j, away_corners_lambda)
+        return matrix / matrix.sum()
+
     def _get_filtered_matches(self, team_id, league_id, es_eliminatoria):
         base_matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)]
         base_matches = base_matches.dropna(subset=["FTHG", "FTAG"]).sort_values(by="Date", ascending=False)
@@ -175,11 +185,8 @@ class MatchAnalyzer:
                     cf += float(row.get("AC", 0)); ca += float(row.get("HC", 0))
                     
             if count >= 3:
-                # Ratio de dominio: (A Favor) / (A Favor + En Contra). Protegido contra división por cero.
                 shots_ratio = sf / (sf + sa) if (sf + sa) > 0 else 0.5
                 corners_ratio = cf / (cf + ca) if (cf + ca) > 0 else 0.5
-                
-                # Ponderación: Los remates pesan un 75% en la fuerza, los córners un 25%
                 tactical_index = (shots_ratio * 0.75) + (corners_ratio * 0.25)
                 return True, tactical_index
             
@@ -234,8 +241,8 @@ class MatchAnalyzer:
         
         if h_has_tac and a_has_tac:
             diff = h_tac_idx - a_tac_idx
-            mod = diff * 0.35 # Ajuste del factor de impacto
-            mod = max(-0.20, min(0.20, mod)) # Tope máximo de 20% de castigo/bonificación para evitar explosión de Poisson
+            mod = diff * 0.35 
+            mod = max(-0.20, min(0.20, mod)) 
             
             tactical_mod_home += mod
             tactical_mod_away -= mod
@@ -248,6 +255,19 @@ class MatchAnalyzer:
 
         prob_matrix = self._calculate_exact_scores(lambda_home, lambda_away, max_goals=8)
 
+        # ==========================================
+        # 📐 EXTRACCIÓN Y CÁLCULO V4.0 (CÓRNERS)
+        # ==========================================
+        corners_matrix = None
+        stats_home = self.get_team_stats(home_team, home_id, league_id, es_eliminatoria)
+        stats_away = self.get_team_stats(away_team, away_id, league_id, es_eliminatoria)
+
+        # Si ambos equipos tienen al menos 5 partidos con detalles tácticos, activamos la matriz de córners
+        if stats_home.get('count', 0) >= 5 and stats_away.get('count', 0) >= 5 and stats_home.get('has_details') and stats_away.get('has_details'):
+            lam_c_home = (stats_home.get('corners', 4.5) + stats_away.get('corners', 4.5)) / 2
+            lam_c_away = (stats_away.get('corners', 4.5) + stats_home.get('corners', 4.5)) / 2
+            corners_matrix = self._calculate_corners_matrix(lam_c_home, lam_c_away, max_corners=15)
+
         return {
             'local': home_team, 'visita': away_team,
             'local_id': home_id, 'visita_id': away_id,
@@ -257,6 +277,7 @@ class MatchAnalyzer:
             'home_venue_form': home_venue_form_str, 'home_venue_ppg': home_venue_ppg,
             'away_venue_form': away_venue_form_str, 'away_venue_ppg': away_venue_ppg,
             'prob_matrix': prob_matrix,
+            'corners_matrix': corners_matrix, # <--- Enviado al BetBuilder para V4.0
             'lambda_home_ht': lambda_home_ht,
             'lambda_away_ht': lambda_away_ht,
             'tactics_applied': h_has_tac and a_has_tac,
@@ -370,7 +391,7 @@ class MatchAnalyzer:
         away_avg_conceded = (ag_c_glob + ag_c_ven) / 2
 
         exp_home_score = (home_avg_scored + away_avg_conceded) / 2
-        exp_away_score = (away_avg_scored + home_avg_conceded) / 2
+        exp_away_score = (away_avg_scored + home_concede_avg) / 2
         total_projected_points = exp_home_score + exp_away_score
 
         diff = exp_home_score - exp_away_score
