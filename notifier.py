@@ -76,7 +76,7 @@ def agrupar_por_pais(proyecciones_dict):
 
 
 # ==========================================
-# ⚽ FORMATO BENDER V3.6 (FÚTBOL - MODO TÁCTICO)
+# ⚽ FORMATO BENDER V4.0 (FÚTBOL - MODO ESTADÍSTICO)
 # ==========================================
 def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_bloque, analyzer, token_override=None):
     tz_chile = pytz.timezone('America/Santiago')
@@ -141,7 +141,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         if sgbb.get('BTTS_No_U25', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['BTTS_No_U25'], 'sel': 'Ambos Anotan (No) + Menos 2.5 Goles'})
         if sgbb.get('BTTS_No_U35', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['BTTS_No_U35'], 'sel': 'Ambos Anotan (No) + Menos 3.5 Goles'})
         
-        # --- LOGICA EXISTENTE ---
+        # --- LOGICA EXISTENTE DE GOLES ---
         if p.get('btts_no', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('btts_no'), 'sel': 'Ambos Anotan (NO)'})
         if p.get('btts', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('btts'), 'sel': 'Ambos Anotan (SÍ)'})
         if p.get('home_clean_sheet', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('home_clean_sheet'), 'sel': f"Clean Sheet {p['local']}"})
@@ -165,6 +165,10 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         if p.get('away_over_0_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('away_over_0_5'), 'sel': f"{p['visita']} +0.5 Goles"})
         if p.get('away_over_1_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('away_over_1_5'), 'sel': f"{p['visita']} +1.5 Goles"})
         if p.get('away_over_2_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('away_over_2_5'), 'sel': f"{p['visita']} +2.5 Goles"})
+
+        # --- LOGICA V4.0 (MERCADO DE CÓRNERS) ---
+        if p.get('over_8_5_corners', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_8_5_corners'), 'sel': '+8.5 Córners'})
+        if p.get('over_9_5_corners', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_9_5_corners'), 'sel': '+9.5 Córners'})
         
         prob_gana = max(p['probs'][0], p['probs'][2])
         sel_gana = p['local'] if p['probs'][0] > p['probs'][2] else p['visita']
@@ -198,7 +202,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
 
     etiqueta_ventana = f" | {titulo_bloque}" if titulo_bloque else ""
     
-    msg = f"💎 ━━ *MENÚ BENDER V3.6: {fecha_bloque}{etiqueta_ventana}* ━━ 💎\n\n"
+    msg = f"💎 ━━ *MENÚ BENDER V4.0 (Estadístico): {fecha_bloque}{etiqueta_ventana}* ━━ 💎\n\n"
     msg += f"📅 _Generado: {hora_generacion}_\n\n"
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
 
@@ -289,14 +293,19 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             msg += f"📐 Promedios Goles ({s_l.get('count',0)}p | {s_v.get('count',0)}p):\n"
             msg += f"  L: ({s_l.get('goles_favor',0):.1f} F / {s_l.get('goles_contra',0):.1f} C) | V: ({s_v.get('goles_favor',0):.1f} F / {s_v.get('goles_contra',0):.1f} C)\n"
             
-            # --- INYECCIÓN TÁCTICA V3.6 ---
+            # --- INYECCIÓN TÁCTICA Y ESTADÍSTICA V4.0 ---
             if s_l.get('has_details') or s_v.get('has_details'):
                 msg += f"**--- 📋 RADIOGRAFÍA TÁCTICA ---**\n"
                 if s_l.get('has_details'):
                     msg += f"👟 Remates a Favor: L ({s_l.get('remates',0):.1f}) | V ({s_v.get('remates',0):.1f})\n"
                     msg += f"🚩 Córners a Favor: L ({s_l.get('corners',0):.1f}) | V ({s_v.get('corners',0):.1f})\n"
                 if p.get('tactics_applied'):
-                    msg += f"🔥 **Modificador V3.6 Aplicado:** L {p.get('tactical_mod_home',1.0):.2f}x | V {p.get('tactical_mod_away',1.0):.2f}x\n"
+                    msg += f"🔥 **Modificador de Dominio:** L {p.get('tactical_mod_home',1.0):.2f}x | V {p.get('tactical_mod_away',1.0):.2f}x\n"
+                
+                # Desglose de córners de la V4.0
+                if p.get('over_8_5_corners', 0) > 0:
+                    msg += f"🎯 **Poisson Córners:** +8.5 ({p.get('over_8_5_corners',0):.0%}) | +9.5 ({p.get('over_9_5_corners',0):.0%})\n"
+
             msg += "\n"
 
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n✅ *FIN DEL REPORTE* ✅\n\n"
