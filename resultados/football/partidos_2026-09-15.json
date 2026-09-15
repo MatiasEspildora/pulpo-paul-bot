@@ -8547,8 +8547,8 @@
             "date": "2026-09-15T15:00:00-03:00",
             "timestamp": 1789495200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789495200,
+                "second": 1789498800
             },
             "venue": {
                 "id": null,
@@ -8556,9 +8556,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -8587,8 +8587,8 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 1
         },
         "score": {
             "halftime": {
@@ -8596,8 +8596,8 @@
                 "away": null
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -8617,8 +8617,8 @@
             "date": "2026-09-15T15:00:00-03:00",
             "timestamp": 1789495200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789495200,
+                "second": 1789498800
             },
             "venue": {
                 "id": null,
@@ -8626,9 +8626,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -8647,27 +8647,27 @@
                 "id": 25797,
                 "name": "Juventude U17",
                 "logo": "https://media.api-sports.io/football/teams/25797.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 24469,
                 "name": "Athletico PR U17",
                 "logo": "https://media.api-sports.io/football/teams/24469.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -8827,8 +8827,8 @@
             "date": "2026-09-15T15:00:00-03:00",
             "timestamp": 1789495200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789495200,
+                "second": 1789498800
             },
             "venue": {
                 "id": null,
@@ -8836,9 +8836,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -8857,18 +8857,18 @@
                 "id": 27733,
                 "name": "Vitoria U17",
                 "logo": "https://media.api-sports.io/football/teams/27733.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 24470,
                 "name": "Atletico GO U17",
                 "logo": "https://media.api-sports.io/football/teams/24470.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 6,
+            "away": 1
         },
         "score": {
             "halftime": {
@@ -8876,8 +8876,8 @@
                 "away": null
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 6,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -14926,9 +14926,9 @@
                 "city": "Elche"
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 83,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -14947,18 +14947,18 @@
                 "id": 797,
                 "name": "Elche",
                 "logo": "https://media.api-sports.io/football/teams/797.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 541,
                 "name": "Real Madrid",
                 "logo": "https://media.api-sports.io/football/teams/541.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
             "home": 2,
-            "away": 2
+            "away": 3
         },
         "score": {
             "halftime": {
@@ -14966,8 +14966,8 @@
                 "away": 2
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 3
             },
             "extratime": {
                 "home": null,
@@ -14996,10 +14996,10 @@
                 "city": null
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 85,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 10
             }
         },
         "league": {
@@ -15017,18 +15017,18 @@
                 "id": 28015,
                 "name": "Penafiel U23",
                 "logo": "https://media.api-sports.io/football/teams/28015.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 21719,
                 "name": "Santa Clara U23",
                 "logo": "https://media.api-sports.io/football/teams/21719.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
             "home": 0,
-            "away": 0
+            "away": 1
         },
         "score": {
             "halftime": {
@@ -15036,8 +15036,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -15066,10 +15066,10 @@
                 "city": null
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 87,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 3
             }
         },
         "league": {
@@ -15106,8 +15106,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -15138,8 +15138,8 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 13,
-                "extra": null
+                "elapsed": 45,
+                "extra": 4
             }
         },
         "league": {
@@ -15157,22 +15157,22 @@
                 "id": 2322,
                 "name": "San Luis",
                 "logo": "https://media.api-sports.io/football/teams/2322.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 2327,
                 "name": "Antofagasta",
                 "logo": "https://media.api-sports.io/football/teams/2327.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": 0,
+            "home": 1,
             "away": 0
         },
         "score": {
             "halftime": {
-                "home": 0,
+                "home": 1,
                 "away": 0
             },
             "fulltime": {
@@ -15206,9 +15206,9 @@
                 "city": "El Alto"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 21,
                 "extra": null
             }
         },
@@ -15237,13 +15237,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
