@@ -4972,7 +4972,7 @@
     {
         "fixture": {
             "id": 1550118,
-            "referee": "G. Mucera",
+            "referee": "Giuseppe Mucera, Italy",
             "timezone": "America/Santiago",
             "date": "2026-09-14T13:30:00-03:00",
             "timestamp": 1789403400,
@@ -5042,7 +5042,7 @@
     {
         "fixture": {
             "id": 1550125,
-            "referee": "F. Maresca",
+            "referee": "Fabio Maresca, Italy",
             "timezone": "America/Santiago",
             "date": "2026-09-14T13:30:00-03:00",
             "timestamp": 1789403400,
@@ -5052,7 +5052,7 @@
             },
             "venue": {
                 "id": null,
-                "name": "Stadio Olimpico di Torino",
+                "name": "Stadio Olimpico Grande Torino",
                 "city": "Turin"
             },
             "status": {
@@ -8752,7 +8752,7 @@
     {
         "fixture": {
             "id": 1550120,
-            "referee": "L. Pairetto",
+            "referee": "Luca Pairetto, Italy",
             "timezone": "America/Santiago",
             "date": "2026-09-14T15:45:00-03:00",
             "timestamp": 1789411500,
@@ -8763,7 +8763,7 @@
             "venue": {
                 "id": null,
                 "name": "San Siro/Giuseppe Meazza",
-                "city": "Milan"
+                "city": "Milano"
             },
             "status": {
                 "long": "Match Finished",
@@ -10516,10 +10516,10 @@
                 "city": "Toluca"
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
+                "long": "Match Finished",
+                "short": "FT",
                 "elapsed": 90,
-                "extra": 1
+                "extra": 4
             }
         },
         "league": {
@@ -10556,8 +10556,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 6,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -10586,9 +10586,9 @@
                 "city": "Avellaneda"
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 85,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -10626,8 +10626,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -10656,9 +10656,9 @@
                 "city": "Florianopolis"
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 66,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -10696,8 +10696,8 @@
                 "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -10726,9 +10726,9 @@
                 "city": "Santiago de Cali"
             },
             "status": {
-                "long": "Halftime",
-                "short": "HT",
-                "elapsed": 45,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -10747,18 +10747,18 @@
                 "id": 1138,
                 "name": "America de Cali",
                 "logo": "https://media.api-sports.io/football/teams/1138.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 1126,
                 "name": "Deportivo Pasto",
                 "logo": "https://media.api-sports.io/football/teams/1126.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
             "home": 0,
-            "away": 0
+            "away": 1
         },
         "score": {
             "halftime": {
@@ -10766,8 +10766,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -10796,9 +10796,9 @@
                 "city": "Leon"
             },
             "status": {
-                "long": "Halftime",
-                "short": "HT",
-                "elapsed": 45,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -10817,17 +10817,17 @@
                 "id": 2289,
                 "name": "Leon",
                 "logo": "https://media.api-sports.io/football/teams/2289.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 2314,
                 "name": "Atletico San Luis",
                 "logo": "https://media.api-sports.io/football/teams/2314.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": 0,
+            "home": 2,
             "away": 0
         },
         "score": {
@@ -10836,8 +10836,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -10858,7 +10858,7 @@
             "timestamp": 1789434000,
             "periods": {
                 "first": 1789434000,
-                "second": null
+                "second": 1789437600
             },
             "venue": {
                 "id": null,
@@ -10866,10 +10866,10 @@
                 "city": "Antigua Guatemala"
             },
             "status": {
-                "long": "Halftime",
-                "short": "HT",
-                "elapsed": 45,
-                "extra": 3
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 5
             }
         },
         "league": {
@@ -10897,8 +10897,8 @@
             }
         },
         "goals": {
-            "home": 1,
-            "away": 0
+            "home": 3,
+            "away": 2
         },
         "score": {
             "halftime": {
@@ -10906,8 +10906,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -10928,7 +10928,7 @@
             "timestamp": 1789434000,
             "periods": {
                 "first": 1789434000,
-                "second": null
+                "second": 1789437600
             },
             "venue": {
                 "id": null,
@@ -10936,10 +10936,10 @@
                 "city": "San Miguelito"
             },
             "status": {
-                "long": "Halftime",
-                "short": "HT",
-                "elapsed": 45,
-                "extra": 1
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 3
             }
         },
         "league": {
@@ -10968,7 +10968,7 @@
         },
         "goals": {
             "home": 0,
-            "away": 1
+            "away": 2
         },
         "score": {
             "halftime": {
@@ -10976,8 +10976,8 @@
                 "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -10998,7 +10998,7 @@
             "timestamp": 1789434000,
             "periods": {
                 "first": 1789434000,
-                "second": null
+                "second": 1789437600
             },
             "venue": {
                 "id": null,
@@ -11006,10 +11006,10 @@
                 "city": null
             },
             "status": {
-                "long": "Halftime",
-                "short": "HT",
-                "elapsed": 45,
-                "extra": 5
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 6
             }
         },
         "league": {
@@ -11037,8 +11037,8 @@
             }
         },
         "goals": {
-            "home": 2,
-            "away": 1
+            "home": 3,
+            "away": 2
         },
         "score": {
             "halftime": {
@@ -11046,8 +11046,8 @@
                 "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -11068,7 +11068,7 @@
             "timestamp": 1789434000,
             "periods": {
                 "first": 1789434000,
-                "second": null
+                "second": 1789437600
             },
             "venue": {
                 "id": null,
@@ -11076,10 +11076,10 @@
                 "city": "Pachuca de Soto"
             },
             "status": {
-                "long": "Halftime",
-                "short": "HT",
-                "elapsed": 45,
-                "extra": 2
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 5
             }
         },
         "league": {
@@ -11097,18 +11097,18 @@
                 "id": 14881,
                 "name": "Pachuca W",
                 "logo": "https://media.api-sports.io/football/teams/14881.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 14877,
                 "name": "León W",
                 "logo": "https://media.api-sports.io/football/teams/14877.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
             "home": 0,
-            "away": 0
+            "away": 1
         },
         "score": {
             "halftime": {
@@ -11116,8 +11116,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -11138,7 +11138,7 @@
             "timestamp": 1789434000,
             "periods": {
                 "first": 1789434000,
-                "second": null
+                "second": 1789437600
             },
             "venue": {
                 "id": 2240,
@@ -11146,10 +11146,10 @@
                 "city": "Kingston"
             },
             "status": {
-                "long": "Halftime",
-                "short": "HT",
-                "elapsed": 45,
-                "extra": 3
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 6
             }
         },
         "league": {
@@ -11177,8 +11177,8 @@
             }
         },
         "goals": {
-            "home": 2,
-            "away": 1
+            "home": 3,
+            "away": 2
         },
         "score": {
             "halftime": {
@@ -11186,8 +11186,8 @@
                 "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -11207,8 +11207,8 @@
             "date": "2026-09-14T23:05:00-03:00",
             "timestamp": 1789437900,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789437900,
+                "second": 1789441500
             },
             "venue": {
                 "id": null,
@@ -11216,9 +11216,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -11247,17 +11247,17 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "extratime": {
                 "home": null,
