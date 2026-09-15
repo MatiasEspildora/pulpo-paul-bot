@@ -1,6 +1,76 @@
 [
     {
         "fixture": {
+            "id": 1639579,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-14T02:00:00-03:00",
+            "timestamp": 1789362000,
+            "periods": {
+                "first": 1789362000,
+                "second": 1789365600
+            },
+            "venue": {
+                "id": null,
+                "name": "Nagaragawa Stadium",
+                "city": "Gifu"
+            },
+            "status": {
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 1245,
+            "name": "Asian Games Women",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/1245.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Group Stage - 1",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 17892,
+                "name": "Philippines W",
+                "logo": "https://media.api-sports.io/football/teams/17892.png",
+                "winner": null
+            },
+            "away": {
+                "id": 16945,
+                "name": "Uzbekistan W",
+                "logo": "https://media.api-sports.io/football/teams/16945.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": 1,
+            "away": 1
+        },
+        "score": {
+            "halftime": {
+                "home": 0,
+                "away": 0
+            },
+            "fulltime": {
+                "home": 1,
+                "away": 1
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1639546,
             "referee": null,
             "timezone": "America/Santiago",
@@ -912,7 +982,7 @@
     {
         "fixture": {
             "id": 1550709,
-            "referee": null,
+            "referee": "M. Zulfiqar",
             "timezone": "America/Santiago",
             "date": "2026-09-14T08:30:00-03:00",
             "timestamp": 1789385400,
@@ -1962,7 +2032,7 @@
     {
         "fixture": {
             "id": 1629911,
-            "referee": null,
+            "referee": "Adel Ali Ahmed Khamis Al Naqbi",
             "timezone": "America/Santiago",
             "date": "2026-09-14T10:45:00-03:00",
             "timestamp": 1789393500,
@@ -3082,7 +3152,7 @@
     {
         "fixture": {
             "id": 1565254,
-            "referee": null,
+            "referee": "Szabolcs Kovacs, Romania",
             "timezone": "America/Santiago",
             "date": "2026-09-14T12:00:00-03:00",
             "timestamp": 1789398000,
@@ -3432,7 +3502,7 @@
     {
         "fixture": {
             "id": 1638097,
-            "referee": null,
+            "referee": "Joni Hyytia, Finland",
             "timezone": "America/Santiago",
             "date": "2026-09-14T12:00:00-03:00",
             "timestamp": 1789398000,
@@ -3442,7 +3512,7 @@
             },
             "venue": {
                 "id": null,
-                "name": "Veritas Stadion",
+                "name": "Veritas Stadium",
                 "city": "Turku"
             },
             "status": {
@@ -4202,7 +4272,7 @@
     {
         "fixture": {
             "id": 1548527,
-            "referee": null,
+            "referee": "Filip Dragasevic, Croatia",
             "timezone": "America/Santiago",
             "date": "2026-09-14T13:00:00-03:00",
             "timestamp": 1789401600,
@@ -4622,7 +4692,7 @@
     {
         "fixture": {
             "id": 1629913,
-            "referee": null,
+            "referee": "Adham Makhadmeh",
             "timezone": "America/Santiago",
             "date": "2026-09-14T13:00:00-03:00",
             "timestamp": 1789401600,
@@ -4632,7 +4702,7 @@
             },
             "venue": {
                 "id": null,
-                "name": "Al Rashid Stadium",
+                "name": "Al-Rashid Stadium",
                 "city": "Dubai"
             },
             "status": {
@@ -4692,7 +4762,7 @@
     {
         "fixture": {
             "id": 1629914,
-            "referee": null,
+            "referee": "Ahmad Al Ali",
             "timezone": "America/Santiago",
             "date": "2026-09-14T13:00:00-03:00",
             "timestamp": 1789401600,
@@ -4709,7 +4779,7 @@
                 "long": "Match Finished",
                 "short": "FT",
                 "elapsed": 90,
-                "extra": 5
+                "extra": null
             }
         },
         "league": {
@@ -6582,7 +6652,7 @@
     {
         "fixture": {
             "id": 1584408,
-            "referee": "M. Turkmen",
+            "referee": "Mehmet Turkmen, Türkiye",
             "timezone": "America/Santiago",
             "date": "2026-09-14T14:00:00-03:00",
             "timestamp": 1789405200,
@@ -6652,7 +6722,7 @@
     {
         "fixture": {
             "id": 1585754,
-            "referee": null,
+            "referee": "Turgut Doman, Türkiye",
             "timezone": "America/Santiago",
             "date": "2026-09-14T14:00:00-03:00",
             "timestamp": 1789405200,
@@ -7702,7 +7772,7 @@
     {
         "fixture": {
             "id": 1565252,
-            "referee": null,
+            "referee": "Iulian Calin, Romania",
             "timezone": "America/Santiago",
             "date": "2026-09-14T15:00:00-03:00",
             "timestamp": 1789408800,
@@ -7712,7 +7782,7 @@
             },
             "venue": {
                 "id": null,
-                "name": "Arena Nationala",
+                "name": "National Arena",
                 "city": "Bucharest"
             },
             "status": {
@@ -8122,7 +8192,7 @@
     {
         "fixture": {
             "id": 1629912,
-            "referee": null,
+            "referee": "Kassem Matar Al Hatmi",
             "timezone": "America/Santiago",
             "date": "2026-09-14T15:15:00-03:00",
             "timestamp": 1789409700,
@@ -8132,8 +8202,8 @@
             },
             "venue": {
                 "id": null,
-                "name": "Azadi Stadium",
-                "city": "Tehran"
+                "name": "Basra Sports City",
+                "city": "Basra"
             },
             "status": {
                 "long": "Match Finished",
@@ -8192,7 +8262,7 @@
     {
         "fixture": {
             "id": 1629915,
-            "referee": null,
+            "referee": "Abdullah Jamali",
             "timezone": "America/Santiago",
             "date": "2026-09-14T15:15:00-03:00",
             "timestamp": 1789409700,
@@ -8202,7 +8272,7 @@
             },
             "venue": {
                 "id": null,
-                "name": "King Abdullah Sports City",
+                "name": "Alinma Stadium",
                 "city": "Jeddah"
             },
             "status": {
@@ -8262,7 +8332,7 @@
     {
         "fixture": {
             "id": 1629916,
-            "referee": null,
+            "referee": "Zaid Thamer Mohammed",
             "timezone": "America/Santiago",
             "date": "2026-09-14T15:15:00-03:00",
             "timestamp": 1789409700,
@@ -8272,8 +8342,8 @@
             },
             "venue": {
                 "id": null,
-                "name": "Prince Saud bin Jalawi Stadium",
-                "city": "Dammam"
+                "name": "Prince Mohammed Bin Fahd Stadium",
+                "city": "Daman"
             },
             "status": {
                 "long": "Match Finished",
@@ -9032,7 +9102,7 @@
     {
         "fixture": {
             "id": 1570382,
-            "referee": "Francisco Jose Hernandez Maeso",
+            "referee": "Francisco Hernandez Maeso, Spain",
             "timezone": "America/Santiago",
             "date": "2026-09-14T16:00:00-03:00",
             "timestamp": 1789412400,
@@ -9592,7 +9662,7 @@
     {
         "fixture": {
             "id": 1493124,
-            "referee": "Sebastian Zunino",
+            "referee": "Sebastian Zunino, Argentina",
             "timezone": "America/Santiago",
             "date": "2026-09-14T19:00:00-03:00",
             "timestamp": 1789423200,
@@ -9602,7 +9672,7 @@
             },
             "venue": {
                 "id": null,
-                "name": "Estadio Florencio Sola",
+                "name": "Florencio Sola",
                 "city": "Buenos Aires"
             },
             "status": {
@@ -9662,7 +9732,7 @@
     {
         "fixture": {
             "id": 1493127,
-            "referee": "Leandro Rey Hilfer",
+            "referee": "Leandro Rey Hilfer, Argentina",
             "timezone": "America/Santiago",
             "date": "2026-09-14T19:00:00-03:00",
             "timestamp": 1789423200,
@@ -10292,17 +10362,17 @@
     {
         "fixture": {
             "id": 1505530,
-            "referee": "J. Lara",
+            "referee": "Juan Ignacio Lara Luco, Chile",
             "timezone": "America/Santiago",
             "date": "2026-09-14T20:30:00-03:00",
             "timestamp": 1789428600,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789428600,
+                "second": 1789432200
             },
             "venue": {
                 "id": null,
-                "name": null,
+                "name": "Municipal Nicolas Chahuan",
                 "city": "La Calera"
             },
             "status": {
@@ -10432,17 +10502,17 @@
     {
         "fixture": {
             "id": 1519495,
-            "referee": null,
+            "referee": "Juan Carlos Andrade Arreaga, Ecuador",
             "timezone": "America/Santiago",
             "date": "2026-09-14T21:00:00-03:00",
             "timestamp": 1789430400,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789430400,
+                "second": 1789434000
             },
             "venue": {
                 "id": null,
-                "name": null,
+                "name": "Olimpico Atahualpa",
                 "city": "Quito"
             },
             "status": {
@@ -10572,18 +10642,18 @@
     {
         "fixture": {
             "id": 1493132,
-            "referee": "Luis Lobo Medina",
+            "referee": "Luis Lobo Medina, Argentina",
             "timezone": "America/Santiago",
             "date": "2026-09-14T21:15:00-03:00",
             "timestamp": 1789431300,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789431300,
+                "second": 1789434900
             },
             "venue": {
                 "id": null,
                 "name": "Estadio Presidente Peron",
-                "city": "Avellaneda"
+                "city": "Cordoba"
             },
             "status": {
                 "long": "Match Finished",
@@ -10782,17 +10852,17 @@
     {
         "fixture": {
             "id": 1550960,
-            "referee": "Daniel Quintero Huitron",
+            "referee": "Daniel Quintero Huitrón, Mexico",
             "timezone": "America/Santiago",
             "date": "2026-09-14T22:00:00-03:00",
             "timestamp": 1789434000,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789434000,
+                "second": 1789437600
             },
             "venue": {
                 "id": null,
-                "name": "Estadio León",
+                "name": "Estadio Leon",
                 "city": "Leon"
             },
             "status": {
