@@ -165,9 +165,11 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         if p.get('over_8_5_corners', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_8_5_corners'), 'sel': '+8.5 Córners'})
         if p.get('over_9_5_corners', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_9_5_corners'), 'sel': '+9.5 Córners'})
         
+        # Ganador Directo (Solo pasará si bet_builder no lo castigó con un 0.0)
         prob_gana = max(p['probs'][0], p['probs'][2])
-        sel_gana = p['local'] if p['probs'][0] > p['probs'][2] else p['visita']
-        ganadores.append({'match': p, 'prob': prob_gana, 'sel': sel_gana})
+        if prob_gana > 0:
+            sel_gana = p['local'] if p['probs'][0] > p['probs'][2] else p['visita']
+            ganadores.append({'match': p, 'prob': prob_gana, 'sel': sel_gana})
         
         prob_doble = max(p.get('prob_1X', 0), p.get('prob_X2', 0))
         sel_doble = f"1X ({p['local']})" if p.get('prob_1X', 0) > p.get('prob_X2', 0) else f"X2 ({p['visita']})"
@@ -211,13 +213,16 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         msg += "_Ninguna variable pura superó el 80% hoy._\n\n"
     
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
-    msg += "🏆 *TOP 30 - GANADOR DIRECTO*\n\n"
-    for i, item in enumerate(ganadores[:30], 1):
-        m = item['match']
-        es_mata_mata = " ⚔️" if m.get('es_eliminatoria') else ""
-        msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{es_mata_mata} | 🎯 Gana *{item['sel']}* ({item['prob']:.0%})\n"
-        msg += f"   📈 Forma Global: L `{m.get('home_form')}` ({m.get('home_ppg')}p) | V `{m.get('away_form')}` ({m.get('away_ppg')}p)\n"
-        msg += f"   🏟️ Casa/Fuera: L `{m.get('home_venue_form')}` ({m.get('home_venue_ppg')}p) | V `{m.get('away_venue_form')}` ({m.get('away_venue_ppg')}p)\n\n"
+    msg += "🏆 *TOP 30 - GANADOR DIRECTO (Filtro Titanio > 90%)*\n\n"
+    if ganadores:
+        for i, item in enumerate(ganadores[:30], 1):
+            m = item['match']
+            es_mata_mata = " ⚔️" if m.get('es_eliminatoria') else ""
+            msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{es_mata_mata} | 🎯 Gana *{item['sel']}* ({item['prob']:.0%})\n"
+            msg += f"   📈 Forma Global: L `{m.get('home_form')}` ({m.get('home_ppg')}p) | V `{m.get('away_form')}` ({m.get('away_ppg')}p)\n"
+            msg += f"   🏟️ Casa/Fuera: L `{m.get('home_venue_form')}` ({m.get('home_venue_ppg')}p) | V `{m.get('away_venue_form')}` ({m.get('away_venue_ppg')}p)\n\n"
+    else:
+        msg += "_Ningún equipo superó el umbral estricto del 90% hoy. Peligro de varianza._\n\n"
 
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
     msg += "🛡️ *TOP 30 - DOBLE OPORTUNIDAD*\n\n"
@@ -275,7 +280,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             msg += f"📅 `{p.get('fecha_str', '')}` | 🕒 `{p.get('hora', '')}`{es_mata_mata}\n"
             msg += f"⚽ *{p['local']}*{l_tag} vs *{p['visita']}*{v_tag}\n"
             msg += f"📈 Global: L `{p.get('home_form')}` ({p.get('home_ppg')}p) | V `{p.get('away_form')}` ({p.get('away_ppg')}p)\n"
-            msg += f"🏟️ Casa/Fuera: L `{p.get('home_venue_form')}` ({p.get('home_venue_ppg')}p) | V `{p.get('away_venue_form')}` ({p.get('away_venue_ppg', 0)}p)\n"
+            msg += f"🏟️ Casa/Fuera: L `{p.get('home_venue_form')}` ({p.get('home_venue_ppg')}p) | V `{p.get('away_venue_form')}` ({m.get('away_venue_ppg', 0)}p)\n"
             msg += f"📊 1X2: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
             msg += f"🛡️ Doble Op: 1X ({p.get('prob_1X',0):.0%}) | 12 ({p.get('prob_12',0):.0%}) | X2 ({p.get('prob_X2',0):.0%})\n"
             
