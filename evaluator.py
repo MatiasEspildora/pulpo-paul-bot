@@ -1,124 +1,68 @@
 import os
 import json
 import pandas as pd
-import glob
-import requests
-from datetime import datetime, timedelta
-
-# Configuración de Telegram aislada para el Evaluador
-_kpi_token_env = os.environ.get("TELEGRAM_KPI_BOT_TOKEN", "").strip()
-_main_token_env = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
-KPI_TOKEN = _kpi_token_env if _kpi_token_env else _main_token_env
-
-_kpi_chat_env = os.environ.get("TELEGRAM_KPI_CHAT_ID", "").strip()
-_main_chat_env = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
-KPI_CHAT_ID = _kpi_chat_env if _kpi_chat_env else _main_chat_env
-
-def get_flag(country_name):
-    """Carga la bandera leyendo directamente el JSON, sin depender de notifier.py"""
-    ruta_banderas = os.path.join("config", "flags.json")
-    country_str = str(country_name).strip()
-    
-    try:
-        with open(ruta_banderas, "r", encoding="utf-8") as f:
-            flags = json.load(f)
-            
-        # Intento directo
-        if country_str in flags:
-            return flags[country_str]
-            
-        # Mapeo de seguridad para nombres comunes que la API envía distinto
-        map_nombres = {
-            "South-Korea": "South Korea",
-            "Republic of Korea": "South Korea",
-            "Korea Republic": "South Korea",
-            "El-Salvador": "El Salvador"
-        }
-        
-        nombre_limpio = map_nombres.get(country_str, country_str)
-        return flags.get(nombre_limpio, "🏳️")
-        
-    except Exception:
-        return "🏳️"
-
-def enviar_reporte_telegram(mensaje):
-    if not KPI_TOKEN or not KPI_CHAT_ID:
-        print("⚠️ Faltan credenciales de Telegram para KPIs.")
-        return
-
-    lista_chats = [c.strip() for c in KPI_CHAT_ID.split(",") if c.strip()]
-    for chat_id in lista_chats:
-        try:
-            res = requests.post(
-                f"https://api.telegram.org/bot{KPI_TOKEN}/sendMessage",
-                data={"chat_id": chat_id, "text": mensaje, "parse_mode": "Markdown"}
-            )
-            if not res.ok:
-                print(f"⚠️ Error Telegram KPI: {res.text}")
-        except Exception as e:
-            print(f"⚠️ Excepción Telegram KPI: {e}")
 
 def cargar_historico_real():
-    all_files = glob.glob("historico_mensual/football/historico_*.csv")
-    if not all_files:
+    """Carga y unifica todos los archivos CSV mensuales del histórico real."""
+    carpeta_historico = "historico_mensual"
+    if not os.path.exists(carpeta_historico):
         return pd.DataFrame()
-    li = [pd.read_csv(f) for f in all_files]
-    df_hist = pd.concat(li, axis=0, ignore_index=True)
-    df_hist = df_hist.dropna(subset=['HomeTeamId', 'AwayTeamId', 'FTHG', 'FTAG'])
-    return df_hist
+
+    archivos = [os.path.join(carpeta_historico, f) for f in os.listdir(carpeta_historico) if f.endswith('.csv')]
+    if not archivos:
+        return pd.DataFrame()
+
+    dfs = [pd.read_csv(f) for f in archivos]
+    df_total = pd.concat(dfs, ignore_index=True)
+    return df_total
 
 def evaluar_pick(row, fthg, ftag):
     fthg, ftag = int(fthg), int(ftag)
     tg = fthg + ftag
     sel = str(row['Seleccion']).strip()
-    loc = str(row['Local']).strip()
-    vis = str(row['Visita']).strip()
+    sel_lower = sel.lower()
+    loc = str(row['Local']).strip().lower()
+    vis = str(row['Visita']).strip().lower()
     mercado = str(row['Mercado']).strip()
 
     if mercado == 'Ganador Directo':
-        if sel == f"Gana {loc}": return 1 if fthg > ftag else 0
-        if sel == f"Gana {vis}": return 1 if ftag > fthg else 0
+        if loc in sel_lower: return 1 if fthg > ftag else 0
+        if vis in sel_lower: return 1 if ftag > fthg else 0
 
     elif mercado == 'Doble Oportunidad':
-        if sel == '1X': return 1 if fthg >= ftag else 0
-        if sel == 'X2': return 1 if ftag >= fthg else 0
+        if '1x' in sel_lower: return 1 if fthg >= ftag else 0
+        if 'x2' in sel_lower: return 1 if ftag >= fthg else 0
 
     elif mercado == 'Goles':
-        if sel == '+1.5 Goles': return 1 if tg > 1.5 else 0
-        if sel == '+2.5 Goles': return 1 if tg > 2.5 else 0
-        if sel == '-2.5 Goles': return 1 if tg < 2.5 else 0
-        if sel == '-3.5 Goles': return 1 if tg < 3.5 else 0
+        if '+1.5' in sel_lower: return 1 if tg > 1.5 else 0
+        if '+2.5' in sel_lower: return 1 if tg > 2.5 else 0
+        if '-2.5' in sel_lower: return 1 if tg < 2.5 else 0
+        if '-3.5' in sel_lower: return 1 if tg < 3.5 else 0
 
     elif mercado == 'Ambos Anotan':
-        if sel == 'Sí': return 1 if fthg > 0 and ftag > 0 else 0
-        if sel == 'No': return 1 if fthg == 0 or ftag == 0 else 0
+        if 'sí' in sel_lower or 'si' in sel_lower: return 1 if fthg > 0 and ftag > 0 else 0
+        if 'no' in sel_lower: return 1 if fthg == 0 or ftag == 0 else 0
 
     elif mercado == 'Mega-Misil SGBB':
-        partes = sel.split('_')
-        if len(partes) >= 2:
-            cond_1x2_str, cond_goles_str = partes[0], partes[1]
-            cond_1x2 = False
-            cond_goles = False
+        cond_1x2 = False
+        cond_goles = False
 
-            if cond_1x2_str == "1X": cond_1x2 = (fthg >= ftag)
-            elif cond_1x2_str == "X2": cond_1x2 = (ftag >= fthg)
-            elif cond_1x2_str == "12": cond_1x2 = (fthg != ftag)
-            elif cond_1x2_str == "1": cond_1x2 = (fthg > ftag)
-            elif cond_1x2_str == "2": cond_1x2 = (ftag > fthg)
-            elif cond_1x2_str == "X": cond_1x2 = (fthg == ftag)
-            elif cond_1x2_str == "BTTS": cond_1x2 = (fthg > 0 and ftag > 0)
+        if "1x" in sel_lower: cond_1x2 = (fthg >= ftag)
+        elif "x2" in sel_lower: cond_1x2 = (ftag >= fthg)
+        elif loc in sel_lower: cond_1x2 = (fthg > ftag)
+        elif vis in sel_lower: cond_1x2 = (ftag > fthg)
+        else: cond_1x2 = True 
 
-            if cond_goles_str == "O15": cond_goles = (tg > 1.5)
-            elif cond_goles_str == "O25": cond_goles = (tg > 2.5)
-            elif cond_goles_str == "O35": cond_goles = (tg > 3.5)
-            elif cond_goles_str == "U15": cond_goles = (tg < 1.5)
-            elif cond_goles_str == "U25": cond_goles = (tg < 2.5)
-            elif cond_goles_str == "U35": cond_goles = (tg < 3.5)
-            elif cond_goles_str == "U45": cond_goles = (tg < 4.5)
-            elif cond_goles_str == "Yes": cond_goles = (fthg > 0 and ftag > 0)
+        if "menos" in sel_lower or "under" in sel_lower or "-" in sel_lower:
+            if "2.5" in sel_lower: cond_goles = (tg < 2.5)
+            elif "3.5" in sel_lower: cond_goles = (tg < 3.5)
+            elif "4.5" in sel_lower: cond_goles = (tg < 4.5)
+        elif "más" in sel_lower or "mas" in sel_lower or "over" in sel_lower or "+" in sel_lower:
+            if "1.5" in sel_lower: cond_goles = (tg > 1.5)
+            elif "2.5" in sel_lower: cond_goles = (tg > 2.5)
+        else: cond_goles = True
 
-            return 1 if (cond_1x2 and cond_goles) else 0
-        return 0
+        return 1 if (cond_1x2 and cond_goles) else 0
 
     return None
 
@@ -126,146 +70,140 @@ def auditar_y_reportar():
     log_path = "kpi/football/predicciones_log.csv"
     if not os.path.exists(log_path):
         print("⚠️ No existe el archivo de proyecciones log.")
-        return
+        return None
 
     df_log = pd.read_csv(log_path)
+    
+    # Forzar tipo de dato a object para evitar errores con strings
     df_log['ResultadoReal'] = df_log['ResultadoReal'].astype(object)
     df_log['Acierto'] = df_log['Acierto'].astype(object)
 
     df_hist = cargar_historico_real()
     if df_hist.empty:
         print("⚠️ No hay datos históricos para cruzar.")
-        return
+        return None
 
+    # Mapeo rápido de resultados reales desde el histórico
+    partidos_dict = {}
+    for _, row in df_hist.iterrows():
+        key = (str(row['Date']).strip(), str(row['HomeTeam']).strip(), str(row['AwayTeam']).strip())
+        partidos_dict[key] = (row['FTHG'], row['FTAG'])
+
+    # Actualizar pendientes
     pendientes = df_log[df_log['Estado'] == 'PENDIENTE']
-    if not pendientes.empty:
-        cambios = 0
-        for idx, row in pendientes.iterrows():
-            mask = (df_hist['HomeTeamId'] == row['HomeTeamId']) & \
-                   (df_hist['AwayTeamId'] == row['AwayTeamId']) & \
-                   (df_hist['Date'] == row['Fecha'])
+    for idx, row in pendientes.iterrows():
+        key = (str(row['Fecha']).strip(), str(row['Local']).strip(), str(row['Visita']).strip())
+        if key in partidos_dict:
+            fthg, ftag = partidos_dict[key]
+            res_str = f"{fthg}-{ftag}"
+            acierto = evaluar_pick(row, fthg, ftag)
             
-            match = df_hist[mask]
-            if not match.empty:
-                fthg, ftag = match.iloc[0]['FTHG'], match.iloc[0]['FTAG']
-                if pd.notna(fthg) and pd.notna(ftag):
-                    acierto = evaluar_pick(row, fthg, ftag)
-                    if acierto is not None:
-                        df_log.at[idx, 'Estado'] = 'RESUELTO'
-                        df_log.at[idx, 'ResultadoReal'] = f"{int(fthg)}-{int(ftag)}"
-                        df_log.at[idx, 'Acierto'] = int(acierto)
-                        cambios += 1
+            if acierto is not None:
+                df_log.at[idx, 'ResultadoReal'] = res_str
+                df_log.at[idx, 'Acierto'] = acierto
+                df_log.at[idx, 'Estado'] = 'RESUELTO'
 
-        if cambios > 0:
-            df_log.to_csv(log_path, index=False, encoding='utf-8')
-            print(f"✔️ Se resolvieron {cambios} predicciones nuevas.")
+    df_log.to_csv(log_path, index=False)
 
+    # --- GENERACIÓN DE KPIs Y REPORTE ---
     df_resueltos = df_log[df_log['Estado'] == 'RESUELTO'].copy()
-    if df_resueltos.empty: return
-
-    # Extraer el País (Country) del histórico
-    df_ligas = df_hist[['HomeTeamId', 'AwayTeamId', 'Date', 'League', 'Country']].drop_duplicates(subset=['HomeTeamId', 'AwayTeamId', 'Date'])
-    df_resueltos = df_resueltos.merge(df_ligas, left_on=['HomeTeamId', 'AwayTeamId', 'Fecha'], right_on=['HomeTeamId', 'AwayTeamId', 'Date'], how='left')
+    if df_resueltos.empty:
+        print("✔️ No hay partidos resueltos para auditar en este momento.")
+        return None
 
     fechas_unicas = sorted(df_resueltos['Fecha'].unique())
-    dias_totales = len(fechas_unicas)
-    
-    fecha_hoy = fechas_unicas[-1]
-    fecha_hoy_dt = datetime.strptime(fecha_hoy, "%Y-%m-%d")
-    fecha_ayer = (fecha_hoy_dt - timedelta(days=1)).strftime("%Y-%m-%d")
+    dias_auditados = len(fechas_unicas)
+    ultimo_dia = fechas_unicas[-1] if fechas_unicas else "N/A"
+    penultimo_dia = fechas_unicas[-2] if len(fechas_unicas) > 1 else None
 
-    df_hoy = df_resueltos[df_resueltos['Fecha'] == fecha_hoy]
-    df_ayer = df_resueltos[df_resueltos['Fecha'] == fecha_ayer] 
-    df_hoy_total_picks = df_log[df_log['Fecha'] == fecha_hoy]
+    # Métricas de Hoy (Último Lote)
+    df_hoy = df_resueltos[df_resueltos['Fecha'] == ultimo_dia]
+    total_hoy = len(df_log[df_log['Fecha'] == ultimo_dia])
+    ganadas_hoy = len(df_hoy[df_hoy['Acierto'] == 1])
+    perdidas_hoy = len(df_hoy[df_hoy['Acierto'] == 0])
+    pendientes_hoy = total_hoy - (ganadas_hoy + perdidas_hoy)
+    efectividad_hoy = (ganadas_hoy / len(df_hoy) * 100) if len(df_hoy) > 0 else 0.0
 
-    def metricas(df_subset):
-        total = len(df_subset)
-        hits = df_subset['Acierto'].sum() if total > 0 else 0
-        pct = (hits / total * 100) if total > 0 else 0
-        return total, hits, pct
-
-    # Métricas Globales
-    t_hoy, h_hoy, p_hoy = metricas(df_hoy)
-    t_ayer, h_ayer, p_ayer = metricas(df_ayer)
-    t_acu, h_acu, p_acu = metricas(df_resueltos)
-    
-    # Cálculos Totales (Ganadas + Perdidas + Pendientes)
-    t_hoy_totales = len(df_hoy_total_picks)
-    p_hoy_pendientes = t_hoy_totales - t_hoy
-    p_hoy_perdidas = t_hoy - h_hoy
-    
-    t_ayer_totales = len(df_log[df_log['Fecha'] == fecha_ayer]) if fecha_ayer else 0
-    p_ayer_pendientes = t_ayer_totales - t_ayer
-    p_ayer_perdidas = t_ayer - h_ayer
-
-    t_acu_totales = len(df_log)
-    total_pendientes = len(df_log[df_log['Estado'] == 'PENDIENTE'])
-    fallos_acu = t_acu - h_acu
-
-    desglose = [
-        ("Mega-Misil SGBB", df_resueltos[df_resueltos['Mercado'] == 'Mega-Misil SGBB']),
-        ("Doble Oportunidad", df_resueltos[df_resueltos['Mercado'] == 'Doble Oportunidad']),
-        ("Ganador Directo", df_resueltos[df_resueltos['Mercado'] == 'Ganador Directo']),
-        ("Goles (Altas/Over)", df_resueltos[(df_resueltos['Mercado'] == 'Goles') & (df_resueltos['Seleccion'].str.contains(r'\+'))]),
-        ("Goles (Bajas/Under)", df_resueltos[(df_resueltos['Mercado'] == 'Goles') & (df_resueltos['Seleccion'].str.contains(r'\-'))]),
-        ("Ambos Anotan (Sí)", df_resueltos[(df_resueltos['Mercado'] == 'Ambos Anotan') & (df_resueltos['Seleccion'] == 'Sí')]),
-        ("Ambos Anotan (No)", df_resueltos[(df_resueltos['Mercado'] == 'Ambos Anotan') & (df_resueltos['Seleccion'] == 'No')])
-    ]
-
-    mercados_stats = ""
-    for nombre, df_sub in desglose:
-        if not df_sub.empty:
-            tm, hm, pm = metricas(df_sub)
-            icon = "🟢" if pm >= 80 else ("🟡" if pm >= 70 else "🔴")
-            mercados_stats += f"・ {nombre}: {pm:.1f}% ({int(hm)} ganadas / {tm} resueltas) {icon}\n"
-
-    ligas_stats = []
-    if 'League' in df_resueltos.columns and 'Country' in df_resueltos.columns:
-        for (pais, liga), group in df_resueltos.groupby(['Country', 'League']):
-            tl = len(group)
-            if tl >= 3:
-                pl = (group['Acierto'].sum() / tl) * 100
-                ligas_stats.append((pais, liga, pl, tl))
+    # Métricas de Ayer (Lote Anterior)
+    efectividad_ayer_str = "N/A"
+    if penultimo_dia:
+        df_ayer = df_resueltos[df_resueltos['Fecha'] == penultimo_dia]
+        total_ayer = len(df_log[df_log['Fecha'] == penultimo_dia])
+        ganadas_ayer = len(df_ayer[df_ayer['Acierto'] == 1])
+        perdidas_ayer = len(df_ayer[df_ayer['Acierto'] == 0])
+        pendientes_ayer = total_ayer - (ganadas_ayer + perdidas_ayer)
+        efectiv_ayer = (ganadas_ayer / len(df_ayer) * 100) if len(df_ayer) > 0 else 0.0
         
-        ligas_stats.sort(key=lambda x: (x[2], -x[3])) 
-        peores_ligas = ligas_stats[:3]
+        icono_ayer = "🟢" if efectiv_ayer >= 70 else ("🟡" if efectiv_ayer >= 50 else "🔴")
+        efectividad_ayer_str = f"{efectiv_ayer:.1f}% {icono_ayer} ↳ Total Pronósticos: {total_ayer} ↳ ✅ Ganadas: {ganadas_ayer} | ❌ Perdidas: {perdidas_ayer} | ⏳ Pendientes: {pendientes_ayer}"
 
-    msg = f"📊 ━━ *REPORTE DE EFECTIVIDAD* ━━ 📊\n\n"
-    msg += f"🗓️ *Días Auditados:* {dias_totales}\n"
-    msg += f"📅 *Último Lote:* {fecha_hoy}\n\n"
-    
-    msg += "📈 *RENDIMIENTO DIARIO (HOY vs AYER)*\n"
-    icono_hoy = '🟢' if p_hoy >= 75 else ('🟡' if p_hoy >= 70 else '🔴')
-    msg += f"・ *Hoy:* {p_hoy:.1f}% {icono_hoy}\n"
-    msg += f"  ↳ Total Pronósticos: {t_hoy_totales}\n"
-    msg += f"  ↳ ✅ Ganadas: {int(h_hoy)} | ❌ Perdidas: {int(p_hoy_perdidas)} | ⏳ Pendientes: {p_hoy_pendientes}\n\n"
-    
-    if t_ayer_totales > 0:
-        tendencia = "🔼" if p_hoy >= p_ayer else "🔽"
-        msg += f"・ *Ayer ({fecha_ayer}):* {p_ayer:.1f}% {tendencia}\n"
-        msg += f"  ↳ Total Pronósticos: {t_ayer_totales}\n"
-        msg += f"  ↳ ✅ Ganadas: {int(h_ayer)} | ❌ Perdidas: {int(p_ayer_perdidas)} | ⏳ Pendientes: {p_ayer_pendientes}\n\n"
+    # Métricas Acumuladas
+    total_pronosticos_gen = len(df_log)
+    total_resueltos_gen = len(df_resueltos)
+    total_ganadas_gen = len(df_resueltos[df_resueltos['Acierto'] == 1])
+    total_perdidas_gen = len(df_resueltos[df_resueltos['Acierto'] == 0])
+    total_pendientes_gen = total_pronosticos_gen - total_resueltos_gen
+    efectividad_global = (total_ganadas_gen / total_resueltos_gen * 100) if total_resueltos_gen > 0 else 0.0
+
+    # Desglose por Mercado
+    mercados = df_resueltos['Mercado'].unique()
+    desglose_txt = ""
+    for m in mercados:
+        df_m = df_resueltos[df_resueltos['Mercado'] == m]
+        gan_m = len(df_m[df_m['Acierto'] == 1])
+        tot_m = len(df_m)
+        ef_m = (gan_m / tot_m * 100) if tot_m > 0 else 0.0
+        icon_m = "🟢" if ef_m >= 75 else ("🟡" if ef_m >= 65 else "🔴")
+        desglose_txt += f"・ {m}: {ef_m:.1f}% ({gan_m} ganadas / {tot_m} resueltas) {icon_m} "
+
+    # Radar de Ligas Tóxicas y Auto-Blacklist Dinámico
+    ligas_toxicas = []
+    if 'Liga' in df_resueltos.columns:
+        df_ligas = df_resueltos.groupby('Liga').agg(
+            ganadas=('Acierto', lambda x: (x == 1).sum()),
+            total=('Acierto', 'count')
+        ).reset_index()
+        
+        df_ligas['efectividad'] = df_ligas['ganadas'] / df_ligas['total'] * 100
+        # Filtrar ligas con al menos 3 picks y efectividad menor al 40%
+        toxicas = df_ligas[(df_ligas['total'] >= 3) & (df_ligas['efectividad'] < 40)].sort_values(by='efectividad')
+        
+        radar_txt = ""
+        for _, l_row in toxicas.iterrows():
+            liga_nombre = l_row['Liga']
+            ligas_toxicas.append(liga_nombre)
+            radar_txt += f"・ 🌍 {liga_nombre}: {l_row['efectividad']:.1f}% (en {l_row['total']} picks) "
+
+        if not radar_txt:
+            radar_txt = "・ Sin ligas tóxicas detectadas en este ciclo 🟢"
     else:
-        msg += f"・ *Ayer ({fecha_ayer}):* Sin picks registrados.\n\n"
+        radar_txt = "・ Columna 'Liga' no disponible en el log."
+
+    # Guardar Auto-Blacklist en config/blacklist.json de forma dinámica
+    os.makedirs("config", exist_ok=True)
+    blacklist_path = "config/blacklist.json"
+    with open(blacklist_path, "w", encoding="utf-8") as f:
+        json.dump({"ligas_prohibidas": ligas_toxicas}, f, ensure_ascii=False, indent=4)
+
+    # Construcción del Reporte Final para Telegram
+    icono_hoy = "🟢" if efectividad_hoy >= 70 else ("🟡" if efectividad_hoy >= 50 else "🔴")
     
-    msg += "📊 *RENDIMIENTO ACUMULADO (HISTÓRICO)*\n"
-    msg += f"・ Total Pronósticos: {t_acu_totales}\n"
-    msg += f"・ ✅ Ganadas: {int(h_acu)} | ❌ Perdidas: {int(fallos_acu)} | ⏳ Pendientes: {total_pendientes}\n"
-    msg += f"・ *Efectividad Global:* {p_acu:.1f}% 🎯\n\n"
-    
-    msg += "💣 *DESGLOSE QUIRÚRGICO POR MERCADO*\n"
-    msg += mercados_stats + "\n"
+    reporte = (
+        f"📊 ━━ REPORTE DE EFECTIVIDAD ━━ 📊\n"
+        f"🗓️ Días Auditados: {dias_auditados} 📅 Último Lote: {ultimo_dia}\n\n"
+        f"📈 RENDIMIENTO DIARIO (HOY vs AYER)\n"
+        f"・ Hoy: {efectividad_hoy:.1f}% {icono_hoy}\n"
+        f"  ↳ Total Pronósticos: {total_hoy}\n"
+        f"  ↳ ✅ Ganadas: {ganadas_hoy} | ❌ Perdidas: {perdidas_hoy} | ⏳ Pendientes: {pendientes_hoy}\n"
+        f"・ Ayer ({penultimo_dia if penultimo_dia else 'N/A'}): {efectividad_ayer_str}\n\n"
+        f"📊 RENDIMIENTO ACUMULADO (HISTÓRICO)\n"
+        f"・ Total Pronósticos: {total_pronosticos_gen}\n"
+        f"・ ✅ Ganadas: {total_ganadas_gen} | ❌ Perdidas: {total_perdidas_gen} | ⏳ Pendientes: {total_pendientes_gen}\n"
+        f"・ Efectividad Global: {efectividad_global:.1f}% 🎯\n\n"
+        f"💣 DESGLOSE QUIRÚRGICO POR MERCADO\n{desglose_txt}\n"
+        f"⚠️ RADAR DE LIGAS TÓXICAS (Auto-Blacklist Actualizado)\n{radar_txt}\n"
+        f"━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        f"✅ Bender Analytics Engine"
+    )
 
-    if peores_ligas:
-        msg += "⚠️ *RADAR DE LIGAS TÓXICAS (Peor Rendimiento)*\n"
-        for pais, liga, pct, tot in peores_ligas:
-            bandera = get_flag(pais)
-            msg += f"・ {bandera} {pais} - {liga}: {pct:.1f}% (en {tot} picks)\n"
-        msg += "\n"
-
-    msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n✅ _Bender Analytics Engine_"
-
-    enviar_reporte_telegram(msg)
-
-if __name__ == "__main__":
-    auditar_y_reportar()
+    return reporte
