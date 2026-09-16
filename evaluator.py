@@ -122,6 +122,50 @@ def evaluar_pick(row, fthg, ftag):
 
     return None
 
+def actualizar_blacklist(peores_ligas):
+    """
+    Lee/Crea config/blacklist.json y añade las ligas tóxicas
+    para que drivers/football.py las ampute del pipeline de análisis.
+    """
+    ruta_blacklist = os.path.join("config", "blacklist.json")
+    blacklist = {"ligas_toxicas": []}
+    
+    # Asegurar que el directorio config existe
+    os.makedirs(os.path.dirname(ruta_blacklist), exist_ok=True)
+    
+    # Cargar historial existente para no sobreescribir baneos anteriores
+    if os.path.exists(ruta_blacklist):
+        try:
+            with open(ruta_blacklist, "r", encoding="utf-8") as f:
+                blacklist = json.load(f)
+        except Exception as e:
+            print(f"⚠️ Error leyendo blacklist.json: {e}. Se creará uno nuevo.")
+            
+    # Crear un set con llaves compuestas para búsqueda rápida O(1) y evitar duplicados
+    ligas_baneadas_actuales = {f"{item['country']}_{item['league']}" for item in blacklist.get("ligas_toxicas", [])}
+    
+    nuevas_agregadas = 0
+    for pais, liga, pct, tot in peores_ligas:
+        # Filtro de Titanio: Solo baneamos ligas cuya efectividad sea matemática y comprobadamente tóxica (< 50%)
+        if pct < 50.0:
+            key = f"{pais}_{liga}"
+            if key not in ligas_baneadas_actuales:
+                blacklist["ligas_toxicas"].append({
+                    "country": pais,
+                    "league": liga,
+                    "win_rate": round(pct, 2),
+                    "total_picks": tot,
+                    "date_added": datetime.now().strftime("%Y-%m-%d")
+                })
+                ligas_baneadas_actuales.add(key)
+                nuevas_agregadas += 1
+                
+    # Si detectamos toxicidad nueva, reescribimos el JSON
+    if nuevas_agregadas > 0:
+        with open(ruta_blacklist, "w", encoding="utf-8") as f:
+            json.dump(blacklist, f, indent=4, ensure_ascii=False)
+        print(f"☣️ Auto-Blacklist actualizada: {nuevas_agregadas} ligas tóxicas aisladas en cuarentena.")
+
 def auditar_y_reportar():
     log_path = "kpi/football/predicciones_log.csv"
     if not os.path.exists(log_path):
@@ -220,6 +264,7 @@ def auditar_y_reportar():
             mercados_stats += f"・ {nombre}: {pm:.1f}% ({int(hm)} ganadas / {tm} resueltas) {icon}\n"
 
     ligas_stats = []
+    peores_ligas = []
     if 'League' in df_resueltos.columns and 'Country' in df_resueltos.columns:
         for (pais, liga), group in df_resueltos.groupby(['Country', 'League']):
             tl = len(group)
@@ -229,6 +274,12 @@ def auditar_y_reportar():
         
         ligas_stats.sort(key=lambda x: (x[2], -x[3])) 
         peores_ligas = ligas_stats[:3]
+
+        # ---------------------------------------------------------
+        # NUEVO: Disparar el Auto-Blacklist con las peores ligas
+        # ---------------------------------------------------------
+        if peores_ligas:
+            actualizar_blacklist(peores_ligas)
 
     msg = f"📊 ━━ *REPORTE DE EFECTIVIDAD* ━━ 📊\n\n"
     msg += f"🗓️ *Días Auditados:* {dias_totales}\n"
