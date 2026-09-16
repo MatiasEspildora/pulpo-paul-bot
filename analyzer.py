@@ -9,16 +9,17 @@ class MatchAnalyzer:
         if 'Date' in self.df.columns:
             self.df['Date'] = pd.to_datetime(self.df['Date'], errors='coerce')
 
-    def _apply_knockout_context(self, h_id, a_id, league_id, home_xg, away_xg):
+        def _apply_knockout_context(self, h_id, a_id, league_id, home_xg, away_xg):
         if self.df.empty or pd.isna(league_id) or pd.isna(h_id) or pd.isna(a_id):
-            return home_xg * 0.90, away_xg * 0.90
+            return home_xg * 0.95, away_xg * 0.95
             
         h_id, a_id = str(h_id), str(a_id)
-        hace_30_dias = datetime.now() - timedelta(days=30)
+        # Búsqueda ampliada a 45 días para asegurar capturar el partido de ida de la eliminatoria
+        hace_45_dias = datetime.now() - timedelta(days=45)
         
         mask_h2h_reciente = (
             (self.df['LeagueId'].astype(str) == str(league_id)) & 
-            (self.df['Date'] >= hace_30_dias) &
+            (self.df['Date'] >= hace_45_dias) &
             (
                 ((self.df['HomeTeamId'].astype(str) == h_id) & (self.df['AwayTeamId'].astype(str) == a_id)) |
                 ((self.df['HomeTeamId'].astype(str) == a_id) & (self.df['AwayTeamId'].astype(str) == h_id))
@@ -27,24 +28,43 @@ class MatchAnalyzer:
         
         partido_ida = self.df[mask_h2h_reciente].sort_values(by='Date', ascending=False)
         
+        # --- ESCENARIO A: Partido de Ida (Sin antecedente en los últimos 45 días) ---
         if partido_ida.empty:
-            return home_xg * 0.88, away_xg * 0.88
-        else:
-            ida = partido_ida.iloc[0]
-            if str(ida['HomeTeamId']) == h_id:
-                goles_local_ahora = ida['FTHG']
-                goles_visita_ahora = ida['FTAG']
-            else:
-                goles_local_ahora = ida['FTAG']
-                goles_visita_ahora = ida['FTHG']
-                
-            diferencia = goles_local_ahora - goles_visita_ahora
+            # Los partidos de ida suelen ser más especulativos/cerrados
+            return home_xg * 0.90, away_xg * 0.90
             
-            if diferencia < 0: return home_xg * 1.15, away_xg * 1.10
-            elif diferencia > 0:
-                if diferencia >= 2: return home_xg * 0.80, away_xg * 0.85
-                else: return home_xg * 0.90, away_xg * 0.90
-            else: return home_xg * 0.95, away_xg * 0.90
+        # --- ESCENARIO B: Partido de Vuelta (Cálculo de la Necesidad de Remontada) ---
+        ida = partido_ida.iloc[0]
+        if str(ida['HomeTeamId']) == h_id:
+            goles_local_en_ida = ida['FTHG']
+            goles_visita_en_ida = ida['FTAG']
+        else:
+            goles_local_en_ida = ida['FTAG']
+            goles_visita_en_ida = ida['FTHG']
+            
+        # Diferencia acumulada desde la perspectiva del LOCAL de hoy
+        dif_global = goles_local_en_ida - goles_visita_en_ida
+        
+        # 💥 ESCENARIO B.1: El LOCAL debe remontar 2 o más goles (ej. perdió la ida 2-0)
+        if dif_global <= -2:
+            # El Local sale volcado al ataque (1.35x) y la Visita explota los espacios a la contra (1.30x)
+            return home_xg * 1.35, away_xg * 1.30
+            
+        # 💥 ESCENARIO B.2: El VISITANTE debe remontar 2 o más goles (ej. perdió la ida 2-0)
+        elif dif_global >= 2:
+            # La Visita sale desbocada a buscar el gol (1.35x) y el Local contragolpea (1.30x)
+            return home_xg * 1.30, away_xg * 1.35
+            
+        # ⚖️ ESCENARIO B.3: Desventaja mínima de 1 gol (Presión moderada)
+        elif dif_global == -1:
+            return home_xg * 1.15, away_xg * 1.10
+        elif dif_global == 1:
+            return home_xg * 1.10, away_xg * 1.15
+            
+        # 🔒 ESCENARIO B.4: Empate global en la ida (Partido tenso y táctico)
+        else:
+            return home_xg * 0.95, away_xg * 0.95
+
 
     def _calculate_exact_scores(self, home_xg, away_xg, max_goals=8):
         matrix = np.zeros((max_goals + 1, max_goals + 1))
