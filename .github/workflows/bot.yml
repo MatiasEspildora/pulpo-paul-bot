@@ -59,7 +59,7 @@ jobs:
 
       - name: Registrar y subir cambios
         run: |
-          git add historico_mensual/ logs/ resultados/ kpi/
+          git add historico_mensual/ logs/ resultados/ kpi/ config/
           git status
           if git diff --staged --quiet; then
             echo "No hay cambios para guardar."
