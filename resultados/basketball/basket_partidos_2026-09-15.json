@@ -2436,6 +2436,64 @@
         }
     },
     {
+        "id": 501152,
+        "date": "2026-09-15T18:15:00-03:00",
+        "time": "18:15",
+        "timestamp": 1789506900,
+        "timezone": "America/Santiago",
+        "stage": null,
+        "week": "19",
+        "venue": "Gimnasio Olimpico Juan de la Barrera",
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 63,
+            "name": "LNBP",
+            "type": "League",
+            "season": "2026-2027",
+            "logo": "https://media.api-sports.io/basketball/leagues/63.png"
+        },
+        "country": {
+            "id": 28,
+            "name": "Mexico",
+            "code": "MX",
+            "flag": "https://media.api-sports.io/flags/mx.svg"
+        },
+        "teams": {
+            "home": {
+                "id": 6477,
+                "name": "Diablos Rojos",
+                "logo": "https://media.api-sports.io/basketball/teams/6477.png"
+            },
+            "away": {
+                "id": 821,
+                "name": "Correcaminos",
+                "logo": "https://media.api-sports.io/basketball/teams/821.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 23,
+                "quarter_2": 34,
+                "quarter_3": 22,
+                "quarter_4": 28,
+                "over_time": null,
+                "total": 107
+            },
+            "away": {
+                "quarter_1": 21,
+                "quarter_2": 21,
+                "quarter_3": 14,
+                "quarter_4": 23,
+                "over_time": null,
+                "total": 79
+            }
+        }
+    },
+    {
         "id": 510729,
         "date": "2026-09-15T20:00:00-03:00",
         "time": "20:00",
@@ -2445,9 +2503,9 @@
         "week": null,
         "venue": "Polideportivo Cooperativa Capiata",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
-            "timer": null
+            "long": "Break Time",
+            "short": "BT",
+            "timer": "0"
         },
         "league": {
             "id": 258,
@@ -2476,20 +2534,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 10,
+                "quarter_2": 21,
+                "quarter_3": 16,
+                "quarter_4": 0,
                 "over_time": null,
-                "total": null
+                "total": 47
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 21,
+                "quarter_2": 19,
+                "quarter_3": 24,
+                "quarter_4": 0,
                 "over_time": null,
-                "total": null
+                "total": 64
             }
         }
     },
@@ -2503,9 +2561,9 @@
         "week": null,
         "venue": "Gimnasio Colegio Los Leones",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
-            "timer": null
+            "long": "Quarter 2",
+            "short": "Q2",
+            "timer": "9"
         },
         "league": {
             "id": 114,
@@ -2534,20 +2592,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
+                "quarter_1": 17,
+                "quarter_2": 16,
                 "quarter_3": null,
                 "quarter_4": null,
                 "over_time": null,
-                "total": null
+                "total": 33
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
+                "quarter_1": 16,
+                "quarter_2": 13,
                 "quarter_3": null,
                 "quarter_4": null,
                 "over_time": null,
-                "total": null
+                "total": 29
             }
         }
     },
@@ -2820,64 +2878,6 @@
                 "id": 817,
                 "name": "Abejas",
                 "logo": "https://media.api-sports.io/basketball/teams/817.png"
-            }
-        },
-        "scores": {
-            "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": null
-            },
-            "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": null
-            }
-        }
-    },
-    {
-        "id": 501152,
-        "date": "2026-09-15T23:15:00-03:00",
-        "time": "23:15",
-        "timestamp": 1789524900,
-        "timezone": "America/Santiago",
-        "stage": null,
-        "week": "19",
-        "venue": "Gimnasio Olimpico Juan de la Barrera",
-        "status": {
-            "long": "Not Started",
-            "short": "NS",
-            "timer": null
-        },
-        "league": {
-            "id": 63,
-            "name": "LNBP",
-            "type": "League",
-            "season": "2026-2027",
-            "logo": "https://media.api-sports.io/basketball/leagues/63.png"
-        },
-        "country": {
-            "id": 28,
-            "name": "Mexico",
-            "code": "MX",
-            "flag": "https://media.api-sports.io/flags/mx.svg"
-        },
-        "teams": {
-            "home": {
-                "id": 6477,
-                "name": "Diablos Rojos",
-                "logo": "https://media.api-sports.io/basketball/teams/6477.png"
-            },
-            "away": {
-                "id": 821,
-                "name": "Correcaminos",
-                "logo": "https://media.api-sports.io/basketball/teams/821.png"
             }
         },
         "scores": {
