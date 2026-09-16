@@ -9,7 +9,7 @@ class MatchAnalyzer:
         if 'Date' in self.df.columns:
             self.df['Date'] = pd.to_datetime(self.df['Date'], errors='coerce')
 
-        def _apply_knockout_context(self, h_id, a_id, league_id, home_xg, away_xg):
+    def _apply_knockout_context(self, h_id, a_id, league_id, home_xg, away_xg):
         if self.df.empty or pd.isna(league_id) or pd.isna(h_id) or pd.isna(a_id):
             return home_xg * 0.95, away_xg * 0.95
             
