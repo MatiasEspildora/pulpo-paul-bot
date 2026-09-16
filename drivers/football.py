@@ -39,6 +39,23 @@ def cargar_ligas_con_estadisticas():
     print("⚠️ Aviso: No se encontró Active_Leagues_Coverage.json. Se omitirán estadísticas.")
     return set()
 
+# 🛡️ NUEVO: Función para cargar la lista de cuarentena
+def cargar_blacklist():
+    """Lee el JSON de ligas tóxicas y devuelve un Set con las ligas baneadas para búsqueda O(1)."""
+    ruta_blacklist = os.path.join("config", "blacklist.json")
+    baneadas = set()
+    if os.path.exists(ruta_blacklist):
+        try:
+            with open(ruta_blacklist, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                for item in data.get("ligas_toxicas", []):
+                    baneadas.add(f"{item.get('country')}_{item.get('league')}")
+            if baneadas:
+                print(f"🛡️ [AUTO-BLACKLIST] Se interceptarán {len(baneadas)} ligas tóxicas en cuarentena.")
+        except Exception as e:
+            print(f"⚠️ Aviso: Error leyendo {ruta_blacklist}: {e}")
+    return baneadas
+
 def cargar_historico_mensual():
     all_files = glob.glob("historico_mensual/football/historico_*.csv")
     default_cols = ['League', 'LeagueId', 'Country', 'Round', 'EsEliminatoria', 'Date', 'HomeTeamId', 'AwayTeamId', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HTHG', 'HTAG', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR', 'HS', 'AS']
@@ -309,6 +326,9 @@ def run_process(df_externo=None):
         # 🔥 Carga las ligas soportadas UNA SOLA VEZ al inicio
         ligas_soportadas = cargar_ligas_con_estadisticas()
         
+        # 🛡️ NUEVO: Cargar el Blacklist
+        ligas_baneadas = cargar_blacklist()
+        
         print(f"⚽ [FOOTBALL] Iniciando descarga para fechas: {fechas_a_procesar}")
         
         for i in range(-1, 2): 
@@ -389,6 +409,14 @@ def run_process(df_externo=None):
                         if dt_obj < now:
                             continue
                             
+                        # 🛡️ NUEVO: Extraemos País y Liga temprano para el Auto-Blacklist
+                        pais = match.get("league", {}).get("country", "World")
+                        liga = match.get("league", {}).get("name", "Unknown")
+                        
+                        # 🛡️ NUEVO: Si la liga es tóxica, la ignoramos completamente
+                        if f"{pais}_{liga}" in ligas_baneadas:
+                            continue
+                            
                         h_name = match.get("teams", {}).get("home", {}).get("name")
                         a_name = match.get("teams", {}).get("away", {}).get("name")
                         h_id = match.get("teams", {}).get("home", {}).get("id")
@@ -411,8 +439,6 @@ def run_process(df_externo=None):
                         
                         proj['fecha_str'] = dt_obj.strftime("%Y-%m-%d")
                         proj['hora'] = dt_obj.strftime("%H:%M")
-                        pais = match.get("league", {}).get("country", "World")
-                        liga = match.get("league", {}).get("name", "Unknown")
                         proj['pais'] = pais
                         proj['es_eliminatoria'] = es_elimi
                         proj['local_league'] = obtener_liga_domestica(df, h_id, h_name)
