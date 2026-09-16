@@ -74,6 +74,16 @@ class MatchAnalyzer:
             for j in range(max_corners + 1):
                 matrix[i, j] = poisson.pmf(i, home_corners_lambda) * poisson.pmf(j, away_corners_lambda)
         return matrix / matrix.sum()
+    
+    # ==========================================
+    # 📐 MOTOR V4.0: MATRIZ DE POISSON PARA TARJETAS
+    # ==========================================
+    def _calculate_cards_matrix(self, home_cards_lambda, away_cards_lambda, max_cards=10):
+        matrix = np.zeros((max_cards + 1, max_cards + 1))
+        for i in range(max_cards + 1):
+            for j in range(max_cards + 1):
+                matrix[i, j] = poisson.pmf(i, home_cards_lambda) * poisson.pmf(j, away_cards_lambda)
+        return matrix / matrix.sum()
 
     def _get_filtered_matches(self, team_id, league_id, es_eliminatoria):
         base_matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)]
@@ -255,18 +265,25 @@ class MatchAnalyzer:
 
         prob_matrix = self._calculate_exact_scores(lambda_home, lambda_away, max_goals=8)
 
-        # ==========================================
-        # 📐 EXTRACCIÓN Y CÁLCULO V4.0 (CÓRNERS)
+                # ==========================================
+        # 📐 EXTRACCIÓN Y CÁLCULO V4.0 (CÓRNERS Y TARJETAS)
         # ==========================================
         corners_matrix = None
+        cards_matrix = None
         stats_home = self.get_team_stats(home_team, home_id, league_id, es_eliminatoria)
         stats_away = self.get_team_stats(away_team, away_id, league_id, es_eliminatoria)
 
-        # Si ambos equipos tienen al menos 5 partidos con detalles tácticos, activamos la matriz de córners
+        # Umbral de maduración estricto: >= 5 partidos con detalles tácticos
         if stats_home.get('count', 0) >= 5 and stats_away.get('count', 0) >= 5 and stats_home.get('has_details') and stats_away.get('has_details'):
+            # Matriz de Córners
             lam_c_home = (stats_home.get('corners', 4.5) + stats_away.get('corners', 4.5)) / 2
             lam_c_away = (stats_away.get('corners', 4.5) + stats_home.get('corners', 4.5)) / 2
             corners_matrix = self._calculate_corners_matrix(lam_c_home, lam_c_away, max_corners=15)
+
+            # Matriz de Tarjetas (V4.0)
+            lam_t_home = (stats_home.get('tarjetas', 2.0) + stats_away.get('tarjetas', 2.0)) / 2
+            lam_t_away = (stats_away.get('tarjetas', 2.0) + stats_home.get('tarjetas', 2.0)) / 2
+            cards_matrix = self._calculate_cards_matrix(lam_t_home, lam_t_away, max_cards=10)
 
         return {
             'local': home_team, 'visita': away_team,
@@ -278,6 +295,7 @@ class MatchAnalyzer:
             'away_venue_form': away_venue_form_str, 'away_venue_ppg': away_venue_ppg,
             'prob_matrix': prob_matrix,
             'corners_matrix': corners_matrix, # <--- Enviado al BetBuilder para V4.0
+            'cards_matrix': cards_matrix, 
             'lambda_home_ht': lambda_home_ht,
             'lambda_away_ht': lambda_away_ht,
             'tactics_applied': h_has_tac and a_has_tac,
