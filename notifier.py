@@ -106,40 +106,35 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     goles = []
 
     for p in partidos_validos:
-        # --- NUEVO SGBB MEGA MISILES (> 85%) ---
+        # --- NUEVO SGBB MEGA MISILES (Purificados por Filtro Titanio) ---
         sgbb = p.get('sgbb', {})
         loc, vis = p['local'], p['visita']
         
-        # Doble Oportunidad + Goles
-        if sgbb.get('1X_U25', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['1X_U25'], 'sel': '1X + Menos 2.5 Goles'})
-        if sgbb.get('1X_U35', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['1X_U35'], 'sel': '1X + Menos 3.5 Goles'})
-        if sgbb.get('1X_U45', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['1X_U45'], 'sel': '1X + Menos 4.5 Goles'})
-        if sgbb.get('1X_O15', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['1X_O15'], 'sel': '1X + Más 1.5 Goles'})
-        if sgbb.get('1X_O25', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['1X_O25'], 'sel': '1X + Más 2.5 Goles'})
+        # Diccionario de traducción para Telegram
+        mapa_nombres_sgbb = {
+            '1X_U25': '1X + Menos 2.5 Goles', '1X_U35': '1X + Menos 3.5 Goles', '1X_U45': '1X + Menos 4.5 Goles',
+            '1X_O15': '1X + Más 1.5 Goles', '1X_O25': '1X + Más 2.5 Goles',
+            'X2_U25': 'X2 + Menos 2.5 Goles', 'X2_U35': 'X2 + Menos 3.5 Goles', 'X2_U45': 'X2 + Menos 4.5 Goles',
+            'X2_O15': 'X2 + Más 1.5 Goles', 'X2_O25': 'X2 + Más 2.5 Goles',
+            '1_U25': f'Gana {loc} + Menos 2.5 Goles', '1_U35': f'Gana {loc} + Menos 3.5 Goles', '1_U45': f'Gana {loc} + Menos 4.5 Goles',
+            '1_O15': f'Gana {loc} + Más 1.5 Goles', '1_O25': f'Gana {loc} + Más 2.5 Goles',
+            '2_U25': f'Gana {vis} + Menos 2.5 Goles', '2_U35': f'Gana {vis} + Menos 3.5 Goles', '2_U45': f'Gana {vis} + Menos 4.5 Goles',
+            '2_O15': f'Gana {vis} + Más 1.5 Goles', '2_O25': f'Gana {vis} + Más 2.5 Goles',
+            'BTTS_O25': 'Ambos Anotan + Más 2.5 Goles',
+            'BTTS_No_U25': 'Ambos Anotan (No) + Menos 2.5 Goles',
+            'BTTS_No_U35': 'Ambos Anotan (No) + Menos 3.5 Goles',
+            '1X_BTTS_Yes': '1X + Ambos Anotan',
+            'X2_BTTS_Yes': 'X2 + Ambos Anotan'
+        }
 
-        if sgbb.get('X2_U25', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['X2_U25'], 'sel': 'X2 + Menos 2.5 Goles'})
-        if sgbb.get('X2_U35', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['X2_U35'], 'sel': 'X2 + Menos 3.5 Goles'})
-        if sgbb.get('X2_U45', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['X2_U45'], 'sel': 'X2 + Menos 4.5 Goles'})
-        if sgbb.get('X2_O15', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['X2_O15'], 'sel': 'X2 + Más 1.5 Goles'})
-        if sgbb.get('X2_O25', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['X2_O25'], 'sel': 'X2 + Más 2.5 Goles'})
-
-        # Ganador Directo + Goles
-        if sgbb.get('1_U25', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['1_U25'], 'sel': f'Gana {loc} + Menos 2.5 Goles'})
-        if sgbb.get('1_U35', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['1_U35'], 'sel': f'Gana {loc} + Menos 3.5 Goles'})
-        if sgbb.get('1_U45', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['1_U45'], 'sel': f'Gana {loc} + Menos 4.5 Goles'})
-        if sgbb.get('1_O15', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['1_O15'], 'sel': f'Gana {loc} + Más 1.5 Goles'})
-        if sgbb.get('1_O25', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['1_O25'], 'sel': f'Gana {loc} + Más 2.5 Goles'})
-
-        if sgbb.get('2_U25', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['2_U25'], 'sel': f'Gana {vis} + Menos 2.5 Goles'})
-        if sgbb.get('2_U35', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['2_U35'], 'sel': f'Gana {vis} + Menos 3.5 Goles'})
-        if sgbb.get('2_U45', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['2_U45'], 'sel': f'Gana {vis} + Menos 4.5 Goles'})
-        if sgbb.get('2_O15', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['2_O15'], 'sel': f'Gana {vis} + Más 1.5 Goles'})
-        if sgbb.get('2_O25', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['2_O25'], 'sel': f'Gana {vis} + Más 2.5 Goles'})
-
-        # Ambos Anotan + Goles
-        if sgbb.get('BTTS_O25', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['BTTS_O25'], 'sel': 'Ambos Anotan + Más 2.5 Goles'})
-        if sgbb.get('BTTS_No_U25', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['BTTS_No_U25'], 'sel': 'Ambos Anotan (No) + Menos 2.5 Goles'})
-        if sgbb.get('BTTS_No_U35', 0) > 0.85: mega_misiles.append({'match': p, 'prob': sgbb['BTTS_No_U35'], 'sel': 'Ambos Anotan (No) + Menos 3.5 Goles'})
+        # Como bet_builder.py ya aplicó el Filtro asimétrico, todo lo que llega aquí es válido y se publica.
+        for combo_key, prob in sgbb.items():
+            if combo_key in mapa_nombres_sgbb:
+                mega_misiles.append({
+                    'match': p, 
+                    'prob': prob, 
+                    'sel': mapa_nombres_sgbb[combo_key]
+                })
         
         # --- LOGICA EXISTENTE DE GOLES ---
         if p.get('btts_no', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('btts_no'), 'sel': 'Ambos Anotan (NO)'})
@@ -241,7 +236,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{es_mata_mata} | 🔥 *{item['sel']}* ({item['prob']:.0%})\n\n"
 
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
-    msg += "💣 *MEGA-MISILES INTERNOS (SGBB Pre-calculados > 85%)*\n\n"
+    msg += "💣 *MEGA-MISILES INTERNOS (SGBB Pre-calculados)*\n\n"
     if mega_misiles:
         for i, item in enumerate(mega_misiles[:30], 1):
             m = item['match']
