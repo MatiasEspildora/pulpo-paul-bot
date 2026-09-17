@@ -8,7 +8,7 @@
             "timestamp": 1789614900,
             "periods": {
                 "first": 1789614900,
-                "second": null
+                "second": 1789618500
             },
             "venue": {
                 "id": null,
@@ -16,9 +16,9 @@
                 "city": "San Salvador"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 12,
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 88,
                 "extra": null
             }
         },
@@ -841,6 +841,76 @@
     },
     {
         "fixture": {
+            "id": 1531084,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-17T08:00:00-03:00",
+            "timestamp": 1789642800,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 1075,
+            "name": "Pro League A",
+            "country": "Uzbekistan",
+            "logo": "https://media.api-sports.io/football/leagues/1075.png",
+            "flag": "https://media.api-sports.io/flags/uz.svg",
+            "season": 2026,
+            "round": "Regular Season - 16",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 27584,
+                "name": "BuxDu",
+                "logo": "https://media.api-sports.io/football/teams/27584.png",
+                "winner": null
+            },
+            "away": {
+                "id": 27587,
+                "name": "Respublika FA",
+                "logo": "https://media.api-sports.io/football/teams/27587.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1534856,
             "referee": null,
             "timezone": "America/Santiago",
@@ -1163,76 +1233,6 @@
                 "id": 11029,
                 "name": "Ethiopia U20",
                 "logo": "https://media.api-sports.io/football/teams/11029.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1531084,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-17T08:30:00-03:00",
-            "timestamp": 1789644600,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 1075,
-            "name": "Pro League A",
-            "country": "Uzbekistan",
-            "logo": "https://media.api-sports.io/football/leagues/1075.png",
-            "flag": "https://media.api-sports.io/flags/uz.svg",
-            "season": 2026,
-            "round": "Regular Season - 16",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 27584,
-                "name": "BuxDu",
-                "logo": "https://media.api-sports.io/football/teams/27584.png",
-                "winner": null
-            },
-            "away": {
-                "id": 27587,
-                "name": "Respublika FA",
-                "logo": "https://media.api-sports.io/football/teams/27587.png",
                 "winner": null
             }
         },

@@ -2816,9 +2816,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -2837,18 +2837,18 @@
                 "id": 28227,
                 "name": "1º de Maio U20",
                 "logo": "https://media.api-sports.io/football/teams/28227.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 23489,
                 "name": "Atletico Torres U20",
                 "logo": "https://media.api-sports.io/football/teams/23489.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 2,
+            "away": 1
         },
         "score": {
             "halftime": {
@@ -2856,8 +2856,8 @@
                 "away": null
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -17572,7 +17572,7 @@
     {
         "fixture": {
             "id": 1636217,
-            "referee": "M. Al-Hakim",
+            "referee": "Mohammed Al-Hakim, Sweden",
             "timezone": "America/Santiago",
             "date": "2026-09-16T13:45:00-03:00",
             "timestamp": 1789577100,
@@ -17642,7 +17642,7 @@
     {
         "fixture": {
             "id": 1636312,
-            "referee": "B. Berke",
+            "referee": "Balazs Berke, Hungary",
             "timezone": "America/Santiago",
             "date": "2026-09-16T13:45:00-03:00",
             "timestamp": 1789577100,
@@ -26392,7 +26392,7 @@
     {
         "fixture": {
             "id": 1636207,
-            "referee": "J. Gillett",
+            "referee": "Jarred Gillett, Australia",
             "timezone": "America/Santiago",
             "date": "2026-09-16T16:00:00-03:00",
             "timestamp": 1789585200,
@@ -26403,7 +26403,7 @@
             "venue": {
                 "id": null,
                 "name": "San Siro/Giuseppe Meazza",
-                "city": "Milan"
+                "city": "Milano"
             },
             "status": {
                 "long": "Match Finished",
@@ -26462,7 +26462,7 @@
     {
         "fixture": {
             "id": 1636212,
-            "referee": "R. De Burgos",
+            "referee": "Ricardo De Burgos Bengoetxea, Spain",
             "timezone": "America/Santiago",
             "date": "2026-09-16T16:00:00-03:00",
             "timestamp": 1789585200,
@@ -26473,7 +26473,7 @@
             "venue": {
                 "id": null,
                 "name": "Lotto Park",
-                "city": "Anderlecht"
+                "city": "Brussels"
             },
             "status": {
                 "long": "Match Finished",
@@ -26532,7 +26532,7 @@
     {
         "fixture": {
             "id": 1636225,
-            "referee": "J. Vergoote",
+            "referee": "Jasper Vergoote, Belgium",
             "timezone": "America/Santiago",
             "date": "2026-09-16T16:00:00-03:00",
             "timestamp": 1789585200,
@@ -26602,7 +26602,7 @@
     {
         "fixture": {
             "id": 1636265,
-            "referee": "J. Brooks",
+            "referee": "John Brooks, England",
             "timezone": "America/Santiago",
             "date": "2026-09-16T16:00:00-03:00",
             "timestamp": 1789585200,
@@ -26612,7 +26612,7 @@
             },
             "venue": {
                 "id": null,
-                "name": "Superbet Arena - Giulesti",
+                "name": "Rapid-Giulesti Stadium",
                 "city": "Bucharest"
             },
             "status": {
@@ -26672,7 +26672,7 @@
     {
         "fixture": {
             "id": 1636309,
-            "referee": "H. Osmers",
+            "referee": "Harm Osmers, Germany",
             "timezone": "America/Santiago",
             "date": "2026-09-16T16:00:00-03:00",
             "timestamp": 1789585200,
@@ -26742,7 +26742,7 @@
     {
         "fixture": {
             "id": 1636341,
-            "referee": "M. Lukjancukas",
+            "referee": "Manfredas Lukjancukas, Lithuania",
             "timezone": "America/Santiago",
             "date": "2026-09-16T16:00:00-03:00",
             "timestamp": 1789585200,
@@ -26752,7 +26752,7 @@
             },
             "venue": {
                 "id": null,
-                "name": "Merkur-Arena",
+                "name": "Merkur Arena",
                 "city": "Graz"
             },
             "status": {
@@ -26812,7 +26812,7 @@
     {
         "fixture": {
             "id": 1636344,
-            "referee": "J. Pignard",
+            "referee": "Jeremie Pignard, France",
             "timezone": "America/Santiago",
             "date": "2026-09-16T16:00:00-03:00",
             "timestamp": 1789585200,
@@ -27302,7 +27302,7 @@
     {
         "fixture": {
             "id": 1505509,
-            "referee": "N. Gamboa",
+            "referee": "Nicolas Gamboa, Chile",
             "timezone": "America/Santiago",
             "date": "2026-09-16T18:00:00-03:00",
             "timestamp": 1789592400,
@@ -29612,7 +29612,7 @@
     {
         "fixture": {
             "id": 1508546,
-            "referee": null,
+            "referee": "Marie Durr, USA",
             "timezone": "America/Santiago",
             "date": "2026-09-16T22:30:00-03:00",
             "timestamp": 1789608600,
@@ -29623,13 +29623,13 @@
             "venue": {
                 "id": null,
                 "name": "Centennial Stadium",
-                "city": null
+                "city": "Commerce City"
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
+                "long": "Match Finished",
+                "short": "FT",
                 "elapsed": 90,
-                "extra": null
+                "extra": 9
             }
         },
         "league": {
@@ -29647,18 +29647,18 @@
                 "id": 27378,
                 "name": "Denver Summit W",
                 "logo": "https://media.api-sports.io/football/teams/27378.png",
-                "winner": true
+                "winner": null
             },
             "away": {
                 "id": 22943,
                 "name": "Bay FC W",
                 "logo": "https://media.api-sports.io/football/teams/22943.png",
-                "winner": false
+                "winner": null
             }
         },
         "goals": {
             "home": 2,
-            "away": 1
+            "away": 2
         },
         "score": {
             "halftime": {
@@ -29666,8 +29666,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -29696,10 +29696,10 @@
                 "city": null
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
+                "long": "Match Finished",
+                "short": "FT",
                 "elapsed": 90,
-                "extra": null
+                "extra": 10
             }
         },
         "league": {
@@ -29736,8 +29736,8 @@
                 "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 3
             },
             "extratime": {
                 "home": null,
@@ -29822,7 +29822,7 @@
     {
         "fixture": {
             "id": 1508547,
-            "referee": null,
+            "referee": "Atahan Yaya, Türkiye",
             "timezone": "America/Santiago",
             "date": "2026-09-16T23:00:00-03:00",
             "timestamp": 1789610400,
@@ -29833,13 +29833,13 @@
             "venue": {
                 "id": null,
                 "name": "BMO Stadium",
-                "city": null
+                "city": "Los Angeles"
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 56,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 4
             }
         },
         "league": {
@@ -29867,8 +29867,8 @@
             }
         },
         "goals": {
-            "home": 2,
-            "away": 0
+            "home": 3,
+            "away": 1
         },
         "score": {
             "halftime": {
@@ -29876,8 +29876,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 1
             },
             "extratime": {
                 "home": null,
