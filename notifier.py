@@ -76,7 +76,7 @@ def agrupar_por_pais(proyecciones_dict):
 
 
 # ==========================================
-# ⚽ FORMATO BENDER V4.0 (FÚTBOL - MODO ESTADÍSTICO Y AUTOPSIA)
+# ⚽ FORMATO BENDER V4.0 (FÚTBOL - MODO ESTADÍSTICO)
 # ==========================================
 def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_bloque, analyzer, token_override=None):
     tz_chile = pytz.timezone('America/Santiago')
@@ -104,6 +104,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     dobles = []
     goles = []
     
+    # Nuevas listas V4.0
     quirofano_tactico = []
     radar_remontadas = []
     francotiradores = []
@@ -156,6 +157,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         mejor_gol = max(opciones_goles, key=lambda x: x['prob'])
         goles.append({'match': p, 'prob': mejor_gol['prob'], 'sel': mejor_gol['sel']})
 
+        # Captura datos de menús V4.0
         if p.get('btts', 0) > 0.80: 
             francotiradores.append({'match': p, 'prob': p.get('btts'), 'sel': 'Ambos Anotan (SÍ)'})
         if p.get('over_8_5_corners', 0) > 0.80: quirofano_tactico.append({'match': p, 'prob': p.get('over_8_5_corners'), 'sel': '+8.5 Córners'})
@@ -182,6 +184,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     msg += f"📅 _Generado: {hora_generacion}_\n\n"
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
 
+    # Renderizado de menús V4.0
     if radar_remontadas:
         msg += "⚔️ *RADAR DE REMONTADAS (Alerta Mata-Mata)* ⚔️\n\n"
         for i, item in enumerate(radar_remontadas, 1):
@@ -286,11 +289,11 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
         bandera = BANDERAS.get(pais, "🏴")
         sufijo = f" ({titulo_bloque})" if titulo_bloque else ""
         mensajes_a_enviar = []
-        mensaje_actual = f"⚽ {bandera} *{pais}*{sufijo} | 📅 {fecha_bloque}\n" + "━"*20 + "\n\n"
+        mensaje_actual = f"🩸 *LA AUTOPSIA TÁCTICA (Código Fuente)*\n\n⚽ {bandera} *{pais}*{sufijo} | 📅 {fecha_bloque}\n" + "━"*20 + "\n\n"
         
         for liga, proyecciones in sorted(ligas_del_pais.items()):
             top_items = proyecciones
-            header_liga = f"📌 *{liga} - TOTAL ({len(top_items)})*\n\n"
+            header_liga = f"📌 *{liga}*\n\n"
             
             if len(mensaje_actual) + len(header_liga) > 3800:
                 mensaje_actual += "━"*20 + "\n\n"
@@ -302,21 +305,52 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
                 s_l = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=p.get('es_eliminatoria', False))
                 s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=p.get('es_eliminatoria', False))
 
-                es_mata_mata = " ⚔️ [Mata-Mata]" if p.get('es_eliminatoria') else ""
-                bloque_partido = f"📅 `{p.get('fecha_str', '')}` 🕒 `{p['hora']}`{es_mata_mata}\n⚽ *{p['local']}* vs *{p['visita']}*\n"
-                bloque_partido += f"📈 Forma Global: L `{p.get('home_form')}` ({p.get('home_ppg')}p) | V `{p.get('away_form')}` ({p.get('away_ppg')}p)\n"
-                bloque_partido += f"🏟️ Casa/Fuera: L `{p.get('home_venue_form')}` ({p.get('home_venue_ppg')}p) | V `{p.get('away_venue_form')}` ({p.get('away_venue_ppg')}p)\n"
+                es_mata_mata = " ⚔️ [MATA-MATA]" if p.get('es_eliminatoria') else ""
                 
+                # Obtención segura de probabilidades y datos de Poisson desde la matriz o los cálculos
                 matriz = p.get('prob_matrix')
-                if matriz is not None:
-                    ph = float(matriz[0:8, 0:8].sum() if hasattr(matriz, 'sum') else 0) 
-                    # Se incluye la información base de la matriz de probabilidades exactas
+                # Formato exacto de la Autopsia original
+                bloque_partido = f"📅 {p.get('fecha_str', '')} | 🕒 {p.get('hora', '')}{es_mata_mata}\n"
+                bloque_partido += f"⚽ {p['local']} vs {p['visita']}\n"
+                bloque_partido += f"📈 Global: L [{p.get('home_form', 'N/A')}] ({p.get('home_ppg', 0)}p) | V [{p.get('away_form', 'N/A')}] ({p.get('away_ppg', 0)}p)\n"
+                bloque_partido += f"🏟️ Casa/Fuera: L [{p.get('home_venue_form', 'N/A')}] ({p.get('home_venue_ppg', 0)}p) | V [{p.get('away_venue_form', 'N/A')}] ({p.get('away_venue_ppg', 0)}p)\n"
                 
+                # Métricas adicionales si están disponibles en el diccionario
+                if 'probs' in p:
+                    ph, pd_draw, pa = p['probs'][0], p['probs'][1], p['probs'][2]
+                    bloque_partido += f"📊 1X2: L:{ph:.0%} | E:{pd_draw:.0%} | V:{pa:.0%}\n"
+                
+                p_1x = p.get('prob_1X', 0)
+                p_x2 = p.get('prob_X2', 0)
+                p_12 = p.get('prob_12', 0)
+                bloque_partido += f"🛡️ Doble Op: 1X ({p_1x:.0%}) | 12 ({p_12:.0%}) | X2 ({p_x2:.0%})\n"
+                
+                btts_s = p.get('btts', 0)
+                btts_n = p.get('btts_no', 0)
+                bloque_partido += f"🎯 Ambos Anotan (BTTS): Sí ({btts_s:.0%}) | No ({btts_n:.0%})\n"
+                
+                cs_l = p.get('home_clean_sheet', 0)
+                cs_v = p.get('away_clean_sheet', 0)
+                bloque_partido += f"🧱 Portería a Cero (CS): L ({cs_l:.0%}) | V ({cs_v:.0%})\n"
+                
+                u_25 = p.get('under_2_5', 0)
+                u_35 = p.get('under_3_5', 0)
+                u_45 = p.get('under_4_5', 0)
+                bloque_partido += f"⚽ Bajas: -2.5 ({u_25:.0%}) | -3.5 ({u_35:.0%}) | -4.5 ({u_45:.0%})\n"
+                
+                o_15 = p.get('over_1_5', 0)
+                o_25 = p.get('over_2_5', 0)
+                o_35 = p.get('over_3_5', 0)
+                bloque_partido += f"🔥 Altas: +1.5 ({o_15:.0%}) | +2.5 ({o_25:.0%}) | +3.5 ({o_35:.0%})\n"
+                
+                ht_05 = p.get('prob_over_0_5_ht', 0)
+                bloque_partido += f"⏱️ +0.5 Goles HT: {ht_05:.0%}\n"
+
                 count_l = s_l.get('count', 0) if isinstance(s_l, dict) else 0
                 count_v = s_v.get('count', 0) if isinstance(s_v, dict) else 0
 
                 if count_l > 0 and count_v > 0:
-                    bloque_partido += f"📐 *Promedios ({count_l}p | {count_v}p):*\n  gf: `{s_l.get('goles_favor', 0):.2f}` | `{s_v.get('goles_favor', 0):.2f}`\n  gc: `{s_l.get('goles_contra', 0):.2f}` | `{s_v.get('goles_contra', 0):.2f}`\n\n"
+                    bloque_partido += f"📐 *Promedios Goles ({count_l}p | {count_v}p):*\n  L: ({s_l.get('goles_favor', 0):.1f} F / {s_l.get('goles_contra', 0):.1f} C) | V: ({s_v.get('goles_favor', 0):.1f} F / {s_v.get('goles_contra', 0):.1f} C)\n\n"
                 else:
                     bloque_partido += "⚠️ *Sin historial suficiente.*\n\n"
 
@@ -344,13 +378,13 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
             
     total_validos_global = 0
     for fecha in sorted(agrupado_por_fecha.keys()):
-        # Ejecuta el menú estadístico consolidado
+        # 1. Menús estadísticos consolidados V4.0
         procesados = _procesar_y_enviar_bloque_futbol(agrupado_por_fecha[fecha], titulo_bloque, fecha, analyzer, token_override)
         total_validos_global += (procesados or 0)
         if procesados:
             time.sleep(2) 
             
-        # Ejecuta también la autopsia detallada por país/liga que ya tenías
+        # 2. Autopsia detallada original por partido
         _procesar_y_enviar_autopsia_futbol(agrupado_por_fecha[fecha], titulo_bloque, fecha, analyzer, token_override)
         time.sleep(2)
             
