@@ -212,7 +212,7 @@ class MatchAnalyzer:
         home_global = home_matches.head(10)
         away_global = away_matches.head(10)
         home_venue = home_matches[home_matches['HomeTeamId'] == home_id].head(10)
-        away_venue = home_matches[home_matches['AwayTeamId'] == away_id].head(10)
+        away_venue = away_matches[away_matches['AwayTeamId'] == away_id].head(10)
 
         home_form_str, home_ppg = get_form_tracker(home_global, home_id)
         away_form_str, away_ppg = get_form_tracker(away_global, away_id)
@@ -368,8 +368,13 @@ class MatchAnalyzer:
         hg_f_ven, hg_c_ven = get_avg_points_decay(home_venue, home_id)
         ag_f_ven, ag_c_ven = get_avg_points_decay(away_venue, away_id)
 
-        exp_home_score = ((hg_f_glob + hg_f_ven) / 2 + (ag_f_glob + ag_c_ven) / 2) / 2
-        exp_away_score = ((ag_f_glob + ag_f_ven) / 2 + (hg_c_glob + hg_c_ven) / 2) / 2
+        home_avg_scored = (hg_f_glob + hg_f_ven) / 2
+        home_avg_conceded = (hg_c_glob + hg_c_ven) / 2
+        away_avg_scored = (ag_f_glob + ag_f_ven) / 2
+        away_avg_conceded = (ag_c_glob + ag_c_ven) / 2
+
+        exp_home_score = (home_avg_scored + away_avg_conceded) / 2
+        exp_away_score = (away_avg_scored + home_avg_conceded) / 2  # <--- Corregido (antes decía home_concede_avg)
         total_projected_points = exp_home_score + exp_away_score
 
         diff = exp_home_score - exp_away_score
