@@ -96,7 +96,7 @@ def guardar_historico_mensual(df, meses_a_actualizar=None):
             sort_cols.extend(['HomeTeam', 'AwayTeam'])
             g_clean.sort_values(by=sort_cols, ascending=[False] + [True]*(len(sort_cols)-1)).to_csv(filename, index=False)
 
-# 🔥 Variable global para proteger límite de API (máximo 60 requests de estadísticas por ejecución)
+# 🔥 Variable global para proteger límite de API
 STATS_DESCARGADAS_HOY = 0 
 MAX_STATS_POR_RUN = 400
 
@@ -126,11 +126,9 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
             h_ht_score = match.get("score", {}).get("halftime", {}).get("home")
             a_ht_score = match.get("score", {}).get("halftime", {}).get("away")
 
-            # --- LÓGICA DE COSECHA DE ESTADÍSTICAS (Minero Silencioso) ---
             stats_dict = {'HS': pd.NA, 'AS': pd.NA, 'HC': pd.NA, 'AC': pd.NA, 'HY': pd.NA, 'AY': pd.NA, 'HR': pd.NA, 'AR': pd.NA}
             necesita_stats = False
             
-            # Verificamos si ya existe el partido
             idx_existente = None
             if not df_hist.empty and "HomeTeamId" in df_hist.columns:
                 base_mask = (df_hist["Date"] == fecha_str) & (df_hist["HomeTeamId"] == h_id) & (df_hist["AwayTeamId"] == a_id)
@@ -141,7 +139,6 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
                     if legacy_mask.any():
                         idx_existente = df_hist[legacy_mask].index[0]
 
-            # 🔥 REGLA FINANCIERA: ¿Es ayer (cosechar_stats)? ¿Es liga VIP? ¿Tenemos saldo de requests?
             if cosechar_stats and liga_id in ligas_soportadas and api_client is not None and STATS_DESCARGADAS_HOY < MAX_STATS_POR_RUN:
                 ya_tiene_stats = False
                 if idx_existente is not None and 'HS' in df_hist.columns:
@@ -155,7 +152,7 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
                 STATS_DESCARGADAS_HOY += 1
                 partidos_cosechados_nombres.append(f"{h_team} vs {a_team}")
                 
-                time.sleep(1.2) # Pausa obligatoria para evitar Rate Limit
+                time.sleep(1.2) 
                 
                 if resp and resp.get("response"):
                     datos_stats = resp["response"]
@@ -173,7 +170,6 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
                             elif tipo == "Yellow Cards": stats_dict[f'{prefijo}Y'] = int(valor)
                             elif tipo == "Red Cards": stats_dict[f'{prefijo}R'] = int(valor)
 
-            # --- ACTUALIZACIÓN DEL DATAFRAME ---
             if idx_existente is not None:
                 df_hist.at[idx_existente, "FTHG"] = match.get("goals", {}).get("home")
                 df_hist.at[idx_existente, "FTAG"] = match.get("goals", {}).get("away")
@@ -211,11 +207,10 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
             
             df_hist = pd.concat([df_hist, pd.DataFrame([nuevo])], ignore_index=True)
             
-    # 🔥 Imprimimos un resumen claro al terminar de procesar el día
     if total_finalizados > 0:
         cosechados = len(partidos_cosechados_nombres)
         omitidos = total_finalizados - cosechados
-        print(f"✅ [RESUMEN] {fecha_str} - Terminados: {total_finalizados} | Táctica nueva (API Stats): {cosechados} | Básicos o listos: {omitidos}")
+        print(f"✅ [RESUMEN] {fecha_str} - Terminados: {total_finalizados} | Táctica nueva: {cosechados} | Básicos o listos: {omitidos}")
         
         if cosechados > 0:
             if cosechados <= 2:
@@ -244,6 +239,27 @@ def obtener_liga_domestica(df, team_id, team_name):
     except Exception:
         pass
     return ""
+
+
+# 🔥 NUEVO: Función para rastrear el cansancio / rotaciones
+def calcular_dias_descanso(df_global, team_id, fecha_actual_dt):
+    """Calcula los días transcurridos desde el último partido oficial del equipo."""
+    if df_global is None or df_global.empty or pd.isna(team_id): 
+        return 7
+    try:
+        mask = (df_global['HomeTeamId'] == team_id) | (df_global['AwayTeamId'] == team_id)
+        pasados = df_global[mask & (df_global['Date_dt'] < fecha_actual_dt)]
+        
+        if pasados.empty: 
+            return 7
+            
+        ultima_fecha = pasados['Date_dt'].max()
+        dias = (fecha_actual_dt - ultima_fecha).days
+        
+        return max(0, min(dias, 15)) # Topeamos a 15 días máximo y 0 mínimo
+    except Exception:
+        return 7
+
 
 def registrar_predicciones(proyecciones_dict):
     archivo_log = "kpi/football/predicciones_log.csv"
@@ -323,10 +339,7 @@ def run_process(df_externo=None):
         datos_fechas = {}
         meses_afectados = set()
         
-        # 🔥 Carga las ligas soportadas UNA SOLA VEZ al inicio
         ligas_soportadas = cargar_ligas_con_estadisticas()
-        
-        # 🛡️ NUEVO: Cargar el Blacklist
         ligas_baneadas = cargar_blacklist()
         
         print(f"⚽ [FOOTBALL] Iniciando descarga para fechas: {fechas_a_procesar}")
@@ -369,7 +382,6 @@ def run_process(df_externo=None):
                         if f_str in fechas_a_procesar:
                             datos_fechas[f_str] = partidos_del_dia
                             
-                        # 🔥 ACTIVAMOS EL INTERRUPTOR: Solo es True si estamos revisando el día de AYER (i == -1)
                         es_ayer = (i == -1)
                         df = actualizar_maestro_con_partidos(
                             df, partidos_del_dia, f_str, statuses_map, 
@@ -392,6 +404,9 @@ def run_process(df_externo=None):
         except Exception as e:
             print(f"⚠️ [AUDITORÍA] Error al evaluar KPIs: {e}")
             
+        # 🔥 CREACIÓN DE COLUMNA OPTIMIZADA: Permite que el cálculo de descanso sea instantáneo
+        df['Date_dt'] = pd.to_datetime(df['Date'], errors='coerce').dt.tz_localize(None)
+
         analyzer = MatchAnalyzer(df)
         proyecciones_globales = {} 
         
@@ -405,15 +420,14 @@ def run_process(df_externo=None):
                             continue
                             
                         dt_obj = datetime.fromisoformat(date_str.replace("Z", "+00:00")).astimezone(zona)
+                        fecha_dt_naive = dt_obj.replace(tzinfo=None) # Necesario para cruzar con Pandas
                         
                         if dt_obj < now:
                             continue
                             
-                        # 🛡️ NUEVO: Extraemos País y Liga temprano para el Auto-Blacklist
                         pais = match.get("league", {}).get("country", "World")
                         liga = match.get("league", {}).get("name", "Unknown")
                         
-                        # 🛡️ NUEVO: Si la liga es tóxica, la ignoramos completamente
                         if f"{pais}_{liga}" in ligas_baneadas:
                             continue
                             
@@ -443,6 +457,10 @@ def run_process(df_externo=None):
                         proj['es_eliminatoria'] = es_elimi
                         proj['local_league'] = obtener_liga_domestica(df, h_id, h_name)
                         proj['visita_league'] = obtener_liga_domestica(df, a_id, a_name)
+                        
+                        # 🔥 AQUÍ INYECTAMOS LA ALERTA DE FATIGA PARA EL NOTIFIER 🔥
+                        proj['dias_descanso_local'] = calcular_dias_descanso(df, h_id, fecha_dt_naive)
+                        proj['dias_descanso_visita'] = calcular_dias_descanso(df, a_id, fecha_dt_naive)
                         
                         proyecciones_globales.setdefault((pais, liga), []).append(proj)
                 except Exception as e:
