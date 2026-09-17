@@ -76,7 +76,7 @@ def agrupar_por_pais(proyecciones_dict):
 
 
 # ==========================================
-# ⚽ FORMATO BENDER V4.0 (FÚTBOL - MODO ESTADÍSTICO)
+# ⚽ FORMATO BENDER V4.0 (FÚTBOL - MODO ESTADÍSTICO Y AUTOPSIA)
 # ==========================================
 def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_bloque, analyzer, token_override=None):
     tz_chile = pytz.timezone('America/Santiago')
@@ -278,6 +278,63 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         
     return len(partidos_validos)
 
+
+def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_bloque, analyzer, token_override=None):
+    agrupado_por_pais = agrupar_por_pais(proyecciones_dict)
+    
+    for pais, ligas_del_pais in sorted(agrupado_por_pais.items()):
+        bandera = BANDERAS.get(pais, "🏴")
+        sufijo = f" ({titulo_bloque})" if titulo_bloque else ""
+        mensajes_a_enviar = []
+        mensaje_actual = f"⚽ {bandera} *{pais}*{sufijo} | 📅 {fecha_bloque}\n" + "━"*20 + "\n\n"
+        
+        for liga, proyecciones in sorted(ligas_del_pais.items()):
+            top_items = proyecciones
+            header_liga = f"📌 *{liga} - TOTAL ({len(top_items)})*\n\n"
+            
+            if len(mensaje_actual) + len(header_liga) > 3800:
+                mensaje_actual += "━"*20 + "\n\n"
+                mensajes_a_enviar.append(mensaje_actual)
+                mensaje_actual = f"⚽ {bandera} *{pais}*{sufijo} | 📅 {fecha_bloque} (Cont.)\n" + "━"*20 + "\n\n"
+            mensaje_actual += header_liga
+            
+            for p in top_items:
+                s_l = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=p.get('es_eliminatoria', False))
+                s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=p.get('es_eliminatoria', False))
+
+                es_mata_mata = " ⚔️ [Mata-Mata]" if p.get('es_eliminatoria') else ""
+                bloque_partido = f"📅 `{p.get('fecha_str', '')}` 🕒 `{p['hora']}`{es_mata_mata}\n⚽ *{p['local']}* vs *{p['visita']}*\n"
+                bloque_partido += f"📈 Forma Global: L `{p.get('home_form')}` ({p.get('home_ppg')}p) | V `{p.get('away_form')}` ({p.get('away_ppg')}p)\n"
+                bloque_partido += f"🏟️ Casa/Fuera: L `{p.get('home_venue_form')}` ({p.get('home_venue_ppg')}p) | V `{p.get('away_venue_form')}` ({p.get('away_venue_ppg')}p)\n"
+                
+                matriz = p.get('prob_matrix')
+                if matriz is not None:
+                    ph = float(matriz[0:8, 0:8].sum() if hasattr(matriz, 'sum') else 0) 
+                    # Se incluye la información base de la matriz de probabilidades exactas
+                
+                count_l = s_l.get('count', 0) if isinstance(s_l, dict) else 0
+                count_v = s_v.get('count', 0) if isinstance(s_v, dict) else 0
+
+                if count_l > 0 and count_v > 0:
+                    bloque_partido += f"📐 *Promedios ({count_l}p | {count_v}p):*\n  gf: `{s_l.get('goles_favor', 0):.2f}` | `{s_v.get('goles_favor', 0):.2f}`\n  gc: `{s_l.get('goles_contra', 0):.2f}` | `{s_v.get('goles_contra', 0):.2f}`\n\n"
+                else:
+                    bloque_partido += "⚠️ *Sin historial suficiente.*\n\n"
+
+                if len(mensaje_actual) + len(bloque_partido) > 3800:
+                    mensaje_actual += "━"*20 + "\n\n"
+                    mensajes_a_enviar.append(mensaje_actual)
+                    mensaje_actual = f"⚽ {bandera} *{pais}*{sufijo} | 📅 {fecha_bloque} (Cont.)\n" + "━"*20 + "\n\n"
+                mensaje_actual += bloque_partido
+
+        if mensaje_actual:
+            mensaje_actual += "━"*20 + "\n\n"
+            mensajes_a_enviar.append(mensaje_actual)
+            
+        for msg in mensajes_a_enviar:
+            enviar_mensaje_telegram(msg, token_override=token_override)
+            time.sleep(1.5)
+
+
 def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
     agrupado_por_fecha = {}
     for key, projs in proyecciones_dict.items():
@@ -287,10 +344,15 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
             
     total_validos_global = 0
     for fecha in sorted(agrupado_por_fecha.keys()):
+        # Ejecuta el menú estadístico consolidado
         procesados = _procesar_y_enviar_bloque_futbol(agrupado_por_fecha[fecha], titulo_bloque, fecha, analyzer, token_override)
         total_validos_global += (procesados or 0)
         if procesados:
             time.sleep(2) 
+            
+        # Ejecuta también la autopsia detallada por país/liga que ya tenías
+        _procesar_y_enviar_autopsia_futbol(agrupado_por_fecha[fecha], titulo_bloque, fecha, analyzer, token_override)
+        time.sleep(2)
             
     if total_validos_global == 0:
         enviar_mensaje_telegram(f"⚠️ No hay partidos con historial maduro para este bloque.", token_override=token_override)
@@ -376,8 +438,6 @@ def _procesar_y_enviar_autopsia_basket(proyecciones_dict, titulo_bloque, fecha_b
             for p in top_items:
                 s_l = analyzer.get_basketball_team_stats(p['local'], p.get('local_id'))
                 s_v = analyzer.get_basketball_team_stats(p['visita'], p.get('visita_id'))
-                ot_l = analyzer.get_basketball_overtime_stats(p['local'], p.get('local_id'))
-                ot_v = analyzer.get_basketball_overtime_stats(p['visita'], p.get('visita_id'))
 
                 bloque_partido = f"📅 `{p.get('fecha_str', '')}` 🕒 `{p['hora']}`\n🏀 *{p['local']}* vs *{p['visita']}*\n"
                 bloque_partido += f"📈 Global: L `{p.get('home_form')}` ({p.get('home_ppg')}p) | V `{p.get('away_form')}` ({p.get('away_ppg')}p)\n"
