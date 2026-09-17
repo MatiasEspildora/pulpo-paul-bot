@@ -28788,7 +28788,7 @@
             "status": {
                 "long": "Second Half",
                 "short": "2H",
-                "elapsed": 76,
+                "elapsed": 86,
                 "extra": null
             }
         },
@@ -28856,9 +28856,9 @@
                 "city": "Caracas"
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 87,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -28887,7 +28887,7 @@
             }
         },
         "goals": {
-            "home": 2,
+            "home": 3,
             "away": 0
         },
         "score": {
@@ -28896,8 +28896,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -28928,7 +28928,7 @@
             "status": {
                 "long": "Second Half",
                 "short": "2H",
-                "elapsed": 49,
+                "elapsed": 59,
                 "extra": null
             }
         },
@@ -28998,7 +28998,7 @@
             "status": {
                 "long": "Second Half",
                 "short": "2H",
-                "elapsed": 49,
+                "elapsed": 60,
                 "extra": null
             }
         },
@@ -29068,8 +29068,8 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 36,
-                "extra": null
+                "elapsed": 45,
+                "extra": 2
             }
         },
         "league": {
@@ -29136,9 +29136,9 @@
                 "city": "Santa Cruz"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 41,
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
                 "extra": null
             }
         },
@@ -29157,23 +29157,23 @@
                 "id": 3701,
                 "name": "Blooming",
                 "logo": "https://media.api-sports.io/football/teams/3701.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 17762,
                 "name": "Universitario de Vinto",
                 "logo": "https://media.api-sports.io/football/teams/17762.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
             "home": 0,
-            "away": 0
+            "away": 1
         },
         "score": {
             "halftime": {
                 "home": 0,
-                "away": 0
+                "away": 1
             },
             "fulltime": {
                 "home": null,
@@ -29206,9 +29206,9 @@
                 "city": "Sao Paulo"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 43,
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
                 "extra": null
             }
         },
@@ -29276,10 +29276,10 @@
                 "city": "Cartago"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 43,
-                "extra": null
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
+                "extra": 8
             }
         },
         "league": {
@@ -29297,23 +29297,23 @@
                 "id": 820,
                 "name": "CS Cartagines",
                 "logo": "https://media.api-sports.io/football/teams/820.png",
-                "winner": true
+                "winner": null
             },
             "away": {
                 "id": 816,
                 "name": "Deportivo Saprissa",
                 "logo": "https://media.api-sports.io/football/teams/816.png",
-                "winner": false
+                "winner": null
             }
         },
         "goals": {
             "home": 1,
-            "away": 0
+            "away": 1
         },
         "score": {
             "halftime": {
                 "home": 1,
-                "away": 0
+                "away": 1
             },
             "fulltime": {
                 "home": null,
@@ -29348,7 +29348,7 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 5,
+                "elapsed": 16,
                 "extra": null
             }
         },
@@ -29418,7 +29418,7 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 8,
+                "elapsed": 18,
                 "extra": null
             }
         },
@@ -29486,8 +29486,8 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
+                "long": "Match Postponed",
+                "short": "PST",
                 "elapsed": null,
                 "extra": null
             }
@@ -29558,7 +29558,7 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 12,
+                "elapsed": 22,
                 "extra": null
             }
         },
@@ -29626,9 +29626,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 4,
                 "extra": null
             }
         },
@@ -29657,13 +29657,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
