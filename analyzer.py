@@ -11,10 +11,9 @@ class MatchAnalyzer:
 
     def _apply_knockout_context(self, h_id, a_id, league_id, home_xg, away_xg):
         if self.df.empty or pd.isna(league_id) or pd.isna(h_id) or pd.isna(a_id):
-            return home_xg * 0.95, away_xg * 0.95
+            return home_xg * 0.95, away_xg * 0.95, 0
             
         h_id, a_id = str(h_id), str(a_id)
-        # Búsqueda ampliada a 45 días para asegurar capturar el partido de ida de la eliminatoria
         hace_45_dias = datetime.now() - timedelta(days=45)
         
         mask_h2h_reciente = (
@@ -28,43 +27,25 @@ class MatchAnalyzer:
         
         partido_ida = self.df[mask_h2h_reciente].sort_values(by='Date', ascending=False)
         
-        # --- ESCENARIO A: Partido de Ida (Sin antecedente en los últimos 45 días) ---
         if partido_ida.empty:
-            # Los partidos de ida suelen ser más especulativos/cerrados
-            return home_xg * 0.90, away_xg * 0.90
+            return home_xg * 0.90, away_xg * 0.90, 0
             
-        # --- ESCENARIO B: Partido de Vuelta (Cálculo de la Necesidad de Remontada) ---
         ida = partido_ida.iloc[0]
         if str(ida['HomeTeamId']) == h_id:
-            goles_local_en_ida = ida['FTHG']
-            goles_visita_en_ida = ida['FTAG']
+            dif_global = ida['FTHG'] - ida['FTAG']
         else:
-            goles_local_en_ida = ida['FTAG']
-            goles_visita_en_ida = ida['FTHG']
+            dif_global = ida['FTAG'] - ida['FTHG']
             
-        # Diferencia acumulada desde la perspectiva del LOCAL de hoy
-        dif_global = goles_local_en_ida - goles_visita_en_ida
-        
-        # 💥 ESCENARIO B.1: El LOCAL debe remontar 2 o más goles (ej. perdió la ida 2-0)
         if dif_global <= -2:
-            # El Local sale volcado al ataque (1.35x) y la Visita explota los espacios a la contra (1.30x)
-            return home_xg * 1.35, away_xg * 1.30
-            
-        # 💥 ESCENARIO B.2: El VISITANTE debe remontar 2 o más goles (ej. perdió la ida 2-0)
+            return home_xg * 1.35, away_xg * 1.30, dif_global
         elif dif_global >= 2:
-            # La Visita sale desbocada a buscar el gol (1.35x) y el Local contragolpea (1.30x)
-            return home_xg * 1.30, away_xg * 1.35
-            
-        # ⚖️ ESCENARIO B.3: Desventaja mínima de 1 gol (Presión moderada)
+            return home_xg * 1.30, away_xg * 1.35, dif_global
         elif dif_global == -1:
-            return home_xg * 1.15, away_xg * 1.10
+            return home_xg * 1.15, away_xg * 1.10, dif_global
         elif dif_global == 1:
-            return home_xg * 1.10, away_xg * 1.15
-            
-        # 🔒 ESCENARIO B.4: Empate global en la ida (Partido tenso y táctico)
+            return home_xg * 1.10, away_xg * 1.15, dif_global
         else:
-            return home_xg * 0.95, away_xg * 0.95
-
+            return home_xg * 0.95, away_xg * 0.95, dif_global
 
     def _calculate_exact_scores(self, home_xg, away_xg, max_goals=8):
         matrix = np.zeros((max_goals + 1, max_goals + 1))
@@ -85,9 +66,6 @@ class MatchAnalyzer:
         
         return matrix / matrix.sum()
 
-    # ==========================================
-    # 📐 MOTOR V4.0: MATRIZ DE POISSON PARA CÓRNERS
-    # ==========================================
     def _calculate_corners_matrix(self, home_corners_lambda, away_corners_lambda, max_corners=15):
         matrix = np.zeros((max_corners + 1, max_corners + 1))
         for i in range(max_corners + 1):
@@ -95,9 +73,6 @@ class MatchAnalyzer:
                 matrix[i, j] = poisson.pmf(i, home_corners_lambda) * poisson.pmf(j, away_corners_lambda)
         return matrix / matrix.sum()
     
-    # ==========================================
-    # 📐 MOTOR V4.0: MATRIZ DE POISSON PARA TARJETAS
-    # ==========================================
     def _calculate_cards_matrix(self, home_cards_lambda, away_cards_lambda, max_cards=10):
         matrix = np.zeros((max_cards + 1, max_cards + 1))
         for i in range(max_cards + 1):
@@ -185,7 +160,6 @@ class MatchAnalyzer:
             pesos = []
             col_fthg, col_ftag = ("HTHG", "HTAG") if is_ht else ("FTHG", "FTAG")
             
-            # Constante de decaimiento (Vida media de 90 días)
             decay_lambda = 0.0077
             hoy = pd.Timestamp.now().normalize()
 
@@ -199,36 +173,23 @@ class MatchAnalyzer:
                 else:
                     goles_f.append(float(a_val)); goles_c.append(float(h_val))
                 
-                # Cálculo de días transcurridos
                 fecha_partido = row.get("Date")
-                if pd.isna(fecha_partido):
-                    dias_diff = 30 # Valor por defecto si no hay fecha
-                else:
-                    dias_diff = max(0, (hoy - fecha_partido).days)
-                
-                # Cálculo del peso exponencial para este partido en particular
+                dias_diff = 30 if pd.isna(fecha_partido) else max(0, (hoy - fecha_partido).days)
                 peso = np.exp(-decay_lambda * dias_diff)
                 pesos.append(peso)
             
-            # Normalización (para que la suma de todos los pesos sea 1)
             suma_pesos = sum(pesos)
             if suma_pesos == 0:
                 return 1.2 if not is_ht else 0.5, 1.2 if not is_ht else 0.5
                 
             pesos_norm = [p / suma_pesos for p in pesos]
-            
-            # Cálculo final ponderado real
             avg_f = sum(g * w for g, w in zip(goles_f, pesos_norm))
             avg_c = sum(g * w for g, w in zip(goles_c, pesos_norm))
-            
             return avg_f, avg_c
 
-        # 🔥 FASE 2: MOTOR DE DOMINIO TÁCTICO (V3.6)
         def get_tactical_dominance_index(df_subset, team_id):
             if df_subset.empty: return False, 0.5
-            
-            sf, sa, cf, ca = 0, 0, 0, 0
-            count = 0
+            sf, sa, cf, ca, count = 0, 0, 0, 0, 0
             for _, row in df_subset.iterrows():
                 if pd.isna(row.get("HS")): continue
                 count += 1
@@ -242,9 +203,7 @@ class MatchAnalyzer:
             if count >= 3:
                 shots_ratio = sf / (sf + sa) if (sf + sa) > 0 else 0.5
                 corners_ratio = cf / (cf + ca) if (cf + ca) > 0 else 0.5
-                tactical_index = (shots_ratio * 0.75) + (corners_ratio * 0.25)
-                return True, tactical_index
-            
+                return True, (shots_ratio * 0.75) + (corners_ratio * 0.25)
             return False, 0.5
 
         home_matches = self._get_filtered_matches(home_id, league_id, es_eliminatoria)
@@ -253,7 +212,7 @@ class MatchAnalyzer:
         home_global = home_matches.head(10)
         away_global = away_matches.head(10)
         home_venue = home_matches[home_matches['HomeTeamId'] == home_id].head(10)
-        away_venue = away_matches[away_matches['AwayTeamId'] == away_id].head(10)
+        away_venue = home_matches[home_matches['AwayTeamId'] == away_id].head(10)
 
         home_form_str, home_ppg = get_form_tracker(home_global, home_id)
         away_form_str, away_ppg = get_form_tracker(away_global, away_id)
@@ -282,26 +241,21 @@ class MatchAnalyzer:
         lambda_home_base = (home_scored_avg + away_concede_avg) / 2
         lambda_away_base = (away_scored_avg + home_concede_avg) / 2
         
+        dif_global = 0
         if es_eliminatoria:
-            lambda_home, lambda_away = self._apply_knockout_context(home_id, away_id, league_id, lambda_home_base, lambda_away_base)
+            lambda_home, lambda_away, dif_global = self._apply_knockout_context(home_id, away_id, league_id, lambda_home_base, lambda_away_base)
         else:
             lambda_home, lambda_away = lambda_home_base, lambda_away_base
             
-        # 🔥 APLICACIÓN V3.6: Multiplicadores Tácticos
         h_has_tac, h_tac_idx = get_tactical_dominance_index(home_global, home_id)
         a_has_tac, a_tac_idx = get_tactical_dominance_index(away_global, away_id)
         
-        tactical_mod_home = 1.0
-        tactical_mod_away = 1.0
-        
+        tactical_mod_home, tactical_mod_away = 1.0, 1.0
         if h_has_tac and a_has_tac:
             diff = h_tac_idx - a_tac_idx
-            mod = diff * 0.35 
-            mod = max(-0.20, min(0.20, mod)) 
-            
+            mod = max(-0.20, min(0.20, diff * 0.35)) 
             tactical_mod_home += mod
             tactical_mod_away -= mod
-            
             lambda_home *= tactical_mod_home
             lambda_away *= tactical_mod_away
             
@@ -310,22 +264,15 @@ class MatchAnalyzer:
 
         prob_matrix = self._calculate_exact_scores(lambda_home, lambda_away, max_goals=8)
 
-                # ==========================================
-        # 📐 EXTRACCIÓN Y CÁLCULO V4.0 (CÓRNERS Y TARJETAS)
-        # ==========================================
-        corners_matrix = None
-        cards_matrix = None
+        corners_matrix, cards_matrix = None, None
         stats_home = self.get_team_stats(home_team, home_id, league_id, es_eliminatoria)
         stats_away = self.get_team_stats(away_team, away_id, league_id, es_eliminatoria)
 
-        # Umbral de maduración estricto: >= 5 partidos con detalles tácticos
         if stats_home.get('count', 0) >= 5 and stats_away.get('count', 0) >= 5 and stats_home.get('has_details') and stats_away.get('has_details'):
-            # Matriz de Córners
             lam_c_home = (stats_home.get('corners', 4.5) + stats_away.get('corners', 4.5)) / 2
             lam_c_away = (stats_away.get('corners', 4.5) + stats_home.get('corners', 4.5)) / 2
             corners_matrix = self._calculate_corners_matrix(lam_c_home, lam_c_away, max_corners=15)
 
-            # Matriz de Tarjetas (V4.0)
             lam_t_home = (stats_home.get('tarjetas', 2.0) + stats_away.get('tarjetas', 2.0)) / 2
             lam_t_away = (stats_away.get('tarjetas', 2.0) + stats_home.get('tarjetas', 2.0)) / 2
             cards_matrix = self._calculate_cards_matrix(lam_t_home, lam_t_away, max_cards=10)
@@ -334,12 +281,13 @@ class MatchAnalyzer:
             'local': home_team, 'visita': away_team,
             'local_id': home_id, 'visita_id': away_id,
             'league_id': league_id, 'es_eliminatoria': es_eliminatoria, 
+            'dif_global': dif_global,
             'home_form': home_form_str, 'home_ppg': home_ppg,
             'away_form': away_form_str, 'away_ppg': away_ppg,
             'home_venue_form': home_venue_form_str, 'home_venue_ppg': home_venue_ppg,
             'away_venue_form': away_venue_form_str, 'away_venue_ppg': away_venue_ppg,
             'prob_matrix': prob_matrix,
-            'corners_matrix': corners_matrix, # <--- Enviado al BetBuilder para V4.0
+            'corners_matrix': corners_matrix,
             'cards_matrix': cards_matrix, 
             'lambda_home_ht': lambda_home_ht,
             'lambda_away_ht': lambda_away_ht,
@@ -348,15 +296,10 @@ class MatchAnalyzer:
             'tactical_mod_away': round(tactical_mod_away, 2)
         }
 
-    # ==========================================
-    # 🏀 MÓDULO BÁSQUETBOL
-    # ==========================================
     def get_basketball_team_stats(self, team_name, team_id):
         matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)]
-        matches = matches.dropna(subset=["FTHG", "FTAG"]) 
-        matches = matches.sort_values(by="Date", ascending=False)
+        matches = matches.dropna(subset=["FTHG", "FTAG"]).sort_values(by="Date", ascending=False)
         recent = matches.head(10)
-
         count = len(recent)
         if recent.empty or count == 0:
             return {"puntos_favor": 0, "puntos_contra": 0, "count": 0}
@@ -379,11 +322,9 @@ class MatchAnalyzer:
     def get_basketball_projections(self, home_team, away_team, home_id, away_id, league_id=None, match_data=None):
         def get_form_tracker(df_subset, team_id):
             if df_subset.empty: return "N/A", 0.0
-            form = []
-            pts = 0
+            form, pts = [], 0
             for _, row in df_subset.iterrows():
-                hg = row.get("FTHG")
-                ag = row.get("FTAG")
+                hg, ag = row.get("FTHG"), row.get("FTAG")
                 if pd.isna(hg) or pd.isna(ag): continue
                 if row["HomeTeamId"] == team_id:
                     if hg > ag: form.append('V'); pts += 3
@@ -393,68 +334,42 @@ class MatchAnalyzer:
                     if ag > hg: form.append('V'); pts += 3
                     elif ag == hg: form.append('E'); pts += 1
                     else: form.append('D')
-            
             form.reverse()
-            form_str = "[" + "-".join(form) + "]"
-            ppg = pts / len(form) if form else 0.0
-            return form_str, round(ppg, 1)
+            return "[" + "-".join(form) + "]", round(pts / len(form) if form else 0.0, 1)
 
         def get_avg_points_decay(df_subset, team_id):
             if df_subset.empty: return 105.0, 105.0
-            
             base_weights = [0.15, 0.12, 0.10, 0.09, 0.08, 0.07, 0.06, 0.05, 0.05, 0.04]
             pts_f, pts_c = [], []
-            
             for _, row in df_subset.iterrows():
-                h_val = row.get("FTHG")
-                a_val = row.get("FTAG")
-                if pd.isna(h_val) or pd.isna(a_val):
-                    h_val, a_val = 0.0, 0.0
-
+                h_val, a_val = row.get("FTHG"), row.get("FTAG")
+                if pd.isna(h_val) or pd.isna(a_val): h_val, a_val = 0.0, 0.0
                 if row["HomeTeamId"] == team_id:
-                    pts_f.append(float(h_val))
-                    pts_c.append(float(a_val))
+                    pts_f.append(float(h_val)); pts_c.append(float(a_val))
                 else:
-                    pts_f.append(float(a_val))
-                    pts_c.append(float(h_val))
-                    
+                    pts_f.append(float(a_val)); pts_c.append(float(h_val))
             w = base_weights[:len(pts_f)]
             w_sum = sum(w)
             w = [x / w_sum for x in w]
-            
-            avg_f = sum(p * w_i for p, w_i in zip(pts_f, w))
-            avg_c = sum(p * w_i for p, w_i in zip(pts_c, w))
-            return float(avg_f), float(avg_c)
+            return float(sum(p * w_i for p, w_i in zip(pts_f, w))), float(sum(p * w_i for p, w_i in zip(pts_c, w)))
 
-        home_global = self.df[(self.df['HomeTeamId'] == home_id) | (self.df['AwayTeamId'] == home_id)]
-        home_global = home_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
-        
-        away_global = self.df[(self.df['HomeTeamId'] == away_id) | (self.df['AwayTeamId'] == away_id)]
-        away_global = away_global.dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
-
+        home_global = self.df[(self.df['HomeTeamId'] == home_id) | (self.df['AwayTeamId'] == home_id)].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
+        away_global = self.df[(self.df['HomeTeamId'] == away_id) | (self.df['AwayTeamId'] == away_id)].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
         home_venue = self.df[self.df['HomeTeamId'] == home_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
         away_venue = self.df[self.df['AwayTeamId'] == away_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
 
         home_form_str, home_ppg = get_form_tracker(home_global, home_id)
         away_form_str, away_ppg = get_form_tracker(away_global, away_id)
-
         home_venue_form_str, home_venue_ppg = get_form_tracker(home_venue, home_id)
         away_venue_form_str, away_venue_ppg = get_form_tracker(away_venue, away_id)
 
         hg_f_glob, hg_c_glob = get_avg_points_decay(home_global, home_id)
         ag_f_glob, ag_c_glob = get_avg_points_decay(away_global, away_id)
-
         hg_f_ven, hg_c_ven = get_avg_points_decay(home_venue, home_id)
         ag_f_ven, ag_c_ven = get_avg_points_decay(away_venue, away_id)
 
-        home_avg_scored = (hg_f_glob + hg_f_ven) / 2
-        home_avg_conceded = (hg_c_glob + hg_c_ven) / 2
-        
-        away_avg_scored = (ag_f_glob + ag_f_ven) / 2
-        away_avg_conceded = (ag_c_glob + ag_c_ven) / 2
-
-        exp_home_score = (home_avg_scored + away_avg_conceded) / 2
-        exp_away_score = (away_avg_scored + home_concede_avg) / 2
+        exp_home_score = ((hg_f_glob + hg_f_ven) / 2 + (ag_f_glob + ag_c_ven) / 2) / 2
+        exp_away_score = ((ag_f_glob + ag_f_ven) / 2 + (hg_c_glob + hg_c_ven) / 2) / 2
         total_projected_points = exp_home_score + exp_away_score
 
         diff = exp_home_score - exp_away_score
@@ -468,45 +383,28 @@ class MatchAnalyzer:
             has_overtime = (ot_home is not None and ot_home > 0) or (ot_away is not None and ot_away > 0)
 
         return {
-            'local': home_team,
-            'visita': away_team,
-            'local_id': home_id,    
-            'visita_id': away_id,   
-            'prob_home': prob_home,
-            'prob_away': prob_away,
-            'probs': [prob_home, 0.0, prob_away],
-            'puntos_proyectados': total_projected_points,
-            'has_overtime': has_overtime,
+            'local': home_team, 'visita': away_team, 'local_id': home_id, 'visita_id': away_id,   
+            'prob_home': prob_home, 'prob_away': prob_away, 'probs': [prob_home, 0.0, prob_away],
+            'puntos_proyectados': total_projected_points, 'has_overtime': has_overtime,
             'score_value': max(prob_home, prob_away),
-            'home_form': home_form_str,
-            'home_ppg': home_ppg,
-            'away_form': away_form_str,
-            'away_ppg': away_ppg,
-            'home_venue_form': home_venue_form_str,
-            'home_venue_ppg': home_venue_ppg,
-            'away_venue_form': away_venue_form_str,
-            'away_venue_ppg': away_venue_ppg
+            'home_form': home_form_str, 'home_ppg': home_ppg, 'away_form': away_form_str, 'away_ppg': away_ppg,
+            'home_venue_form': home_venue_form_str, 'home_venue_ppg': home_venue_ppg,
+            'away_venue_form': away_venue_form_str, 'away_venue_ppg': away_venue_ppg
         }
 
     def get_basketball_overtime_stats(self, team_name, team_id):
-        matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)]
-        matches = matches.sort_values(by="Date", ascending=False)
-        recent = matches.head(10)
-
-        count = len(recent)
-        if recent.empty or count == 0:
+        matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)].sort_values(by="Date", ascending=False).head(10)
+        count = len(matches)
+        if matches.empty or count == 0:
             return {"partidos_ot": 0, "promedio_puntos_ot": 0.0, "total_partidos": 0}
 
         partidos_ot = 0
         puntos_ot_lista = []
-
-        for _, row in recent.iterrows():
-            is_ot = row.get("Status") == "AOT" if "Status" in row else False
-            if is_ot:
+        for _, row in matches.iterrows():
+            if row.get("Status") == "AOT" if "Status" in row else False:
                 partidos_ot += 1
                 pts_extra = row.get("ExtraPoints", 0.0)
-                if pd.notna(pts_extra):
-                    puntos_ot_lista.append(float(pts_extra))
+                if pd.notna(pts_extra): puntos_ot_lista.append(float(pts_extra))
 
         return {
             "partidos_ot": partidos_ot,
