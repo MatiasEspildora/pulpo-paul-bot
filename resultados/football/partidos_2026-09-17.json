@@ -4831,76 +4831,6 @@
     },
     {
         "fixture": {
-            "id": 1628498,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-17T12:00:00-03:00",
-            "timestamp": 1789657200,
-            "periods": {
-                "first": 1789657200,
-                "second": 1789660800
-            },
-            "venue": {
-                "id": null,
-                "name": "Nnamdi Azikiwe Stadium",
-                "city": "Enugu"
-            },
-            "status": {
-                "long": "Match Abandoned",
-                "short": "ABD",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 399,
-            "name": "NPFL",
-            "country": "Nigeria",
-            "logo": "https://media.api-sports.io/football/leagues/399.png",
-            "flag": "https://media.api-sports.io/flags/ng.svg",
-            "season": 2027,
-            "round": "Regular Season - 3",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 5176,
-                "name": "Enugu Rangers",
-                "logo": "https://media.api-sports.io/football/teams/5176.png",
-                "winner": null
-            },
-            "away": {
-                "id": 5188,
-                "name": "Nasarawa United",
-                "logo": "https://media.api-sports.io/football/teams/5188.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": 0,
-            "away": 0
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
             "id": 1536699,
             "referee": null,
             "timezone": "America/Santiago",
@@ -11216,10 +11146,10 @@
                 "city": "Quito"
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
+                "long": "Match Finished",
+                "short": "FT",
                 "elapsed": 90,
-                "extra": 4
+                "extra": 6
             }
         },
         "league": {
@@ -11256,8 +11186,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -11286,10 +11216,10 @@
                 "city": null
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 80,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 3
             }
         },
         "league": {
@@ -11318,7 +11248,7 @@
         },
         "goals": {
             "home": 1,
-            "away": 6
+            "away": 7
         },
         "score": {
             "halftime": {
@@ -11326,8 +11256,8 @@
                 "away": 5
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 7
             },
             "extratime": {
                 "home": null,
@@ -11348,7 +11278,7 @@
             "timestamp": 1789682400,
             "periods": {
                 "first": 1789682400,
-                "second": null
+                "second": 1789686000
             },
             "venue": {
                 "id": null,
@@ -11356,9 +11286,9 @@
                 "city": null
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 10,
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 82,
                 "extra": null
             }
         },
@@ -11496,9 +11426,9 @@
                 "city": "Tarija"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 11,
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 83,
                 "extra": null
             }
         },
@@ -11517,23 +11447,23 @@
                 "id": 15708,
                 "name": "Real Tomayapo",
                 "logo": "https://media.api-sports.io/football/teams/15708.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 3707,
                 "name": "Oriente Petrolero",
                 "logo": "https://media.api-sports.io/football/teams/3707.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
             "home": 0,
-            "away": 0
+            "away": 2
         },
         "score": {
             "halftime": {
                 "home": 0,
-                "away": 0
+                "away": 2
             },
             "fulltime": {
                 "home": null,
@@ -11557,7 +11487,7 @@
             "date": "2026-09-17T20:00:00-03:00",
             "timestamp": 1789686000,
             "periods": {
-                "first": null,
+                "first": 1789686000,
                 "second": null
             },
             "venue": {
@@ -11566,9 +11496,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 34,
                 "extra": null
             }
         },
@@ -11587,23 +11517,23 @@
                 "id": 8004,
                 "name": "Cibao",
                 "logo": "https://media.api-sports.io/football/teams/8004.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 3443,
                 "name": "Portmore United",
                 "logo": "https://media.api-sports.io/football/teams/3443.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
                 "home": null,
@@ -11627,7 +11557,7 @@
             "date": "2026-09-17T20:00:00-03:00",
             "timestamp": 1789686000,
             "periods": {
-                "first": null,
+                "first": 1789686000,
                 "second": null
             },
             "venue": {
@@ -11636,9 +11566,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 34,
                 "extra": null
             }
         },
@@ -11667,13 +11597,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
