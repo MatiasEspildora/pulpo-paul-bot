@@ -312,7 +312,6 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         
     return len(partidos_validos)
 
-
 # ==========================================
 # 🩸 LA AUTOPSIA TÁCTICA (FÚTBOL V4.0 - Formato Dashboard Optimizado)
 # ==========================================
@@ -322,6 +321,10 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
     mensajes_a_enviar = []
     mensaje_actual = ""
     max_len = 3800
+    
+    # 🔥 TÍTULO GENERAL ÚNICO PARA TODO EL REPORTE DE AUTOPSIA
+    header_general = f"🩸 *LA AUTOPSIA TÁCTICA (V4.0)*\n📅 _Fecha: {fecha_bloque}_\n\n"
+    mensaje_actual = header_general
     
     for pais, ligas_del_pais in sorted(agrupado_por_pais.items()):
         bandera = BANDERAS.get(pais, "🏴")
@@ -334,7 +337,6 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
                 s_l = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_copa)
                 s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_copa)
                 
-                # 🔥 FILTRO DINÁMICO
                 min_partidos = 3 if es_copa else 5
                 
                 if s_l.get('count', 0) >= min_partidos and s_v.get('count', 0) >= min_partidos:
@@ -343,16 +345,14 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
             if not partidos_validos:
                 continue
 
-            header_liga = f"🩸 *LA AUTOPSIA TÁCTICA (V4.0)*\n📌 {bandera} *{pais} - {liga}*\n\n"
+            # Encabezado limpio por liga/país (sin repetir el título general de autopsia)
+            header_liga = f"📌 {bandera} *{pais} - {liga}*\n\n"
             
             if len(mensaje_actual) + len(header_liga) > max_len:
                 mensajes_a_enviar.append(mensaje_actual)
-                mensaje_actual = header_liga
+                mensaje_actual = f"🩸 *LA AUTOPSIA TÁCTICA (Cont.)*\n" + header_liga
             else:
-                if not mensaje_actual:
-                    mensaje_actual = header_liga
-                else:
-                    mensaje_actual += "\n" + header_liga
+                mensaje_actual += header_liga
             
             for p, s_l, s_v in partidos_validos:
                 es_mata_mata = " ⚔️ [MATA-MATA]" if p.get('es_eliminatoria') else ""
@@ -392,11 +392,17 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
 
                 if len(mensaje_actual) + len(bloque_partido) > max_len:
                     mensajes_a_enviar.append(mensaje_actual)
-                    mensaje_actual = f"🩸 *LA AUTOPSIA TÁCTICA (Cont.)*\n📌 {bandera} *{pais} - {liga}*\n\n" + bloque_partido
+                    mensaje_actual = f"🩸 *LA AUTOPSIA TÁCTICA (Cont.)*\n" + bloque_partido
                 else:
                     mensaje_actual += bloque_partido
 
-    if mensaje_actual.strip():
+    # 🔥 AÑADIR EL CIERRE AL ÚLTIMO MENSAJE O CREAR UNO NUEVO SI ESTÁ LLENO
+    cierre_reporte = "━"*24 + "\n\n✅ *FIN DE LA AUTOPSIA* ✅\n\n"
+    if len(mensaje_actual) + len(cierre_reporte) > max_len:
+        mensajes_a_enviar.append(mensaje_actual)
+        mensajes_a_enviar.append(cierre_reporte)
+    else:
+        mensaje_actual += cierre_reporte
         mensajes_a_enviar.append(mensaje_actual)
         
     for msg in mensajes_a_enviar:
