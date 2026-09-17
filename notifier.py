@@ -34,56 +34,37 @@ def enviar_mensaje_telegram(mensaje, token_override=None, chat_id_especifico=Non
                 f"https://api.telegram.org/bot{token_activo}/sendMessage", 
                 data={"chat_id": chat_id, "text": mensaje, "parse_mode": "Markdown"}
             )
-            
             if res.status_code == 429:
                 error_data = res.json()
                 espera = error_data.get("parameters", {}).get("retry_after", 5)
-                print(f"⏳ Límite de Telegram para {chat_id}. Esperando {espera} segundos...")
                 time.sleep(espera)
                 enviar_mensaje_telegram(mensaje, token_override=token_override, chat_id_especifico=chat_id)
                 continue
-
             if not res.ok:
                 print(f"⚠️ Error al enviar a Telegram ({chat_id}): {res.text}")
-                
         except Exception as e:
             print(f"⚠️ Excepción al conectar con Telegram ({chat_id}): {e}")
-        
-        if len(lista_chats) > 1:
-            time.sleep(0.2)
+        if len(lista_chats) > 1: time.sleep(0.2)
 
 def agrupar_por_pais(proyecciones_dict):
     agrupado = {}
     for key, proyecciones in proyecciones_dict.items():
-        if not proyecciones:
-            continue
-        
-        if isinstance(key, tuple):
-            pais, liga = key
+        if not proyecciones: continue
+        if isinstance(key, tuple): pais, liga = key
         else:
             liga = key
             p_info = proyecciones[0].get('pais', 'World')
             pais = p_info.get('name', 'World') if isinstance(p_info, dict) else (p_info or 'World')
-            
-        if pais not in agrupado:
-            agrupado[pais] = {}
-        
-        if liga not in agrupado[pais]:
-            agrupado[pais][liga] = []
+        if pais not in agrupado: agrupado[pais] = {}
+        if liga not in agrupado[pais]: agrupado[pais][liga] = []
         agrupado[pais][liga].extend(proyecciones)
-        
     return agrupado
 
-
-# ==========================================
-# ⚽ FORMATO BENDER V4.0 (FÚTBOL - MODO ESTADÍSTICO)
-# ==========================================
 def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_bloque, analyzer, token_override=None):
     tz_chile = pytz.timezone('America/Santiago')
     hora_generacion = datetime.now(tz_chile).strftime("%d/%m/%Y %H:%M")
     
     partidos_validos = []
-    
     for pais, ligas in agrupar_por_pais(proyecciones_dict).items():
         for liga, projs in ligas.items():
             for p in projs:
@@ -96,21 +77,15 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
                     p['_id_interno'] = f"{p['local_id']}_{p['visita_id']}_{p['fecha_str']}" 
                     partidos_validos.append(p)
                     
-    if not partidos_validos:
-        return 0
+    if not partidos_validos: return 0
 
-    bb_list = []
-    mega_misiles = []
-    ganadores = []
-    dobles = []
-    goles = []
+    bb_list, mega_misiles, ganadores, dobles, goles = [], [], [], [], []
+    quirofano_tactico, radar_remontadas, francotiradores = [], [], []
 
     for p in partidos_validos:
-        # --- NUEVO SGBB MEGA MISILES (Purificados por Filtro Titanio) ---
         sgbb = p.get('sgbb', {})
         loc, vis = p['local'], p['visita']
         
-        # Diccionario de traducción para Telegram
         mapa_nombres_sgbb = {
             '1X_U25': '1X + Menos 2.5 Goles', '1X_U35': '1X + Menos 3.5 Goles', '1X_U45': '1X + Menos 4.5 Goles',
             '1X_O15': '1X + Más 1.5 Goles', '1X_O25': '1X + Más 2.5 Goles',
@@ -120,52 +95,25 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             '1_O15': f'Gana {loc} + Más 1.5 Goles', '1_O25': f'Gana {loc} + Más 2.5 Goles',
             '2_U25': f'Gana {vis} + Menos 2.5 Goles', '2_U35': f'Gana {vis} + Menos 3.5 Goles', '2_U45': f'Gana {vis} + Menos 4.5 Goles',
             '2_O15': f'Gana {vis} + Más 1.5 Goles', '2_O25': f'Gana {vis} + Más 2.5 Goles',
-            'BTTS_O25': 'Ambos Anotan + Más 2.5 Goles',
-            'BTTS_No_U25': 'Ambos Anotan (No) + Menos 2.5 Goles',
-            'BTTS_No_U35': 'Ambos Anotan (No) + Menos 3.5 Goles',
-            '1X_BTTS_Yes': '1X + Ambos Anotan',
-            'X2_BTTS_Yes': 'X2 + Ambos Anotan'
+            'BTTS_O25': 'Ambos Anotan + Más 2.5 Goles', 'BTTS_No_U25': 'Ambos Anotan (No) + Menos 2.5 Goles',
+            'BTTS_No_U35': 'Ambos Anotan (No) + Menos 3.5 Goles', '1X_BTTS_Yes': '1X + Ambos Anotan', 'X2_BTTS_Yes': 'X2 + Ambos Anotan'
         }
 
-        # Como bet_builder.py ya aplicó el Filtro asimétrico, todo lo que llega aquí es válido y se publica.
         for combo_key, prob in sgbb.items():
             if combo_key in mapa_nombres_sgbb:
-                mega_misiles.append({
-                    'match': p, 
-                    'prob': prob, 
-                    'sel': mapa_nombres_sgbb[combo_key]
-                })
+                mega_misiles.append({'match': p, 'prob': prob, 'sel': mapa_nombres_sgbb[combo_key]})
         
-        # --- LOGICA EXISTENTE DE GOLES ---
         if p.get('btts_no', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('btts_no'), 'sel': 'Ambos Anotan (NO)'})
         if p.get('btts', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('btts'), 'sel': 'Ambos Anotan (SÍ)'})
         if p.get('home_clean_sheet', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('home_clean_sheet'), 'sel': f"Clean Sheet {p['local']}"})
         if p.get('away_clean_sheet', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('away_clean_sheet'), 'sel': f"Clean Sheet {p['visita']}"})
-        
         if p.get('under_2_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('under_2_5'), 'sel': '-2.5 Goles'})
         if p.get('under_3_5', 0) > 0.85: bb_list.append({'match': p, 'prob': p.get('under_3_5'), 'sel': '-3.5 Goles'})
-        
         if p.get('over_1_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_1_5'), 'sel': '+1.5 Goles'})
         if p.get('over_2_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_2_5'), 'sel': '+2.5 Goles'})
         if p.get('over_3_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_3_5'), 'sel': '+3.5 Goles'})
-        if p.get('over_4_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_4_5'), 'sel': '+4.5 Goles'})
-        if p.get('over_5_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_5_5'), 'sel': '+5.5 Goles'})
-        
         if p.get('prob_over_0_5_ht', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('prob_over_0_5_ht'), 'sel': '+0.5 Goles HT'})
-        if p.get('prob_under_1_5_ht', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('prob_under_1_5_ht'), 'sel': '-1.5 Goles HT'})
-        
-        if p.get('home_over_0_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('home_over_0_5'), 'sel': f"{p['local']} +0.5 Goles"})
-        if p.get('home_over_1_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('home_over_1_5'), 'sel': f"{p['local']} +1.5 Goles"})
-        if p.get('home_over_2_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('home_over_2_5'), 'sel': f"{p['local']} +2.5 Goles"})
-        if p.get('away_over_0_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('away_over_0_5'), 'sel': f"{p['visita']} +0.5 Goles"})
-        if p.get('away_over_1_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('away_over_1_5'), 'sel': f"{p['visita']} +1.5 Goles"})
-        if p.get('away_over_2_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('away_over_2_5'), 'sel': f"{p['visita']} +2.5 Goles"})
 
-        # --- LOGICA V4.0 (MERCADO DE CÓRNERS) ---
-        if p.get('over_8_5_corners', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_8_5_corners'), 'sel': '+8.5 Córners'})
-        if p.get('over_9_5_corners', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_9_5_corners'), 'sel': '+9.5 Córners'})
-        
-        # Ganador Directo (Solo pasará si bet_builder no lo castigó con un 0.0)
         prob_gana = max(p['probs'][0], p['probs'][2])
         if prob_gana > 0:
             sel_gana = p['local'] if p['probs'][0] > p['probs'][2] else p['visita']
@@ -176,13 +124,23 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         dobles.append({'match': p, 'prob': prob_doble, 'sel': sel_doble})
         
         opciones_goles = [
-            {'sel': 'Ambos Anotan', 'prob': p.get('btts', 0)},
-            {'sel': '+1.5 Goles', 'prob': p.get('over_1_5', 0)},
-            {'sel': '+2.5 Goles', 'prob': p.get('over_2_5', 0)},
-            {'sel': '-3.5 Goles', 'prob': p.get('under_3_5', 0)}
+            {'sel': 'Ambos Anotan', 'prob': p.get('btts', 0)}, {'sel': '+1.5 Goles', 'prob': p.get('over_1_5', 0)},
+            {'sel': '+2.5 Goles', 'prob': p.get('over_2_5', 0)}, {'sel': '-3.5 Goles', 'prob': p.get('under_3_5', 0)}
         ]
         mejor_gol = max(opciones_goles, key=lambda x: x['prob'])
         goles.append({'match': p, 'prob': mejor_gol['prob'], 'sel': mejor_gol['sel']})
+
+        # Menús Nuevos V4.0
+        if p.get('btts', 0) > 0.80: francotiradores.append({'match': p, 'prob': p.get('btts'), 'sel': 'Ambos Anotan (SÍ)'})
+        if p.get('over_8_5_corners', 0) > 0.80: quirofano_tactico.append({'match': p, 'prob': p.get('over_8_5_corners'), 'sel': '+8.5 Córners'})
+        if p.get('over_9_5_corners', 0) > 0.75: quirofano_tactico.append({'match': p, 'prob': p.get('over_9_5_corners'), 'sel': '+9.5 Córners'})
+        if p.get('over_4_5_cards', 0) > 0.80: quirofano_tactico.append({'match': p, 'prob': p.get('over_4_5_cards'), 'sel': '+4.5 Tarjetas'})
+        if p.get('over_5_5_cards', 0) > 0.75: quirofano_tactico.append({'match': p, 'prob': p.get('over_5_5_cards'), 'sel': '+5.5 Tarjetas'})
+        
+        dif_global = p.get('dif_global', 0)
+        if p.get('es_eliminatoria') and (dif_global <= -2 or dif_global >= 2):
+            quien_remonta = p['local'] if dif_global <= -2 else p['visita']
+            radar_remontadas.append({'match': p, 'prob': 1.0, 'sel': f"🚨 Alerta Volatilidad: {quien_remonta} debe remontar {abs(dif_global)} goles"})
 
     mega_misiles.sort(key=lambda x: x['prob'], reverse=True)
     bb_list.sort(key=lambda x: x['prob'], reverse=True)
@@ -198,10 +156,17 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     for item in goles[:30]: seleccionados.add(item['match']['_id_interno'])
 
     etiqueta_ventana = f" | {titulo_bloque}" if titulo_bloque else ""
-    
     msg = f"💎 ━━ *MENÚ BENDER V4.0 (Estadístico): {fecha_bloque}{etiqueta_ventana}* ━━ 💎\n\n"
     msg += f"📅 _Generado: {hora_generacion}_\n\n"
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
+
+    if radar_remontadas:
+        msg += "⚔️ *RADAR DE REMONTADAS (Alerta Mata-Mata)* ⚔️\n\n"
+        for i, item in enumerate(radar_remontadas, 1):
+            m = item['match']
+            msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']} | {item['sel']}\n"
+            msg += f"   🔥 _(Táctica rota: Sugerencia de Altas o Córners)_\n\n"
+        msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
 
     msg += "🧱 *PIEZAS BET BUILDER (Filtro Titanio > 80%)*\n\n"
     if bb_list:
@@ -229,9 +194,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     for i, item in enumerate(dobles[:30], 1):
         m = item['match']
         es_mata_mata = " ⚔️" if m.get('es_eliminatoria') else ""
-        msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{es_mata_mata} | 🛡️ *{item['sel']}* ({item['prob']:.0%})\n"
-        msg += f"   📈 Forma Global: L `{m.get('home_form')}` ({m.get('home_ppg')}p) | V `{m.get('away_form')}` ({m.get('away_ppg')}p)\n"
-        msg += f"   🏟️ Casa/Fuera: L `{m.get('home_venue_form')}` ({m.get('home_venue_ppg')}p) | V `{m.get('away_venue_form')}` ({m.get('away_venue_ppg')}p)\n\n"
+        msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{es_mata_mata} | 🛡️ *{item['sel']}* ({item['prob']:.0%})\n\n"
 
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
     msg += "🔥 *TOP 30 - MERCADOS DE GOLES*\n\n"
@@ -241,6 +204,26 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{es_mata_mata} | 🔥 *{item['sel']}* ({item['prob']:.0%})\n\n"
 
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
+    msg += "🚩 *EL QUIRÓFANO TÁCTICO (Córners y Tarjetas)*\n\n"
+    if quirofano_tactico:
+        quirofano_tactico.sort(key=lambda x: x['prob'], reverse=True)
+        for i, item in enumerate(quirofano_tactico[:15], 1):
+            m = item['match']
+            msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']} | 🧩 *{item['sel']}* ({item['prob']:.0%})\n\n"
+    else:
+        msg += "_Sin opciones viables de Córners/Tarjetas hoy._\n\n"
+
+    msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
+    msg += "🎯 *LOS FRANCOTIRADORES (Ambos Anotan - SÍ)*\n\n"
+    if francotiradores:
+        francotiradores.sort(key=lambda x: x['prob'], reverse=True)
+        for i, item in enumerate(francotiradores[:15], 1):
+            m = item['match']
+            msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']} | 🎯 *{item['sel']}* ({item['prob']:.0%})\n\n"
+    else:
+        msg += "_Ningún partido superó el 80% de BTTS hoy._\n\n"
+
+    msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
     msg += "💣 *MEGA-MISILES INTERNOS (SGBB Pre-calculados)*\n\n"
     if mega_misiles:
         for i, item in enumerate(mega_misiles[:30], 1):
@@ -248,90 +231,10 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             es_mata_mata = " ⚔️" if m.get('es_eliminatoria') else ""
             msg += f"*{i}.* ⚽ {m['bandera']} {m['pais_nombre']} - {m['local']} vs {m['visita']}{es_mata_mata} | 🧩 *{item['sel']}* ({item['prob']:.0%})\n\n"
     else:
-        msg += "_Ninguna combinación SGBB superó el 85% hoy._\n\n"
-
-    msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
-    msg += "🩸 *LA AUTOPSIA TÁCTICA (Código Fuente)*\n\n"
-
-    autopsia_dict = {}
-    for p in partidos_validos:
-        if p['_id_interno'] in seleccionados:
-            liga_key = f"{p['bandera']} {p['pais_nombre']} - {p['liga_nombre']}"
-            autopsia_dict.setdefault(liga_key, []).append(p)
-            
-    for liga_key in sorted(autopsia_dict.keys()):
-        projs = autopsia_dict[liga_key]
-        msg += f"📌 *{liga_key}*\n\n"
-        
-        projs.sort(key=lambda x: x.get('hora', '00:00'))
-        
-        for p in projs:
-            s_l = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=p.get('es_eliminatoria', False))
-            s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=p.get('es_eliminatoria', False))
-            
-            es_mata_mata = " ⚔️ *[MATA-MATA]*" if p.get('es_eliminatoria') else ""
-            
-            l_league_str = str(p.get('local_league', ''))[:18]
-            v_league_str = str(p.get('visita_league', ''))[:18]
-            
-            l_tag = f" [{l_league_str}]" if l_league_str else ""
-            v_tag = f" [{v_league_str}]" if v_league_str else ""
-            
-            msg += f"📅 `{p.get('fecha_str', '')}` | 🕒 `{p.get('hora', '')}`{es_mata_mata}\n"
-            msg += f"⚽ *{p['local']}*{l_tag} vs *{p['visita']}*{v_tag}\n"
-            msg += f"📈 Global: L `{p.get('home_form')}` ({p.get('home_ppg')}p) | V `{p.get('away_form')}` ({p.get('away_ppg')}p)\n"
-            msg += f"🏟️ Casa/Fuera: L `{p.get('home_venue_form')}` ({p.get('home_venue_ppg')}p) | V `{p.get('away_venue_form')}` ({m.get('away_venue_ppg', 0)}p)\n"
-            msg += f"📊 1X2: L:{p['probs'][0]:.0%} | E:{p['probs'][1]:.0%} | V:{p['probs'][2]:.0%}\n"
-            msg += f"🛡️ Doble Op: 1X ({p.get('prob_1X',0):.0%}) | 12 ({p.get('prob_12',0):.0%}) | X2 ({p.get('prob_X2',0):.0%})\n"
-            
-            msg += f"🎯 Ambos Anotan (BTTS): Sí ({p.get('btts',0):.0%}) | No ({p.get('btts_no',0):.0%})\n"
-            msg += f"🧱 Portería a Cero (CS): L ({p.get('home_clean_sheet',0):.0%}) | V ({p.get('away_clean_sheet',0):.0%})\n"
-            msg += f"⚽ Bajas: -2.5 ({p.get('under_2_5',0):.0%}) | -3.5 ({p.get('under_3_5',0):.0%}) | -4.5 ({p.get('under_4_5',0):.0%})\n"
-            msg += f"🔥 Altas: +1.5 ({p.get('over_1_5',0):.0%}) | +2.5 ({p.get('over_2_5',0):.0%}) | +3.5 ({p.get('over_3_5',0):.0%})\n"
-            msg += f"⏱️ +0.5 Goles HT: {p.get('prob_over_0_5_ht',0):.0%}\n"
-            
-            msg += f"📐 Promedios Goles ({s_l.get('count',0)}p | {s_v.get('count',0)}p):\n"
-            msg += f"  L: ({s_l.get('goles_favor',0):.1f} F / {s_l.get('goles_contra',0):.1f} C) | V: ({s_v.get('goles_favor',0):.1f} F / {s_v.get('goles_contra',0):.1f} C)\n"
-            
-            # --- INYECCIÓN TÁCTICA Y ESTADÍSTICA V4.0 ---
-            if s_l.get('has_details') or s_v.get('has_details'):
-                msg += f"**--- 📋 RADIOGRAFÍA TÁCTICA ---**\n"
-                if s_l.get('has_details'):
-                    msg += f"👟 Remates a Favor: L ({s_l.get('remates',0):.1f}) | V ({s_v.get('remates',0):.1f})\n"
-                    msg += f"🚩 Córners a Favor: L ({s_l.get('corners',0):.1f}) | V ({s_v.get('corners',0):.1f})\n"
-                if p.get('tactics_applied'):
-                    msg += f"🔥 **Modificador de Dominio:** L {p.get('tactical_mod_home',1.0):.2f}x | V {p.get('tactical_mod_away',1.0):.2f}x\n"
-                
-                # Desglose de córners de la V4.0
-                if p.get('over_8_5_corners', 0) > 0:
-                    msg += f"🎯 **Poisson Córners:** +8.5 ({p.get('over_8_5_corners',0):.0%}) | +9.5 ({p.get('over_9_5_corners',0):.0%})\n"
-
-            msg += "\n"
+        msg += "_Ninguna combinación SGBB superó el umbral hoy._\n\n"
 
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n✅ *FIN DEL REPORTE* ✅\n\n"
-
-    max_len = 3900 
-    if len(msg) > max_len:
-        mensajes_a_enviar = []
-        bloques = msg.split("\n\n")
-        chunk_actual = ""
-        
-        for bloque in bloques:
-            if len(chunk_actual) + len(bloque) + 2 > max_len:
-                mensajes_a_enviar.append(chunk_actual)
-                chunk_actual = bloque + "\n\n"
-            else:
-                chunk_actual += bloque + "\n\n"
-                
-        if chunk_actual.strip():
-            mensajes_a_enviar.append(chunk_actual)
-            
-        for chunk in mensajes_a_enviar:
-            enviar_mensaje_telegram(chunk, token_override=token_override)
-            time.sleep(1.5)
-    else:
-        enviar_mensaje_telegram(msg, token_override=token_override)
-        
+    enviar_mensaje_telegram(msg, token_override=token_override)
     return len(partidos_validos)
 
 def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
@@ -339,165 +242,13 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
     for key, projs in proyecciones_dict.items():
         for p in projs:
             fecha = p.get('fecha_str', 'Sin Fecha')
-            if fecha not in agrupado_por_fecha:
-                agrupado_por_fecha[fecha] = {}
-            if key not in agrupado_por_fecha[fecha]:
-                agrupado_por_fecha[fecha][key] = []
-            agrupado_por_fecha[fecha][key].append(p)
+            agrupado_por_fecha.setdefault(fecha, {}).setdefault(key, []).append(p)
             
     total_validos_global = 0
-    fechas_ordenadas = sorted(agrupado_por_fecha.keys())
-    
-    for fecha in fechas_ordenadas:
+    for fecha in sorted(agrupado_por_fecha.keys()):
         procesados = _procesar_y_enviar_bloque_futbol(agrupado_por_fecha[fecha], titulo_bloque, fecha, analyzer, token_override)
         total_validos_global += (procesados or 0)
-        if procesados:
-            time.sleep(2) 
+        if procesados: time.sleep(2) 
             
     if total_validos_global == 0:
         enviar_mensaje_telegram(f"⚠️ No hay partidos con historial maduro para este bloque.", token_override=token_override)
-
-
-# ==========================================
-# 🏀 FORMATO BENDER V3.0 (BÁSQUETBOL)
-# ==========================================
-def _generar_y_enviar_menu_basket(proyecciones_dict, etiqueta_dia, analyzer, token_override=None):
-    basket_lista = []
-    
-    for pais, ligas in agrupar_por_pais(proyecciones_dict).items():
-        for liga, projs in ligas.items():
-            for p in projs:
-                s_l = analyzer.get_basketball_team_stats(p['local'], p.get('local_id'))
-                s_v = analyzer.get_basketball_team_stats(p['visita'], p.get('visita_id'))
-
-                if s_l.get('count', 0) >= 3 and s_v.get('count', 0) >= 3:
-                    prob_gana = max(p['prob_home'], p['prob_away'])
-                    seleccion = p['local'] if p['prob_home'] > p['prob_away'] else p['visita']
-                    basket_lista.append({'match': p, 'prob': prob_gana, 'seleccion': seleccion})
-                
-    if not basket_lista:
-        return False
-
-    tz_chile = pytz.timezone('America/Santiago')
-    hora_generacion = datetime.now(tz_chile).strftime("%d/%m/%Y %H:%M")
-
-    mensaje_resumen = f"💎 ━━ *MENÚ BENDER V3.0 BASKET: {etiqueta_dia}* ━━ 💎\n\n"
-    mensaje_resumen += f"📅 _Generado: {hora_generacion}_\n\n"
-    mensaje_resumen += "━"*24 + "\n\n"
-
-    basket_lista.sort(key=lambda x: x['prob'], reverse=True)
-    for i, item in enumerate(basket_lista[:15], 1):
-        p = item['match']
-        mensaje_resumen += f"*{i}.* 🏀 {p['local']} vs {p['visita']} | 🕒 {p.get('hora', '')}\n"
-        mensaje_resumen += f"   🎯 *Pick:* Gana {item['seleccion']} ({item['prob']:.0%}) | 🔥 Pts: `{p.get('puntos_proyectados', 0):.1f}`\n"
-        mensaje_resumen += f"   📈 Forma Global: L `{p.get('home_form', 'N/A')}` | V `{p.get('away_form', 'N/A')}`\n\n"
-
-    mensaje_resumen += "━"*24 + "\n\n"
-    mensaje_resumen += "✅ *FIN DEL REPORTE* ✅\n\n"
-
-    enviar_mensaje_telegram(mensaje_resumen, token_override=token_override)
-    return True
-
-def enviar_resumen_mejores_apuestas_basket(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
-    tz_chile = pytz.timezone('America/Santiago')
-    hoy_dt = datetime.now(tz_chile)
-    hoy_str = hoy_dt.strftime("%Y-%m-%d")
-    manana_str = (hoy_dt + timedelta(days=1)).strftime("%Y-%m-%d")
-    
-    dict_hoy, dict_manana = {}, {}
-    
-    for key, projs in proyecciones_dict.items():
-        for p in projs:
-            fecha = p.get('fecha_str', '')
-            if fecha == hoy_str: dict_hoy.setdefault(key, []).append(p)
-            elif fecha == manana_str: dict_manana.setdefault(key, []).append(p)
-                
-    enviado_hoy = _generar_y_enviar_menu_basket(dict_hoy, f"HOY ({hoy_str})", analyzer, token_override)
-    enviado_manana = _generar_y_enviar_menu_basket(dict_manana, f"MAÑANA ({manana_str})", analyzer, token_override)
-    
-    if not enviado_hoy and not enviado_manana:
-        aviso = "💎 ━━ *MENÚ DE MEJORES PICKS* ━━ 💎\n\n" + "━"*22 + "\n\n⚠️ _No hay partidos con historial maduro para HOY ni MAÑANA._\n\n" + "━"*22 + "\n\n✅ *FIN DEL REPORTE* ✅\n\n"
-        enviar_mensaje_telegram(aviso, token_override=token_override)
-
-def _procesar_y_enviar_autopsia_basket(proyecciones_dict, titulo_bloque, fecha_bloque, analyzer, token_override=None):
-    agrupado_por_pais = agrupar_por_pais(proyecciones_dict)
-    
-    for pais, ligas_del_pais in sorted(agrupado_por_pais.items()):
-        bandera = BANDERAS.get(pais, "🏴")
-        sufijo = f" ({titulo_bloque})" if titulo_bloque else ""
-        
-        mensajes_a_enviar = []
-        mensaje_actual = f"🏀 {bandera} *{pais}*{sufijo} | 📅 {fecha_bloque}\n" + "━"*20 + "\n\n"
-        
-        for liga, proyecciones in sorted(ligas_del_pais.items()):
-            top_items = proyecciones
-            
-            header_liga = f"📌 *{liga} - TOTAL ({len(top_items)})*\n\n"
-            
-            if len(mensaje_actual) + len(header_liga) > 3800:
-                mensaje_actual += "━"*20 + "\n\n"
-                mensajes_a_enviar.append(mensaje_actual)
-                mensaje_actual = f"🏀 {bandera} *{pais}*{sufijo} | 📅 {fecha_bloque} (Cont.)\n" + "━"*20 + "\n\n"
-                
-            mensaje_actual += header_liga
-            
-            for p in top_items:
-                s_l = analyzer.get_basketball_team_stats(p['local'], p.get('local_id'))
-                s_v = analyzer.get_basketball_team_stats(p['visita'], p.get('visita_id'))
-                ot_l = analyzer.get_basketball_overtime_stats(p['local'], p.get('local_id'))
-                ot_v = analyzer.get_basketball_overtime_stats(p['visita'], p.get('visita_id'))
-
-                bloque_partido = f"📅 `{p.get('fecha_str', '')}` 🕒 `{p['hora']}`\n🏀 *{p['local']}* vs *{p['visita']}*\n"
-                bloque_partido += f"📈 Global: L `{p.get('home_form')}` ({p.get('home_ppg')}p) | V `{p.get('away_form')}` ({p.get('away_ppg')}p)\n"
-                bloque_partido += f"🏟️ Casa/Fuera: L `{p.get('home_venue_form')}` ({p.get('home_venue_ppg')}p) | V `{p.get('away_venue_form')}` ({p.get('away_venue_ppg')}p)\n"
-                bloque_partido += (f"📊 Victoria Proyectada: L:{p['prob_home']:.0%} | V:{p['prob_away']:.0%}\n"
-                                f"🎯 Puntos Proyectados: `{p['puntos_proyectados']:.1f}` pts\n")
-
-                count_l = s_l.get('count', 0) if isinstance(s_l, dict) else 0
-                count_v = s_v.get('count', 0) if isinstance(s_v, dict) else 0
-
-                if count_l > 0 and count_v > 0:
-                    bloque_partido += (f"📐 *Promedios ({count_l}p | {count_v}p):*\n"
-                                    f"  pts a favor: `{s_l.get('puntos_favor', 0):.1f}` | `{s_v.get('puntos_favor', 0):.1f}`\n"
-                                    f"  pts en contra: `{s_l.get('puntos_contra', 0):.1f}` | `{s_v.get('puntos_contra', 0):.1f}`\n")
-
-                    if ot_l.get('partidos_ot', 0) > 0 or ot_v.get('partidos_ot', 0) > 0:
-                        bloque_partido += (f"⏱️ *Tendencia a Prórroga (OT):*\n"
-                                        f"  partidos con OT: `{ot_l.get('partidos_ot', 0)}/5` | `{ot_v.get('partidos_ot', 0)}/15`\n"
-                                        f"  puntos extra prom: `{ot_l.get('promedio_puntos_ot', 0):.1f}` | `{ot_v.get('promedio_puntos_ot', 0):.1f}`\n\n")
-                    else:
-                        bloque_partido += "\n\n"
-                else:
-                    bloque_partido += "⚠️ *Sin historial suficiente.*\n\n"
-
-                if len(mensaje_actual) + len(bloque_partido) > 3800:
-                    mensaje_actual += "━"*20 + "\n\n"
-                    mensajes_a_enviar.append(mensaje_actual)
-                    mensaje_actual = f"🏀 {bandera} *{pais}*{sufijo} | 📅 {fecha_bloque} (Cont.)\n" + "━"*20 + "\n\n"
-                    
-                mensaje_actual += bloque_partido
-
-        if mensaje_actual:
-            mensaje_actual += "━"*20 + "\n\n"
-            mensajes_a_enviar.append(mensaje_actual)
-            
-        for msg in mensajes_a_enviar:
-            enviar_mensaje_telegram(msg, token_override=token_override)
-            time.sleep(1.5)
-
-def enviar_bloque_reportes_basket(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
-    agrupado_por_fecha = {}
-    for key, projs in proyecciones_dict.items():
-        for p in projs:
-            fecha = p.get('fecha_str', 'Sin Fecha')
-            if fecha not in agrupado_por_fecha:
-                agrupado_por_fecha[fecha] = {}
-            if key not in agrupado_por_fecha[fecha]:
-                agrupado_por_fecha[fecha][key] = []
-            agrupado_por_fecha[fecha][key].append(p)
-            
-    for fecha in sorted(agrupado_por_fecha.keys()):
-        _procesar_y_enviar_autopsia_basket(agrupado_por_fecha[fecha], titulo_bloque, fecha, analyzer, token_override)
-        time.sleep(2)
-        
-    enviar_resumen_mejores_apuestas_basket(proyecciones_dict, titulo_bloque, analyzer, token_override)
