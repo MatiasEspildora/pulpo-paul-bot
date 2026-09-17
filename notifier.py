@@ -189,14 +189,49 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
 
         if p.get('btts', 0) > 0.80: 
             francotiradores.append({'match': p, 'prob': p.get('btts'), 'sel': 'Ambos Anotan (SÍ)', 'score': calcular_confidence_score(p.get('btts'), t_partidos)})
-        if p.get('over_8_5_corners', 0) > 0.80: 
-            quirofano_tactico.append({'match': p, 'prob': p.get('over_8_5_corners'), 'sel': '+8.5 Córners', 'score': calcular_confidence_score(p.get('over_8_5_corners'), t_partidos)})
-        if p.get('over_9_5_corners', 0) > 0.75: 
-            quirofano_tactico.append({'match': p, 'prob': p.get('over_9_5_corners'), 'sel': '+9.5 Córners', 'score': calcular_confidence_score(p.get('over_9_5_corners'), t_partidos)})
-        if p.get('over_4_5_cards', 0) > 0.80: 
-            quirofano_tactico.append({'match': p, 'prob': p.get('over_4_5_cards'), 'sel': '+4.5 Tarjetas', 'score': calcular_confidence_score(p.get('over_4_5_cards'), t_partidos)})
-        if p.get('over_5_5_cards', 0) > 0.75: 
-            quirofano_tactico.append({'match': p, 'prob': p.get('over_5_5_cards'), 'sel': '+5.5 Tarjetas', 'score': calcular_confidence_score(p.get('over_5_5_cards'), t_partidos)})
+        
+        # --- LÓGICA CORREGIDA PARA CÓRNERS ---
+        # 1. Buscamos la línea más agresiva que siga siendo segura (>75%)
+        # 2. Si no hay una agresiva, bajamos a la línea conservadora (>80%)
+        # 3. Solo agregamos UNA por partido.
+        
+        corner_sel = None
+        corner_prob = 0
+        if p.get('over_9_5_corners', 0) > 0.75:
+            corner_sel = '+9.5 Córners'
+            corner_prob = p.get('over_9_5_corners')
+        elif p.get('over_8_5_corners', 0) > 0.80:
+            corner_sel = '+8.5 Córners'
+            corner_prob = p.get('over_8_5_corners')
+            
+        if corner_sel:
+            # Construimos el string con el contexto real
+            promedio_str = f"L: {s_l.get('corners_f', 0):.1f} - V: {s_v.get('corners_f', 0):.1f}"
+            quirofano_tactico.append({
+                'match': p, 
+                'prob': corner_prob, 
+                'sel': f"{corner_sel} ({promedio_str})", 
+                'score': calcular_confidence_score(corner_prob, t_partidos)
+            })
+
+        # --- LÓGICA CORREGIDA PARA TARJETAS ---
+        card_sel = None
+        card_prob = 0
+        if p.get('over_5_5_cards', 0) > 0.75:
+            card_sel = '+5.5 Tarjetas'
+            card_prob = p.get('over_5_5_cards')
+        elif p.get('over_4_5_cards', 0) > 0.80:
+            card_sel = '+4.5 Tarjetas'
+            card_prob = p.get('over_4_5_cards')
+
+        if card_sel:
+            promedio_str = f"L: {s_l.get('tarjetas_f', 0):.1f} - V: {s_v.get('tarjetas_f', 0):.1f}"
+            quirofano_tactico.append({
+                'match': p, 
+                'prob': card_prob, 
+                'sel': f"{card_sel} ({promedio_str})", 
+                'score': calcular_confidence_score(card_prob, t_partidos)
+            })
         
         dif_global = p.get('dif_global', 0)
         if p.get('es_eliminatoria') and (dif_global <= -2 or dif_global >= 2):
