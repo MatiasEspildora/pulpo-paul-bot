@@ -34,37 +34,56 @@ def enviar_mensaje_telegram(mensaje, token_override=None, chat_id_especifico=Non
                 f"https://api.telegram.org/bot{token_activo}/sendMessage", 
                 data={"chat_id": chat_id, "text": mensaje, "parse_mode": "Markdown"}
             )
+            
             if res.status_code == 429:
                 error_data = res.json()
                 espera = error_data.get("parameters", {}).get("retry_after", 5)
+                print(f"⏳ Límite de Telegram para {chat_id}. Esperando {espera} segundos...")
                 time.sleep(espera)
                 enviar_mensaje_telegram(mensaje, token_override=token_override, chat_id_especifico=chat_id)
                 continue
+
             if not res.ok:
                 print(f"⚠️ Error al enviar a Telegram ({chat_id}): {res.text}")
+                
         except Exception as e:
             print(f"⚠️ Excepción al conectar con Telegram ({chat_id}): {e}")
-        if len(lista_chats) > 1: time.sleep(0.2)
+        
+        if len(lista_chats) > 1:
+            time.sleep(0.2)
 
 def agrupar_por_pais(proyecciones_dict):
     agrupado = {}
     for key, proyecciones in proyecciones_dict.items():
-        if not proyecciones: continue
-        if isinstance(key, tuple): pais, liga = key
+        if not proyecciones:
+            continue
+        
+        if isinstance(key, tuple):
+            pais, liga = key
         else:
             liga = key
             p_info = proyecciones[0].get('pais', 'World')
             pais = p_info.get('name', 'World') if isinstance(p_info, dict) else (p_info or 'World')
-        if pais not in agrupado: agrupado[pais] = {}
-        if liga not in agrupado[pais]: agrupado[pais][liga] = []
+            
+        if pais not in agrupado:
+            agrupado[pais] = {}
+        
+        if liga not in agrupado[pais]:
+            agrupado[pais][liga] = []
         agrupado[pais][liga].extend(proyecciones)
+        
     return agrupado
 
+
+# ==========================================
+# ⚽ FORMATO BENDER V4.0 (FÚTBOL - MODO ESTADÍSTICO)
+# ==========================================
 def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_bloque, analyzer, token_override=None):
     tz_chile = pytz.timezone('America/Santiago')
     hora_generacion = datetime.now(tz_chile).strftime("%d/%m/%Y %H:%M")
     
     partidos_validos = []
+    
     for pais, ligas in agrupar_por_pais(proyecciones_dict).items():
         for liga, projs in ligas.items():
             for p in projs:
@@ -77,10 +96,17 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
                     p['_id_interno'] = f"{p['local_id']}_{p['visita_id']}_{p['fecha_str']}" 
                     partidos_validos.append(p)
                     
-    if not partidos_validos: return 0
+    if not partidos_validos:
+        return 0
 
-    bb_list, mega_misiles, ganadores, dobles, goles = [], [], [], [], []
-    quirofano_tactico, radar_remontadas, francotiradores = [], [], []
+    bb_list = []
+    mega_misiles = []
+    ganadores = []
+    dobles = []
+    goles = []
+    quirofano_tactico = []
+    radar_remontadas = []
+    francotiradores = []
 
     for p in partidos_validos:
         sgbb = p.get('sgbb', {})
@@ -95,20 +121,29 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             '1_O15': f'Gana {loc} + Más 1.5 Goles', '1_O25': f'Gana {loc} + Más 2.5 Goles',
             '2_U25': f'Gana {vis} + Menos 2.5 Goles', '2_U35': f'Gana {vis} + Menos 3.5 Goles', '2_U45': f'Gana {vis} + Menos 4.5 Goles',
             '2_O15': f'Gana {vis} + Más 1.5 Goles', '2_O25': f'Gana {vis} + Más 2.5 Goles',
-            'BTTS_O25': 'Ambos Anotan + Más 2.5 Goles', 'BTTS_No_U25': 'Ambos Anotan (No) + Menos 2.5 Goles',
-            'BTTS_No_U35': 'Ambos Anotan (No) + Menos 3.5 Goles', '1X_BTTS_Yes': '1X + Ambos Anotan', 'X2_BTTS_Yes': 'X2 + Ambos Anotan'
+            'BTTS_O25': 'Ambos Anotan + Más 2.5 Goles',
+            'BTTS_No_U25': 'Ambos Anotan (No) + Menos 2.5 Goles',
+            'BTTS_No_U35': 'Ambos Anotan (No) + Menos 3.5 Goles',
+            '1X_BTTS_Yes': '1X + Ambos Anotan',
+            'X2_BTTS_Yes': 'X2 + Ambos Anotan'
         }
 
         for combo_key, prob in sgbb.items():
             if combo_key in mapa_nombres_sgbb:
-                mega_misiles.append({'match': p, 'prob': prob, 'sel': mapa_nombres_sgbb[combo_key]})
+                mega_misiles.append({
+                    'match': p, 
+                    'prob': prob, 
+                    'sel': mapa_nombres_sgbb[combo_key]
+                })
         
         if p.get('btts_no', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('btts_no'), 'sel': 'Ambos Anotan (NO)'})
         if p.get('btts', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('btts'), 'sel': 'Ambos Anotan (SÍ)'})
         if p.get('home_clean_sheet', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('home_clean_sheet'), 'sel': f"Clean Sheet {p['local']}"})
         if p.get('away_clean_sheet', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('away_clean_sheet'), 'sel': f"Clean Sheet {p['visita']}"})
+        
         if p.get('under_2_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('under_2_5'), 'sel': '-2.5 Goles'})
         if p.get('under_3_5', 0) > 0.85: bb_list.append({'match': p, 'prob': p.get('under_3_5'), 'sel': '-3.5 Goles'})
+        
         if p.get('over_1_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_1_5'), 'sel': '+1.5 Goles'})
         if p.get('over_2_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_2_5'), 'sel': '+2.5 Goles'})
         if p.get('over_3_5', 0) > 0.80: bb_list.append({'match': p, 'prob': p.get('over_3_5'), 'sel': '+3.5 Goles'})
@@ -124,14 +159,18 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         dobles.append({'match': p, 'prob': prob_doble, 'sel': sel_doble})
         
         opciones_goles = [
-            {'sel': 'Ambos Anotan', 'prob': p.get('btts', 0)}, {'sel': '+1.5 Goles', 'prob': p.get('over_1_5', 0)},
-            {'sel': '+2.5 Goles', 'prob': p.get('over_2_5', 0)}, {'sel': '-3.5 Goles', 'prob': p.get('under_3_5', 0)}
+            {'sel': 'Ambos Anotan', 'prob': p.get('btts', 0)},
+            {'sel': '+1.5 Goles', 'prob': p.get('over_1_5', 0)},
+            {'sel': '+2.5 Goles', 'prob': p.get('over_2_5', 0)},
+            {'sel': '-3.5 Goles', 'prob': p.get('under_3_5', 0)}
         ]
         mejor_gol = max(opciones_goles, key=lambda x: x['prob'])
         goles.append({'match': p, 'prob': mejor_gol['prob'], 'sel': mejor_gol['sel']})
 
-        # Menús Nuevos V4.0
-        if p.get('btts', 0) > 0.80: francotiradores.append({'match': p, 'prob': p.get('btts'), 'sel': 'Ambos Anotan (SÍ)'})
+        # --- INYECCIÓN MENÚS NUEVOS V4.0 ---
+        if p.get('btts', 0) > 0.80: 
+            francotiradores.append({'match': p, 'prob': p.get('btts'), 'sel': 'Ambos Anotan (SÍ)'})
+            
         if p.get('over_8_5_corners', 0) > 0.80: quirofano_tactico.append({'match': p, 'prob': p.get('over_8_5_corners'), 'sel': '+8.5 Córners'})
         if p.get('over_9_5_corners', 0) > 0.75: quirofano_tactico.append({'match': p, 'prob': p.get('over_9_5_corners'), 'sel': '+9.5 Córners'})
         if p.get('over_4_5_cards', 0) > 0.80: quirofano_tactico.append({'match': p, 'prob': p.get('over_4_5_cards'), 'sel': '+4.5 Tarjetas'})
@@ -140,7 +179,11 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         dif_global = p.get('dif_global', 0)
         if p.get('es_eliminatoria') and (dif_global <= -2 or dif_global >= 2):
             quien_remonta = p['local'] if dif_global <= -2 else p['visita']
-            radar_remontadas.append({'match': p, 'prob': 1.0, 'sel': f"🚨 Alerta Volatilidad: {quien_remonta} debe remontar {abs(dif_global)} goles"})
+            radar_remontadas.append({
+                'match': p, 
+                'prob': 1.0, 
+                'sel': f"🚨 Alerta Volatilidad: {quien_remonta} debe remontar {abs(dif_global)} goles"
+            })
 
     mega_misiles.sort(key=lambda x: x['prob'], reverse=True)
     bb_list.sort(key=lambda x: x['prob'], reverse=True)
@@ -156,6 +199,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     for item in goles[:30]: seleccionados.add(item['match']['_id_interno'])
 
     etiqueta_ventana = f" | {titulo_bloque}" if titulo_bloque else ""
+    
     msg = f"💎 ━━ *MENÚ BENDER V4.0 (Estadístico): {fecha_bloque}{etiqueta_ventana}* ━━ 💎\n\n"
     msg += f"📅 _Generado: {hora_generacion}_\n\n"
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
@@ -234,7 +278,30 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         msg += "_Ninguna combinación SGBB superó el umbral hoy._\n\n"
 
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n✅ *FIN DEL REPORTE* ✅\n\n"
-    enviar_mensaje_telegram(msg, token_override=token_override)
+
+    # --- CONTROL DE DESBORDAMIENTO DE TELEGRAM (RESTAURADO) ---
+    max_len = 3900 
+    if len(msg) > max_len:
+        mensajes_a_enviar = []
+        bloques = msg.split("\n\n")
+        chunk_actual = ""
+        
+        for bloque in bloques:
+            if len(chunk_actual) + len(bloque) + 2 > max_len:
+                mensajes_a_enviar.append(chunk_actual)
+                chunk_actual = bloque + "\n\n"
+            else:
+                chunk_actual += bloque + "\n\n"
+                
+        if chunk_actual.strip():
+            mensajes_a_enviar.append(chunk_actual)
+            
+        for chunk in mensajes_a_enviar:
+            enviar_mensaje_telegram(chunk, token_override=token_override)
+            time.sleep(1.5)
+    else:
+        enviar_mensaje_telegram(msg, token_override=token_override)
+        
     return len(partidos_validos)
 
 def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
@@ -248,7 +315,8 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
     for fecha in sorted(agrupado_por_fecha.keys()):
         procesados = _procesar_y_enviar_bloque_futbol(agrupado_por_fecha[fecha], titulo_bloque, fecha, analyzer, token_override)
         total_validos_global += (procesados or 0)
-        if procesados: time.sleep(2) 
+        if procesados:
+            time.sleep(2) 
             
     if total_validos_global == 0:
         enviar_mensaje_telegram(f"⚠️ No hay partidos con historial maduro para este bloque.", token_override=token_override)
