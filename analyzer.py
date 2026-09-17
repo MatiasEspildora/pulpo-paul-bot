@@ -180,9 +180,14 @@ class MatchAnalyzer:
 
         def get_avg_goals_decay(df_subset, team_id, is_ht=False):
             if df_subset.empty: return 1.2 if not is_ht else 0.5, 1.2 if not is_ht else 0.5
-            base_weights = [0.15, 0.12, 0.10, 0.09, 0.08, 0.07, 0.06, 0.05, 0.05, 0.04]
+            
             goles_f, goles_c = [], []
+            pesos = []
             col_fthg, col_ftag = ("HTHG", "HTAG") if is_ht else ("FTHG", "FTAG")
+            
+            # Constante de decaimiento (Vida media de 90 días)
+            decay_lambda = 0.0077
+            hoy = pd.Timestamp.now().normalize()
 
             for _, row in df_subset.iterrows():
                 h_val = row.get(col_fthg, 0.0)
@@ -193,10 +198,30 @@ class MatchAnalyzer:
                     goles_f.append(float(h_val)); goles_c.append(float(a_val))
                 else:
                     goles_f.append(float(a_val)); goles_c.append(float(h_val))
+                
+                # Cálculo de días transcurridos
+                fecha_partido = row.get("Date")
+                if pd.isna(fecha_partido):
+                    dias_diff = 30 # Valor por defecto si no hay fecha
+                else:
+                    dias_diff = max(0, (hoy - fecha_partido).days)
+                
+                # Cálculo del peso exponencial para este partido en particular
+                peso = np.exp(-decay_lambda * dias_diff)
+                pesos.append(peso)
             
-            w = base_weights[:len(goles_f)]
-            w = [x / sum(w) for x in w]
-            return sum(g * w_i for g, w_i in zip(goles_f, w)), sum(g * w_i for g, w_i in zip(goles_c, w))
+            # Normalización (para que la suma de todos los pesos sea 1)
+            suma_pesos = sum(pesos)
+            if suma_pesos == 0:
+                return 1.2 if not is_ht else 0.5, 1.2 if not is_ht else 0.5
+                
+            pesos_norm = [p / suma_pesos for p in pesos]
+            
+            # Cálculo final ponderado real
+            avg_f = sum(g * w for g, w in zip(goles_f, pesos_norm))
+            avg_c = sum(g * w for g, w in zip(goles_c, pesos_norm))
+            
+            return avg_f, avg_c
 
         # 🔥 FASE 2: MOTOR DE DOMINIO TÁCTICO (V3.6)
         def get_tactical_dominance_index(df_subset, team_id):
