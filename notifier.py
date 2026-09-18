@@ -357,8 +357,17 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
     mensaje_actual = ""
     max_len = 3800
     
+    fechas_incluidas = sorted({
+        p.get("fecha_str", "Sin fecha")
+        for ligas in agrupado_por_pais.values()
+        for proyecciones in ligas.values()
+        for p in proyecciones
+    })
+    
+    fechas_texto = ", ".join(fechas_incluidas)
+    
     # 🔥 TÍTULO GENERAL ÚNICO PARA TODO EL REPORTE DE AUTOPSIA
-    header_general = f"🩸 *LA AUTOPSIA TÁCTICA (V4.0)*\n📅 _Fecha: {fecha_bloque}_\n\n"
+    header_general = (f"🩸 *LA AUTOPSIA TÁCTICA (V4.0)*\n📅 _Fecha: {fechas_texto}_\n\n")
     mensaje_actual = header_general
     
     for pais, ligas_del_pais in sorted(agrupado_por_pais.items()):
@@ -384,8 +393,9 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
             header_liga = f"📌 {bandera} *{pais} - {liga}*\n\n"
             
             if len(mensaje_actual) + len(header_liga) > max_len:
-                mensajes_a_enviar.append(mensaje_actual)
-                mensaje_actual = f"🩸 *LA AUTOPSIA TÁCTICA (Cont.)*\n" + header_liga
+                if mensaje_actual.strip():
+                    mensajes_a_enviar.append(mensaje_actual)
+                mensaje_actual = header_liga
             else:
                 mensaje_actual += header_liga
             
@@ -426,8 +436,9 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
                 bloque_partido += "\n\n"
 
                 if len(mensaje_actual) + len(bloque_partido) > max_len:
-                    mensajes_a_enviar.append(mensaje_actual)
-                    mensaje_actual = f"🩸 *LA AUTOPSIA TÁCTICA (Cont.)*\n" + bloque_partido
+                    if mensaje_actual.strip():
+                        mensajes_a_enviar.append(mensaje_actual)
+                    mensaje_actual = bloque_partido
                 else:
                     mensaje_actual += bloque_partido
 
@@ -459,7 +470,9 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
         if procesados:
             time.sleep(2) 
             
-        _procesar_y_enviar_autopsia_futbol(agrupado_por_fecha[fecha], titulo_bloque, fecha, analyzer, token_override)
+    if agrupado_por_fecha:
+        _procesar_y_enviar_autopsia_futbol(agrupado_por_fecha, titulo_bloque, None, analyzer, token_override)
+        
         time.sleep(2)
             
     if total_validos_global == 0:
