@@ -124,47 +124,64 @@ def evaluar_pick(row, fthg, ftag):
 
 def actualizar_blacklist(peores_ligas):
     """
-    Lee/Crea config/blacklist.json y añade las ligas tóxicas
-    para que drivers/football.py las ampute del pipeline de análisis.
+    Lee config/blacklist.json, purga las ligas que ya cumplieron su cuarentena,
+    y añade/actualiza las ligas tóxicas actuales.
     """
     ruta_blacklist = os.path.join("config", "blacklist.json")
-    blacklist = {"ligas_toxicas": []}
-    
-    # Asegurar que el directorio config existe
     os.makedirs(os.path.dirname(ruta_blacklist), exist_ok=True)
     
-    # Cargar historial existente para no sobreescribir baneos anteriores
+    blacklist_actual = []
     if os.path.exists(ruta_blacklist):
         try:
             with open(ruta_blacklist, "r", encoding="utf-8") as f:
-                blacklist = json.load(f)
+                blacklist_actual = json.load(f).get("ligas_toxicas", [])
         except Exception as e:
             print(f"⚠️ Error leyendo blacklist.json: {e}. Se creará uno nuevo.")
             
-    # Crear un set con llaves compuestas para búsqueda rápida O(1) y evitar duplicados
-    ligas_baneadas_actuales = {f"{item['country']}_{item['league']}" for item in blacklist.get("ligas_toxicas", [])}
+    # 1. FILTRO DE AMNISTÍA: Eliminar ligas que llevan más de 14 días en cuarentena
+    fecha_hoy = datetime.now()
+    blacklist_filtrada = []
+    for item in blacklist_actual:
+        try:
+            fecha_baneo = datetime.strptime(item.get("date_added", "2000-01-01"), "%Y-%m-%d")
+            if (fecha_hoy - fecha_baneo).days <= 14:
+                blacklist_filtrada.append(item)
+        except Exception:
+            pass # Si falla la fecha, la sacamos por seguridad
+            
+    # 2. ACTUALIZACIÓN DINÁMICA: Convertir a diccionario para actualizar métricas fácil
+    dict_baneadas = {f"{item['country']}_{item['league']}": item for item in blacklist_filtrada}
     
     nuevas_agregadas = 0
     for pais, liga, pct, tot in peores_ligas:
-        # Filtro de Titanio: Solo baneamos ligas cuya efectividad sea matemática y comprobadamente tóxica (< 50%)
         if pct < 50.0:
             key = f"{pais}_{liga}"
-            if key not in ligas_baneadas_actuales:
-                blacklist["ligas_toxicas"].append({
+            if key in dict_baneadas:
+                # Si ya estaba, actualizamos sus métricas pero NO su fecha (para no romper la amnistía)
+                dict_baneadas[key]['win_rate'] = round(pct, 2)
+                dict_baneadas[key]['total_picks'] = tot
+            else:
+                # Si es nueva, entra a cuarentena hoy
+                dict_baneadas[key] = {
                     "country": pais,
                     "league": liga,
                     "win_rate": round(pct, 2),
                     "total_picks": tot,
-                    "date_added": datetime.now().strftime("%Y-%m-%d")
-                })
-                ligas_baneadas_actuales.add(key)
+                    "date_added": fecha_hoy.strftime("%Y-%m-%d")
+                }
                 nuevas_agregadas += 1
                 
-    # Si detectamos toxicidad nueva, reescribimos el JSON
+    # 3. REESCRITURA PURA: Guardar el nuevo JSON limpio y depurado
+    blacklist_final = {"ligas_toxicas": list(dict_baneadas.values())}
+    with open(ruta_blacklist, "w", encoding="utf-8") as f:
+        json.dump(blacklist_final, f, indent=4, ensure_ascii=False)
+        
     if nuevas_agregadas > 0:
-        with open(ruta_blacklist, "w", encoding="utf-8") as f:
-            json.dump(blacklist, f, indent=4, ensure_ascii=False)
-        print(f"☣️ Auto-Blacklist actualizada: {nuevas_agregadas} ligas tóxicas aisladas en cuarentena.")
+        print(f"☣️ Auto-Blacklist actualizada: {nuevas_agregadas} ligas nuevas en cuarentena.")
+    
+    liberadas = len(blacklist_actual) - len(blacklist_filtrada)
+    if liberadas > 0:
+        print(f"🕊️ Amnistía: {liberadas} ligas cumplieron su cuarentena y fueron liberadas.")
 
 def auditar_y_reportar():
     log_path = "kpi/football/predicciones_log.csv"
@@ -266,7 +283,12 @@ def auditar_y_reportar():
     ligas_stats = []
     peores_ligas = []
     if 'League' in df_resueltos.columns and 'Country' in df_resueltos.columns:
-        for (pais, liga), group in df_resueltos.groupby(['Country', 'League']):
+        
+        # 🔥 NUEVO: Ventana de memoria móvil (Últimos 30 días) para evitar datos congelados
+        fecha_limite = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
+        df_reciente = df_resueltos[df_resueltos['Fecha'] >= fecha_limite]
+        
+        for (pais, liga), group in df_reciente.groupby(['Country', 'League']):
             tl = len(group)
             if tl >= 3:
                 pl = (group['Acierto'].sum() / tl) * 100
@@ -275,9 +297,7 @@ def auditar_y_reportar():
         ligas_stats.sort(key=lambda x: (x[2], -x[3])) 
         peores_ligas = ligas_stats[:3]
 
-        # ---------------------------------------------------------
-        # NUEVO: Disparar el Auto-Blacklist con las peores ligas
-        # ---------------------------------------------------------
+        # Disparar el Auto-Blacklist con las peores ligas recientes
         if peores_ligas:
             actualizar_blacklist(peores_ligas)
 
