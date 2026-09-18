@@ -7,8 +7,8 @@
             "date": "2026-09-18T00:15:00-03:00",
             "timestamp": 1789701300,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789701300,
+                "second": 1789704900
             },
             "venue": {
                 "id": null,
@@ -16,9 +16,9 @@
                 "city": "Tegucigalpa"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 76,
                 "extra": null
             }
         },
@@ -37,23 +37,23 @@
                 "id": 1051,
                 "name": "CD Olimpia",
                 "logo": "https://media.api-sports.io/football/teams/1051.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 4303,
                 "name": "Firpo",
                 "logo": "https://media.api-sports.io/football/teams/4303.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 3,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
@@ -77,7 +77,7 @@
             "date": "2026-09-18T01:00:00-03:00",
             "timestamp": 1789704000,
             "periods": {
-                "first": null,
+                "first": 1789704000,
                 "second": null
             },
             "venue": {
@@ -86,9 +86,9 @@
                 "city": "Hachinohe"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
                 "extra": null
             }
         },
@@ -107,23 +107,23 @@
                 "id": 4326,
                 "name": "Vanraure Hachinohe",
                 "logo": "https://media.api-sports.io/football/teams/4326.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 10409,
                 "name": "Tegevajaro Miyazaki",
                 "logo": "https://media.api-sports.io/football/teams/10409.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
                 "home": null,
@@ -323,6 +323,76 @@
                 "id": 27236,
                 "name": "Dynamo Makhachkala U19",
                 "logo": "https://media.api-sports.io/football/teams/27236.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1629434,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-18T05:00:00-03:00",
+            "timestamp": 1789718400,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 1240,
+            "name": "U19 league",
+            "country": "Turkey",
+            "logo": "https://media.api-sports.io/football/leagues/1240.png",
+            "flag": "https://media.api-sports.io/flags/tr.svg",
+            "season": 2026,
+            "round": "Regular Season - 6",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 28249,
+                "name": "Kasimpasa U19",
+                "logo": "https://media.api-sports.io/football/teams/28249.png",
+                "winner": null
+            },
+            "away": {
+                "id": 28251,
+                "name": "Konyaspor U19",
+                "logo": "https://media.api-sports.io/football/teams/28251.png",
                 "winner": null
             }
         },
@@ -940,7 +1010,7 @@
             "flag": "https://media.api-sports.io/flags/bd.svg",
             "season": 2027,
             "round": "Regular Season - 1",
-            "standings": true
+            "standings": false
         },
         "teams": {
             "home": {
@@ -1010,7 +1080,7 @@
             "flag": "https://media.api-sports.io/flags/bd.svg",
             "season": 2027,
             "round": "Regular Season - 1",
-            "standings": true
+            "standings": false
         },
         "teams": {
             "home": {
@@ -1080,7 +1150,7 @@
             "flag": "https://media.api-sports.io/flags/bd.svg",
             "season": 2027,
             "round": "Regular Season - 1",
-            "standings": true
+            "standings": false
         },
         "teams": {
             "home": {
@@ -1150,7 +1220,7 @@
             "flag": "https://media.api-sports.io/flags/bd.svg",
             "season": 2027,
             "round": "Regular Season - 1",
-            "standings": true
+            "standings": false
         },
         "teams": {
             "home": {
@@ -1220,7 +1290,7 @@
             "flag": "https://media.api-sports.io/flags/bd.svg",
             "season": 2027,
             "round": "Regular Season - 1",
-            "standings": true
+            "standings": false
         },
         "teams": {
             "home": {
@@ -1990,7 +2060,7 @@
             "flag": null,
             "season": 2026,
             "round": "Group Stage - A",
-            "standings": false
+            "standings": true
         },
         "teams": {
             "home": {
@@ -2242,7 +2312,7 @@
     {
         "fixture": {
             "id": 1528105,
-            "referee": null,
+            "referee": "B. Sariev",
             "timezone": "America/Santiago",
             "date": "2026-09-18T08:00:00-03:00",
             "timestamp": 1789729200,
@@ -3152,7 +3222,7 @@
     {
         "fixture": {
             "id": 1528101,
-            "referee": null,
+            "referee": "S. Sulikanov",
             "timezone": "America/Santiago",
             "date": "2026-09-18T09:00:00-03:00",
             "timestamp": 1789732800,
@@ -3222,7 +3292,7 @@
     {
         "fixture": {
             "id": 1528107,
-            "referee": null,
+            "referee": "D. Sakhi",
             "timezone": "America/Santiago",
             "date": "2026-09-18T09:00:00-03:00",
             "timestamp": 1789732800,
@@ -3432,7 +3502,7 @@
     {
         "fixture": {
             "id": 1621029,
-            "referee": null,
+            "referee": "A. Merchant",
             "timezone": "America/Santiago",
             "date": "2026-09-18T09:00:00-03:00",
             "timestamp": 1789732800,
@@ -3442,8 +3512,8 @@
             },
             "venue": {
                 "id": null,
-                "name": null,
-                "city": null
+                "name": "The Knighthead Training and Academy Grounds",
+                "city": "Birmingham"
             },
             "status": {
                 "long": "Not Started",
@@ -5391,76 +5461,6 @@
     },
     {
         "fixture": {
-            "id": 1629434,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-18T10:00:00-03:00",
-            "timestamp": 1789736400,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 1240,
-            "name": "U19 league",
-            "country": "Turkey",
-            "logo": "https://media.api-sports.io/football/leagues/1240.png",
-            "flag": "https://media.api-sports.io/flags/tr.svg",
-            "season": 2026,
-            "round": "Regular Season - 6",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 28249,
-                "name": "Kasimpasa U19",
-                "logo": "https://media.api-sports.io/football/teams/28249.png",
-                "winner": null
-            },
-            "away": {
-                "id": 28251,
-                "name": "Konyaspor U19",
-                "logo": "https://media.api-sports.io/football/teams/28251.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
             "id": 1632483,
             "referee": null,
             "timezone": "America/Santiago",
@@ -5630,7 +5630,7 @@
             "flag": null,
             "season": 2026,
             "round": "Group Stage - C",
-            "standings": false
+            "standings": true
         },
         "teams": {
             "home": {
@@ -7463,6 +7463,76 @@
                 "id": 8602,
                 "name": "Dugo Selo",
                 "logo": "https://media.api-sports.io/football/teams/8602.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1606159,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-18T11:00:00-03:00",
+            "timestamp": 1789740000,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": "Nikola Shterev - Starika Sports Complex",
+                "city": "Plovdiv"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 177,
+            "name": "Third League - Southeast",
+            "country": "Bulgaria",
+            "logo": "https://media.api-sports.io/football/leagues/177.png",
+            "flag": "https://media.api-sports.io/flags/bg.svg",
+            "season": 2026,
+            "round": "Southeast - 7",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 16963,
+                "name": "Botev Plovdiv II",
+                "logo": "https://media.api-sports.io/football/teams/16963.png",
+                "winner": null
+            },
+            "away": {
+                "id": 1412,
+                "name": "Sozopol",
+                "logo": "https://media.api-sports.io/football/teams/1412.png",
                 "winner": null
             }
         },
@@ -11902,7 +11972,7 @@
     {
         "fixture": {
             "id": 1513634,
-            "referee": null,
+            "referee": "J. Jakobson",
             "timezone": "America/Santiago",
             "date": "2026-09-18T13:00:00-03:00",
             "timestamp": 1789747200,
@@ -12392,7 +12462,7 @@
     {
         "fixture": {
             "id": 1559785,
-            "referee": null,
+            "referee": "D. Cerny",
             "timezone": "America/Santiago",
             "date": "2026-09-18T13:00:00-03:00",
             "timestamp": 1789747200,
@@ -12462,7 +12532,7 @@
     {
         "fixture": {
             "id": 1559786,
-            "referee": null,
+            "referee": "M. Kubecka",
             "timezone": "America/Santiago",
             "date": "2026-09-18T13:00:00-03:00",
             "timestamp": 1789747200,
@@ -12532,7 +12602,7 @@
     {
         "fixture": {
             "id": 1559787,
-            "referee": null,
+            "referee": "J. Benes",
             "timezone": "America/Santiago",
             "date": "2026-09-18T13:00:00-03:00",
             "timestamp": 1789747200,
@@ -12602,7 +12672,7 @@
     {
         "fixture": {
             "id": 1559789,
-            "referee": null,
+            "referee": "V. Opocensky",
             "timezone": "America/Santiago",
             "date": "2026-09-18T13:00:00-03:00",
             "timestamp": 1789747200,
@@ -13161,76 +13231,6 @@
     },
     {
         "fixture": {
-            "id": 1606159,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-18T13:00:00-03:00",
-            "timestamp": 1789747200,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": "Nikola Shterev - Starika Sports Complex",
-                "city": "Plovdiv"
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 177,
-            "name": "Third League - Southeast",
-            "country": "Bulgaria",
-            "logo": "https://media.api-sports.io/football/leagues/177.png",
-            "flag": "https://media.api-sports.io/flags/bg.svg",
-            "season": 2026,
-            "round": "Southeast - 7",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 16963,
-                "name": "Botev Plovdiv II",
-                "logo": "https://media.api-sports.io/football/teams/16963.png",
-                "winner": null
-            },
-            "away": {
-                "id": 1412,
-                "name": "Sozopol",
-                "logo": "https://media.api-sports.io/football/teams/1412.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
             "id": 1609514,
             "referee": null,
             "timezone": "America/Santiago",
@@ -13540,7 +13540,7 @@
             "flag": null,
             "season": 2026,
             "round": "Group Stage - A",
-            "standings": false
+            "standings": true
         },
         "teams": {
             "home": {
@@ -13610,7 +13610,7 @@
             "flag": null,
             "season": 2026,
             "round": "Group Stage - C",
-            "standings": false
+            "standings": true
         },
         "teams": {
             "home": {
@@ -13932,7 +13932,7 @@
     {
         "fixture": {
             "id": 1567911,
-            "referee": null,
+            "referee": "D. Divkovic",
             "timezone": "America/Santiago",
             "date": "2026-09-18T13:30:00-03:00",
             "timestamp": 1789749000,
@@ -15472,7 +15472,7 @@
     {
         "fixture": {
             "id": 1551346,
-            "referee": "J. Tornberg Rasmussen",
+            "referee": "M. Thomsen",
             "timezone": "America/Santiago",
             "date": "2026-09-18T14:00:00-03:00",
             "timestamp": 1789750800,
@@ -17162,7 +17162,7 @@
             },
             "venue": {
                 "id": null,
-                "name": null,
+                "name": "Mugla Ataturk Stadyumu",
                 "city": null
             },
             "status": {
@@ -18552,7 +18552,7 @@
     {
         "fixture": {
             "id": 1506534,
-            "referee": null,
+            "referee": "B. Danielsen",
             "timezone": "America/Santiago",
             "date": "2026-09-18T14:30:00-03:00",
             "timestamp": 1789752600,
@@ -18692,7 +18692,7 @@
     {
         "fixture": {
             "id": 1555057,
-            "referee": null,
+            "referee": "H. Sanli",
             "timezone": "America/Santiago",
             "date": "2026-09-18T14:30:00-03:00",
             "timestamp": 1789752600,
@@ -18762,7 +18762,7 @@
     {
         "fixture": {
             "id": 1555058,
-            "referee": null,
+            "referee": "M. Drmic",
             "timezone": "America/Santiago",
             "date": "2026-09-18T14:30:00-03:00",
             "timestamp": 1789752600,
@@ -18832,7 +18832,7 @@
     {
         "fixture": {
             "id": 1555059,
-            "referee": null,
+            "referee": "D. Anex",
             "timezone": "America/Santiago",
             "date": "2026-09-18T14:30:00-03:00",
             "timestamp": 1789752600,
@@ -22332,7 +22332,7 @@
     {
         "fixture": {
             "id": 1582803,
-            "referee": null,
+            "referee": "M. Kazlagic",
             "timezone": "America/Santiago",
             "date": "2026-09-18T15:00:00-03:00",
             "timestamp": 1789754400,
@@ -23032,7 +23032,7 @@
     {
         "fixture": {
             "id": 1621030,
-            "referee": null,
+            "referee": "D. Bourne",
             "timezone": "America/Santiago",
             "date": "2026-09-18T15:00:00-03:00",
             "timestamp": 1789754400,
@@ -23102,7 +23102,7 @@
     {
         "fixture": {
             "id": 1621031,
-            "referee": null,
+            "referee": "M. McQuillan",
             "timezone": "America/Santiago",
             "date": "2026-09-18T15:00:00-03:00",
             "timestamp": 1789754400,
@@ -23112,8 +23112,8 @@
             },
             "venue": {
                 "id": null,
-                "name": null,
-                "city": null
+                "name": "Lancashire County Ground",
+                "city": "Leyland"
             },
             "status": {
                 "long": "Not Started",
@@ -23172,7 +23172,7 @@
     {
         "fixture": {
             "id": 1621033,
-            "referee": null,
+            "referee": "G. Laflin",
             "timezone": "America/Santiago",
             "date": "2026-09-18T15:00:00-03:00",
             "timestamp": 1789754400,
@@ -23242,7 +23242,7 @@
     {
         "fixture": {
             "id": 1621034,
-            "referee": null,
+            "referee": "L. Smith",
             "timezone": "America/Santiago",
             "date": "2026-09-18T15:00:00-03:00",
             "timestamp": 1789754400,
@@ -23252,8 +23252,8 @@
             },
             "venue": {
                 "id": null,
-                "name": null,
-                "city": null
+                "name": "Leigh Sports Village",
+                "city": "Leigh"
             },
             "status": {
                 "long": "Not Started",
@@ -23312,7 +23312,7 @@
     {
         "fixture": {
             "id": 1621035,
-            "referee": null,
+            "referee": "D. Baines",
             "timezone": "America/Santiago",
             "date": "2026-09-18T15:00:00-03:00",
             "timestamp": 1789754400,
@@ -23382,7 +23382,7 @@
     {
         "fixture": {
             "id": 1621036,
-            "referee": null,
+            "referee": "T. Sangowawa",
             "timezone": "America/Santiago",
             "date": "2026-09-18T15:00:00-03:00",
             "timestamp": 1789754400,
@@ -23392,8 +23392,8 @@
             },
             "venue": {
                 "id": null,
-                "name": null,
-                "city": null
+                "name": "Alexander Stadium",
+                "city": "Birmingham"
             },
             "status": {
                 "long": "Not Started",
@@ -23452,7 +23452,7 @@
     {
         "fixture": {
             "id": 1621037,
-            "referee": null,
+            "referee": "S. Copeland",
             "timezone": "America/Santiago",
             "date": "2026-09-18T15:00:00-03:00",
             "timestamp": 1789754400,
@@ -24222,7 +24222,7 @@
     {
         "fixture": {
             "id": 1555060,
-            "referee": null,
+            "referee": "H. Qovanaj",
             "timezone": "America/Santiago",
             "date": "2026-09-18T15:15:00-03:00",
             "timestamp": 1789755300,
@@ -24362,7 +24362,7 @@
     {
         "fixture": {
             "id": 1556859,
-            "referee": null,
+            "referee": "J. Hay",
             "timezone": "America/Santiago",
             "date": "2026-09-18T15:30:00-03:00",
             "timestamp": 1789756200,
@@ -25622,7 +25622,7 @@
     {
         "fixture": {
             "id": 1550133,
-            "referee": null,
+            "referee": "D. Perenzoni",
             "timezone": "America/Santiago",
             "date": "2026-09-18T15:45:00-03:00",
             "timestamp": 1789757100,
@@ -28352,7 +28352,7 @@
     {
         "fixture": {
             "id": 1493140,
-            "referee": null,
+            "referee": "P. Echavarria",
             "timezone": "America/Santiago",
             "date": "2026-09-18T18:00:00-03:00",
             "timestamp": 1789765200,
@@ -29332,7 +29332,7 @@
     {
         "fixture": {
             "id": 1490481,
-            "referee": null,
+            "referee": "J. Freemon",
             "timezone": "America/Santiago",
             "date": "2026-09-18T20:30:00-03:00",
             "timestamp": 1789774200,
@@ -29822,7 +29822,7 @@
     {
         "fixture": {
             "id": 1493146,
-            "referee": null,
+            "referee": "L. Rey Hilfer",
             "timezone": "America/Santiago",
             "date": "2026-09-18T21:15:00-03:00",
             "timestamp": 1789776900,
@@ -29902,7 +29902,7 @@
             },
             "venue": {
                 "id": null,
-                "name": null,
+                "name": "Estadio Nicolas Alvarez Ortega",
                 "city": null
             },
             "status": {
@@ -29962,7 +29962,7 @@
     {
         "fixture": {
             "id": 1639788,
-            "referee": null,
+            "referee": "G. Gonzalez",
             "timezone": "America/Santiago",
             "date": "2026-09-18T21:30:00-03:00",
             "timestamp": 1789777800,
@@ -30172,7 +30172,7 @@
     {
         "fixture": {
             "id": 1581426,
-            "referee": null,
+            "referee": "A. Rodriguez",
             "timezone": "America/Santiago",
             "date": "2026-09-18T22:00:00-03:00",
             "timestamp": 1789779600,
@@ -30242,7 +30242,7 @@
     {
         "fixture": {
             "id": 1581478,
-            "referee": null,
+            "referee": "E. A. Ramirez Gutierrez",
             "timezone": "America/Santiago",
             "date": "2026-09-18T22:00:00-03:00",
             "timestamp": 1789779600,
