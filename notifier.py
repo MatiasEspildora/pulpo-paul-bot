@@ -412,14 +412,12 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
 
                 bloque_partido = f"⚽ *{p['local']} vs {p['visita']}*\n"
                 bloque_partido += f"📅 `{p.get('fecha_str', '')}` | 🕒 `{p.get('hora', '')}`{es_mata_mata}\n"
-                bloque_partido += "━━━━━━━━━━━━━━━━━━━━\n"
                 bloque_partido += f"📊 *RESULTADO* ➔ 1X2: L ({ph:.0%}) | E ({pd_draw:.0%}) | V ({pa:.0%})\n"
                 bloque_partido += f"🛡️ *DOBLE OP.* ➔ 1X ({p_1x:.0%}) | 12 ({p_12:.0%}) | X2 ({p_x2:.0%})\n"
                 bloque_partido += f"🎯 *BTTS* ➔ Sí ({p.get('btts', 0):.0%}) | No ({p.get('btts_no', 0):.0%}) | ⏱️ +0.5 HT: {p.get('prob_over_0_5_ht', 0):.0%}\n"
                 bloque_partido += f"🔥 *ALTAS* ➔ +1.5 ({p.get('over_1_5', 0):.0%}) | +2.5 ({p.get('over_2_5', 0):.0%}) | +3.5 ({p.get('over_3_5', 0):.0%})\n"
                 bloque_partido += f"⚽ *BAJAS* ➔ -2.5 ({p.get('under_2_5', 0):.0%}) | -3.5 ({p.get('under_3_5', 0):.0%}) | -4.5 ({p.get('under_4_5', 0):.0%})\n"
                 bloque_partido += f"🧱 *PORT. A CERO* ➔ L ({p.get('home_clean_sheet', 0):.0%}) | V ({p.get('away_clean_sheet', 0):.0%})\n"
-                bloque_partido += "─"*20 + "\n"
                 bloque_partido += f"📈 *FORMA (Global)* ➔ L [{p.get('home_form', 'N/A')}] ({p.get('home_ppg', 0)}p) | V [{p.get('away_form', 'N/A')}] ({p.get('away_ppg', 0)}p)\n"
                 bloque_partido += f"🏟️ *FORMA (H/A)* ➔ L [{p.get('home_venue_form', 'N/A')}] ({p.get('home_venue_ppg', 0)}p) | V [{p.get('away_venue_form', 'N/A')}] ({p.get('away_venue_ppg', 0)}p)\n"
 
@@ -428,7 +426,6 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
                 bloque_partido += f"📐 *PROM. GOLES ({count_l}p|{count_v}p)* ➔ L ({s_l.get('goles_favor', 0):.1f}F-{s_l.get('goles_contra', 0):.1f}C) | V ({s_v.get('goles_favor', 0):.1f}F-{s_v.get('goles_contra', 0):.1f}C)\n"
                 
                 if s_l.get('has_details') or s_v.get('has_details'):
-                    bloque_partido += "─"*20 + "\n"
                     bloque_partido += f"📋 *RADIOGRAFÍA* ➔ Remates: L ({s_l.get('remates', 0):.1f}) | V ({s_v.get('remates', 0):.1f})\n"
                     bloque_partido += f"🚩 *CÓRNERS (Prom)* ➔ L ({s_l.get('corners', 0):.1f}) | V ({s_v.get('corners', 0):.1f})\n"
                     bloque_partido += f"🎯 *CÓRNERS (Poiss)* ➔ +8.5 ({p.get('over_8_5_corners', 0):.0%}) | +9.5 ({p.get('over_9_5_corners', 0):.0%})\n"
