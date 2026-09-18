@@ -355,7 +355,7 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
     
     mensajes_a_enviar = []
     mensaje_actual = ""
-    max_len = 3800
+    max_len = 3900
     
     fechas_incluidas = sorted({
         p.get("fecha_str", "Sin fecha")
@@ -466,12 +466,13 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
     total_validos_global = 0
     for fecha in sorted(agrupado_por_fecha.keys()):
         procesados = _procesar_y_enviar_bloque_futbol(agrupado_por_fecha[fecha], titulo_bloque, fecha, analyzer, token_override)
+        
         total_validos_global += (procesados or 0)
+        
         if procesados:
             time.sleep(2) 
-            
-    if agrupado_por_fecha:
-        _procesar_y_enviar_autopsia_futbol(agrupado_por_fecha, titulo_bloque, None, analyzer, token_override)
+ 
+        _procesar_y_enviar_autopsia_futbol(agrupado_por_fecha[fecha], titulo_bloque, fecha, analyzer, token_override)
         
         time.sleep(2)
             
@@ -548,7 +549,7 @@ def _procesar_y_enviar_autopsia_basket(proyecciones_dict, titulo_bloque, fecha_b
     
     mensajes_a_enviar = []
     mensaje_actual = ""
-    max_len = 3800
+    max_len = 3900
     
     for pais, ligas_del_pais in sorted(agrupado_por_pais.items()):
         bandera = BANDERAS.get(pais, "🏴")
