@@ -24,12 +24,12 @@ def main():
     except Exception as e:
         print(f"❌ [FOOTBALL] Error crítico: {e}")
     
-    try:
-        print("\n🏀 [BASKET] Iniciando procesamiento...")
-        basketball.run_process(df_completo_bk)
-        print("   ↳ 🏀 [BASKET] Finalizado con éxito.")
-    except Exception as e:
-        print(f"❌ [BASKET] Error crítico: {e}")
+    #try:
+    #    print("\n🏀 [BASKET] Iniciando procesamiento...")
+    #    basketball.run_process(df_completo_bk)
+    #    print("   ↳ 🏀 [BASKET] Finalizado con éxito.")
+    #except Exception as e:
+    #    print(f"❌ [BASKET] Error crítico: {e}")
     
     print("\n" + "=" * 55)
     print("✅  CICLO DE EJECUCIÓN GLOBAL FINALIZADO")
