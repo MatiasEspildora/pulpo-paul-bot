@@ -84,8 +84,6 @@ class BetBuilderEngine:
             else:
                 if prob >= 0.80: sgbb_titanio[combo] = prob
 
-        safe_prob_home = prob_home if prob_home >= 0.90 else 0.0
-        safe_prob_away = prob_away if prob_away >= 0.90 else 0.0
         safe_btts_no = btts_no if btts_no >= 0.90 else 0.0
 
         corners_markets = {'over_8_5_corners': 0.0, 'over_9_5_corners': 0.0}
@@ -112,7 +110,7 @@ class BetBuilderEngine:
 
         result = raw_data.copy()
         result.update({
-            'probs': [safe_prob_home, prob_draw, safe_prob_away],
+            'probs': [prob_home, prob_draw, prob_away],
             'btts': btts_yes, 'btts_no': safe_btts_no,
             'scores': top_scores, 'score_value': max(prob_home, prob_draw, prob_away), 
             'prob_1X': prob_1X, 'prob_X2': prob_X2, 'prob_12': prob_12,
