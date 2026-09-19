@@ -172,7 +172,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         add_bb(p.get('prob_over_0_5_ht', 0), p.get('prob_over_0_5_ht'), '+0.5 Goles HT')
 
         prob_gana = max(p.get('probs', [0,0,0])[0], p.get('probs', [0,0,0])[2])
-        if prob_gana > 0:
+        if prob_gana >= 0.90:
             sel_gana = p['local'] if p.get('probs', [0,0,0])[0] > p.get('probs', [0,0,0])[2] else p['visita']
             ganadores.append({'match': p, 'prob': prob_gana, 'sel': sel_gana, 'score': calcular_confidence_score(prob_gana, t_partidos)})
         
