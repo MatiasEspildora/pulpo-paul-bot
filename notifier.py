@@ -114,7 +114,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
                     partidos_validos.append(p)
                     
     if not partidos_validos:
-        return 0
+        return 0, set()
 
     bb_list = []
     mega_misiles = []
@@ -191,10 +191,6 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             francotiradores.append({'match': p, 'prob': p.get('btts'), 'sel': 'Ambos Anotan (SÍ)', 'score': calcular_confidence_score(p.get('btts'), t_partidos)})
         
         # --- LÓGICA CORREGIDA PARA CÓRNERS ---
-        # 1. Buscamos la línea más agresiva que siga siendo segura (>75%)
-        # 2. Si no hay una agresiva, bajamos a la línea conservadora (>80%)
-        # 3. Solo agregamos UNA por partido.
-        
         corner_sel = None
         corner_prob = 0
         if p.get('over_9_5_corners', 0) > 0.75:
@@ -205,8 +201,11 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             corner_prob = p.get('over_8_5_corners')
             
         if corner_sel:
-            # Construimos el string con el contexto real
-            promedio_str = f"L: {s_l.get('corners_f', 0):.1f} - V: {s_v.get('corners_f', 0):.1f}"
+            # Re-calculamos s_l y s_v localmente para el print (evitando errores)
+            es_c = p.get('es_eliminatoria', False)
+            sl = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_c)
+            sv = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_c)
+            promedio_str = f"L: {sl.get('corners', 0):.1f} - V: {sv.get('corners', 0):.1f}"
             quirofano_tactico.append({
                 'match': p, 
                 'prob': corner_prob, 
@@ -225,7 +224,10 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             card_prob = p.get('over_4_5_cards')
 
         if card_sel:
-            promedio_str = f"L: {s_l.get('tarjetas_f', 0):.1f} - V: {s_v.get('tarjetas_f', 0):.1f}"
+            es_c = p.get('es_eliminatoria', False)
+            sl = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_c)
+            sv = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_c)
+            promedio_str = f"L: {sl.get('tarjetas', 0):.1f} - V: {sv.get('tarjetas', 0):.1f}"
             quirofano_tactico.append({
                 'match': p, 
                 'prob': card_prob, 
@@ -249,6 +251,17 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     goles.sort(key=lambda x: x['score'], reverse=True)
     francotiradores.sort(key=lambda x: x['score'], reverse=True)
     quirofano_tactico.sort(key=lambda x: x['score'], reverse=True)
+
+    # RECOLECCIÓN DE PARTIDOS SELECCIONADOS PARA LA AUTOPSIA
+    seleccionados = set()
+    for item in bb_list[:30]: seleccionados.add(item['match']['_id_interno'])
+    for item in ganadores[:30]: seleccionados.add(item['match']['_id_interno'])
+    for item in dobles[:30]: seleccionados.add(item['match']['_id_interno'])
+    for item in goles[:30]: seleccionados.add(item['match']['_id_interno'])
+    for item in quirofano_tactico[:15]: seleccionados.add(item['match']['_id_interno'])
+    for item in francotiradores[:15]: seleccionados.add(item['match']['_id_interno'])
+    for item in radar_remontadas: seleccionados.add(item['match']['_id_interno'])
+    for item in mega_misiles[:30]: seleccionados.add(item['match']['_id_interno'])
 
     etiqueta_ventana = f" | {titulo_bloque}" if titulo_bloque else ""
     msg = f"💎 ━━ *MENÚ BENDER V4.0 (Estadístico): {fecha_bloque}{etiqueta_ventana}* ━━ 💎\n\n"
@@ -345,12 +358,13 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     else:
         enviar_mensaje_telegram(msg, token_override=token_override)
         
-    return len(partidos_validos)
+    return len(partidos_validos), seleccionados
+
 
 # ==========================================
 # 🩸 LA AUTOPSIA TÁCTICA (FÚTBOL V4.0 - Formato Dashboard Optimizado)
 # ==========================================
-def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_bloque, analyzer, token_override=None):
+def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_bloque, analyzer, seleccionados, token_override=None):
     agrupado_por_pais = agrupar_por_pais(proyecciones_dict)
     
     mensajes_a_enviar = []
@@ -377,6 +391,10 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
             
             partidos_validos = []
             for p in proyecciones:
+                # 🔥 AQUÍ ESTÁ EL ESCUDO: Solo procesamos los que entraron en los Tops
+                if p.get('_id_interno') not in seleccionados:
+                    continue
+
                 es_copa = p.get('es_eliminatoria', False)
                 s_l = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_copa)
                 s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_copa)
@@ -442,9 +460,10 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
     # 🔥 AÑADIR EL CIERRE AL ÚLTIMO MENSAJE O CREAR UNO NUEVO SI ESTÁ LLENO
     cierre_reporte = "━"*24 + "\n\n✅ *FIN DE LA AUTOPSIA* ✅\n\n"
     if len(mensaje_actual) + len(cierre_reporte) > max_len:
-        mensajes_a_enviar.append(mensaje_actual)
+        if mensaje_actual.strip():
+            mensajes_a_enviar.append(mensaje_actual)
         mensajes_a_enviar.append(cierre_reporte)
-    else:
+    elif mensaje_actual.strip() and mensaje_actual != header_general:
         mensaje_actual += cierre_reporte
         mensajes_a_enviar.append(mensaje_actual)
         
@@ -462,14 +481,14 @@ def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_ove
             
     total_validos_global = 0
     for fecha in sorted(agrupado_por_fecha.keys()):
-        procesados = _procesar_y_enviar_bloque_futbol(agrupado_por_fecha[fecha], titulo_bloque, fecha, analyzer, token_override)
+        procesados, seleccionados = _procesar_y_enviar_bloque_futbol(agrupado_por_fecha[fecha], titulo_bloque, fecha, analyzer, token_override)
         
         total_validos_global += (procesados or 0)
         
         if procesados:
             time.sleep(2) 
  
-        _procesar_y_enviar_autopsia_futbol(agrupado_por_fecha[fecha], titulo_bloque, fecha, analyzer, token_override)
+        _procesar_y_enviar_autopsia_futbol(agrupado_por_fecha[fecha], titulo_bloque, fecha, analyzer, seleccionados, token_override)
         
         time.sleep(2)
             
