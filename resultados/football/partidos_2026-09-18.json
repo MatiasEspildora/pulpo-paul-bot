@@ -7072,7 +7072,7 @@
     {
         "fixture": {
             "id": 1577531,
-            "referee": null,
+            "referee": "Vitaliy Moldova",
             "timezone": "America/Santiago",
             "date": "2026-09-18T11:00:00-03:00",
             "timestamp": 1789740000,
@@ -7142,7 +7142,7 @@
     {
         "fixture": {
             "id": 1577535,
-            "referee": null,
+            "referee": "Aleksei Lapatukhin",
             "timezone": "America/Santiago",
             "date": "2026-09-18T11:00:00-03:00",
             "timestamp": 1789740000,
@@ -7212,7 +7212,7 @@
     {
         "fixture": {
             "id": 1577538,
-            "referee": null,
+            "referee": "Evgeni Galimov",
             "timezone": "America/Santiago",
             "date": "2026-09-18T11:00:00-03:00",
             "timestamp": 1789740000,
@@ -10082,7 +10082,7 @@
     {
         "fixture": {
             "id": 1577532,
-            "referee": null,
+            "referee": "Nikolay Voloshin",
             "timezone": "America/Santiago",
             "date": "2026-09-18T12:00:00-03:00",
             "timestamp": 1789743600,
@@ -11762,7 +11762,7 @@
     {
         "fixture": {
             "id": 1577534,
-            "referee": null,
+            "referee": "Vera Opeikina",
             "timezone": "America/Santiago",
             "date": "2026-09-18T12:30:00-03:00",
             "timestamp": 1789745400,
@@ -19252,7 +19252,7 @@
     {
         "fixture": {
             "id": 1560247,
-            "referee": null,
+            "referee": "Marton Rusz",
             "timezone": "America/Santiago",
             "date": "2026-09-18T14:30:00-03:00",
             "timestamp": 1789752600,
@@ -21352,7 +21352,7 @@
     {
         "fixture": {
             "id": 1551800,
-            "referee": null,
+            "referee": "Stan Teuben",
             "timezone": "America/Santiago",
             "date": "2026-09-18T15:00:00-03:00",
             "timestamp": 1789754400,
@@ -21422,7 +21422,7 @@
     {
         "fixture": {
             "id": 1551801,
-            "referee": null,
+            "referee": "Wouter Wiersma",
             "timezone": "America/Santiago",
             "date": "2026-09-18T15:00:00-03:00",
             "timestamp": 1789754400,
@@ -21492,7 +21492,7 @@
     {
         "fixture": {
             "id": 1551802,
-            "referee": null,
+            "referee": "Niels Boel",
             "timezone": "America/Santiago",
             "date": "2026-09-18T15:00:00-03:00",
             "timestamp": 1789754400,
@@ -21562,7 +21562,7 @@
     {
         "fixture": {
             "id": 1551803,
-            "referee": null,
+            "referee": "Laurens Gerrets",
             "timezone": "America/Santiago",
             "date": "2026-09-18T15:00:00-03:00",
             "timestamp": 1789754400,
@@ -21632,7 +21632,7 @@
     {
         "fixture": {
             "id": 1551804,
-            "referee": null,
+            "referee": "Richard Martens",
             "timezone": "America/Santiago",
             "date": "2026-09-18T15:00:00-03:00",
             "timestamp": 1789754400,
@@ -27072,8 +27072,8 @@
         },
         "score": {
             "halftime": {
-                "home": 0,
-                "away": 1
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
                 "home": 2,
@@ -29191,6 +29191,76 @@
     },
     {
         "fixture": {
+            "id": 1631616,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-18T19:00:00-03:00",
+            "timestamp": 1789768800,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 872,
+            "name": "Liga Premier Serie B",
+            "country": "Mexico",
+            "logo": "https://media.api-sports.io/football/leagues/872.png",
+            "flag": "https://media.api-sports.io/flags/mx.svg",
+            "season": 2026,
+            "round": "Apertura - 3",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 28301,
+                "name": "Heroes de Zaci 2",
+                "logo": "https://media.api-sports.io/football/teams/28301.png",
+                "winner": null
+            },
+            "away": {
+                "id": 17806,
+                "name": "Huracanes Izcalli",
+                "logo": "https://media.api-sports.io/football/teams/17806.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
             "id": 1636655,
             "referee": null,
             "timezone": "America/Santiago",
@@ -29318,76 +29388,6 @@
             "fulltime": {
                 "home": 1,
                 "away": 0
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1631616,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-18T19:30:00-03:00",
-            "timestamp": 1789770600,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 872,
-            "name": "Liga Premier Serie B",
-            "country": "Mexico",
-            "logo": "https://media.api-sports.io/football/leagues/872.png",
-            "flag": "https://media.api-sports.io/flags/mx.svg",
-            "season": 2026,
-            "round": "Apertura - 3",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 28301,
-                "name": "Heroes de Zaci 2",
-                "logo": "https://media.api-sports.io/football/teams/28301.png",
-                "winner": null
-            },
-            "away": {
-                "id": 17806,
-                "name": "Huracanes Izcalli",
-                "logo": "https://media.api-sports.io/football/teams/17806.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
             },
             "extratime": {
                 "home": null,
@@ -29621,8 +29621,8 @@
                 "second": null
             },
             "venue": {
-                "id": null,
-                "name": null,
+                "id": 2655,
+                "name": "Estadio Olimpico Patria",
                 "city": "Sucre"
             },
             "status": {
@@ -29682,7 +29682,7 @@
     {
         "fixture": {
             "id": 1490481,
-            "referee": "Jon Freemon, USA",
+            "referee": "J. Freemon",
             "timezone": "America/Santiago",
             "date": "2026-09-18T20:30:00-03:00",
             "timestamp": 1789774200,
@@ -30042,7 +30042,7 @@
             },
             "venue": {
                 "id": null,
-                "name": "Estadio Padre Ernesto Martearena",
+                "name": "Padre Ernesto Martearena",
                 "city": "Salta"
             },
             "status": {
@@ -30107,8 +30107,8 @@
             "date": "2026-09-18T21:00:00-03:00",
             "timestamp": 1789776000,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789776000,
+                "second": 1789779600
             },
             "venue": {
                 "id": null,
@@ -30116,9 +30116,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -30137,18 +30137,18 @@
                 "id": 22055,
                 "name": "FC Santiago",
                 "logo": "https://media.api-sports.io/football/teams/22055.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 15919,
                 "name": "Atlético Saltillo",
                 "logo": "https://media.api-sports.io/football/teams/15919.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 4,
+            "away": 1
         },
         "score": {
             "halftime": {
@@ -30156,78 +30156,8 @@
                 "away": null
             },
             "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1631727,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-18T21:00:00-03:00",
-            "timestamp": 1789776000,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 722,
-            "name": "Liga Premier Serie A",
-            "country": "Mexico",
-            "logo": "https://media.api-sports.io/football/leagues/722.png",
-            "flag": "https://media.api-sports.io/flags/mx.svg",
-            "season": 2026,
-            "round": "Apertura - 4",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 26526,
-                "name": "Héroes de Zaci",
-                "logo": "https://media.api-sports.io/football/teams/26526.png",
-                "winner": null
-            },
-            "away": {
-                "id": 15935,
-                "name": "Mineros de Fresnillo",
-                "logo": "https://media.api-sports.io/football/teams/15935.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
+                "home": 4,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -30667,8 +30597,8 @@
             "date": "2026-09-18T22:00:00-03:00",
             "timestamp": 1789779600,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789779600,
+                "second": 1789783200
             },
             "venue": {
                 "id": null,
@@ -30676,9 +30606,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -30697,18 +30627,18 @@
                 "id": 28304,
                 "name": "Guerreros del Pacifico",
                 "logo": "https://media.api-sports.io/football/teams/28304.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 22051,
                 "name": "Acambaro",
                 "logo": "https://media.api-sports.io/football/teams/22051.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 1
         },
         "score": {
             "halftime": {
@@ -30716,8 +30646,8 @@
                 "away": null
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "extratime": {
                 "home": null,
