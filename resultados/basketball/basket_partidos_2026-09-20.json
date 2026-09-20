@@ -9,9 +9,9 @@
         "week": null,
         "venue": null,
         "status": {
-            "long": "Not Started",
-            "short": "NS",
-            "timer": null
+            "long": "Quarter 2",
+            "short": "Q2",
+            "timer": "1"
         },
         "league": {
             "id": 302,
@@ -40,20 +40,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
+                "quarter_1": 9,
+                "quarter_2": 0,
                 "quarter_3": null,
                 "quarter_4": null,
                 "over_time": null,
-                "total": null
+                "total": 9
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
+                "quarter_1": 23,
+                "quarter_2": 0,
                 "quarter_3": null,
                 "quarter_4": null,
                 "over_time": null,
-                "total": null
+                "total": 23
             }
         }
     },
@@ -67,9 +67,9 @@
         "week": "1",
         "venue": "Spark Arena",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
-            "timer": null
+            "long": "Quarter 1",
+            "short": "Q1",
+            "timer": "4"
         },
         "league": {
             "id": 1,
@@ -98,20 +98,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
+                "quarter_1": 7,
                 "quarter_2": null,
                 "quarter_3": null,
                 "quarter_4": null,
                 "over_time": null,
-                "total": null
+                "total": 7
             },
             "away": {
-                "quarter_1": null,
+                "quarter_1": 4,
                 "quarter_2": null,
                 "quarter_3": null,
                 "quarter_4": null,
                 "over_time": null,
-                "total": null
+                "total": 4
             }
         }
     },
@@ -210,6 +210,64 @@
                 "id": 3055,
                 "name": "Iran",
                 "logo": "https://media.api-sports.io/basketball/teams/3055.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            },
+            "away": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            }
+        }
+    },
+    {
+        "id": 523144,
+        "date": "2026-09-20T07:00:00-03:00",
+        "time": "07:00",
+        "timestamp": 1789898400,
+        "timezone": "America/Santiago",
+        "stage": null,
+        "week": "VTB Super Cup - 5th place",
+        "venue": "VTB Arena",
+        "status": {
+            "long": "Not Started",
+            "short": "NS",
+            "timer": null
+        },
+        "league": {
+            "id": 264,
+            "name": "VTB Super Cup",
+            "type": "cup",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/264.png"
+        },
+        "country": {
+            "id": 39,
+            "name": "Russia",
+            "code": "RU",
+            "flag": "https://media.api-sports.io/flags/ru.svg"
+        },
+        "teams": {
+            "home": {
+                "id": 2556,
+                "name": "Igokea",
+                "logo": "https://media.api-sports.io/basketball/teams/2556.png"
+            },
+            "away": {
+                "id": 1031,
+                "name": "Zenit Petersburg",
+                "logo": "https://media.api-sports.io/basketball/teams/1031.png"
             }
         },
         "scores": {
@@ -790,6 +848,64 @@
                 "id": 7516,
                 "name": "Kecioren Baglum",
                 "logo": "https://media.api-sports.io/basketball/teams/7516.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            },
+            "away": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            }
+        }
+    },
+    {
+        "id": 523145,
+        "date": "2026-09-20T10:00:00-03:00",
+        "time": "10:00",
+        "timestamp": 1789909200,
+        "timezone": "America/Santiago",
+        "stage": null,
+        "week": "VTB Super Cup - 3rd place",
+        "venue": "VTB Arena",
+        "status": {
+            "long": "Not Started",
+            "short": "NS",
+            "timer": null
+        },
+        "league": {
+            "id": 264,
+            "name": "VTB Super Cup",
+            "type": "cup",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/264.png"
+        },
+        "country": {
+            "id": 39,
+            "name": "Russia",
+            "code": "RU",
+            "flag": "https://media.api-sports.io/flags/ru.svg"
+        },
+        "teams": {
+            "home": {
+                "id": 1022,
+                "name": "CSKA Moscow",
+                "logo": "https://media.api-sports.io/basketball/teams/1022.png"
+            },
+            "away": {
+                "id": 1030,
+                "name": "Unics Kazan",
+                "logo": "https://media.api-sports.io/basketball/teams/1030.png"
             }
         },
         "scores": {
@@ -1682,6 +1798,122 @@
         }
     },
     {
+        "id": 523143,
+        "date": "2026-09-20T12:00:00-03:00",
+        "time": "12:00",
+        "timestamp": 1789916400,
+        "timezone": "America/Santiago",
+        "stage": null,
+        "week": "LNB Super Cup - Final",
+        "venue": "Court Philippe-Chatrier",
+        "status": {
+            "long": "Not Started",
+            "short": "NS",
+            "timer": null
+        },
+        "league": {
+            "id": 133,
+            "name": "LNB Super Cup",
+            "type": "cup",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/133.png"
+        },
+        "country": {
+            "id": 4,
+            "name": "France",
+            "code": "FR",
+            "flag": "https://media.api-sports.io/flags/fr.svg"
+        },
+        "teams": {
+            "home": {
+                "id": 19,
+                "name": "Roanne",
+                "logo": "https://media.api-sports.io/basketball/teams/19.png"
+            },
+            "away": {
+                "id": 108,
+                "name": "Paris",
+                "logo": "https://media.api-sports.io/basketball/teams/108.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            },
+            "away": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            }
+        }
+    },
+    {
+        "id": 523147,
+        "date": "2026-09-20T12:00:00-03:00",
+        "time": "12:00",
+        "timestamp": 1789916400,
+        "timezone": "America/Santiago",
+        "stage": null,
+        "week": "Lega A - Super Cup - Final",
+        "venue": "Cittadella dello Sport",
+        "status": {
+            "long": "Not Started",
+            "short": "NS",
+            "timer": null
+        },
+        "league": {
+            "id": 142,
+            "name": "Lega A - Super Cup",
+            "type": "cup",
+            "season": "2026-2027",
+            "logo": "https://media.api-sports.io/basketball/leagues/142.png"
+        },
+        "country": {
+            "id": 23,
+            "name": "Italy",
+            "code": "IT",
+            "flag": "https://media.api-sports.io/flags/it.svg"
+        },
+        "teams": {
+            "home": {
+                "id": 731,
+                "name": "Venezia",
+                "logo": "https://media.api-sports.io/basketball/teams/731.png"
+            },
+            "away": {
+                "id": 722,
+                "name": "Olimpia Milano",
+                "logo": "https://media.api-sports.io/basketball/teams/722.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            },
+            "away": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            }
+        }
+    },
+    {
         "id": 501892,
         "date": "2026-09-20T13:00:00-03:00",
         "time": "13:00",
@@ -2030,6 +2262,64 @@
         }
     },
     {
+        "id": 523146,
+        "date": "2026-09-20T13:00:00-03:00",
+        "time": "13:00",
+        "timestamp": 1789920000,
+        "timezone": "America/Santiago",
+        "stage": null,
+        "week": "VTB Super Cup - Final",
+        "venue": "VTB Arena",
+        "status": {
+            "long": "Not Started",
+            "short": "NS",
+            "timer": null
+        },
+        "league": {
+            "id": 264,
+            "name": "VTB Super Cup",
+            "type": "cup",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/264.png"
+        },
+        "country": {
+            "id": 39,
+            "name": "Russia",
+            "code": "RU",
+            "flag": "https://media.api-sports.io/flags/ru.svg"
+        },
+        "teams": {
+            "home": {
+                "id": 1025,
+                "name": "Lokomotiv Kuban",
+                "logo": "https://media.api-sports.io/basketball/teams/1025.png"
+            },
+            "away": {
+                "id": 1263,
+                "name": "Anadolu Efes",
+                "logo": "https://media.api-sports.io/basketball/teams/1263.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            },
+            "away": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            }
+        }
+    },
+    {
         "id": 512333,
         "date": "2026-09-20T13:10:00-03:00",
         "time": "13:10",
@@ -2240,6 +2530,122 @@
                 "id": 169,
                 "name": "Minnesota Lynx W",
                 "logo": "https://media.api-sports.io/basketball/teams/169.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            },
+            "away": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            }
+        }
+    },
+    {
+        "id": 523149,
+        "date": "2026-09-20T14:00:00-03:00",
+        "time": "14:00",
+        "timestamp": 1789923600,
+        "timezone": "America/Santiago",
+        "stage": null,
+        "week": "Supercopa ACB - Final",
+        "venue": "Palau Municipal d",
+        "status": {
+            "long": "Not Started",
+            "short": "NS",
+            "timer": null
+        },
+        "league": {
+            "id": 118,
+            "name": "Supercopa ACB",
+            "type": "cup",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/118.png"
+        },
+        "country": {
+            "id": 45,
+            "name": "Spain",
+            "code": "ES",
+            "flag": "https://media.api-sports.io/flags/es.svg"
+        },
+        "teams": {
+            "home": {
+                "id": 2334,
+                "name": "Joventut Badalona",
+                "logo": "https://media.api-sports.io/basketball/teams/2334.png"
+            },
+            "away": {
+                "id": 2329,
+                "name": "Barcelona",
+                "logo": "https://media.api-sports.io/basketball/teams/2329.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            },
+            "away": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            }
+        }
+    },
+    {
+        "id": 523148,
+        "date": "2026-09-20T14:30:00-03:00",
+        "time": "14:30",
+        "timestamp": 1789925400,
+        "timezone": "America/Santiago",
+        "stage": null,
+        "week": "Champions League - Final",
+        "venue": "Arena SamElyon",
+        "status": {
+            "long": "Not Started",
+            "short": "NS",
+            "timer": null
+        },
+        "league": {
+            "id": 202,
+            "name": "Champions League",
+            "type": "cup",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/202.png"
+        },
+        "country": {
+            "id": 55,
+            "name": "Europe",
+            "code": " ",
+            "flag": "https://media.api-sports.io/flags/ .svg"
+        },
+        "teams": {
+            "home": {
+                "id": 2272,
+                "name": "Dziki Warszawa",
+                "logo": "https://media.api-sports.io/basketball/teams/2272.png"
+            },
+            "away": {
+                "id": 534,
+                "name": "Vechta",
+                "logo": "https://media.api-sports.io/basketball/teams/534.png"
             }
         },
         "scores": {

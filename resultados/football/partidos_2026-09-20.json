@@ -4,8 +4,8 @@
             "id": 1550971,
             "referee": "Victor Alfonso Caceres Hernandez",
             "timezone": "America/Santiago",
-            "date": "2026-09-20T00:15:00-03:00",
-            "timestamp": 1789874100,
+            "date": "2026-09-20T00:25:00-03:00",
+            "timestamp": 1789874700,
             "periods": {
                 "first": null,
                 "second": null
@@ -16,9 +16,9 @@
                 "city": "Mexico City"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 81,
                 "extra": null
             }
         },
@@ -47,13 +47,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 2,
+            "away": 2
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 2
             },
             "fulltime": {
                 "home": null,
@@ -77,7 +77,7 @@
             "date": "2026-09-20T01:00:00-03:00",
             "timestamp": 1789876800,
             "periods": {
-                "first": null,
+                "first": 1789876800,
                 "second": null
             },
             "venue": {
@@ -86,10 +86,10 @@
                 "city": "Kanazawa"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
+                "extra": 3
             }
         },
         "league": {
@@ -107,23 +107,23 @@
                 "id": 300,
                 "name": "Kanazawa",
                 "logo": "https://media.api-sports.io/football/teams/300.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 309,
                 "name": "Renofa Yamaguchi",
                 "logo": "https://media.api-sports.io/football/teams/309.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "fulltime": {
                 "home": null,
@@ -147,7 +147,7 @@
             "date": "2026-09-20T01:00:00-03:00",
             "timestamp": 1789876800,
             "periods": {
-                "first": null,
+                "first": 1789876800,
                 "second": null
             },
             "venue": {
@@ -156,10 +156,10 @@
                 "city": "Vladivostok"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
+                "extra": 3
             }
         },
         "league": {
@@ -187,13 +187,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
@@ -217,7 +217,7 @@
             "date": "2026-09-20T02:00:00-03:00",
             "timestamp": 1789880400,
             "periods": {
-                "first": null,
+                "first": 1789880400,
                 "second": null
             },
             "venue": {
@@ -226,9 +226,9 @@
                 "city": "Kariya"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 6,
                 "extra": null
             }
         },
@@ -257,13 +257,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
@@ -287,7 +287,7 @@
             "date": "2026-09-20T02:00:00-03:00",
             "timestamp": 1789880400,
             "periods": {
-                "first": null,
+                "first": 1789880400,
                 "second": null
             },
             "venue": {
@@ -296,9 +296,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 6,
                 "extra": null
             }
         },
@@ -327,13 +327,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
@@ -7212,7 +7212,7 @@
     {
         "fixture": {
             "id": 1573587,
-            "referee": null,
+            "referee": "M. Planes",
             "timezone": "America/Santiago",
             "date": "2026-09-20T07:00:00-03:00",
             "timestamp": 1789898400,
@@ -7282,7 +7282,7 @@
     {
         "fixture": {
             "id": 1573590,
-            "referee": null,
+            "referee": "E. Calvo",
             "timezone": "America/Santiago",
             "date": "2026-09-20T07:00:00-03:00",
             "timestamp": 1789898400,
@@ -16312,7 +16312,7 @@
     {
         "fixture": {
             "id": 1555061,
-            "referee": null,
+            "referee": "J. Muller",
             "timezone": "America/Santiago",
             "date": "2026-09-20T09:00:00-03:00",
             "timestamp": 1789905600,
@@ -19331,9 +19331,9 @@
                 "second": null
             },
             "venue": {
-                "id": null,
-                "name": null,
-                "city": null
+                "id": 2618,
+                "name": "Estadi Nacional",
+                "city": "Andorra la Vella"
             },
             "status": {
                 "long": "Not Started",
@@ -28922,8 +28922,8 @@
             },
             "venue": {
                 "id": null,
-                "name": "The Broadfield Stadium",
-                "city": "Crawley"
+                "name": "Amex Stadium",
+                "city": "Brighton"
             },
             "status": {
                 "long": "Not Started",
@@ -28991,8 +28991,8 @@
                 "second": null
             },
             "venue": {
-                "id": null,
-                "name": "VBS Community Stadium",
+                "id": 525,
+                "name": "Selhurst Park",
                 "city": "London"
             },
             "status": {
@@ -29341,9 +29341,9 @@
                 "second": null
             },
             "venue": {
-                "id": null,
-                "name": "Grosvenor Vale",
-                "city": "London"
+                "id": 596,
+                "name": "Vicarage Road",
+                "city": "Watford"
             },
             "status": {
                 "long": "Not Started",
@@ -29653,6 +29653,76 @@
                 "id": 26275,
                 "name": "Bornheim",
                 "logo": "https://media.api-sports.io/football/teams/26275.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1612504,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-20T10:00:00-03:00",
+            "timestamp": 1789909200,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": 0,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 640,
+            "name": "Kansallinen Liiga",
+            "country": "Finland",
+            "logo": "https://media.api-sports.io/football/leagues/640.png",
+            "flag": "https://media.api-sports.io/flags/fi.svg",
+            "season": 2026,
+            "round": "Relegation Play-Off - 6",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 25564,
+                "name": "VIFK W",
+                "logo": "https://media.api-sports.io/football/teams/25564.png",
+                "winner": null
+            },
+            "away": {
+                "id": 28085,
+                "name": "HJS Akatemia W",
+                "logo": "https://media.api-sports.io/football/teams/28085.png",
                 "winner": null
             }
         },
@@ -30003,76 +30073,6 @@
                 "id": 27997,
                 "name": "Latina U19",
                 "logo": "https://media.api-sports.io/football/teams/27997.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1624049,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-20T10:00:00-03:00",
-            "timestamp": 1789909200,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": 874,
-                "name": "Stadio Giuseppe Moccagatta",
-                "city": "Alessandria"
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 426,
-            "name": "Serie D - Girone A",
-            "country": "Italy",
-            "logo": "https://media.api-sports.io/football/leagues/426.png",
-            "flag": "https://media.api-sports.io/flags/it.svg",
-            "season": 2026,
-            "round": "Group A - 4",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 878,
-                "name": "Alessandria",
-                "logo": "https://media.api-sports.io/football/teams/878.png",
-                "winner": null
-            },
-            "away": {
-                "id": 17811,
-                "name": "Imperia",
-                "logo": "https://media.api-sports.io/football/teams/17811.png",
                 "winner": null
             }
         },
@@ -35702,7 +35702,7 @@
     {
         "fixture": {
             "id": 1639783,
-            "referee": null,
+            "referee": "J. Feres",
             "timezone": "America/Santiago",
             "date": "2026-09-20T10:00:00-03:00",
             "timestamp": 1789909200,
@@ -35940,7 +35940,7 @@
             "flag": "https://media.api-sports.io/flags/sz.svg",
             "season": 2026,
             "round": "Regular Season - 1",
-            "standings": false
+            "standings": true
         },
         "teams": {
             "home": {
@@ -36010,7 +36010,7 @@
             "flag": "https://media.api-sports.io/flags/sz.svg",
             "season": 2026,
             "round": "Regular Season - 1",
-            "standings": false
+            "standings": true
         },
         "teams": {
             "home": {
@@ -36052,7 +36052,7 @@
     {
         "fixture": {
             "id": 1640548,
-            "referee": null,
+            "referee": "M. Caputi",
             "timezone": "America/Santiago",
             "date": "2026-09-20T10:00:00-03:00",
             "timestamp": 1789909200,
@@ -40322,7 +40322,7 @@
     {
         "fixture": {
             "id": 1585764,
-            "referee": null,
+            "referee": "E. Mertoglu",
             "timezone": "America/Santiago",
             "date": "2026-09-20T11:00:00-03:00",
             "timestamp": 1789912800,
@@ -40392,7 +40392,7 @@
     {
         "fixture": {
             "id": 1585767,
-            "referee": null,
+            "referee": "D. Tonusluoglu",
             "timezone": "America/Santiago",
             "date": "2026-09-20T11:00:00-03:00",
             "timestamp": 1789912800,
@@ -52581,9 +52581,9 @@
                 "second": null
             },
             "venue": {
-                "id": null,
-                "name": null,
-                "city": null
+                "id": 2618,
+                "name": "Estadi Nacional",
+                "city": "Andorra la Vella"
             },
             "status": {
                 "long": "Not Started",
@@ -57822,7 +57822,7 @@
     {
         "fixture": {
             "id": 1573588,
-            "referee": null,
+            "referee": "A. Garcia",
             "timezone": "America/Santiago",
             "date": "2026-09-20T13:00:00-03:00",
             "timestamp": 1789920000,
@@ -57892,7 +57892,7 @@
     {
         "fixture": {
             "id": 1582277,
-            "referee": null,
+            "referee": "J. Scerri",
             "timezone": "America/Santiago",
             "date": "2026-09-20T13:00:00-03:00",
             "timestamp": 1789920000,
@@ -60552,7 +60552,7 @@
     {
         "fixture": {
             "id": 1639784,
-            "referee": null,
+            "referee": "A. M. Matonte Cabrera",
             "timezone": "America/Santiago",
             "date": "2026-09-20T13:00:00-03:00",
             "timestamp": 1789920000,
@@ -62162,7 +62162,7 @@
     {
         "fixture": {
             "id": 1640549,
-            "referee": null,
+            "referee": "M. Araya Cruz",
             "timezone": "America/Santiago",
             "date": "2026-09-20T13:30:00-03:00",
             "timestamp": 1789921800,
@@ -63212,7 +63212,7 @@
     {
         "fixture": {
             "id": 1585759,
-            "referee": null,
+            "referee": "M. Belder",
             "timezone": "America/Santiago",
             "date": "2026-09-20T14:00:00-03:00",
             "timestamp": 1789923600,
@@ -63282,7 +63282,7 @@
     {
         "fixture": {
             "id": 1585765,
-            "referee": null,
+            "referee": "R. Coskunses",
             "timezone": "America/Santiago",
             "date": "2026-09-20T14:00:00-03:00",
             "timestamp": 1789923600,
@@ -68042,7 +68042,7 @@
     {
         "fixture": {
             "id": 1603365,
-            "referee": null,
+            "referee": "P. E. Perez Borja",
             "timezone": "America/Santiago",
             "date": "2026-09-20T15:00:00-03:00",
             "timestamp": 1789927200,
@@ -69872,8 +69872,8 @@
             },
             "venue": {
                 "id": null,
-                "name": null,
-                "city": null
+                "name": "Nogometni park Brinje",
+                "city": "Grosuplje"
             },
             "status": {
                 "long": "Not Started",
@@ -70072,7 +70072,7 @@
     {
         "fixture": {
             "id": 1582280,
-            "referee": null,
+            "referee": "M. De Gabriele",
             "timezone": "America/Santiago",
             "date": "2026-09-20T15:30:00-03:00",
             "timestamp": 1789929000,
@@ -72942,7 +72942,7 @@
     {
         "fixture": {
             "id": 1639785,
-            "referee": null,
+            "referee": "E. Ostojich",
             "timezone": "America/Santiago",
             "date": "2026-09-20T16:30:00-03:00",
             "timestamp": 1789932600,
@@ -76312,8 +76312,8 @@
             },
             "venue": {
                 "id": null,
-                "name": null,
-                "city": null
+                "name": "Arena Fonte Luminosa",
+                "city": "Araraquara"
             },
             "status": {
                 "long": "Not Started",
@@ -76383,7 +76383,7 @@
             "venue": {
                 "id": null,
                 "name": null,
-                "city": null
+                "city": "Belem"
             },
             "status": {
                 "long": "Not Started",
@@ -76442,7 +76442,7 @@
     {
         "fixture": {
             "id": 1603366,
-            "referee": null,
+            "referee": "D. Lomeli",
             "timezone": "America/Santiago",
             "date": "2026-09-20T18:45:00-03:00",
             "timestamp": 1789940700,
@@ -77492,7 +77492,7 @@
     {
         "fixture": {
             "id": 1603367,
-            "referee": null,
+            "referee": "M. Ximena",
             "timezone": "America/Santiago",
             "date": "2026-09-20T20:00:00-03:00",
             "timestamp": 1789945200,
@@ -77632,7 +77632,7 @@
     {
         "fixture": {
             "id": 1639786,
-            "referee": null,
+            "referee": "G. Tejera",
             "timezone": "America/Santiago",
             "date": "2026-09-20T20:00:00-03:00",
             "timestamp": 1789945200,
