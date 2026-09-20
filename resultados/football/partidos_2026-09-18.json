@@ -29206,9 +29206,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -29227,18 +29227,18 @@
                 "id": 28301,
                 "name": "Heroes de Zaci 2",
                 "logo": "https://media.api-sports.io/football/teams/28301.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 17806,
                 "name": "Huracanes Izcalli",
                 "logo": "https://media.api-sports.io/football/teams/17806.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 2
         },
         "score": {
             "halftime": {
@@ -29246,8 +29246,8 @@
                 "away": null
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 2
             },
             "extratime": {
                 "home": null,
