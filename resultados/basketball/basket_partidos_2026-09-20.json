@@ -1865,8 +1865,8 @@
         "week": "Lega A - Super Cup - Final",
         "venue": "Cittadella dello Sport",
         "status": {
-            "long": "Game Finished",
-            "short": "FT",
+            "long": "After Over Time",
+            "short": "AOT",
             "timer": null
         },
         "league": {
@@ -1900,7 +1900,7 @@
                 "quarter_2": 24,
                 "quarter_3": 22,
                 "quarter_4": 25,
-                "over_time": null,
+                "over_time": 8,
                 "total": 87
             },
             "away": {
@@ -1908,7 +1908,7 @@
                 "quarter_2": 20,
                 "quarter_3": 14,
                 "quarter_4": 23,
-                "over_time": null,
+                "over_time": 15,
                 "total": 94
             }
         }
@@ -2851,9 +2851,9 @@
         "week": "21",
         "venue": "Poliforum Benito Juárez",
         "status": {
-            "long": "Quarter 4",
-            "short": "Q4",
-            "timer": "10"
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
         },
         "league": {
             "id": 63,
@@ -2909,9 +2909,9 @@
         "week": null,
         "venue": "Crypto.com Arena",
         "status": {
-            "long": "Halftime",
-            "short": "HT",
-            "timer": "0"
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
         },
         "league": {
             "id": 13,
@@ -2942,18 +2942,18 @@
             "home": {
                 "quarter_1": 28,
                 "quarter_2": 32,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_3": 25,
+                "quarter_4": 20,
                 "over_time": null,
-                "total": 60
+                "total": 105
             },
             "away": {
                 "quarter_1": 26,
                 "quarter_2": 15,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_3": 24,
+                "quarter_4": 19,
                 "over_time": null,
-                "total": 41
+                "total": 84
             }
         }
     },
@@ -2967,8 +2967,8 @@
         "week": "22",
         "venue": "Arena Astros",
         "status": {
-            "long": "Half Time",
-            "short": "HT",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -3000,149 +3000,33 @@
             "home": {
                 "quarter_1": 18,
                 "quarter_2": 10,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_3": 20,
+                "quarter_4": 29,
                 "over_time": null,
-                "total": 28
+                "total": 77
             },
             "away": {
                 "quarter_1": 19,
                 "quarter_2": 20,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_3": 20,
+                "quarter_4": 20,
                 "over_time": null,
-                "total": 39
-            }
-        }
-    },
-    {
-        "id": 501164,
-        "date": "2026-09-20T21:00:00-03:00",
-        "time": "21:00",
-        "timestamp": 1789948800,
-        "timezone": "America/Santiago",
-        "stage": null,
-        "week": "21",
-        "venue": "Domo de la Feria",
-        "status": {
-            "long": "Quarter 1",
-            "short": "Q1",
-            "timer": "4"
-        },
-        "league": {
-            "id": 63,
-            "name": "LNBP",
-            "type": "League",
-            "season": "2026-2027",
-            "logo": "https://media.api-sports.io/basketball/leagues/63.png"
-        },
-        "country": {
-            "id": 28,
-            "name": "Mexico",
-            "code": "MX",
-            "flag": "https://media.api-sports.io/flags/mx.svg"
-        },
-        "teams": {
-            "home": {
-                "id": 817,
-                "name": "Abejas",
-                "logo": "https://media.api-sports.io/basketball/teams/817.png"
-            },
-            "away": {
-                "id": 5985,
-                "name": "Freseros",
-                "logo": "https://media.api-sports.io/basketball/teams/5985.png"
-            }
-        },
-        "scores": {
-            "home": {
-                "quarter_1": 11,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": 11
-            },
-            "away": {
-                "quarter_1": 2,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": 2
-            }
-        }
-    },
-    {
-        "id": 501165,
-        "date": "2026-09-20T21:05:00-03:00",
-        "time": "21:05",
-        "timestamp": 1789949100,
-        "timezone": "America/Santiago",
-        "stage": null,
-        "week": "21",
-        "venue": "Gimnasio Marcelino Gonzalez",
-        "status": {
-            "long": "Quarter 1",
-            "short": "Q1",
-            "timer": "9"
-        },
-        "league": {
-            "id": 63,
-            "name": "LNBP",
-            "type": "League",
-            "season": "2026-2027",
-            "logo": "https://media.api-sports.io/basketball/leagues/63.png"
-        },
-        "country": {
-            "id": 28,
-            "name": "Mexico",
-            "code": "MX",
-            "flag": "https://media.api-sports.io/flags/mx.svg"
-        },
-        "teams": {
-            "home": {
-                "id": 829,
-                "name": "Mineros",
-                "logo": "https://media.api-sports.io/basketball/teams/829.png"
-            },
-            "away": {
-                "id": 7437,
-                "name": "Gambusinos",
-                "logo": "https://media.api-sports.io/basketball/teams/7437.png"
-            }
-        },
-        "scores": {
-            "home": {
-                "quarter_1": 12,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": 12
-            },
-            "away": {
-                "quarter_1": 16,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": 16
+                "total": 79
             }
         }
     },
     {
         "id": 501166,
-        "date": "2026-09-20T21:15:00-03:00",
-        "time": "21:15",
-        "timestamp": 1789949700,
+        "date": "2026-09-20T20:15:00-03:00",
+        "time": "20:15",
+        "timestamp": 1789946100,
         "timezone": "America/Santiago",
         "stage": null,
         "week": "21",
         "venue": "Gimnasio Multidisciplinario UAT",
         "status": {
-            "long": "Half Time",
-            "short": "HT",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -3174,91 +3058,33 @@
             "home": {
                 "quarter_1": 17,
                 "quarter_2": 17,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_3": 24,
+                "quarter_4": 25,
                 "over_time": null,
-                "total": 34
+                "total": 83
             },
             "away": {
                 "quarter_1": 22,
                 "quarter_2": 23,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_3": 19,
+                "quarter_4": 30,
                 "over_time": null,
-                "total": 45
-            }
-        }
-    },
-    {
-        "id": 495089,
-        "date": "2026-09-20T22:00:00-03:00",
-        "time": "22:00",
-        "timestamp": 1789952400,
-        "timezone": "America/Santiago",
-        "stage": null,
-        "week": null,
-        "venue": "Michelob Ultra Arena",
-        "status": {
-            "long": "Not Started",
-            "short": "NS",
-            "timer": null
-        },
-        "league": {
-            "id": 13,
-            "name": "NBA W",
-            "type": "League",
-            "season": 2026,
-            "logo": "https://media.api-sports.io/basketball/leagues/13.png"
-        },
-        "country": {
-            "id": 5,
-            "name": "USA",
-            "code": "US",
-            "flag": "https://media.api-sports.io/flags/us.svg"
-        },
-        "teams": {
-            "home": {
-                "id": 167,
-                "name": "Las Vegas Aces W",
-                "logo": "https://media.api-sports.io/basketball/teams/167.png"
-            },
-            "away": {
-                "id": 172,
-                "name": "Seattle Storm W",
-                "logo": "https://media.api-sports.io/basketball/teams/172.png"
-            }
-        },
-        "scores": {
-            "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": null
-            },
-            "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
-                "over_time": null,
-                "total": null
+                "total": 94
             }
         }
     },
     {
         "id": 501162,
-        "date": "2026-09-20T22:00:00-03:00",
-        "time": "22:00",
-        "timestamp": 1789952400,
+        "date": "2026-09-20T20:30:00-03:00",
+        "time": "20:30",
+        "timestamp": 1789947000,
         "timezone": "America/Santiago",
         "stage": null,
         "week": "21",
         "venue": "Auditorio PSF",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -3288,20 +3114,194 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 15,
+                "quarter_2": 21,
+                "quarter_3": 21,
+                "quarter_4": 20,
                 "over_time": null,
-                "total": null
+                "total": 77
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 10,
+                "quarter_2": 15,
+                "quarter_3": 21,
+                "quarter_4": 21,
                 "over_time": null,
-                "total": null
+                "total": 67
+            }
+        }
+    },
+    {
+        "id": 501164,
+        "date": "2026-09-20T21:00:00-03:00",
+        "time": "21:00",
+        "timestamp": 1789948800,
+        "timezone": "America/Santiago",
+        "stage": null,
+        "week": "21",
+        "venue": "Domo de la Feria",
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 63,
+            "name": "LNBP",
+            "type": "League",
+            "season": "2026-2027",
+            "logo": "https://media.api-sports.io/basketball/leagues/63.png"
+        },
+        "country": {
+            "id": 28,
+            "name": "Mexico",
+            "code": "MX",
+            "flag": "https://media.api-sports.io/flags/mx.svg"
+        },
+        "teams": {
+            "home": {
+                "id": 817,
+                "name": "Abejas",
+                "logo": "https://media.api-sports.io/basketball/teams/817.png"
+            },
+            "away": {
+                "id": 5985,
+                "name": "Freseros",
+                "logo": "https://media.api-sports.io/basketball/teams/5985.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 25,
+                "quarter_2": 22,
+                "quarter_3": 29,
+                "quarter_4": 24,
+                "over_time": null,
+                "total": 100
+            },
+            "away": {
+                "quarter_1": 21,
+                "quarter_2": 28,
+                "quarter_3": 16,
+                "quarter_4": 15,
+                "over_time": null,
+                "total": 80
+            }
+        }
+    },
+    {
+        "id": 501165,
+        "date": "2026-09-20T21:05:00-03:00",
+        "time": "21:05",
+        "timestamp": 1789949100,
+        "timezone": "America/Santiago",
+        "stage": null,
+        "week": "21",
+        "venue": "Gimnasio Marcelino Gonzalez",
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 63,
+            "name": "LNBP",
+            "type": "League",
+            "season": "2026-2027",
+            "logo": "https://media.api-sports.io/basketball/leagues/63.png"
+        },
+        "country": {
+            "id": 28,
+            "name": "Mexico",
+            "code": "MX",
+            "flag": "https://media.api-sports.io/flags/mx.svg"
+        },
+        "teams": {
+            "home": {
+                "id": 829,
+                "name": "Mineros",
+                "logo": "https://media.api-sports.io/basketball/teams/829.png"
+            },
+            "away": {
+                "id": 7437,
+                "name": "Gambusinos",
+                "logo": "https://media.api-sports.io/basketball/teams/7437.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 20,
+                "quarter_2": 25,
+                "quarter_3": 19,
+                "quarter_4": 25,
+                "over_time": null,
+                "total": 89
+            },
+            "away": {
+                "quarter_1": 18,
+                "quarter_2": 22,
+                "quarter_3": 27,
+                "quarter_4": 29,
+                "over_time": null,
+                "total": 96
+            }
+        }
+    },
+    {
+        "id": 495089,
+        "date": "2026-09-20T22:00:00-03:00",
+        "time": "22:00",
+        "timestamp": 1789952400,
+        "timezone": "America/Santiago",
+        "stage": null,
+        "week": null,
+        "venue": "Michelob Ultra Arena",
+        "status": {
+            "long": "Game Finished",
+            "short": "FT",
+            "timer": null
+        },
+        "league": {
+            "id": 13,
+            "name": "NBA W",
+            "type": "League",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/13.png"
+        },
+        "country": {
+            "id": 5,
+            "name": "USA",
+            "code": "US",
+            "flag": "https://media.api-sports.io/flags/us.svg"
+        },
+        "teams": {
+            "home": {
+                "id": 167,
+                "name": "Las Vegas Aces W",
+                "logo": "https://media.api-sports.io/basketball/teams/167.png"
+            },
+            "away": {
+                "id": 172,
+                "name": "Seattle Storm W",
+                "logo": "https://media.api-sports.io/basketball/teams/172.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 29,
+                "quarter_2": 23,
+                "quarter_3": 24,
+                "quarter_4": 22,
+                "over_time": null,
+                "total": 98
+            },
+            "away": {
+                "quarter_1": 18,
+                "quarter_2": 25,
+                "quarter_3": 21,
+                "quarter_4": 13,
+                "over_time": null,
+                "total": 77
             }
         }
     },
@@ -3315,8 +3315,8 @@
         "week": "21",
         "venue": "Auditorio Miguel Barragán",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
+            "long": "Game Finished",
+            "short": "FT",
             "timer": null
         },
         "league": {
@@ -3346,20 +3346,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 14,
+                "quarter_2": 22,
+                "quarter_3": 23,
+                "quarter_4": 27,
                 "over_time": null,
-                "total": null
+                "total": 86
             },
             "away": {
-                "quarter_1": null,
-                "quarter_2": null,
-                "quarter_3": null,
-                "quarter_4": null,
+                "quarter_1": 26,
+                "quarter_2": 25,
+                "quarter_3": 18,
+                "quarter_4": 26,
                 "over_time": null,
-                "total": null
+                "total": 95
             }
         }
     }
