@@ -29617,8 +29617,8 @@
             "date": "2026-09-20T10:00:00-03:00",
             "timestamp": 1789909200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789909200,
+                "second": 1789912800
             },
             "venue": {
                 "id": 0,
@@ -29626,9 +29626,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -29647,27 +29647,27 @@
                 "id": 25564,
                 "name": "VIFK W",
                 "logo": "https://media.api-sports.io/football/teams/25564.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 28085,
                 "name": "HJS Akatemia W",
                 "logo": "https://media.api-sports.io/football/teams/28085.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 3,
+            "away": 4
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 2
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 4
             },
             "extratime": {
                 "home": null,
@@ -42314,15 +42314,15 @@
         },
         "teams": {
             "home": {
-                "id": 26846,
-                "name": "Olympic Varna",
-                "logo": "https://media.api-sports.io/football/teams/26846.png",
-                "winner": true
-            },
-            "away": {
                 "id": 19891,
                 "name": "Cherno more II",
                 "logo": "https://media.api-sports.io/football/teams/19891.png",
+                "winner": true
+            },
+            "away": {
+                "id": 26846,
+                "name": "Olympic Varna",
+                "logo": "https://media.api-sports.io/football/teams/26846.png",
                 "winner": false
             }
         },
@@ -43057,8 +43057,8 @@
             "date": "2026-09-20T11:00:00-03:00",
             "timestamp": 1789912800,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789912800,
+                "second": 1789916400
             },
             "venue": {
                 "id": null,
@@ -43066,9 +43066,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -43087,27 +43087,27 @@
                 "id": 5431,
                 "name": "Township Rollers",
                 "logo": "https://media.api-sports.io/football/teams/5431.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 5420,
                 "name": "Extension Gunners",
                 "logo": "https://media.api-sports.io/football/teams/5420.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 3,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -55447,18 +55447,18 @@
             "date": "2026-09-20T12:30:00-03:00",
             "timestamp": 1789918200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789918200,
+                "second": 1789921800
             },
             "venue": {
-                "id": 0,
-                "name": null,
-                "city": null
+                "id": 22298,
+                "name": "Tapiolan Urheilupuisto",
+                "city": "Espoo"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -55487,17 +55487,17 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -56632,13 +56632,13 @@
     {
         "fixture": {
             "id": 1509188,
-            "referee": null,
+            "referee": "T. Samsonashvili",
             "timezone": "America/Santiago",
             "date": "2026-09-20T13:00:00-03:00",
             "timestamp": 1789920000,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789920000,
+                "second": 1789923600
             },
             "venue": {
                 "id": null,
@@ -68047,18 +68047,18 @@
             "date": "2026-09-20T15:00:00-03:00",
             "timestamp": 1789927200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789927200,
+                "second": 1789930800
             },
             "venue": {
-                "id": null,
-                "name": null,
+                "id": 33,
+                "name": "Estadio Jose Maria Minella",
                 "city": "Mar del Plata"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -68087,17 +68087,17 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -68117,8 +68117,8 @@
             "date": "2026-09-20T15:00:00-03:00",
             "timestamp": 1789927200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789927200,
+                "second": 1789930800
             },
             "venue": {
                 "id": null,
@@ -68126,9 +68126,9 @@
                 "city": "Posadas"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -68157,87 +68157,17 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1606421,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-20T15:00:00-03:00",
-            "timestamp": 1789927200,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": "Miguel Morales",
-                "city": "Pergamino"
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 134,
-            "name": "Torneo Federal A",
-            "country": "Argentina",
-            "logo": "https://media.api-sports.io/football/leagues/134.png",
-            "flag": "https://media.api-sports.io/flags/ar.svg",
-            "season": 2026,
-            "round": "Winners Stage - 9",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 789,
-                "name": "Douglas Haig",
-                "logo": "https://media.api-sports.io/football/teams/789.png",
-                "winner": null
-            },
-            "away": {
-                "id": 25758,
-                "name": "Gimnasia Chivilcoy",
-                "logo": "https://media.api-sports.io/football/teams/25758.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -68257,18 +68187,18 @@
             "date": "2026-09-20T15:00:00-03:00",
             "timestamp": 1789927200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789927200,
+                "second": 1789930800
             },
             "venue": {
-                "id": null,
-                "name": "Estadio General San Martin",
-                "city": "Las Heras"
+                "id": 1732,
+                "name": "General San Martin",
+                "city": "Mendoza"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -68287,27 +68217,27 @@
                 "id": 2428,
                 "name": "Huracan Las Heras",
                 "logo": "https://media.api-sports.io/football/teams/2428.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 21043,
                 "name": "Atenas",
                 "logo": "https://media.api-sports.io/football/teams/21043.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -68327,8 +68257,8 @@
             "date": "2026-09-20T15:00:00-03:00",
             "timestamp": 1789927200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789927200,
+                "second": 1789930800
             },
             "venue": {
                 "id": null,
@@ -68336,9 +68266,9 @@
                 "city": "La Banda"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -68357,27 +68287,27 @@
                 "id": 23255,
                 "name": "Sarmiento de La Banda",
                 "logo": "https://media.api-sports.io/football/teams/23255.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 2426,
                 "name": "Defensores de Belgrano VR",
                 "logo": "https://media.api-sports.io/football/teams/2426.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 2
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 2
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -68397,8 +68327,8 @@
             "date": "2026-09-20T15:00:00-03:00",
             "timestamp": 1789927200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789927200,
+                "second": 1789930800
             },
             "venue": {
                 "id": null,
@@ -68406,9 +68336,9 @@
                 "city": "Formosa"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -68437,17 +68367,17 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -68467,18 +68397,18 @@
             "date": "2026-09-20T15:00:00-03:00",
             "timestamp": 1789927200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789927200,
+                "second": 1789930800
             },
             "venue": {
-                "id": null,
-                "name": "Estadio El Fortin",
-                "city": null
+                "id": 118,
+                "name": "El Fortin",
+                "city": "Bahia Blanca"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -68507,87 +68437,17 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1606500,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-20T15:00:00-03:00",
-            "timestamp": 1789927200,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": "Estadio Guillermo Trama",
-                "city": "Comandante Nicanor Otamendi"
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 134,
-            "name": "Torneo Federal A",
-            "country": "Argentina",
-            "logo": "https://media.api-sports.io/football/leagues/134.png",
-            "flag": "https://media.api-sports.io/flags/ar.svg",
-            "season": 2026,
-            "round": "Losers Stage - 9",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 8399,
-                "name": "Circulo Deportivo",
-                "logo": "https://media.api-sports.io/football/teams/8399.png",
-                "winner": null
-            },
-            "away": {
-                "id": 3972,
-                "name": "Germinal de Rawson",
-                "logo": "https://media.api-sports.io/football/teams/3972.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -68607,8 +68467,8 @@
             "date": "2026-09-20T15:00:00-03:00",
             "timestamp": 1789927200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789927200,
+                "second": 1789930800
             },
             "venue": {
                 "id": null,
@@ -68616,9 +68476,9 @@
                 "city": "General Pico"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -68637,27 +68497,27 @@
                 "id": 25757,
                 "name": "Costa Brava",
                 "logo": "https://media.api-sports.io/football/teams/25757.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 1941,
                 "name": "Sol de Mayo",
                 "logo": "https://media.api-sports.io/football/teams/1941.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -68677,8 +68537,8 @@
             "date": "2026-09-20T15:00:00-03:00",
             "timestamp": 1789927200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789927200,
+                "second": 1789930800
             },
             "venue": {
                 "id": null,
@@ -68686,9 +68546,9 @@
                 "city": "Rincon de Los Sauces"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -68707,97 +68567,27 @@
                 "id": 1959,
                 "name": "Deportivo Rincon",
                 "logo": "https://media.api-sports.io/football/teams/1959.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 475,
                 "name": "Santamarina",
                 "logo": "https://media.api-sports.io/football/teams/475.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 3,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1606503,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-20T15:00:00-03:00",
-            "timestamp": 1789927200,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": "Estadio Raul Conti",
-                "city": "Puerto Madryn"
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 134,
-            "name": "Torneo Federal A",
-            "country": "Argentina",
-            "logo": "https://media.api-sports.io/football/leagues/134.png",
-            "flag": "https://media.api-sports.io/flags/ar.svg",
-            "season": 2026,
-            "round": "Losers Stage - 9",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 472,
-                "name": "Guillermo Brown",
-                "logo": "https://media.api-sports.io/football/teams/472.png",
-                "winner": null
-            },
-            "away": {
-                "id": 27574,
-                "name": "Fundacion Amigos",
-                "logo": "https://media.api-sports.io/football/teams/27574.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -68817,18 +68607,18 @@
             "date": "2026-09-20T15:00:00-03:00",
             "timestamp": 1789927200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789927200,
+                "second": 1789930800
             },
             "venue": {
-                "id": null,
+                "id": 3004,
                 "name": "Estadio Mario Sebastian Diez",
                 "city": "San Luis"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -68857,17 +68647,17 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -69778,6 +69568,216 @@
             "fulltime": {
                 "home": 2,
                 "away": 1
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1606421,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-20T15:20:00-03:00",
+            "timestamp": 1789928400,
+            "periods": {
+                "first": 1789928400,
+                "second": 1789932000
+            },
+            "venue": {
+                "id": 69,
+                "name": "Estadio Miguel Morales",
+                "city": "Pergamino"
+            },
+            "status": {
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 134,
+            "name": "Torneo Federal A",
+            "country": "Argentina",
+            "logo": "https://media.api-sports.io/football/leagues/134.png",
+            "flag": "https://media.api-sports.io/flags/ar.svg",
+            "season": 2026,
+            "round": "Winners Stage - 9",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 789,
+                "name": "Douglas Haig",
+                "logo": "https://media.api-sports.io/football/teams/789.png",
+                "winner": null
+            },
+            "away": {
+                "id": 25758,
+                "name": "Gimnasia Chivilcoy",
+                "logo": "https://media.api-sports.io/football/teams/25758.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": 0,
+            "away": 0
+        },
+        "score": {
+            "halftime": {
+                "home": 0,
+                "away": 0
+            },
+            "fulltime": {
+                "home": 0,
+                "away": 0
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1606500,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-20T15:20:00-03:00",
+            "timestamp": 1789928400,
+            "periods": {
+                "first": 1789928400,
+                "second": 1789932000
+            },
+            "venue": {
+                "id": 5978,
+                "name": "Estadio Guillermo Trama",
+                "city": "Comandante Nicanor Otamendi"
+            },
+            "status": {
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 134,
+            "name": "Torneo Federal A",
+            "country": "Argentina",
+            "logo": "https://media.api-sports.io/football/leagues/134.png",
+            "flag": "https://media.api-sports.io/flags/ar.svg",
+            "season": 2026,
+            "round": "Losers Stage - 9",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 8399,
+                "name": "Circulo Deportivo",
+                "logo": "https://media.api-sports.io/football/teams/8399.png",
+                "winner": true
+            },
+            "away": {
+                "id": 3972,
+                "name": "Germinal de Rawson",
+                "logo": "https://media.api-sports.io/football/teams/3972.png",
+                "winner": false
+            }
+        },
+        "goals": {
+            "home": 2,
+            "away": 0
+        },
+        "score": {
+            "halftime": {
+                "home": 1,
+                "away": 0
+            },
+            "fulltime": {
+                "home": 2,
+                "away": 0
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1606503,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-20T15:20:00-03:00",
+            "timestamp": 1789928400,
+            "periods": {
+                "first": 1789928400,
+                "second": 1789932000
+            },
+            "venue": {
+                "id": 49,
+                "name": "Estadio Raúl Conti",
+                "city": "Puerto Madryn"
+            },
+            "status": {
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 134,
+            "name": "Torneo Federal A",
+            "country": "Argentina",
+            "logo": "https://media.api-sports.io/football/leagues/134.png",
+            "flag": "https://media.api-sports.io/flags/ar.svg",
+            "season": 2026,
+            "round": "Losers Stage - 9",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 472,
+                "name": "Guillermo Brown",
+                "logo": "https://media.api-sports.io/football/teams/472.png",
+                "winner": null
+            },
+            "away": {
+                "id": 27574,
+                "name": "Fundacion Amigos",
+                "logo": "https://media.api-sports.io/football/teams/27574.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": 0,
+            "away": 0
+        },
+        "score": {
+            "halftime": {
+                "home": 0,
+                "away": 0
+            },
+            "fulltime": {
+                "home": 0,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -75391,76 +75391,6 @@
     },
     {
         "fixture": {
-            "id": 1636813,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-20T18:00:00-03:00",
-            "timestamp": 1789938000,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": 19392,
-                "name": "Estadio Juan Ramon Breve Vargas",
-                "city": "Juticalpa"
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 234,
-            "name": "Liga Nacional",
-            "country": "Honduras",
-            "logo": "https://media.api-sports.io/football/leagues/234.png",
-            "flag": "https://media.api-sports.io/flags/hn.svg",
-            "season": 2026,
-            "round": "Apertura - 8",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 1053,
-                "name": "Juticalpa",
-                "logo": "https://media.api-sports.io/football/teams/1053.png",
-                "winner": null
-            },
-            "away": {
-                "id": 1050,
-                "name": "CD Marathon",
-                "logo": "https://media.api-sports.io/football/teams/1050.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
             "id": 1638774,
             "referee": null,
             "timezone": "America/Santiago",
@@ -75542,12 +75472,12 @@
             },
             "venue": {
                 "id": null,
-                "name": null,
-                "city": null
+                "name": "Estadio Municipal El Colosal de Sebaco",
+                "city": "Sebaco"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
+                "long": "Match Postponed",
+                "short": "PST",
                 "elapsed": null,
                 "extra": null
             }
@@ -77147,8 +77077,8 @@
             "date": "2026-09-20T20:00:00-03:00",
             "timestamp": 1789945200,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1789945200,
+                "second": 1789948800
             },
             "venue": {
                 "id": 0,
@@ -77156,9 +77086,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -77177,27 +77107,27 @@
                 "id": 25900,
                 "name": "Ottawa Rapid W",
                 "logo": "https://media.api-sports.io/football/teams/25900.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 25897,
                 "name": "Calgary Wild W",
                 "logo": "https://media.api-sports.io/football/teams/25897.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 3,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -77506,8 +77436,8 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
+                "long": "Match Postponed",
+                "short": "PST",
                 "elapsed": null,
                 "extra": null
             }
@@ -78402,7 +78332,7 @@
     {
         "fixture": {
             "id": 1493151,
-            "referee": "Yael Falcon Perez, Argentina",
+            "referee": "Yael Falcon Perez",
             "timezone": "America/Santiago",
             "date": "2026-09-20T21:30:00-03:00",
             "timestamp": 1789950600,
@@ -78411,7 +78341,7 @@
                 "second": 1789954200
             },
             "venue": {
-                "id": null,
+                "id": 115,
                 "name": "Jose Amalfitani",
                 "city": "Buenos Aires"
             },
@@ -78668,6 +78598,76 @@
             "fulltime": {
                 "home": 2,
                 "away": 0
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1636813,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-20T22:30:00-03:00",
+            "timestamp": 1789954200,
+            "periods": {
+                "first": 1789954200,
+                "second": 1789957800
+            },
+            "venue": {
+                "id": 19392,
+                "name": "Estadio Juan Ramon Breve Vargas",
+                "city": "Juticalpa"
+            },
+            "status": {
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 234,
+            "name": "Liga Nacional",
+            "country": "Honduras",
+            "logo": "https://media.api-sports.io/football/leagues/234.png",
+            "flag": "https://media.api-sports.io/flags/hn.svg",
+            "season": 2026,
+            "round": "Apertura - 8",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 1053,
+                "name": "Juticalpa",
+                "logo": "https://media.api-sports.io/football/teams/1053.png",
+                "winner": true
+            },
+            "away": {
+                "id": 1050,
+                "name": "CD Marathon",
+                "logo": "https://media.api-sports.io/football/teams/1050.png",
+                "winner": false
+            }
+        },
+        "goals": {
+            "home": 3,
+            "away": 2
+        },
+        "score": {
+            "halftime": {
+                "home": 2,
+                "away": 2
+            },
+            "fulltime": {
+                "home": 3,
+                "away": 2
             },
             "extratime": {
                 "home": null,
