@@ -23,11 +23,6 @@ def get_flag(country_name):
         with open(ruta_banderas, "r", encoding="utf-8") as f:
             flags = json.load(f)
             
-        # Intento directo
-        if country_str in flags:
-            return flags[country_str]
-            
-        # Mapeo de seguridad para nombres comunes que la API envía distinto
         map_nombres = {
             "South-Korea": "South Korea",
             "Republic of Korea": "South Korea",
@@ -147,9 +142,9 @@ def actualizar_blacklist(peores_ligas):
             if (fecha_hoy - fecha_baneo).days <= 14:
                 blacklist_filtrada.append(item)
         except Exception:
-            pass # Si falla la fecha, la sacamos por seguridad
+            pass
             
-    # 2. ACTUALIZACIÓN DINÁMICA: Convertir a diccionario para actualizar métricas fácil
+    # 2. ACTUALIZACIÓN DINÁMICA: Convertir a diccionario para actualizar métricas
     dict_baneadas = {f"{item['country']}_{item['league']}": item for item in blacklist_filtrada}
     
     nuevas_agregadas = 0
@@ -157,11 +152,9 @@ def actualizar_blacklist(peores_ligas):
         if pct < 50.0:
             key = f"{pais}_{liga}"
             if key in dict_baneadas:
-                # Si ya estaba, actualizamos sus métricas pero NO su fecha (para no romper la amnistía)
                 dict_baneadas[key]['win_rate'] = round(pct, 2)
                 dict_baneadas[key]['total_picks'] = tot
             else:
-                # Si es nueva, entra a cuarentena hoy
                 dict_baneadas[key] = {
                     "country": pais,
                     "league": liga,
@@ -171,7 +164,7 @@ def actualizar_blacklist(peores_ligas):
                 }
                 nuevas_agregadas += 1
                 
-    # 3. REESCRITURA PURA: Guardar el nuevo JSON limpio y depurado
+    # 3. REESCRITURA PURA
     blacklist_final = {"ligas_toxicas": list(dict_baneadas.values())}
     with open(ruta_blacklist, "w", encoding="utf-8") as f:
         json.dump(blacklist_final, f, indent=4, ensure_ascii=False)
@@ -201,7 +194,18 @@ def auditar_y_reportar():
     pendientes = df_log[df_log['Estado'] == 'PENDIENTE']
     if not pendientes.empty:
         cambios = 0
+        hoy_dt = datetime.now()
         for idx, row in pendientes.iterrows():
+            # Filtro de expiración (Zombies > 48hrs pasan a VOID)
+            try:
+                fecha_pick = datetime.strptime(row['Fecha'], "%Y-%m-%d")
+                if (hoy_dt - fecha_pick).days > 2:
+                    df_log.at[idx, 'Estado'] = 'ANULADO (VOID)'
+                    cambios += 1
+                    continue
+            except:
+                pass
+                
             mask = (df_hist['HomeTeamId'] == row['HomeTeamId']) & \
                    (df_hist['AwayTeamId'] == row['AwayTeamId']) & \
                    (df_hist['Date'] == row['Fecha'])
@@ -219,12 +223,11 @@ def auditar_y_reportar():
 
         if cambios > 0:
             df_log.to_csv(log_path, index=False, encoding='utf-8')
-            print(f"✔️ Se resolvieron {cambios} predicciones nuevas.")
+            print(f"✔️ Se resolvieron/anularon {cambios} predicciones nuevas.")
 
     df_resueltos = df_log[df_log['Estado'] == 'RESUELTO'].copy()
     if df_resueltos.empty: return
 
-    # Extraer el País (Country) del histórico
     df_ligas = df_hist[['HomeTeamId', 'AwayTeamId', 'Date', 'League', 'Country']].drop_duplicates(subset=['HomeTeamId', 'AwayTeamId', 'Date'])
     df_resueltos = df_resueltos.merge(df_ligas, left_on=['HomeTeamId', 'AwayTeamId', 'Fecha'], right_on=['HomeTeamId', 'AwayTeamId', 'Date'], how='left')
 
@@ -245,12 +248,10 @@ def auditar_y_reportar():
         pct = (hits / total * 100) if total > 0 else 0
         return total, hits, pct
 
-    # Métricas Globales
     t_hoy, h_hoy, p_hoy = metricas(df_hoy)
     t_ayer, h_ayer, p_ayer = metricas(df_ayer)
     t_acu, h_acu, p_acu = metricas(df_resueltos)
     
-    # Cálculos Totales (Ganadas + Perdidas + Pendientes)
     t_hoy_totales = len(df_hoy_total_picks)
     p_hoy_pendientes = t_hoy_totales - t_hoy
     p_hoy_perdidas = t_hoy - h_hoy
@@ -263,8 +264,11 @@ def auditar_y_reportar():
     total_pendientes = len(df_log[df_log['Estado'] == 'PENDIENTE'])
     fallos_acu = t_acu - h_acu
 
+    # Desglose subdividido para SGBB
     desglose = [
-        ("Mega-Misil SGBB", df_resueltos[df_resueltos['Mercado'] == 'Mega-Misil SGBB']),
+        ("SGBB (Doble Op + Goles)", df_resueltos[(df_resueltos['Mercado'] == 'Mega-Misil SGBB') & (df_resueltos['Seleccion'].str.contains('1X|X2'))]),
+        ("SGBB (Ganador + Goles)", df_resueltos[(df_resueltos['Mercado'] == 'Mega-Misil SGBB') & (df_resueltos['Seleccion'].str.contains('Gana'))]),
+        ("SGBB (BTTS Mix)", df_resueltos[(df_resueltos['Mercado'] == 'Mega-Misil SGBB') & (df_resueltos['Seleccion'].str.contains('Ambos'))]),
         ("Doble Oportunidad", df_resueltos[df_resueltos['Mercado'] == 'Doble Oportunidad']),
         ("Ganador Directo", df_resueltos[df_resueltos['Mercado'] == 'Ganador Directo']),
         ("Goles (Altas/Over)", df_resueltos[(df_resueltos['Mercado'] == 'Goles') & (df_resueltos['Seleccion'].str.contains(r'\+'))]),
@@ -283,8 +287,7 @@ def auditar_y_reportar():
     ligas_stats = []
     peores_ligas = []
     if 'League' in df_resueltos.columns and 'Country' in df_resueltos.columns:
-        
-        # 🔥 NUEVO: Ventana de memoria móvil (Últimos 30 días) para evitar datos congelados
+        # Ventana de memoria móvil (Últimos 30 días)
         fecha_limite = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
         df_reciente = df_resueltos[df_resueltos['Fecha'] >= fecha_limite]
         
@@ -297,7 +300,6 @@ def auditar_y_reportar():
         ligas_stats.sort(key=lambda x: (x[2], -x[3])) 
         peores_ligas = ligas_stats[:3]
 
-        # Disparar el Auto-Blacklist con las peores ligas recientes
         if peores_ligas:
             actualizar_blacklist(peores_ligas)
 
@@ -332,6 +334,13 @@ def auditar_y_reportar():
         for pais, liga, pct, tot in peores_ligas:
             bandera = get_flag(pais)
             msg += f"・ {bandera} {pais} - {liga}: {pct:.1f}% (en {tot} picks)\n"
+        
+        try:
+            with open("config/blacklist.json", "r", encoding="utf-8") as f:
+                tamano_bl = len(json.load(f).get("ligas_toxicas", []))
+            msg += f"🛡️ _Total en Cuarentena Histórica: {tamano_bl}_\n"
+        except:
+            pass
         msg += "\n"
 
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n✅ _Bender Analytics Engine_"
