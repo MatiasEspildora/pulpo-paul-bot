@@ -205,7 +205,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             es_c = p.get('es_eliminatoria', False)
             sl = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_c)
             sv = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_c)
-            promedio_str = f"L: {sl.get('corners', 0):.1f} - V: {sv.get('corners', 0):.1f}"
+            promedio_str = f"L: {sl.get('corners_f', 0):.1f} - V: {sv.get('corners_f', 0):.1f}"
             quirofano_tactico.append({
                 'match': p, 
                 'prob': corner_prob, 
