@@ -387,7 +387,7 @@ class MatchAnalyzer:
         away_avg_conceded = (ag_c_glob + ag_c_ven) / 2
 
         exp_home_score = (home_avg_scored + away_avg_conceded) / 2
-        exp_away_score = (away_avg_scored + home_concede_avg) / 2
+        exp_away_score = (away_avg_scored + home_avg_conceded) / 2
         total_projected_points = exp_home_score + exp_away_score
 
         diff = exp_home_score - exp_away_score
