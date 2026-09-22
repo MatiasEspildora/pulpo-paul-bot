@@ -29,7 +29,6 @@ def cargar_ligas_con_estadisticas():
                 with open(ruta, "r", encoding="utf-8") as f:
                     coverage = json.load(f)
                 
-                # Extraemos las ligas soportadas
                 ligas_soportadas = {item.get("league_id", item.get("id")) for item in coverage if item.get("can_fetch_stats") is True}
                 print(f"📊 [INFO] Cobertura Táctica Activa: {len(ligas_soportadas)} ligas configuradas para extracción de estadísticas.")
                 return ligas_soportadas
@@ -39,7 +38,6 @@ def cargar_ligas_con_estadisticas():
     print("⚠️ Aviso: No se encontró Active_Leagues_Coverage.json. Se omitirán estadísticas.")
     return set()
 
-# 🛡️ NUEVO: Función para cargar la lista de cuarentena
 def cargar_blacklist():
     """Lee el JSON de ligas tóxicas y devuelve un Set con las ligas baneadas para búsqueda O(1)."""
     ruta_blacklist = os.path.join("config", "blacklist.json")
@@ -96,7 +94,6 @@ def guardar_historico_mensual(df, meses_a_actualizar=None):
             sort_cols.extend(['HomeTeam', 'AwayTeam'])
             g_clean.sort_values(by=sort_cols, ascending=[False] + [True]*(len(sort_cols)-1)).to_csv(filename, index=False)
 
-# 🔥 Variable global para proteger límite de API
 STATS_DESCARGADAS_HOY = 0 
 MAX_STATS_POR_RUN = 400
 
@@ -240,8 +237,6 @@ def obtener_liga_domestica(df, team_id, team_name):
         pass
     return ""
 
-
-# 🔥 NUEVO: Función para rastrear el cansancio / rotaciones
 def calcular_dias_descanso(df_global, team_id, fecha_actual_dt):
     """Calcula los días transcurridos desde el último partido oficial del equipo."""
     if df_global is None or df_global.empty or pd.isna(team_id): 
@@ -256,10 +251,9 @@ def calcular_dias_descanso(df_global, team_id, fecha_actual_dt):
         ultima_fecha = pasados['Date_dt'].max()
         dias = (fecha_actual_dt - ultima_fecha).days
         
-        return max(0, min(dias, 15)) # Topeamos a 15 días máximo y 0 mínimo
+        return max(0, min(dias, 15))
     except Exception:
         return 7
-
 
 def registrar_predicciones(proyecciones_dict):
     archivo_log = "kpi/football/predicciones_log.csv"
@@ -291,7 +285,9 @@ def registrar_predicciones(proyecciones_dict):
             probs_1x2 = p.get('probs', [0, 0, 0])
             prob_gana = max(probs_1x2[0], probs_1x2[2])
             sel_gana = p.get('local') if probs_1x2[0] > probs_1x2[2] else p.get('visita')
-            if prob_gana >= 0.75:
+            
+            # 🔥 FILTRO ESTRICTO: Exigimos >= 0.90 para registrar Ganador Directo en KPIs
+            if prob_gana >= 0.90:
                 filas.append({**base, 'Mercado': 'Ganador Directo', 'Seleccion': f'Gana {sel_gana}', 'Probabilidad': round(prob_gana, 3)})
                 
             prob_doble = max(p.get('prob_1X', 0), p.get('prob_X2', 0))
@@ -404,7 +400,6 @@ def run_process(df_externo=None):
         except Exception as e:
             print(f"⚠️ [AUDITORÍA] Error al evaluar KPIs: {e}")
             
-        # 🔥 CREACIÓN DE COLUMNA OPTIMIZADA: Permite que el cálculo de descanso sea instantáneo
         df['Date_dt'] = pd.to_datetime(df['Date'], errors='coerce').dt.tz_localize(None)
 
         analyzer = MatchAnalyzer(df)
@@ -420,7 +415,7 @@ def run_process(df_externo=None):
                             continue
                             
                         dt_obj = datetime.fromisoformat(date_str.replace("Z", "+00:00")).astimezone(zona)
-                        fecha_dt_naive = dt_obj.replace(tzinfo=None) # Necesario para cruzar con Pandas
+                        fecha_dt_naive = dt_obj.replace(tzinfo=None)
                         
                         if dt_obj < now:
                             continue
@@ -458,7 +453,6 @@ def run_process(df_externo=None):
                         proj['local_league'] = obtener_liga_domestica(df, h_id, h_name)
                         proj['visita_league'] = obtener_liga_domestica(df, a_id, a_name)
                         
-                        # 🔥 AQUÍ INYECTAMOS LA ALERTA DE FATIGA PARA EL NOTIFIER 🔥
                         proj['dias_descanso_local'] = calcular_dias_descanso(df, h_id, fecha_dt_naive)
                         proj['dias_descanso_visita'] = calcular_dias_descanso(df, a_id, fecha_dt_naive)
                         
