@@ -97,15 +97,7 @@ class MatchAnalyzer:
         if recent.empty or count == 0:
             return {"has_details": False, "goles_favor": 0.0, "goles_contra": 0.0, "count": 0}
 
-        primer_row = recent.iloc[0]
-        tiene_detalles = False
-        if primer_row["HomeTeamId"] == team_id:
-            if pd.notna(primer_row.get("HC")) or pd.notna(primer_row.get("HS")): tiene_detalles = True
-        else:
-            if pd.notna(primer_row.get("AC")) or pd.notna(primer_row.get("AS")): tiene_detalles = True
-
         goles_favor, goles_contra = [], []
-        # Separamos For (_f) y Against (_c)
         corners_f, corners_c = [], []
         tarjetas_f, tarjetas_c = [], []
         remates_f, remates_c = [], []
@@ -113,31 +105,37 @@ class MatchAnalyzer:
         for _, row in recent.iterrows():
             es_local = (row["HomeTeamId"] == team_id)
             
-            # Goles
+            # 1. Extracción de Goles (Siempre presentes)
             goles_favor.append(row["FTHG"] if es_local else row["FTAG"])
             goles_contra.append(row["FTAG"] if es_local else row["FTHG"])
 
-            # Mercados Secundarios
-            if tiene_detalles:
-                if es_local:
-                    # Lo que genera (For)
-                    corners_f.append(row["HC"] if pd.notna(row["HC"]) else 0)
-                    tarjetas_f.append((row["HY"] if pd.notna(row["HY"]) else 0) + (row["HR"] if pd.notna(row["HR"]) else 0))
-                    remates_f.append(row["HS"] if pd.notna(row["HS"]) else 0)
-                    # Lo que concede/provoca (Against)
-                    corners_c.append(row["AC"] if pd.notna(row["AC"]) else 0)
-                    tarjetas_c.append((row["AY"] if pd.notna(row["AY"]) else 0) + (row["AR"] if pd.notna(row["AR"]) else 0))
-                    remates_c.append(row["AS"] if pd.notna(row["AS"]) else 0)
-                else:
-                    # Lo que genera (For)
-                    corners_f.append(row["AC"] if pd.notna(row["AC"]) else 0)
-                    tarjetas_f.append((row["AY"] if pd.notna(row["AY"]) else 0) + (row["AR"] if pd.notna(row["AR"]) else 0))
-                    remates_f.append(row["AS"] if pd.notna(row["AS"]) else 0)
-                    # Lo que concede/provoca (Against)
-                    corners_c.append(row["HC"] if pd.notna(row["HC"]) else 0)
-                    tarjetas_c.append((row["HY"] if pd.notna(row["HY"]) else 0) + (row["HR"] if pd.notna(row["HR"]) else 0))
-                    remates_c.append(row["HS"] if pd.notna(row["HS"]) else 0)
+            # 2. Extracción Táctica Aislada (Se ignora si es NaN, no se inyectan ceros)
+            if es_local:
+                if pd.notna(row.get("HC")): corners_f.append(float(row["HC"]))
+                if pd.notna(row.get("AC")): corners_c.append(float(row["AC"]))
+                if pd.notna(row.get("HS")): remates_f.append(float(row["HS"]))
+                if pd.notna(row.get("AS")): remates_c.append(float(row["AS"]))
+                
+                # Tarjetas (Amarillas + Rojas)
+                t_f = (float(row.get("HY", 0)) if pd.notna(row.get("HY")) else 0) + (float(row.get("HR", 0)) if pd.notna(row.get("HR")) else 0)
+                t_c = (float(row.get("AY", 0)) if pd.notna(row.get("AY")) else 0) + (float(row.get("AR", 0)) if pd.notna(row.get("AR")) else 0)
+                if pd.notna(row.get("HY")) or pd.notna(row.get("HR")): tarjetas_f.append(t_f)
+                if pd.notna(row.get("AY")) or pd.notna(row.get("AR")): tarjetas_c.append(t_c)
+            else:
+                if pd.notna(row.get("AC")): corners_f.append(float(row["AC"]))
+                if pd.notna(row.get("HC")): corners_c.append(float(row["HC"]))
+                if pd.notna(row.get("AS")): remates_f.append(float(row["AS"]))
+                if pd.notna(row.get("HS")): remates_c.append(float(row["HS"]))
+                
+                # Tarjetas invertidas para la visita
+                t_f = (float(row.get("AY", 0)) if pd.notna(row.get("AY")) else 0) + (float(row.get("AR", 0)) if pd.notna(row.get("AR")) else 0)
+                t_c = (float(row.get("HY", 0)) if pd.notna(row.get("HY")) else 0) + (float(row.get("HR", 0)) if pd.notna(row.get("HR")) else 0)
+                if pd.notna(row.get("AY")) or pd.notna(row.get("AR")): tarjetas_f.append(t_f)
+                if pd.notna(row.get("HY")) or pd.notna(row.get("HR")): tarjetas_c.append(t_c)
             
+        # 3. Validación Final: Tiene detalles solo si rescatamos al menos 1 registro real
+        tiene_detalles = len(corners_f) > 0 or len(remates_f) > 0
+
         return {
             "has_details": tiene_detalles,
             "goles_favor": float(np.nanmean(goles_favor)) if goles_favor else 0.0,
@@ -287,13 +285,11 @@ class MatchAnalyzer:
         if stats_home.get('count', 0) >= 5 and stats_away.get('count', 0) >= 5 and stats_home.get('has_details') and stats_away.get('has_details'):
             
             # MATRIZ CRUZADA: CÓRNERS
-            # Córners Local = (Córners que hace el local + Córners que concede la visita) / 2
             lam_c_home = (stats_home.get('corners_f', 4.5) + stats_away.get('corners_c', 4.5)) / 2
             lam_c_away = (stats_away.get('corners_f', 4.5) + stats_home.get('corners_c', 4.5)) / 2
             corners_matrix = self._calculate_corners_matrix(lam_c_home, lam_c_away, max_corners=15)
 
             # MATRIZ CRUZADA: TARJETAS
-            # Tarjetas Local = (Tarjetas que recibe el local + Tarjetas que provoca la visita a sus rivales) / 2
             lam_t_home = (stats_home.get('tarjetas_f', 2.0) + stats_away.get('tarjetas_c', 2.0)) / 2
             lam_t_away = (stats_away.get('tarjetas_f', 2.0) + stats_home.get('tarjetas_c', 2.0)) / 2
             cards_matrix = self._calculate_cards_matrix(lam_t_home, lam_t_away, max_cards=10)
