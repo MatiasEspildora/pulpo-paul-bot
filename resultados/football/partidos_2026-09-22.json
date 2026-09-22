@@ -12408,7 +12408,7 @@
             "status": {
                 "long": "Second Half",
                 "short": "2H",
-                "elapsed": 66,
+                "elapsed": 82,
                 "extra": null
             }
         },
@@ -12438,7 +12438,7 @@
         },
         "goals": {
             "home": 0,
-            "away": 1
+            "away": 2
         },
         "score": {
             "halftime": {
@@ -12478,7 +12478,7 @@
             "status": {
                 "long": "Second Half",
                 "short": "2H",
-                "elapsed": 67,
+                "elapsed": 83,
                 "extra": null
             }
         },
@@ -12497,18 +12497,18 @@
                 "id": 27411,
                 "name": "Ind. Yumbo",
                 "logo": "https://media.api-sports.io/football/teams/27411.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 23326,
                 "name": "Internacional Palmira",
                 "logo": "https://media.api-sports.io/football/teams/23326.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
             "home": 0,
-            "away": 0
+            "away": 1
         },
         "score": {
             "halftime": {
@@ -12548,7 +12548,7 @@
             "status": {
                 "long": "Second Half",
                 "short": "2H",
-                "elapsed": 65,
+                "elapsed": 80,
                 "extra": null
             }
         },
@@ -12618,7 +12618,7 @@
             "status": {
                 "long": "Second Half",
                 "short": "2H",
-                "elapsed": 65,
+                "elapsed": 80,
                 "extra": null
             }
         },
@@ -12647,7 +12647,7 @@
             }
         },
         "goals": {
-            "home": 1,
+            "home": 2,
             "away": 0
         },
         "score": {
@@ -12678,7 +12678,7 @@
             "timestamp": 1790112600,
             "periods": {
                 "first": 1790112600,
-                "second": null
+                "second": 1790116200
             },
             "venue": {
                 "id": null,
@@ -12686,10 +12686,10 @@
                 "city": "Pedro Juan Caballero"
             },
             "status": {
-                "long": "Halftime",
-                "short": "HT",
-                "elapsed": 45,
-                "extra": 2
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 52,
+                "extra": null
             }
         },
         "league": {
@@ -12758,7 +12758,7 @@
             "status": {
                 "long": "First Half",
                 "short": "1H",
-                "elapsed": 26,
+                "elapsed": 41,
                 "extra": null
             }
         },
@@ -12826,9 +12826,9 @@
                 "city": "Chrissyuma"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 8,
                 "extra": null
             }
         },
@@ -12857,13 +12857,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
