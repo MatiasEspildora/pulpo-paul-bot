@@ -105,18 +105,17 @@ class MatchAnalyzer:
         for _, row in recent.iterrows():
             es_local = (row["HomeTeamId"] == team_id)
             
-            # 1. Extracción de Goles (Siempre presentes)
+            # 1. Goles (Siempre presentes)
             goles_favor.append(row["FTHG"] if es_local else row["FTAG"])
             goles_contra.append(row["FTAG"] if es_local else row["FTHG"])
 
-            # 2. Extracción Táctica Aislada (Se ignora si es NaN, no se inyectan ceros)
+            # 2. Extracción Táctica Aislada (Se ignora si es NaN, sin inyectar ceros)
             if es_local:
                 if pd.notna(row.get("HC")): corners_f.append(float(row["HC"]))
                 if pd.notna(row.get("AC")): corners_c.append(float(row["AC"]))
                 if pd.notna(row.get("HS")): remates_f.append(float(row["HS"]))
                 if pd.notna(row.get("AS")): remates_c.append(float(row["AS"]))
                 
-                # Tarjetas (Amarillas + Rojas)
                 t_f = (float(row.get("HY", 0)) if pd.notna(row.get("HY")) else 0) + (float(row.get("HR", 0)) if pd.notna(row.get("HR")) else 0)
                 t_c = (float(row.get("AY", 0)) if pd.notna(row.get("AY")) else 0) + (float(row.get("AR", 0)) if pd.notna(row.get("AR")) else 0)
                 if pd.notna(row.get("HY")) or pd.notna(row.get("HR")): tarjetas_f.append(t_f)
@@ -127,13 +126,11 @@ class MatchAnalyzer:
                 if pd.notna(row.get("AS")): remates_f.append(float(row["AS"]))
                 if pd.notna(row.get("HS")): remates_c.append(float(row["HS"]))
                 
-                # Tarjetas invertidas para la visita
                 t_f = (float(row.get("AY", 0)) if pd.notna(row.get("AY")) else 0) + (float(row.get("AR", 0)) if pd.notna(row.get("AR")) else 0)
                 t_c = (float(row.get("HY", 0)) if pd.notna(row.get("HY")) else 0) + (float(row.get("HR", 0)) if pd.notna(row.get("HR")) else 0)
                 if pd.notna(row.get("AY")) or pd.notna(row.get("AR")): tarjetas_f.append(t_f)
                 if pd.notna(row.get("HY")) or pd.notna(row.get("HR")): tarjetas_c.append(t_c)
             
-        # 3. Validación Final: Tiene detalles solo si rescatamos al menos 1 registro real
         tiene_detalles = len(corners_f) > 0 or len(remates_f) > 0
 
         return {
@@ -283,13 +280,12 @@ class MatchAnalyzer:
         stats_away = self.get_team_stats(away_team, away_id, league_id, es_eliminatoria)
 
         if stats_home.get('count', 0) >= 5 and stats_away.get('count', 0) >= 5 and stats_home.get('has_details') and stats_away.get('has_details'):
-            
-            # MATRIZ CRUZADA: CÓRNERS
+            # MATRIZ CRUZADA: CÓRNERS (For Local + Against Away)
             lam_c_home = (stats_home.get('corners_f', 4.5) + stats_away.get('corners_c', 4.5)) / 2
             lam_c_away = (stats_away.get('corners_f', 4.5) + stats_home.get('corners_c', 4.5)) / 2
             corners_matrix = self._calculate_corners_matrix(lam_c_home, lam_c_away, max_corners=15)
 
-            # MATRIZ CRUZADA: TARJETAS
+            # MATRIZ CRUZADA: TARJETAS (For Local + Against Away)
             lam_t_home = (stats_home.get('tarjetas_f', 2.0) + stats_away.get('tarjetas_c', 2.0)) / 2
             lam_t_away = (stats_away.get('tarjetas_f', 2.0) + stats_home.get('tarjetas_c', 2.0)) / 2
             cards_matrix = self._calculate_cards_matrix(lam_t_home, lam_t_away, max_cards=10)
@@ -391,7 +387,7 @@ class MatchAnalyzer:
         away_avg_conceded = (ag_c_glob + ag_c_ven) / 2
 
         exp_home_score = (home_avg_scored + away_avg_conceded) / 2
-        exp_away_score = (away_avg_scored + home_avg_conceded) / 2
+        exp_away_score = (away_avg_scored + home_concede_avg) / 2
         total_projected_points = exp_home_score + exp_away_score
 
         diff = exp_home_score - exp_away_score
