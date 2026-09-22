@@ -111,6 +111,8 @@ class BetBuilderEngine:
         result = raw_data.copy()
         result.update({
             'probs': [prob_home, prob_draw, prob_away],
+            'safe_prob_home': prob_home if prob_home >= 0.93 else 0.0,
+            'safe_prob_away': prob_away if prob_away >= 0.93 else 0.0,
             'btts': btts_yes, 'btts_no': safe_btts_no,
             'scores': top_scores, 'score_value': max(prob_home, prob_draw, prob_away), 
             'prob_1X': prob_1X, 'prob_X2': prob_X2, 'prob_12': prob_12,
