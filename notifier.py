@@ -5,6 +5,7 @@ import time
 import math
 from datetime import datetime, timedelta
 import pytz
+from scipy.stats import poisson
 
 TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
@@ -59,7 +60,7 @@ def enviar_mensaje_telegram(mensaje, token_override=None, chat_id_especifico=Non
                 print(f"⚠️ Error al enviar a Telegram ({chat_id}): {res.text}")
                 
         except Exception as e:
-            print(f"⚠️ Excepción al conectar con Telegram ({chat_id}): {e}")
+            print(f"⚠️ Excepción al conectar dengan Telegram ({chat_id}): {e}")
         
         if len(lista_chats) > 1:
             time.sleep(0.2)
@@ -102,7 +103,6 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
                 s_l = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_copa)
                 s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_copa)
                 
-                # 🔥 FILTRO DINÁMICO: 3 partidos mínimo para copas, 5 para ligas regulares
                 min_partidos = 3 if es_copa else 5
                 
                 if s_l.get('count', 0) >= min_partidos and s_v.get('count', 0) >= min_partidos:
@@ -111,6 +111,17 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
                     p['bandera'] = BANDERAS.get(pais, "🏴")
                     p['_id_interno'] = f"{p['local_id']}_{p['visita_id']}_{p['fecha_str']}"
                     p['total_partidos_muestra'] = s_l.get('count', 0) + s_v.get('count', 0)
+                    
+                    if s_l.get('has_details') and s_v.get('has_details'):
+                        lam_s_home = (s_l.get('remates_f', 12.0) + s_v.get('remates_c', 12.0)) / 2
+                        lam_s_away = (s_v.get('remates_f', 12.0) + s_l.get('remates_c', 12.0)) / 2
+                        lam_s_total = lam_s_home + lam_s_away
+                        p['over_24_5_shots'] = 1 - poisson.cdf(24, lam_s_total) if lam_s_total > 0 else 0.0
+                        p['over_26_5_shots'] = 1 - poisson.cdf(26, lam_s_total) if lam_s_total > 0 else 0.0
+                    else:
+                        p['over_24_5_shots'] = 0.0
+                        p['over_26_5_shots'] = 0.0
+
                     partidos_validos.append(p)
                     
     if not partidos_validos:
@@ -130,7 +141,6 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         loc, vis = p['local'], p['visita']
         t_partidos = p['total_partidos_muestra']
         
-        # Alertas de Fatiga (Placeholder seguro)
         descanso_l = p.get('dias_descanso_local', 7)
         descanso_v = p.get('dias_descanso_visita', 7)
         alerta_fatiga = ""
@@ -190,7 +200,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         if p.get('btts', 0) > 0.80: 
             francotiradores.append({'match': p, 'prob': p.get('btts'), 'sel': 'Ambos Anotan (SÍ)', 'score': calcular_confidence_score(p.get('btts'), t_partidos)})
         
-        # --- LÓGICA CORREGIDA PARA CÓRNERS ---
+        # --- CÓRNERS ---
         corner_sel = None
         corner_prob = 0
         if p.get('over_9_5_corners', 0) > 0.75:
@@ -201,7 +211,6 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             corner_prob = p.get('over_8_5_corners')
             
         if corner_sel:
-            # Re-calculamos s_l y s_v localmente para el print (evitando errores)
             es_c = p.get('es_eliminatoria', False)
             sl = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_c)
             sv = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_c)
@@ -213,7 +222,29 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
                 'score': calcular_confidence_score(corner_prob, t_partidos)
             })
 
-        # --- LÓGICA CORREGIDA PARA TARJETAS ---
+        # --- REMATES ---
+        shot_sel = None
+        shot_prob = 0
+        if p.get('over_26_5_shots', 0) > 0.75:
+            shot_sel = '+26.5 Remates'
+            shot_prob = p.get('over_26_5_shots')
+        elif p.get('over_24_5_shots', 0) > 0.80:
+            shot_sel = '+24.5 Remates'
+            shot_prob = p.get('over_24_5_shots')
+
+        if shot_sel:
+            es_c = p.get('es_eliminatoria', False)
+            sl = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_c)
+            sv = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_c)
+            promedio_remates_str = f"L: {sl.get('remates_f', 0):.1f} - V: {sv.get('remates_f', 0):.1f}"
+            quirofano_tactico.append({
+                'match': p,
+                'prob': shot_prob,
+                'sel': f"{shot_sel} ({promedio_remates_str})",
+                'score': calcular_confidence_score(shot_prob, t_partidos)
+            })
+
+        # --- TARJETAS ---
         card_sel = None
         card_prob = 0
         if p.get('over_5_5_cards', 0) > 0.75:
@@ -227,7 +258,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             es_c = p.get('es_eliminatoria', False)
             sl = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_c)
             sv = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_c)
-            promedio_str = f"L: {sl.get('tarjetas', 0):.1f} - V: {sv.get('tarjetas', 0):.1f}"
+            promedio_str = f"L: {sl.get('tarjetas_f', 0):.1f} - V: {sv.get('tarjetas_f', 0):.1f}"
             quirofano_tactico.append({
                 'match': p, 
                 'prob': card_prob, 
@@ -243,7 +274,6 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
                 'sel': f"🚨 Alerta Volatilidad: {quien_remonta} debe remontar {abs(dif_global)} goles"
             })
 
-    # 🔥 ORDENAMIENTO POR CONFIDENCE SCORE EN LUGAR DE PROBABILIDAD PURA
     mega_misiles.sort(key=lambda x: x['score'], reverse=True)
     bb_list.sort(key=lambda x: x['score'], reverse=True)
     ganadores.sort(key=lambda x: x['score'], reverse=True)
@@ -252,7 +282,6 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     francotiradores.sort(key=lambda x: x['score'], reverse=True)
     quirofano_tactico.sort(key=lambda x: x['score'], reverse=True)
 
-    # RECOLECCIÓN DE PARTIDOS SELECCIONADOS PARA LA AUTOPSIA
     seleccionados = set()
     for item in bb_list[:30]: seleccionados.add(item['match']['_id_interno'])
     for item in ganadores[:30]: seleccionados.add(item['match']['_id_interno'])
@@ -312,13 +341,13 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{es_mata_mata}{m['alerta_fatiga']} | 🔥 *{item['sel']}* ({item['prob']:.0%})\n\n"
 
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
-    msg += "🚩 *EL QUIRÓFANO TÁCTICO (Córners y Tarjetas)*\n\n"
+    msg += "🚩 *EL QUIRÓFANO TÁCTICO (Córners, Remates y Tarjetas)*\n\n"
     if quirofano_tactico:
         for i, item in enumerate(quirofano_tactico[:15], 1):
             m = item['match']
             msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']} | 🧩 *{item['sel']}* ({item['prob']:.0%})\n\n"
     else:
-        msg += "_Sin opciones viables de Córners/Tarjetas hoy._\n\n"
+        msg += "_Sin opciones viables de Córners/Remates/Tarjetas hoy._\n\n"
 
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
     msg += "🎯 *LOS FRANCOTIRADORES (Ambos Anotan - SÍ)*\n\n"
@@ -380,7 +409,6 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
     
     fechas_texto = ", ".join(fechas_incluidas)
     
-    # 🔥 TÍTULO GENERAL ÚNICO PARA TODO EL REPORTE DE AUTOPSIA
     header_general = (f"🩸 *LA AUTOPSIA TÁCTICA (V4.0)*\n📅 _Fecha: {fechas_texto}_\n\n")
     mensaje_actual = header_general
     
@@ -391,7 +419,6 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
             
             partidos_validos = []
             for p in proyecciones:
-                # 🔥 AQUÍ ESTÁ EL ESCUDO: Solo procesamos los que entraron en los Tops
                 if p.get('_id_interno') not in seleccionados:
                     continue
 
@@ -407,7 +434,6 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
             if not partidos_validos:
                 continue
 
-            # Encabezado limpio por liga/país (sin repetir el título general de autopsia)
             header_liga = f"📌 {bandera} *{pais} - {liga}*\n\n"
             
             if len(mensaje_actual) + len(header_liga) > max_len:
@@ -444,10 +470,13 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
                 bloque_partido += f"📐 *PROM. GOLES ({count_l}p|{count_v}p)* ➔ L ({s_l.get('goles_favor', 0):.1f}F-{s_l.get('goles_contra', 0):.1f}C) | V ({s_v.get('goles_favor', 0):.1f}F-{s_v.get('goles_contra', 0):.1f}C)\n"
                 
                 if s_l.get('has_details') or s_v.get('has_details'):
-                    # CORREGIDO: Usamos corners_f y remates_f para mostrar el promedio real
                     bloque_partido += f"📋 *RADIOGRAFÍA* ➔ Remates: L ({s_l.get('remates_f', 0):.1f}) | V ({s_v.get('remates_f', 0):.1f})\n"
+                    bloque_partido += f"🎯 *REMATES (Poiss)* ➔ +24.5 ({p.get('over_24_5_shots', 0):.0%}) | +26.5 ({p.get('over_26_5_shots', 0):.0%})\n"
                     bloque_partido += f"🚩 *CÓRNERS (Prom)* ➔ L ({s_l.get('corners_f', 0):.1f}) | V ({s_v.get('corners_f', 0):.1f})\n"
                     bloque_partido += f"🎯 *CÓRNERS (Poiss)* ➔ +8.5 ({p.get('over_8_5_corners', 0):.0%}) | +9.5 ({p.get('over_9_5_corners', 0):.0%})\n"
+                    # 🔥 AÑADIDO: Tarjetas oficiales en la Autopsia Táctica
+                    bloque_partido += f"🟨 *TARJETAS (Prom)* ➔ L ({s_l.get('tarjetas_f', 0):.1f}) | V ({s_v.get('tarjetas_f', 0):.1f})\n"
+                    bloque_partido += f"🎯 *TARJETAS (Poiss)* ➔ +3.5 ({p.get('over_3_5_cards', 0):.0%}) | +4.5 ({p.get('over_4_5_cards', 0):.0%})\n"
 
                 bloque_partido += "\n\n"
 
@@ -458,7 +487,6 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
                 else:
                     mensaje_actual += bloque_partido
 
-    # 🔥 AÑADIR EL CIERRE AL ÚLTIMO MENSAJE O CREAR UNO NUEVO SI ESTÁ LLENO
     cierre_reporte = "━"*24 + "\n\n✅ *FIN DE LA AUTOPSIA* ✅\n\n"
     if len(mensaje_actual) + len(cierre_reporte) > max_len:
         if mensaje_actual.strip():
@@ -527,7 +555,6 @@ def _generar_y_enviar_menu_basket(proyecciones_dict, etiqueta_dia, analyzer, tok
     mensaje_resumen += f"📅 _Generado: {hora_generacion}_\n\n"
     mensaje_resumen += "━"*24 + "\n\n"
 
-    # Ordenamos por confidence score
     basket_lista.sort(key=lambda x: x['score'], reverse=True)
     for i, item in enumerate(basket_lista[:15], 1):
         p = item['match']
