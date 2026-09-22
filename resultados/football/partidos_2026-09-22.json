@@ -8,7 +8,7 @@
             "timestamp": 1790053200,
             "periods": {
                 "first": 1790053200,
-                "second": null
+                "second": 1790056800
             },
             "venue": {
                 "id": 0,
@@ -16,10 +16,10 @@
                 "city": "Nagoya"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 9,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 3
             }
         },
         "league": {
@@ -48,7 +48,7 @@
         },
         "goals": {
             "home": 0,
-            "away": 1
+            "away": 2
         },
         "score": {
             "halftime": {
@@ -56,8 +56,8 @@
                 "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 2
             },
             "extratime": {
                 "home": null,
@@ -78,7 +78,7 @@
             "timestamp": 1790053200,
             "periods": {
                 "first": 1790053200,
-                "second": null
+                "second": 1790056800
             },
             "venue": {
                 "id": 0,
@@ -86,10 +86,10 @@
                 "city": "Nagoya"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 9,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 5
             }
         },
         "league": {
@@ -107,27 +107,27 @@
                 "id": 10953,
                 "name": "Philippines U23",
                 "logo": "https://media.api-sports.io/football/teams/10953.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 10940,
                 "name": "Kuwait U23",
                 "logo": "https://media.api-sports.io/football/teams/10940.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": 0,
-            "away": 0
+            "home": 2,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": 0,
+                "home": 1,
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -156,9 +156,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
                 "extra": null
             }
         },
@@ -177,23 +177,23 @@
                 "id": 19005,
                 "name": "RTC",
                 "logo": "https://media.api-sports.io/football/teams/19005.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 21277,
                 "name": "Tsirang",
                 "logo": "https://media.api-sports.io/football/teams/21277.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 2,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 1
             },
             "fulltime": {
                 "home": null,
@@ -357,7 +357,7 @@
             "date": "2026-09-22T06:00:00-03:00",
             "timestamp": 1790067600,
             "periods": {
-                "first": null,
+                "first": 1790067600,
                 "second": null
             },
             "venue": {
@@ -366,9 +366,9 @@
                 "city": "Rajshahi"
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
                 "extra": null
             }
         },
@@ -387,23 +387,23 @@
                 "id": 20780,
                 "name": "Fortis",
                 "logo": "https://media.api-sports.io/football/teams/20780.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 25416,
                 "name": "Fakirerpool",
                 "logo": "https://media.api-sports.io/football/teams/25416.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
@@ -474,6 +474,76 @@
             "halftime": {
                 "home": null,
                 "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1640756,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-22T06:30:00-03:00",
+            "timestamp": 1790069400,
+            "periods": {
+                "first": 1790069400,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 21,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 1159,
+            "name": "CECAFA U20 Championship",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/1159.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Semi-finals",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 11050,
+                "name": "Uganda U20",
+                "logo": "https://media.api-sports.io/football/teams/11050.png",
+                "winner": null
+            },
+            "away": {
+                "id": 11046,
+                "name": "Sudan U20",
+                "logo": "https://media.api-sports.io/football/teams/11046.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": 1,
+            "away": 1
+        },
+        "score": {
+            "halftime": {
+                "home": 1,
+                "away": 1
             },
             "fulltime": {
                 "home": null,
@@ -673,76 +743,6 @@
                 "id": 15467,
                 "name": "Portimonense U23",
                 "logo": "https://media.api-sports.io/football/teams/15467.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1640756,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-22T08:00:00-03:00",
-            "timestamp": 1790074800,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 1159,
-            "name": "CECAFA U20 Championship",
-            "country": "World",
-            "logo": "https://media.api-sports.io/football/leagues/1159.png",
-            "flag": null,
-            "season": 2026,
-            "round": "Semi-finals",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 11050,
-                "name": "Uganda U20",
-                "logo": "https://media.api-sports.io/football/teams/11050.png",
-                "winner": null
-            },
-            "away": {
-                "id": 11046,
-                "name": "Sudan U20",
-                "logo": "https://media.api-sports.io/football/teams/11046.png",
                 "winner": null
             }
         },
@@ -1373,6 +1373,76 @@
                 "id": 11043,
                 "name": "Seychelles U20",
                 "logo": "https://media.api-sports.io/football/teams/11043.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1640755,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-22T10:00:00-03:00",
+            "timestamp": 1790082000,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 1159,
+            "name": "CECAFA U20 Championship",
+            "country": "World",
+            "logo": "https://media.api-sports.io/football/leagues/1159.png",
+            "flag": null,
+            "season": 2026,
+            "round": "Semi-finals",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 11047,
+                "name": "Tanzania U20",
+                "logo": "https://media.api-sports.io/football/teams/11047.png",
+                "winner": null
+            },
+            "away": {
+                "id": 11022,
+                "name": "Burundi U20",
+                "logo": "https://media.api-sports.io/football/teams/11022.png",
                 "winner": null
             }
         },
@@ -3613,76 +3683,6 @@
                 "id": 2916,
                 "name": "Al Shamal",
                 "logo": "https://media.api-sports.io/football/teams/2916.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
-            "id": 1640755,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-22T12:00:00-03:00",
-            "timestamp": 1790089200,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 1159,
-            "name": "CECAFA U20 Championship",
-            "country": "World",
-            "logo": "https://media.api-sports.io/football/leagues/1159.png",
-            "flag": null,
-            "season": 2026,
-            "round": "Semi-finals",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 11047,
-                "name": "Tanzania U20",
-                "logo": "https://media.api-sports.io/football/teams/11047.png",
-                "winner": null
-            },
-            "away": {
-                "id": 11022,
-                "name": "Burundi U20",
-                "logo": "https://media.api-sports.io/football/teams/11022.png",
                 "winner": null
             }
         },
@@ -10166,8 +10166,8 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
+                "long": "Match Postponed",
+                "short": "PST",
                 "elapsed": null,
                 "extra": null
             }
@@ -10236,8 +10236,8 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
+                "long": "Match Postponed",
+                "short": "PST",
                 "elapsed": null,
                 "extra": null
             }
@@ -10796,8 +10796,8 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
+                "long": "Match Postponed",
+                "short": "PST",
                 "elapsed": null,
                 "extra": null
             }
@@ -10866,8 +10866,8 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
+                "long": "Match Postponed",
+                "short": "PST",
                 "elapsed": null,
                 "extra": null
             }
@@ -11076,8 +11076,8 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
+                "long": "Match Postponed",
+                "short": "PST",
                 "elapsed": null,
                 "extra": null
             }
@@ -11216,8 +11216,8 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
+                "long": "Match Postponed",
+                "short": "PST",
                 "elapsed": null,
                 "extra": null
             }
@@ -11299,7 +11299,7 @@
             "logo": "https://media.api-sports.io/football/leagues/45.png",
             "flag": "https://media.api-sports.io/flags/gb-eng.svg",
             "season": 2026,
-            "round": "Quarter-finals",
+            "round": "2nd Round Qualifying",
             "standings": false
         },
         "teams": {
@@ -11369,7 +11369,7 @@
             "logo": "https://media.api-sports.io/football/leagues/45.png",
             "flag": "https://media.api-sports.io/flags/gb-eng.svg",
             "season": 2026,
-            "round": "Quarter-finals",
+            "round": "2nd Round Qualifying",
             "standings": false
         },
         "teams": {
@@ -11439,7 +11439,7 @@
             "logo": "https://media.api-sports.io/football/leagues/45.png",
             "flag": "https://media.api-sports.io/flags/gb-eng.svg",
             "season": 2026,
-            "round": "Quarter-finals",
+            "round": "2nd Round Qualifying",
             "standings": false
         },
         "teams": {
@@ -11509,7 +11509,7 @@
             "logo": "https://media.api-sports.io/football/leagues/45.png",
             "flag": "https://media.api-sports.io/flags/gb-eng.svg",
             "season": 2026,
-            "round": "Quarter-finals",
+            "round": "2nd Round Qualifying",
             "standings": false
         },
         "teams": {
@@ -11579,7 +11579,7 @@
             "logo": "https://media.api-sports.io/football/leagues/45.png",
             "flag": "https://media.api-sports.io/flags/gb-eng.svg",
             "season": 2026,
-            "round": "Quarter-finals",
+            "round": "2nd Round Qualifying",
             "standings": false
         },
         "teams": {
@@ -11649,7 +11649,7 @@
             "logo": "https://media.api-sports.io/football/leagues/45.png",
             "flag": "https://media.api-sports.io/flags/gb-eng.svg",
             "season": 2026,
-            "round": "Quarter-finals",
+            "round": "2nd Round Qualifying",
             "standings": false
         },
         "teams": {
@@ -11719,7 +11719,7 @@
             "logo": "https://media.api-sports.io/football/leagues/45.png",
             "flag": "https://media.api-sports.io/flags/gb-eng.svg",
             "season": 2026,
-            "round": "Quarter-finals",
+            "round": "2nd Round Qualifying",
             "standings": false
         },
         "teams": {
@@ -11789,7 +11789,7 @@
             "logo": "https://media.api-sports.io/football/leagues/45.png",
             "flag": "https://media.api-sports.io/flags/gb-eng.svg",
             "season": 2026,
-            "round": "Quarter-finals",
+            "round": "2nd Round Qualifying",
             "standings": false
         },
         "teams": {
@@ -11859,7 +11859,7 @@
             "logo": "https://media.api-sports.io/football/leagues/45.png",
             "flag": "https://media.api-sports.io/flags/gb-eng.svg",
             "season": 2026,
-            "round": "Quarter-finals",
+            "round": "2nd Round Qualifying",
             "standings": false
         },
         "teams": {
@@ -11929,7 +11929,7 @@
             "logo": "https://media.api-sports.io/football/leagues/45.png",
             "flag": "https://media.api-sports.io/flags/gb-eng.svg",
             "season": 2026,
-            "round": "Quarter-finals",
+            "round": "2nd Round Qualifying",
             "standings": false
         },
         "teams": {
@@ -11999,7 +11999,7 @@
             "logo": "https://media.api-sports.io/football/leagues/45.png",
             "flag": "https://media.api-sports.io/flags/gb-eng.svg",
             "season": 2026,
-            "round": "Quarter-finals",
+            "round": "2nd Round Qualifying",
             "standings": false
         },
         "teams": {
@@ -12069,7 +12069,7 @@
             "logo": "https://media.api-sports.io/football/leagues/45.png",
             "flag": "https://media.api-sports.io/flags/gb-eng.svg",
             "season": 2026,
-            "round": "Quarter-finals",
+            "round": "2nd Round Qualifying",
             "standings": false
         },
         "teams": {
@@ -12139,7 +12139,7 @@
             "logo": "https://media.api-sports.io/football/leagues/45.png",
             "flag": "https://media.api-sports.io/flags/gb-eng.svg",
             "season": 2026,
-            "round": "Quarter-finals",
+            "round": "2nd Round Qualifying",
             "standings": false
         },
         "teams": {
@@ -12993,6 +12993,76 @@
                 "id": 18678,
                 "name": "Atlético Tucumán Res.",
                 "logo": "https://media.api-sports.io/football/teams/18678.png",
+                "winner": null
+            }
+        },
+        "goals": {
+            "home": null,
+            "away": null
+        },
+        "score": {
+            "halftime": {
+                "home": null,
+                "away": null
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1520882,
+            "referee": "Lucas Guimaraes Rechatiko Horn",
+            "timezone": "America/Santiago",
+            "date": "2026-09-22T19:30:00-03:00",
+            "timestamp": 1790116200,
+            "periods": {
+                "first": null,
+                "second": null
+            },
+            "venue": {
+                "id": 233,
+                "name": "Estadio Heriberto Hülse",
+                "city": "Chrissyuma"
+            },
+            "status": {
+                "long": "Not Started",
+                "short": "NS",
+                "elapsed": null,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 72,
+            "name": "Serie B",
+            "country": "Brazil",
+            "logo": "https://media.api-sports.io/football/leagues/72.png",
+            "flag": "https://media.api-sports.io/flags/br.svg",
+            "season": 2026,
+            "round": "Regular Season - 29",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 140,
+                "name": "Criciuma",
+                "logo": "https://media.api-sports.io/football/teams/140.png",
+                "winner": null
+            },
+            "away": {
+                "id": 1223,
+                "name": "Operario-PR",
+                "logo": "https://media.api-sports.io/football/teams/1223.png",
                 "winner": null
             }
         },
