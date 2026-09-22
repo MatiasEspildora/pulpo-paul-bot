@@ -444,8 +444,9 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
                 bloque_partido += f"📐 *PROM. GOLES ({count_l}p|{count_v}p)* ➔ L ({s_l.get('goles_favor', 0):.1f}F-{s_l.get('goles_contra', 0):.1f}C) | V ({s_v.get('goles_favor', 0):.1f}F-{s_v.get('goles_contra', 0):.1f}C)\n"
                 
                 if s_l.get('has_details') or s_v.get('has_details'):
-                    bloque_partido += f"📋 *RADIOGRAFÍA* ➔ Remates: L ({s_l.get('remates', 0):.1f}) | V ({s_v.get('remates', 0):.1f})\n"
-                    bloque_partido += f"🚩 *CÓRNERS (Prom)* ➔ L ({s_l.get('corners', 0):.1f}) | V ({s_v.get('corners', 0):.1f})\n"
+                    # CORREGIDO: Usamos corners_f y remates_f para mostrar el promedio real
+                    bloque_partido += f"📋 *RADIOGRAFÍA* ➔ Remates: L ({s_l.get('remates_f', 0):.1f}) | V ({s_v.get('remates_f', 0):.1f})\n"
+                    bloque_partido += f"🚩 *CÓRNERS (Prom)* ➔ L ({s_l.get('corners_f', 0):.1f}) | V ({s_v.get('corners_f', 0):.1f})\n"
                     bloque_partido += f"🎯 *CÓRNERS (Poiss)* ➔ +8.5 ({p.get('over_8_5_corners', 0):.0%}) | +9.5 ({p.get('over_9_5_corners', 0):.0%})\n"
 
                 bloque_partido += "\n\n"
