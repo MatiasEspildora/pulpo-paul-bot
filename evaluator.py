@@ -293,7 +293,7 @@ def auditar_y_reportar():
         
         for (pais, liga), group in df_reciente.groupby(['Country', 'League']):
             tl = len(group)
-            if tl >= 3:
+            if tl >= 15:
                 pl = (group['Acierto'].sum() / tl) * 100
                 ligas_stats.append((pais, liga, pl, tl))
         
