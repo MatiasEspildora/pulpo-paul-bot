@@ -75,7 +75,7 @@
             "id": 302,
             "name": "Asian Games Women",
             "type": "cup",
-            "season": 2024,
+            "season": 2026,
             "logo": "https://media.api-sports.io/basketball/leagues/302.png"
         },
         "country": {
@@ -249,7 +249,7 @@
             "id": 302,
             "name": "Asian Games Women",
             "type": "cup",
-            "season": 2024,
+            "season": 2026,
             "logo": "https://media.api-sports.io/basketball/leagues/302.png"
         },
         "country": {
@@ -481,7 +481,7 @@
             "id": 302,
             "name": "Asian Games Women",
             "type": "cup",
-            "season": 2024,
+            "season": 2026,
             "logo": "https://media.api-sports.io/basketball/leagues/302.png"
         },
         "country": {
@@ -1459,8 +1459,8 @@
         "week": null,
         "venue": "Moda Center",
         "status": {
-            "long": "Game Finished",
-            "short": "FT",
+            "long": "After Over Time",
+            "short": "AOT",
             "timer": null
         },
         "league": {
@@ -1490,20 +1490,20 @@
         },
         "scores": {
             "home": {
-                "quarter_1": 24,
-                "quarter_2": 16,
-                "quarter_3": 21,
-                "quarter_4": 16,
-                "over_time": null,
-                "total": 82
-            },
-            "away": {
                 "quarter_1": 10,
                 "quarter_2": 27,
                 "quarter_3": 21,
                 "quarter_4": 19,
-                "over_time": null,
+                "over_time": 13,
                 "total": 90
+            },
+            "away": {
+                "quarter_1": 24,
+                "quarter_2": 16,
+                "quarter_3": 21,
+                "quarter_4": 16,
+                "over_time": 5,
+                "total": 82
             }
         }
     }
