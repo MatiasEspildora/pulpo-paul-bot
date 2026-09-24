@@ -32,8 +32,8 @@ def dedupe_dataframe(df):
 
     df = df.copy().fillna("")
     
-    # ✅ Añadidas columnas del Primer Tiempo (HTHG, HTAG)
-    for col in ["League", "LeagueId", "Country", "Round", "EsEliminatoria", "Date", "HomeTeamId", "AwayTeamId", "HomeTeam", "AwayTeam", "FTHG", "FTAG", "HTHG", "HTAG"]:
+    # ✅ Añadidas columnas del Primer Tiempo y Referee
+    for col in ["League", "LeagueId", "Country", "Round", "EsEliminatoria", "Date", "HomeTeamId", "AwayTeamId", "HomeTeam", "AwayTeam", "FTHG", "FTAG", "HTHG", "HTAG", "Referee"]:
         if col not in df.columns:
             df[col] = ""
 
@@ -46,10 +46,7 @@ def dedupe_dataframe(df):
         if row.get("Country"): score += 30
         if row.get("League"): score += 10
         if (row.get("FTHG") not in (None, "")) or (row.get("FTAG") not in (None, "")): score += 20
-        
-        # ✅ Puntos extra si el registro trae la info del primer tiempo
         if (row.get("HTHG") not in (None, "")) or (row.get("HTAG") not in (None, "")): score += 15 
-        
         if row.get("HomeTeamId") and row.get("AwayTeamId"): score += 60
         return score
 
@@ -71,8 +68,8 @@ def dedupe_dataframe(df):
             if i == best_idx:
                 continue
             
-            # ✅ Añadido HTHG y HTAG a la fusión de rescate
-            for col in ["League", "LeagueId", "Country", "Round", "EsEliminatoria", "HomeTeamId", "AwayTeamId", "FTHG", "FTAG", "HTHG", "HTAG", "HC", "AC", "HY", "AY", "HR", "AR", "HS", "AS"]:
+            # ✅ Añadido Referee a la fusión de rescate
+            for col in ["League", "LeagueId", "Country", "Round", "EsEliminatoria", "HomeTeamId", "AwayTeamId", "FTHG", "FTAG", "HTHG", "HTAG", "HC", "AC", "HY", "AY", "HR", "AR", "HS", "AS", "Referee"]:
                 bval = best.get(col, "") or ""
                 oval = other.get(col, "") or ""
                 if (not bval) and oval:
@@ -154,7 +151,7 @@ def main(args=None):
         meses_afectados = None
 
     football.guardar_historico_mensual(df_hist, meses_afectados)
-    print('Backfill completo e inyección de datos HT terminada. Revisa historico_mensual/football.')
+    print('Backfill completo e inyección de datos de Árbitro y HT terminada. Revisa historico_mensual/football.')
 
 if __name__ == '__main__':
     main()
