@@ -8,7 +8,7 @@ from api_client import FootballAPI
 
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
-API_KEY = os.environ.get("API_FOOTBALL_KEY") # Asegúrate que este nombre coincida con tu .env
+API_KEY = os.environ.get("API_FOOTBALL_KEY")
 
 RUTA_JSON = os.path.join("config", "Active_Leagues_Coverage.json")
 
@@ -31,17 +31,14 @@ def enviar_telegram(mensaje):
 def actualizar_ligas():
     print("📡 Iniciando escaneo global de ligas activas usando FootballAPI...")
     
-    # 🔥 Usamos tu cliente centralizado que ya tiene el proxy y los headers configurados
     api = FootballAPI(API_KEY)
-    
-    # Llamamos al endpoint a través del cliente
     data = api.get_data("leagues", {"current": "true"})
     
     if not data or "response" not in data:
-        enviar_telegram("❌ *Bender Error:* Falló la conexión al endpoint de Ligas (Revisar logs de api_client).")
+        enviar_telegram("❌ *Bender Error:* Falló la conexión al endpoint de Ligas.")
         return
 
-    ligas_validas = {}
+    ligas_validas = []
     total_escaneadas = data.get("results", 0)
     
     for item in data.get("response", []):
@@ -62,15 +59,17 @@ def actualizar_ligas():
         tiene_alineaciones = fixtures_cov.get("lineups", False)
         
         if tiene_eventos and tiene_estadisticas and tiene_alineaciones:
-            id_liga = str(liga.get("id"))
-            nombre_pais = pais.get("name", "Desconocido")
-            nombre_liga = liga.get("name", "Desconocida")
-            
-            ligas_validas[id_liga] = f"{nombre_pais} - {nombre_liga}"
+            # 🔥 Guardamos como estructura de lista compatible con football.py
+            ligas_validas.append({
+                "league_id": liga.get("id"),
+                "name": liga.get("name"),
+                "country": pais.get("name"),
+                "can_fetch_stats": True
+            })
 
     os.makedirs("config", exist_ok=True)
     
-    ligas_anteriores = {}
+    ligas_anteriores = []
     if os.path.exists(RUTA_JSON):
         try:
             with open(RUTA_JSON, "r", encoding="utf-8") as f:
