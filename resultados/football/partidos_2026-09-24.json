@@ -7,7 +7,7 @@
             "date": "2026-09-24T01:00:00-03:00",
             "timestamp": 1790222400,
             "periods": {
-                "first": null,
+                "first": 1790222400,
                 "second": null
             },
             "venue": {
@@ -16,10 +16,10 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
+                "extra": 7
             }
         },
         "league": {
@@ -47,13 +47,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "fulltime": {
                 "home": null,
@@ -152,8 +152,8 @@
             },
             "venue": {
                 "id": null,
-                "name": null,
-                "city": null
+                "name": "Tongliangloong Stadium",
+                "city": "Chongqing"
             },
             "status": {
                 "long": "Match Cancelled",
@@ -310,7 +310,7 @@
             "flag": null,
             "season": 2026,
             "round": "Division 2 - 1",
-            "standings": false
+            "standings": true
         },
         "teams": {
             "home": {
@@ -870,7 +870,7 @@
             "flag": null,
             "season": 2026,
             "round": "Division 2 - 1",
-            "standings": false
+            "standings": true
         },
         "teams": {
             "home": {
@@ -5331,7 +5331,7 @@
                 "second": null
             },
             "venue": {
-                "id": null,
+                "id": 11546,
                 "name": "Stade El Bachir",
                 "city": "Mohammedia"
             },
