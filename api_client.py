@@ -66,6 +66,22 @@ class FootballAPI(DataClient):
         except requests.exceptions.RequestException as e:
             print(f"❌ Error conectando a API (Estadísticas {fixture_id}): {e}")
             return None
+    # NUEVO: Endpoint específico para extraer las bajas/lesiones del partido
+    def get_fixture_injuries(self, fixture_id):
+        try:
+            response = requests.get(
+                f"{self.base_url}/injuries", 
+                headers=self.headers, 
+                params={"fixture": fixture_id},
+                proxies=self.proxies,
+                timeout=15 
+            )
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            print(f"❌ Error conectando a API (Lesiones {fixture_id}): {e}")
+            return None
+
             
 class BasketballAPI(DataClient):
     def __init__(self, key):
