@@ -105,11 +105,9 @@ class MatchAnalyzer:
         for _, row in recent.iterrows():
             es_local = (row["HomeTeamId"] == team_id)
             
-            # 1. Goles (Siempre presentes)
             goles_favor.append(row["FTHG"] if es_local else row["FTAG"])
             goles_contra.append(row["FTAG"] if es_local else row["FTHG"])
 
-            # 2. Extracción Táctica Aislada (Se ignora si es NaN, sin inyectar ceros)
             if es_local:
                 if pd.notna(row.get("HC")): corners_f.append(float(row["HC"]))
                 if pd.notna(row.get("AC")): corners_c.append(float(row["AC"]))
@@ -146,7 +144,29 @@ class MatchAnalyzer:
             "count": count,
         }
 
-    def get_projections(self, home_team, away_team, home_id, away_id, league_id=None, es_eliminatoria=False):
+    # 🔥 NUEVA FUNCIÓN: Rastreador de Árbitros
+    def get_referee_stats(self, referee_name):
+        if not referee_name or referee_name == "Desconocido" or 'Referee' not in self.df.columns:
+            return {"promedio_tarjetas": 0.0, "count": 0}
+            
+        df_ref = self.df[self.df['Referee'] == referee_name]
+        count = len(df_ref)
+        if count == 0:
+            return {"promedio_tarjetas": 0.0, "count": 0}
+            
+        tarjetas = []
+        for _, row in df_ref.iterrows():
+            y = (float(row.get('HY', 0)) if pd.notna(row.get('HY')) else 0) + (float(row.get('AY', 0)) if pd.notna(row.get('AY')) else 0)
+            r = (float(row.get('HR', 0)) if pd.notna(row.get('HR')) else 0) + (float(row.get('AR', 0)) if pd.notna(row.get('AR')) else 0)
+            if pd.notna(row.get('HY')) or pd.notna(row.get('AY')):
+                tarjetas.append(y + r)
+        
+        return {
+            "promedio_tarjetas": float(np.nanmean(tarjetas)) if tarjetas else 0.0,
+            "count": count
+        }
+
+    def get_projections(self, home_team, away_team, home_id, away_id, league_id=None, es_eliminatoria=False, referee="Desconocido"):
         def get_form_tracker(df_subset, team_id):
             if df_subset.empty: return "N/A", 0.0
             form, pts = [], 0
@@ -217,6 +237,11 @@ class MatchAnalyzer:
                 return True, (shots_ratio * 0.75) + (corners_ratio * 0.25)
             return False, 0.5
 
+        # 🔥 Obtenemos el perfil del árbitro
+        ref_stats = self.get_referee_stats(referee)
+        ref_avg = ref_stats.get('promedio_tarjetas', 0.0)
+        ref_count = ref_stats.get('count', 0)
+
         home_matches = self._get_filtered_matches(home_id, league_id, es_eliminatoria)
         away_matches = self._get_filtered_matches(away_id, league_id, es_eliminatoria)
 
@@ -280,14 +305,22 @@ class MatchAnalyzer:
         stats_away = self.get_team_stats(away_team, away_id, league_id, es_eliminatoria)
 
         if stats_home.get('count', 0) >= 5 and stats_away.get('count', 0) >= 5 and stats_home.get('has_details') and stats_away.get('has_details'):
-            # MATRIZ CRUZADA: CÓRNERS (For Local + Against Away)
             lam_c_home = (stats_home.get('corners_f', 4.5) + stats_away.get('corners_c', 4.5)) / 2
             lam_c_away = (stats_away.get('corners_f', 4.5) + stats_home.get('corners_c', 4.5)) / 2
             corners_matrix = self._calculate_corners_matrix(lam_c_home, lam_c_away, max_corners=15)
 
-            # MATRIZ CRUZADA: TARJETAS (For Local + Against Away)
             lam_t_home = (stats_home.get('tarjetas_f', 2.0) + stats_away.get('tarjetas_c', 2.0)) / 2
             lam_t_away = (stats_away.get('tarjetas_f', 2.0) + stats_home.get('tarjetas_c', 2.0)) / 2
+            
+            # 🔥 IMPACTO DEL ÁRBITRO EN LA MATRIZ DE POISSON
+            if ref_count >= 5 and ref_avg > 0:
+                total_expected_cards = lam_t_home + lam_t_away
+                # Ponderación híbrida: 60% peso a los equipos, 40% a la tendencia histórica del árbitro
+                ajuste = (total_expected_cards * 0.60) + (ref_avg * 0.40)
+                factor = ajuste / total_expected_cards if total_expected_cards > 0 else 1
+                lam_t_home *= factor
+                lam_t_away *= factor
+
             cards_matrix = self._calculate_cards_matrix(lam_t_home, lam_t_away, max_cards=10)
 
         return {
@@ -306,7 +339,9 @@ class MatchAnalyzer:
             'lambda_away_ht': lambda_away_ht,
             'tactics_applied': h_has_tac and a_has_tac,
             'tactical_mod_home': round(tactical_mod_home, 2),
-            'tactical_mod_away': round(tactical_mod_away, 2)
+            'tactical_mod_away': round(tactical_mod_away, 2),
+            'referee': referee, 
+            'ref_avg': ref_avg 
         }
 
     def get_basketball_team_stats(self, team_name, team_id):
