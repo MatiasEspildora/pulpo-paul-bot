@@ -1,133 +1,788 @@
-{
-    "21": "World - Confederations Cup",
-    "65": "France - Coupe de la Ligue",
-    "960": "World - Euro Championship - Qualification",
-    "768": "World - Arab Club Champions Cup",
-    "8": "World - World Cup - Women",
-    "29": "World - World Cup - Qualification Africa",
-    "4": "World - Euro Championship",
-    "9": "World - Copa America",
-    "1032": "Argentina - Copa de la Liga Profesional",
-    "480": "World - Olympics Men",
-    "32": "World - World Cup - Qualification Europe",
-    "38": "World - UEFA U21 Championship",
-    "15": "World - FIFA Club World Cup",
-    "6": "World - Africa Cup of Nations",
-    "743": "World - UEFA Championship - Women",
-    "22": "World - CONCACAF Gold Cup",
-    "490": "World - World Cup - U20",
-    "421": "Aruba - Division di Honor",
-    "66": "France - Coupe de France",
-    "547": "Italy - Super Cup",
-    "551": "Turkey - Super Cup",
-    "323": "India - Indian Super League",
-    "543": "Netherlands - Super Cup",
-    "204": "Turkey - 1. Lig",
-    "46": "England - EFL Trophy",
-    "82": "Germany - Frauen Bundesliga",
-    "197": "Greece - Super League 1",
-    "305": "Qatar - Stars League",
-    "296": "Thailand - Thai League 1",
-    "288": "South-Africa - Premier Soccer League",
-    "136": "Italy - Serie B",
-    "307": "Saudi-Arabia - Pro League",
-    "44": "England - FA WSL",
-    "233": "Egypt - Premier League",
-    "1191": "World - UEFA Europa Cup - Women",
-    "1168": "World - FIFA Intercontinental Cup",
-    "1247": "World - FIFA Asean Cup",
-    "34": "World - World Cup - Qualification South America",
-    "30": "World - World Cup - Qualification Asia",
-    "31": "World - World Cup - Qualification CONCACAF",
-    "250": "Paraguay - Division Profesional - Apertura",
-    "252": "Paraguay - Division Profesional - Clausura",
-    "1": "World - World Cup",
-    "253": "USA - Major League Soccer",
-    "128": "Argentina - Liga Profesional Argentina",
-    "71": "Brazil - Serie A",
-    "357": "Ireland - Premier Division",
-    "113": "Sweden - Allsvenskan",
-    "13": "World - CONMEBOL Libertadores",
-    "103": "Norway - Eliteserien",
-    "549": "Sweden - Damallsvenskan",
-    "244": "Finland - Veikkausliiga",
-    "114": "Sweden - Superettan",
-    "239": "Colombia - Primera A",
-    "475": "Brazil - Paulista - A1",
-    "624": "Brazil - Carioca - 1",
-    "11": "World - CONMEBOL Sudamericana",
-    "10": "World - Friendlies",
-    "265": "Chile - Primera División",
-    "281": "Peru - Primera División",
-    "292": "South-Korea - K League 1",
-    "1104": "Georgia - Liga 3",
-    "254": "USA - NWSL Women",
-    "327": "Georgia - Erovnuli Liga",
-    "16": "World - CONCACAF Champions League",
-    "73": "Brazil - Copa Do Brasil",
-    "813": "Cameroon - Elite Two",
-    "479": "Canada - Canadian Premier League",
-    "242": "Ecuador - Liga Pro",
-    "72": "Brazil - Serie B",
-    "169": "China - Super League",
-    "256": "USA - USL League Two",
-    "116": "Belarus - Premier League",
-    "772": "World - Leagues Cup",
-    "134": "Argentina - Torneo Federal A",
-    "37": "World - World Cup - Qualification Intercontinental Play-offs",
-    "344": "Bolivia - Primera División",
-    "526": "France - Trophée des Champions",
-    "185": "Scotland - League Cup",
-    "210": "Croatia - HNL",
-    "119": "Denmark - Superliga",
-    "135": "Italy - Serie A",
-    "81": "Germany - DFB Pokal",
-    "262": "Mexico - Liga MX",
-    "172": "Bulgaria - First League",
-    "89": "Netherlands - Eerste Divisie",
-    "88": "Netherlands - Eredivisie",
-    "62": "France - Ligue 2",
-    "61": "France - Ligue 1",
-    "1232": "Peru - Copa De La Liga",
-    "106": "Poland - Ekstraklasa",
-    "286": "Serbia - Super Liga",
-    "48": "England - League Cup",
-    "2": "World - UEFA Champions League",
-    "848": "World - UEFA Europa Conference League",
-    "3": "World - UEFA Europa League",
-    "207": "Switzerland - Super League",
-    "383": "Israel - Ligat Ha'al",
-    "179": "Scotland - Premiership",
-    "39": "England - Premier League",
-    "525": "World - UEFA Champions League Women",
-    "144": "Belgium - Jupiler Pro League",
-    "145": "Belgium - Challenger Pro League",
-    "237": "Russia - Cup",
-    "345": "Czech-Republic - Czech Liga",
-    "271": "Hungary - NB I",
-    "235": "Russia - Premier League",
-    "218": "Austria - Bundesliga",
-    "236": "Russia - First League",
-    "40": "England - Championship",
-    "42": "England - League Two",
-    "41": "England - League One",
-    "137": "Italy - Coppa Italia",
-    "283": "Romania - Liga I",
-    "333": "Ukraine - Premier League",
-    "17": "World - AFC Champions League Elite",
-    "141": "Spain - Segunda División",
-    "140": "Spain - La Liga",
-    "78": "Germany - Bundesliga",
-    "94": "Portugal - Primeira Liga",
-    "79": "Germany - 2. Bundesliga",
-    "95": "Portugal - Segunda Liga",
-    "64": "France - Feminine Division 1",
-    "301": "United-Arab-Emirates - Pro League",
-    "529": "Germany - Super Cup",
-    "528": "England - Community Shield",
-    "531": "World - UEFA Super Cup",
-    "80": "Germany - 3. Liga",
-    "203": "Turkey - Süper Lig",
-    "36": "World - Africa Cup of Nations - Qualification",
-    "98": "Japan - J1 League"
-}
+[
+    {
+        "league_id": 21,
+        "name": "Confederations Cup",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 65,
+        "name": "Coupe de la Ligue",
+        "country": "France",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 960,
+        "name": "Euro Championship - Qualification",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 768,
+        "name": "Arab Club Champions Cup",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 8,
+        "name": "World Cup - Women",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 29,
+        "name": "World Cup - Qualification Africa",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 4,
+        "name": "Euro Championship",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 9,
+        "name": "Copa America",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 1032,
+        "name": "Copa de la Liga Profesional",
+        "country": "Argentina",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 480,
+        "name": "Olympics Men",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 32,
+        "name": "World Cup - Qualification Europe",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 38,
+        "name": "UEFA U21 Championship",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 15,
+        "name": "FIFA Club World Cup",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 6,
+        "name": "Africa Cup of Nations",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 743,
+        "name": "UEFA Championship - Women",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 22,
+        "name": "CONCACAF Gold Cup",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 490,
+        "name": "World Cup - U20",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 421,
+        "name": "Division di Honor",
+        "country": "Aruba",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 66,
+        "name": "Coupe de France",
+        "country": "France",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 547,
+        "name": "Super Cup",
+        "country": "Italy",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 551,
+        "name": "Super Cup",
+        "country": "Turkey",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 323,
+        "name": "Indian Super League",
+        "country": "India",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 543,
+        "name": "Super Cup",
+        "country": "Netherlands",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 204,
+        "name": "1. Lig",
+        "country": "Turkey",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 46,
+        "name": "EFL Trophy",
+        "country": "England",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 82,
+        "name": "Frauen Bundesliga",
+        "country": "Germany",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 197,
+        "name": "Super League 1",
+        "country": "Greece",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 305,
+        "name": "Stars League",
+        "country": "Qatar",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 296,
+        "name": "Thai League 1",
+        "country": "Thailand",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 288,
+        "name": "Premier Soccer League",
+        "country": "South-Africa",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 136,
+        "name": "Serie B",
+        "country": "Italy",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 307,
+        "name": "Pro League",
+        "country": "Saudi-Arabia",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 44,
+        "name": "FA WSL",
+        "country": "England",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 233,
+        "name": "Premier League",
+        "country": "Egypt",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 1191,
+        "name": "UEFA Europa Cup - Women",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 1168,
+        "name": "FIFA Intercontinental Cup",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 1247,
+        "name": "FIFA Asean Cup",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 34,
+        "name": "World Cup - Qualification South America",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 30,
+        "name": "World Cup - Qualification Asia",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 31,
+        "name": "World Cup - Qualification CONCACAF",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 250,
+        "name": "Division Profesional - Apertura",
+        "country": "Paraguay",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 252,
+        "name": "Division Profesional - Clausura",
+        "country": "Paraguay",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 1,
+        "name": "World Cup",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 253,
+        "name": "Major League Soccer",
+        "country": "USA",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 128,
+        "name": "Liga Profesional Argentina",
+        "country": "Argentina",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 71,
+        "name": "Serie A",
+        "country": "Brazil",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 357,
+        "name": "Premier Division",
+        "country": "Ireland",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 113,
+        "name": "Allsvenskan",
+        "country": "Sweden",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 13,
+        "name": "CONMEBOL Libertadores",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 103,
+        "name": "Eliteserien",
+        "country": "Norway",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 549,
+        "name": "Damallsvenskan",
+        "country": "Sweden",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 244,
+        "name": "Veikkausliiga",
+        "country": "Finland",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 114,
+        "name": "Superettan",
+        "country": "Sweden",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 239,
+        "name": "Primera A",
+        "country": "Colombia",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 475,
+        "name": "Paulista - A1",
+        "country": "Brazil",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 624,
+        "name": "Carioca - 1",
+        "country": "Brazil",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 11,
+        "name": "CONMEBOL Sudamericana",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 10,
+        "name": "Friendlies",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 265,
+        "name": "Primera División",
+        "country": "Chile",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 281,
+        "name": "Primera División",
+        "country": "Peru",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 292,
+        "name": "K League 1",
+        "country": "South-Korea",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 1104,
+        "name": "Liga 3",
+        "country": "Georgia",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 254,
+        "name": "NWSL Women",
+        "country": "USA",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 327,
+        "name": "Erovnuli Liga",
+        "country": "Georgia",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 16,
+        "name": "CONCACAF Champions League",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 73,
+        "name": "Copa Do Brasil",
+        "country": "Brazil",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 813,
+        "name": "Elite Two",
+        "country": "Cameroon",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 479,
+        "name": "Canadian Premier League",
+        "country": "Canada",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 242,
+        "name": "Liga Pro",
+        "country": "Ecuador",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 72,
+        "name": "Serie B",
+        "country": "Brazil",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 169,
+        "name": "Super League",
+        "country": "China",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 256,
+        "name": "USL League Two",
+        "country": "USA",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 116,
+        "name": "Premier League",
+        "country": "Belarus",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 772,
+        "name": "Leagues Cup",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 134,
+        "name": "Torneo Federal A",
+        "country": "Argentina",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 37,
+        "name": "World Cup - Qualification Intercontinental Play-offs",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 344,
+        "name": "Primera División",
+        "country": "Bolivia",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 526,
+        "name": "Trophée des Champions",
+        "country": "France",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 185,
+        "name": "League Cup",
+        "country": "Scotland",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 210,
+        "name": "HNL",
+        "country": "Croatia",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 119,
+        "name": "Superliga",
+        "country": "Denmark",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 135,
+        "name": "Serie A",
+        "country": "Italy",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 81,
+        "name": "DFB Pokal",
+        "country": "Germany",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 262,
+        "name": "Liga MX",
+        "country": "Mexico",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 172,
+        "name": "First League",
+        "country": "Bulgaria",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 89,
+        "name": "Eerste Divisie",
+        "country": "Netherlands",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 88,
+        "name": "Eredivisie",
+        "country": "Netherlands",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 62,
+        "name": "Ligue 2",
+        "country": "France",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 61,
+        "name": "Ligue 1",
+        "country": "France",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 1232,
+        "name": "Copa De La Liga",
+        "country": "Peru",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 106,
+        "name": "Ekstraklasa",
+        "country": "Poland",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 286,
+        "name": "Super Liga",
+        "country": "Serbia",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 48,
+        "name": "League Cup",
+        "country": "England",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 2,
+        "name": "UEFA Champions League",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 848,
+        "name": "UEFA Europa Conference League",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 3,
+        "name": "UEFA Europa League",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 207,
+        "name": "Super League",
+        "country": "Switzerland",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 383,
+        "name": "Ligat Ha'al",
+        "country": "Israel",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 179,
+        "name": "Premiership",
+        "country": "Scotland",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 525,
+        "name": "UEFA Champions League Women",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 144,
+        "name": "Jupiler Pro League",
+        "country": "Belgium",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 145,
+        "name": "Challenger Pro League",
+        "country": "Belgium",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 237,
+        "name": "Cup",
+        "country": "Russia",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 345,
+        "name": "Czech Liga",
+        "country": "Czech-Republic",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 271,
+        "name": "NB I",
+        "country": "Hungary",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 235,
+        "name": "Premier League",
+        "country": "Russia",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 218,
+        "name": "Bundesliga",
+        "country": "Austria",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 236,
+        "name": "First League",
+        "country": "Russia",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 40,
+        "name": "Championship",
+        "country": "England",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 42,
+        "name": "League Two",
+        "country": "England",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 41,
+        "name": "League One",
+        "country": "England",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 137,
+        "name": "Coppa Italia",
+        "country": "Italy",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 283,
+        "name": "Liga I",
+        "country": "Romania",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 333,
+        "name": "Premier League",
+        "country": "Ukraine",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 17,
+        "name": "AFC Champions League Elite",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 141,
+        "name": "Segunda División",
+        "country": "Spain",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 140,
+        "name": "La Liga",
+        "country": "Spain",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 78,
+        "name": "Bundesliga",
+        "country": "Germany",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 94,
+        "name": "Primeira Liga",
+        "country": "Portugal",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 79,
+        "name": "2. Bundesliga",
+        "country": "Germany",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 95,
+        "name": "Segunda Liga",
+        "country": "Portugal",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 64,
+        "name": "Feminine Division 1",
+        "country": "France",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 301,
+        "name": "Pro League",
+        "country": "United-Arab-Emirates",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 529,
+        "name": "Super Cup",
+        "country": "Germany",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 528,
+        "name": "Community Shield",
+        "country": "England",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 531,
+        "name": "UEFA Super Cup",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 80,
+        "name": "3. Liga",
+        "country": "Germany",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 203,
+        "name": "Süper Lig",
+        "country": "Turkey",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 36,
+        "name": "Africa Cup of Nations - Qualification",
+        "country": "World",
+        "can_fetch_stats": true
+    },
+    {
+        "league_id": 98,
+        "name": "J1 League",
+        "country": "Japan",
+        "can_fetch_stats": true
+    }
+]
