@@ -41,6 +41,10 @@ def actualizar_ligas():
     ligas_validas = []
     total_escaneadas = data.get("results", 0)
     
+    # 🔥 IDs de Ligas VIP (Selecciones y Élite) que SÍ tienen stats aunque la API diga lo contrario
+    # 1: World Cup, 4: Euro Championship, 5: UEFA Nations League, 9: Copa America
+    LIGAS_VIP = {1, 4, 5, 9}
+    
     for item in data.get("response", []):
         liga = item.get("league", {})
         pais = item.get("country", {})
@@ -58,7 +62,11 @@ def actualizar_ligas():
         tiene_estadisticas = fixtures_cov.get("statistics_fixtures", False)
         tiene_alineaciones = fixtures_cov.get("lineups", False)
         
-        if tiene_eventos and tiene_estadisticas and tiene_alineaciones:
+        # Verificamos si la liga está en nuestra Lista VIP
+        es_vip = liga.get("id") in LIGAS_VIP
+        
+        # Si cumple los requisitos normales O es una liga VIP, la agregamos al radar
+        if es_vip or (tiene_eventos and tiene_estadisticas and tiene_alineaciones):
             # 🔥 Guardamos como estructura de lista compatible con football.py
             ligas_validas.append({
                 "league_id": liga.get("id"),
@@ -86,7 +94,7 @@ def actualizar_ligas():
     msg = (
         f"🤖 *BENDER RADAR ACTUALIZADO*\n\n"
         f"🌍 Ligas activas escaneadas: `{total_escaneadas}`\n"
-        f"✅ Ligas que pasaron el filtro táctico: `{len(ligas_validas)}`\n"
+        f"✅ Ligas que pasaron el filtro (incluye VIP): `{len(ligas_validas)}`\n"
         f"📈 Variación semanal: `{signo}{nuevas}` ligas\n\n"
         f"💾 _Archivo config/Active_Leagues_Coverage.json sobreescrito con éxito._"
     )
