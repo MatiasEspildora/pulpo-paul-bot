@@ -96,7 +96,7 @@ def obtener_alertas_bajas(fixture_id):
     if not bot_api_client or not fixture_id:
         return ""
     try:
-        data = bot_api_client.get_data("injuries", {"fixture": fixture_id})
+        data = bot_api_client.get_fixture_injuries(fixture_id)
         if not data or not data.get("response"):
             return ""
             
