@@ -3,19 +3,23 @@ name: Update Leagues Coverage Weekly
 on:
   schedule:
     - cron: '0 8 * * 1' # Se ejecuta todos los lunes a las 08:00 UTC
-  workflow_dispatch: # Permite ejecutarlo manualmente desde la pestaña Actions de GitHub
+  workflow_dispatch: 
 
 jobs:
   update-coverage:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write # 🔑 Necesario para permitir el git push
+
     steps:
       - name: 📥 Clonar repositorio
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 🐍 Configurar Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.12'
 
       - name: 📦 Instalar dependencias
         run: |
@@ -27,4 +31,21 @@ jobs:
           API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          PROXY_URL: ${{ secrets.PROXY_URL }} # 🔑 Túnel activado para evitar bloqueos
         run: python updates_leagues.py
+
+      - name: ⚙️ Configurar Git
+        run: |
+          git config --global user.name "Pulpo Paul Bot"
+          git config --global user.email "bot@users.noreply.github.com"
+
+      - name: 💾 Registrar y subir cambios de cobertura
+        run: |
+          git add config/Active_Leagues_Coverage.json
+          git status
+          if git diff --staged --quiet; then
+            echo "No hay cambios en la cobertura de ligas."
+          else
+            git commit -m "🤖 Actualización automática de Active_Leagues_Coverage.json [skip ci]"
+            git push
+          fi
