@@ -449,16 +449,19 @@ def run_process(df_externo=None):
                         es_elimi = any(palabra in ronda_texto for palabra in palabras_clave)
                         
                         # 🔥 ENVIAMOS EL FIXTURE Y EL REFEREE AL ANALYZER
+                                                # 🔥 ENVIAMOS EL FIXTURE Y EL REFEREE AL ANALYZER
+                        referee_str = str(match.get("fixture", {}).get("referee") or "Desconocido").strip()
                         raw_proj = analyzer.get_projections(
                             h_name, a_name, h_id, a_id, 
                             league_id=league_id_str, 
-                            es_eliminatoria=es_elimi
+                            es_eliminatoria=es_elimi,
+                            referee=referee_str # <-- ESTA ES LA LÍNEA CLAVE A AÑADIR
                         )
                         
                         # Guardar la metadata para usarla después en el Escudo Anti-Bajas
                         raw_proj['fixture_id'] = match.get("fixture", {}).get("id")
-                        raw_proj['referee'] = str(match.get("fixture", {}).get("referee") or "Desconocido").strip()
-                        
+                        raw_proj['referee'] = referee_str 
+       
                         proj = BetBuilderEngine.generar_mercados(raw_proj)
                         
                         proj['fecha_str'] = dt_obj.strftime("%Y-%m-%d")
