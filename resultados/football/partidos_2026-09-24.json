@@ -3367,8 +3367,8 @@
             "date": "2026-09-24T14:15:00-03:00",
             "timestamp": 1790270100,
             "periods": {
-                "first": null,
-                "second": null
+                "first": 1790270100,
+                "second": 1790273700
             },
             "venue": {
                 "id": null,
@@ -3376,9 +3376,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -3407,17 +3407,17 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 1,
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -5181,76 +5181,6 @@
     },
     {
         "fixture": {
-            "id": 1612045,
-            "referee": null,
-            "timezone": "America/Santiago",
-            "date": "2026-09-24T16:00:00-03:00",
-            "timestamp": 1790276400,
-            "periods": {
-                "first": null,
-                "second": null
-            },
-            "venue": {
-                "id": null,
-                "name": null,
-                "city": null
-            },
-            "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
-                "extra": null
-            }
-        },
-        "league": {
-            "id": 906,
-            "name": "Reserve League",
-            "country": "Argentina",
-            "logo": "https://media.api-sports.io/football/leagues/906.png",
-            "flag": "https://media.api-sports.io/flags/ar.svg",
-            "season": 2026,
-            "round": "Clausura - 10",
-            "standings": true
-        },
-        "teams": {
-            "home": {
-                "id": 22938,
-                "name": "Independiente Riva. Res.",
-                "logo": "https://media.api-sports.io/football/teams/22938.png",
-                "winner": null
-            },
-            "away": {
-                "id": 27272,
-                "name": "Gimnasia Mendoza 2",
-                "logo": "https://media.api-sports.io/football/teams/27272.png",
-                "winner": null
-            }
-        },
-        "goals": {
-            "home": null,
-            "away": null
-        },
-        "score": {
-            "halftime": {
-                "home": null,
-                "away": null
-            },
-            "fulltime": {
-                "home": null,
-                "away": null
-            },
-            "extratime": {
-                "home": null,
-                "away": null
-            },
-            "penalty": {
-                "home": null,
-                "away": null
-            }
-        }
-    },
-    {
-        "fixture": {
             "id": 1632432,
             "referee": null,
             "timezone": "America/Santiago",
@@ -5476,10 +5406,10 @@
                 "city": "Mohammedia"
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 83,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 5
             }
         },
         "league": {
@@ -5516,8 +5446,8 @@
                 "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 3
             },
             "extratime": {
                 "home": null,
@@ -5538,18 +5468,18 @@
             "timestamp": 1790281800,
             "periods": {
                 "first": 1790281800,
-                "second": null
+                "second": 1790285400
             },
             "venue": {
-                "id": null,
-                "name": null,
-                "city": null
+                "id": 8538,
+                "name": "Estadio La Cocha",
+                "city": "Latacunga"
             },
             "status": {
-                "long": "Halftime",
-                "short": "HT",
-                "elapsed": 45,
-                "extra": 4
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 75,
+                "extra": null
             }
         },
         "league": {
@@ -5567,18 +5497,18 @@
                 "id": 2238,
                 "name": "Ind. Juniors",
                 "logo": "https://media.api-sports.io/football/teams/2238.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 21103,
                 "name": "Cuniburo",
                 "logo": "https://media.api-sports.io/football/teams/21103.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
-            "home": 1,
-            "away": 1
+            "home": 2,
+            "away": 3
         },
         "score": {
             "halftime": {
@@ -5608,7 +5538,7 @@
             "timestamp": 1790283600,
             "periods": {
                 "first": 1790283600,
-                "second": null
+                "second": 1790287200
             },
             "venue": {
                 "id": 337,
@@ -5616,9 +5546,9 @@
                 "city": "Rancagua"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 41,
+                "long": "Second Half",
+                "short": "2H",
+                "elapsed": 63,
                 "extra": null
             }
         },
@@ -5686,10 +5616,10 @@
                 "city": "Portoviejo"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 11,
-                "extra": null
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
+                "extra": 2
             }
         },
         "league": {
@@ -5707,22 +5637,22 @@
                 "id": 1988,
                 "name": "LDU Portoviejo",
                 "logo": "https://media.api-sports.io/football/teams/1988.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 25736,
                 "name": "22 de Julio",
                 "logo": "https://media.api-sports.io/football/teams/25736.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": 0,
+            "home": 1,
             "away": 0
         },
         "score": {
             "halftime": {
-                "home": 0,
+                "home": 1,
                 "away": 0
             },
             "fulltime": {
@@ -5751,15 +5681,15 @@
                 "second": null
             },
             "venue": {
-                "id": null,
-                "name": null,
-                "city": null
+                "id": 19355,
+                "name": "Estadio Roque F. Batelhana",
+                "city": "Asuncion"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 12,
-                "extra": null
+                "long": "Halftime",
+                "short": "HT",
+                "elapsed": 45,
+                "extra": 4
             }
         },
         "league": {
@@ -5777,12 +5707,82 @@
                 "id": 10476,
                 "name": "Deportivo Recoleta",
                 "logo": "https://media.api-sports.io/football/teams/10476.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 2138,
                 "name": "Guairena FC",
                 "logo": "https://media.api-sports.io/football/teams/2138.png",
+                "winner": true
+            }
+        },
+        "goals": {
+            "home": 0,
+            "away": 1
+        },
+        "score": {
+            "halftime": {
+                "home": 0,
+                "away": 1
+            },
+            "fulltime": {
+                "home": null,
+                "away": null
+            },
+            "extratime": {
+                "home": null,
+                "away": null
+            },
+            "penalty": {
+                "home": null,
+                "away": null
+            }
+        }
+    },
+    {
+        "fixture": {
+            "id": 1612045,
+            "referee": null,
+            "timezone": "America/Santiago",
+            "date": "2026-09-24T19:00:00-03:00",
+            "timestamp": 1790287200,
+            "periods": {
+                "first": 1790287200,
+                "second": null
+            },
+            "venue": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "status": {
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 24,
+                "extra": null
+            }
+        },
+        "league": {
+            "id": 906,
+            "name": "Reserve League",
+            "country": "Argentina",
+            "logo": "https://media.api-sports.io/football/leagues/906.png",
+            "flag": "https://media.api-sports.io/flags/ar.svg",
+            "season": 2026,
+            "round": "Clausura - 10",
+            "standings": true
+        },
+        "teams": {
+            "home": {
+                "id": 22938,
+                "name": "Independiente Riva. Res.",
+                "logo": "https://media.api-sports.io/football/teams/22938.png",
+                "winner": null
+            },
+            "away": {
+                "id": 27272,
+                "name": "Gimnasia Mendoza 2",
+                "logo": "https://media.api-sports.io/football/teams/27272.png",
                 "winner": null
             }
         },
@@ -5817,7 +5817,7 @@
             "date": "2026-09-24T19:00:00-03:00",
             "timestamp": 1790287200,
             "periods": {
-                "first": null,
+                "first": 1790287200,
                 "second": null
             },
             "venue": {
@@ -5826,9 +5826,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "First Half",
+                "short": "1H",
+                "elapsed": 24,
                 "extra": null
             }
         },
@@ -5857,13 +5857,13 @@
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 0,
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
                 "home": null,
@@ -6032,7 +6032,7 @@
             },
             "venue": {
                 "id": 334,
-                "name": "Estadio Sausalito",
+                "name": "Sausalito",
                 "city": "Vina del Mar"
             },
             "status": {
