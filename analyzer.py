@@ -80,18 +80,22 @@ class MatchAnalyzer:
                 matrix[i, j] = poisson.pmf(i, home_cards_lambda) * poisson.pmf(j, away_cards_lambda)
         return matrix / matrix.sum()
 
-    def _get_filtered_matches(self, team_id, league_id, es_eliminatoria):
+    # 🔥 DOBLE RUTA: Diferencia Selecciones de Clubes
+    def _get_filtered_matches(self, team_id, league_id, es_eliminatoria, es_seleccion=False):
         base_matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)]
         base_matches = base_matches.dropna(subset=["FTHG", "FTAG"]).sort_values(by="Date", ascending=False)
         
+        if es_seleccion:
+            return base_matches
+            
         if not es_eliminatoria and pd.notna(league_id):
             liga_matches = base_matches[base_matches["LeagueId"].astype(str) == str(league_id)]
             if len(liga_matches) >= 3: return liga_matches
         return base_matches
 
-    def get_team_stats(self, team_name, team_id, league_id=None, es_eliminatoria=False):
-        matches = self._get_filtered_matches(team_id, league_id, es_eliminatoria)
-        recent = matches.head(10)
+    def get_team_stats(self, team_name, team_id, league_id=None, es_eliminatoria=False, es_seleccion=False):
+        matches = self._get_filtered_matches(team_id, league_id, es_eliminatoria, es_seleccion)
+        recent = matches.head(20) if es_seleccion else matches.head(10)
         count = len(recent)
         
         if recent.empty or count == 0:
@@ -144,7 +148,6 @@ class MatchAnalyzer:
             "count": count,
         }
 
-    # 🔥 NUEVA FUNCIÓN: Rastreador de Árbitros
     def get_referee_stats(self, referee_name):
         if not referee_name or referee_name == "Desconocido" or 'Referee' not in self.df.columns:
             return {"promedio_tarjetas": 0.0, "count": 0}
@@ -166,7 +169,7 @@ class MatchAnalyzer:
             "count": count
         }
 
-    def get_projections(self, home_team, away_team, home_id, away_id, league_id=None, es_eliminatoria=False, referee="Desconocido"):
+    def get_projections(self, home_team, away_team, home_id, away_id, league_id=None, es_eliminatoria=False, referee="Desconocido", es_seleccion=False):
         def get_form_tracker(df_subset, team_id):
             if df_subset.empty: return "N/A", 0.0
             form, pts = [], 0
@@ -237,18 +240,20 @@ class MatchAnalyzer:
                 return True, (shots_ratio * 0.75) + (corners_ratio * 0.25)
             return False, 0.5
 
-        # 🔥 Obtenemos el perfil del árbitro
         ref_stats = self.get_referee_stats(referee)
         ref_avg = ref_stats.get('promedio_tarjetas', 0.0)
         ref_count = ref_stats.get('count', 0)
 
-        home_matches = self._get_filtered_matches(home_id, league_id, es_eliminatoria)
-        away_matches = self._get_filtered_matches(away_id, league_id, es_eliminatoria)
+        home_matches = self._get_filtered_matches(home_id, league_id, es_eliminatoria, es_seleccion)
+        away_matches = self._get_filtered_matches(away_id, league_id, es_eliminatoria, es_seleccion)
 
-        home_global = home_matches.head(10)
-        away_global = away_matches.head(10)
-        home_venue = home_matches[home_matches['HomeTeamId'] == home_id].head(10)
-        away_venue = away_matches[away_matches['AwayTeamId'] == away_id].head(10)
+        # 🔥 Límite de partidos adaptativo según la ruta
+        limite = 20 if es_seleccion else 10
+
+        home_global = home_matches.head(limite)
+        away_global = away_matches.head(limite)
+        home_venue = home_matches[home_matches['HomeTeamId'] == home_id].head(limite)
+        away_venue = away_matches[away_matches['AwayTeamId'] == away_id].head(limite)
 
         home_form_str, home_ppg = get_form_tracker(home_global, home_id)
         away_form_str, away_ppg = get_form_tracker(away_global, away_id)
@@ -301,8 +306,8 @@ class MatchAnalyzer:
         prob_matrix = self._calculate_exact_scores(lambda_home, lambda_away, max_goals=8)
 
         corners_matrix, cards_matrix = None, None
-        stats_home = self.get_team_stats(home_team, home_id, league_id, es_eliminatoria)
-        stats_away = self.get_team_stats(away_team, away_id, league_id, es_eliminatoria)
+        stats_home = self.get_team_stats(home_team, home_id, league_id, es_eliminatoria, es_seleccion)
+        stats_away = self.get_team_stats(away_team, away_id, league_id, es_eliminatoria, es_seleccion)
 
         if stats_home.get('count', 0) >= 5 and stats_away.get('count', 0) >= 5 and stats_home.get('has_details') and stats_away.get('has_details'):
             lam_c_home = (stats_home.get('corners_f', 4.5) + stats_away.get('corners_c', 4.5)) / 2
@@ -312,10 +317,8 @@ class MatchAnalyzer:
             lam_t_home = (stats_home.get('tarjetas_f', 2.0) + stats_away.get('tarjetas_c', 2.0)) / 2
             lam_t_away = (stats_away.get('tarjetas_f', 2.0) + stats_home.get('tarjetas_c', 2.0)) / 2
             
-            # 🔥 IMPACTO DEL ÁRBITRO EN LA MATRIZ DE POISSON
             if ref_count >= 5 and ref_avg > 0:
                 total_expected_cards = lam_t_home + lam_t_away
-                # Ponderación híbrida: 60% peso a los equipos, 40% a la tendencia histórica del árbitro
                 ajuste = (total_expected_cards * 0.60) + (ref_avg * 0.40)
                 factor = ajuste / total_expected_cards if total_expected_cards > 0 else 1
                 lam_t_home *= factor

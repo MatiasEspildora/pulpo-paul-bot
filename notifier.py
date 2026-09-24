@@ -7,7 +7,6 @@ from datetime import datetime, timedelta
 import pytz
 from scipy.stats import poisson
 
-# 🔥 Importamos tu cliente de API para el Escudo Anti-Bajas
 try:
     from api_client import FootballAPI
     API_KEY = os.environ.get("API_FOOTBALL_KEY")
@@ -91,7 +90,6 @@ def agrupar_por_pais(proyecciones_dict):
         
     return agrupado
 
-# 🔥 NUEVO: Función para rastrear Bajas y Lesiones
 def obtener_alertas_bajas(fixture_id):
     if not bot_api_client or not fixture_id:
         return ""
@@ -124,11 +122,12 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     
     partidos_validos = []
     for pais, ligas in agrupar_por_pais(proyecciones_dict).items():
+        es_seleccion = (pais == "World") # 🔥 DETECTOR DOBLE RUTA
         for liga, projs in ligas.items():
             for p in projs:
                 es_copa = p.get('es_eliminatoria', False)
-                s_l = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_copa)
-                s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_copa)
+                s_l = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_copa, es_seleccion=es_seleccion)
+                s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_copa, es_seleccion=es_seleccion)
                 
                 min_partidos = 3 if es_copa else 5
                 
@@ -239,8 +238,9 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             
         if corner_sel:
             es_c = p.get('es_eliminatoria', False)
-            sl = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_c)
-            sv = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_c)
+            es_sel_p = (p.get('pais_nombre') == "World")
+            sl = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_c, es_seleccion=es_sel_p)
+            sv = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_c, es_seleccion=es_sel_p)
             promedio_str = f"L: {sl.get('corners_f', 0):.1f} - V: {sv.get('corners_f', 0):.1f}"
             quirofano_tactico.append({
                 'match': p, 
@@ -261,8 +261,9 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
 
         if shot_sel:
             es_c = p.get('es_eliminatoria', False)
-            sl = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_c)
-            sv = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_c)
+            es_sel_p = (p.get('pais_nombre') == "World")
+            sl = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_c, es_seleccion=es_sel_p)
+            sv = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_c, es_seleccion=es_sel_p)
             promedio_remates_str = f"L: {sl.get('remates_f', 0):.1f} - V: {sv.get('remates_f', 0):.1f}"
             quirofano_tactico.append({
                 'match': p,
@@ -283,8 +284,9 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
 
         if card_sel:
             es_c = p.get('es_eliminatoria', False)
-            sl = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_c)
-            sv = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_c)
+            es_sel_p = (p.get('pais_nombre') == "World")
+            sl = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_c, es_seleccion=es_sel_p)
+            sv = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_c, es_seleccion=es_sel_p)
             promedio_str = f"L: {sl.get('tarjetas_f', 0):.1f} - V: {sv.get('tarjetas_f', 0):.1f}"
             
             ref_name = p.get('referee', 'Desconocido')
@@ -318,7 +320,6 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     francotiradores.sort(key=lambda x: x['score'], reverse=True)
     quirofano_tactico.sort(key=lambda x: x['score'], reverse=True)
 
-    # 🔥 RECOLECCIÓN DE SELECCIONADOS PARA LA AUTOPSIA Y EL ESCUDO ANTI-BAJAS
     seleccionados = set()
     for item in bb_list[:30]: seleccionados.add(item['match'].get('_id_interno'))
     for item in ganadores[:30]: seleccionados.add(item['match'].get('_id_interno'))
@@ -329,10 +330,8 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     for item in radar_remontadas: seleccionados.add(item['match'].get('_id_interno'))
     for item in mega_misiles[:30]: seleccionados.add(item['match'].get('_id_interno'))
 
-    # 🔥 EJECUCIÓN DEL ESCUDO ANTI-BAJAS (Solo para los que entraron al Top)
     cache_bajas = {}
     if bot_api_client:
-        # Recolectamos los fixture_id únicos de los seleccionados
         fixtures_a_consultar = set()
         for p in partidos_validos:
             if p.get('_id_interno') in seleccionados and p.get('fixture_id'):
@@ -343,7 +342,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             alerta = obtener_alertas_bajas(fix_id)
             if alerta:
                 cache_bajas[fix_id] = alerta
-            time.sleep(0.5) # Protegemos el rate-limit de la API
+            time.sleep(0.5) 
 
     etiqueta_ventana = f" | {titulo_bloque}" if titulo_bloque else ""
     msg = f"💎 ━━ *MENÚ BENDER V4.0 (Estadístico): {fecha_bloque}{etiqueta_ventana}* ━━ 💎\n\n"
@@ -474,6 +473,7 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
     
     for pais, ligas_del_pais in sorted(agrupado_por_pais.items()):
         bandera = BANDERAS.get(pais, "🏴")
+        es_seleccion = (pais == "World") # 🔥 DETECTOR DOBLE RUTA
         
         for liga, proyecciones in sorted(ligas_del_pais.items()):
             
@@ -483,8 +483,8 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
                     continue
 
                 es_copa = p.get('es_eliminatoria', False)
-                s_l = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_copa)
-                s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_copa)
+                s_l = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_copa, es_seleccion=es_seleccion)
+                s_v = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_copa, es_seleccion=es_seleccion)
                 
                 min_partidos = 3 if es_copa else 5
                 
