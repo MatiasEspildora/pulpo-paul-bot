@@ -56,7 +56,6 @@ def cargar_blacklist():
 
 def cargar_historico_mensual():
     all_files = glob.glob("historico_mensual/football/historico_*.csv")
-    # 🔥 AÑADIDO: 'Referee' a las columnas por defecto
     default_cols = ['League', 'LeagueId', 'Country', 'Round', 'EsEliminatoria', 'Date', 'HomeTeamId', 'AwayTeamId', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HTHG', 'HTAG', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR', 'HS', 'AS', 'Referee']
     if not all_files:
         return pd.DataFrame(columns=default_cols)
@@ -71,7 +70,6 @@ def cargar_historico_mensual():
     if 'AwayTeamId' not in df.columns: df['AwayTeamId'] = pd.NA
     if 'HTHG' not in df.columns: df['HTHG'] = pd.NA
     if 'HTAG' not in df.columns: df['HTAG'] = pd.NA
-    # 🔥 AÑADIDO: Manejo de Referee para CSVs antiguos
     if 'Referee' not in df.columns: df['Referee'] = 'Desconocido'
         
     df['Date'] = pd.to_datetime(df['Date'], format='mixed', errors='coerce').dt.strftime('%Y-%m-%d')
@@ -126,7 +124,6 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
             h_ht_score = match.get("score", {}).get("halftime", {}).get("home")
             a_ht_score = match.get("score", {}).get("halftime", {}).get("away")
             
-            # 🔥 EXTRACCIÓN DEL ÁRBITRO
             referee_raw = match.get("fixture", {}).get("referee")
             referee_name = str(referee_raw).strip() if referee_raw else "Desconocido"
 
@@ -181,7 +178,6 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
                 df_hist.at[idx_existente, "HTAG"] = a_ht_score
                 df_hist.at[idx_existente, "HomeTeamId"] = h_id
                 df_hist.at[idx_existente, "AwayTeamId"] = a_id
-                # 🔥 ACTUALIZA EL ÁRBITRO EN EXISTENTES
                 df_hist.at[idx_existente, "Referee"] = referee_name
                 
                 if necesita_stats:
@@ -208,7 +204,7 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
                 "FTAG": match.get("goals", {}).get("away"),
                 "HTHG": h_ht_score,
                 "HTAG": a_ht_score,
-                "Referee": referee_name # 🔥 INYECTA ÁRBITRO AL NUEVO
+                "Referee": referee_name
             }
             nuevo.update(stats_dict)
             
@@ -296,7 +292,6 @@ def registrar_predicciones(proyecciones_dict):
             prob_gana = max(probs_1x2[0], probs_1x2[2])
             sel_gana = p.get('local') if probs_1x2[0] > probs_1x2[2] else p.get('visita')
             
-            # 🔥 FILTRO ESTRICTO: Exigimos >= 0.90 para registrar Ganador Directo en KPIs
             if prob_gana >= 0.90:
                 filas.append({**base, 'Mercado': 'Ganador Directo', 'Seleccion': f'Gana {sel_gana}', 'Probabilidad': round(prob_gana, 3)})
                 
@@ -433,6 +428,9 @@ def run_process(df_externo=None):
                         pais = match.get("league", {}).get("country", "World")
                         liga = match.get("league", {}).get("name", "Unknown")
                         
+                        # 🔥 DETECTOR DE SELECCIONES (LA DOBLE RUTA)
+                        es_seleccion = (pais == "World")
+                        
                         if f"{pais}_{liga}" in ligas_baneadas:
                             continue
                             
@@ -448,17 +446,17 @@ def run_process(df_externo=None):
                         palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "play-off", "qualifying"]
                         es_elimi = any(palabra in ronda_texto for palabra in palabras_clave)
                         
-                        # 🔥 ENVIAMOS EL FIXTURE Y EL REFEREE AL ANALYZER
-                                                # 🔥 ENVIAMOS EL FIXTURE Y EL REFEREE AL ANALYZER
                         referee_str = str(match.get("fixture", {}).get("referee") or "Desconocido").strip()
+                        
+                        # 🔥 SE ENVÍA LA SEÑAL DE RUTA AL ANALYZER
                         raw_proj = analyzer.get_projections(
                             h_name, a_name, h_id, a_id, 
                             league_id=league_id_str, 
                             es_eliminatoria=es_elimi,
-                            referee=referee_str # <-- ESTA ES LA LÍNEA CLAVE A AÑADIR
+                            referee=referee_str,
+                            es_seleccion=es_seleccion
                         )
                         
-                        # Guardar la metadata para usarla después en el Escudo Anti-Bajas
                         raw_proj['fixture_id'] = match.get("fixture", {}).get("id")
                         raw_proj['referee'] = referee_str 
        
@@ -474,7 +472,6 @@ def run_process(df_externo=None):
                         proj['dias_descanso_local'] = calcular_dias_descanso(df, h_id, fecha_dt_naive)
                         proj['dias_descanso_visita'] = calcular_dias_descanso(df, a_id, fecha_dt_naive)
                         
-                        # Pasamos la info del árbitro y fixture_id al diccionario final de proyección
                         proj['fixture_id'] = raw_proj['fixture_id']
                         proj['referee'] = raw_proj['referee']
                         
