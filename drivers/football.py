@@ -56,7 +56,8 @@ def cargar_blacklist():
 
 def cargar_historico_mensual():
     all_files = glob.glob("historico_mensual/football/historico_*.csv")
-    default_cols = ['League', 'LeagueId', 'Country', 'Round', 'EsEliminatoria', 'Date', 'HomeTeamId', 'AwayTeamId', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HTHG', 'HTAG', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR', 'HS', 'AS']
+    # 🔥 AÑADIDO: 'Referee' a las columnas por defecto
+    default_cols = ['League', 'LeagueId', 'Country', 'Round', 'EsEliminatoria', 'Date', 'HomeTeamId', 'AwayTeamId', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HTHG', 'HTAG', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR', 'HS', 'AS', 'Referee']
     if not all_files:
         return pd.DataFrame(columns=default_cols)
     li = [pd.read_csv(filename) for filename in all_files]
@@ -70,6 +71,8 @@ def cargar_historico_mensual():
     if 'AwayTeamId' not in df.columns: df['AwayTeamId'] = pd.NA
     if 'HTHG' not in df.columns: df['HTHG'] = pd.NA
     if 'HTAG' not in df.columns: df['HTAG'] = pd.NA
+    # 🔥 AÑADIDO: Manejo de Referee para CSVs antiguos
+    if 'Referee' not in df.columns: df['Referee'] = 'Desconocido'
         
     df['Date'] = pd.to_datetime(df['Date'], format='mixed', errors='coerce').dt.strftime('%Y-%m-%d')
     cols_present = [c for c in default_cols if c in df.columns]
@@ -122,6 +125,10 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
             
             h_ht_score = match.get("score", {}).get("halftime", {}).get("home")
             a_ht_score = match.get("score", {}).get("halftime", {}).get("away")
+            
+            # 🔥 EXTRACCIÓN DEL ÁRBITRO
+            referee_raw = match.get("fixture", {}).get("referee")
+            referee_name = str(referee_raw).strip() if referee_raw else "Desconocido"
 
             stats_dict = {'HS': pd.NA, 'AS': pd.NA, 'HC': pd.NA, 'AC': pd.NA, 'HY': pd.NA, 'AY': pd.NA, 'HR': pd.NA, 'AR': pd.NA}
             necesita_stats = False
@@ -174,6 +181,8 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
                 df_hist.at[idx_existente, "HTAG"] = a_ht_score
                 df_hist.at[idx_existente, "HomeTeamId"] = h_id
                 df_hist.at[idx_existente, "AwayTeamId"] = a_id
+                # 🔥 ACTUALIZA EL ÁRBITRO EN EXISTENTES
+                df_hist.at[idx_existente, "Referee"] = referee_name
                 
                 if necesita_stats:
                     for k, v in stats_dict.items():
@@ -198,7 +207,8 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
                 "FTHG": match.get("goals", {}).get("home"),
                 "FTAG": match.get("goals", {}).get("away"),
                 "HTHG": h_ht_score,
-                "HTAG": a_ht_score
+                "HTAG": a_ht_score,
+                "Referee": referee_name # 🔥 INYECTA ÁRBITRO AL NUEVO
             }
             nuevo.update(stats_dict)
             
@@ -438,11 +448,16 @@ def run_process(df_externo=None):
                         palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "play-off", "qualifying"]
                         es_elimi = any(palabra in ronda_texto for palabra in palabras_clave)
                         
+                        # 🔥 ENVIAMOS EL FIXTURE Y EL REFEREE AL ANALYZER
                         raw_proj = analyzer.get_projections(
                             h_name, a_name, h_id, a_id, 
                             league_id=league_id_str, 
                             es_eliminatoria=es_elimi
                         )
+                        
+                        # Guardar la metadata para usarla después en el Escudo Anti-Bajas
+                        raw_proj['fixture_id'] = match.get("fixture", {}).get("id")
+                        raw_proj['referee'] = str(match.get("fixture", {}).get("referee") or "Desconocido").strip()
                         
                         proj = BetBuilderEngine.generar_mercados(raw_proj)
                         
@@ -455,6 +470,10 @@ def run_process(df_externo=None):
                         
                         proj['dias_descanso_local'] = calcular_dias_descanso(df, h_id, fecha_dt_naive)
                         proj['dias_descanso_visita'] = calcular_dias_descanso(df, a_id, fecha_dt_naive)
+                        
+                        # Pasamos la info del árbitro y fixture_id al diccionario final de proyección
+                        proj['fixture_id'] = raw_proj['fixture_id']
+                        proj['referee'] = raw_proj['referee']
                         
                         proyecciones_globales.setdefault((pais, liga), []).append(proj)
                 except Exception as e:
