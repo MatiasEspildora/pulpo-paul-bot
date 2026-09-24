@@ -7,6 +7,14 @@ from datetime import datetime, timedelta
 import pytz
 from scipy.stats import poisson
 
+# 🔥 Importamos tu cliente de API para el Escudo Anti-Bajas
+try:
+    from api_client import FootballAPI
+    API_KEY = os.environ.get("API_FOOTBALL_KEY")
+    bot_api_client = FootballAPI(API_KEY) if API_KEY else None
+except ImportError:
+    bot_api_client = None
+
 TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
@@ -56,7 +64,7 @@ def enviar_mensaje_telegram(mensaje, token_override=None, chat_id_especifico=Non
                 print(f"⚠️ Error al enviar a Telegram ({chat_id}): {res.text}")
                 
         except Exception as e:
-            print(f"⚠️ Excepción al conectar dengan Telegram ({chat_id}): {e}")
+            print(f"⚠️ Excepción al conectar con Telegram ({chat_id}): {e}")
         
         if len(lista_chats) > 1:
             time.sleep(0.2)
@@ -83,6 +91,29 @@ def agrupar_por_pais(proyecciones_dict):
         
     return agrupado
 
+# 🔥 NUEVO: Función para rastrear Bajas y Lesiones
+def obtener_alertas_bajas(fixture_id):
+    if not bot_api_client or not fixture_id:
+        return ""
+    try:
+        data = bot_api_client.get_data("injuries", {"fixture": fixture_id})
+        if not data or not data.get("response"):
+            return ""
+            
+        bajas = []
+        for inj in data["response"]:
+            nombre = inj.get("player", {}).get("name", "")
+            if nombre:
+                bajas.append(nombre)
+                
+        if not bajas:
+            return ""
+            
+        if len(bajas) > 2:
+            return f" 🚑 [Bajas: {bajas[0]}, {bajas[1]} y {len(bajas)-2} más]"
+        return f" 🚑 [Bajas: {', '.join(bajas)}]"
+    except Exception:
+        return ""
 
 # ==========================================
 # ⚽ FORMATO BENDER V4.0 (FÚTBOL - MODO ESTADÍSTICO)
@@ -256,13 +287,11 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             sv = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_c)
             promedio_str = f"L: {sl.get('tarjetas_f', 0):.1f} - V: {sv.get('tarjetas_f', 0):.1f}"
             
-            # 🔥 ETIQUETA DEL ÁRBITRO Y MISIL BLINDADO
             ref_name = p.get('referee', 'Desconocido')
             ref_avg = p.get('ref_avg', 0.0)
             if ref_name != "Desconocido" and ref_avg > 0:
                 promedio_str += f" | 👮 {ref_avg:.1f}T"
                 
-                # Si el árbitro es pistolero (>=5 tarjetas) y la prob matemática es alta, ¡es un misil!
                 if ref_avg >= 5.0 and card_prob > 0.80:
                     card_sel = f"🧨 MISIL: {card_sel}"
 
@@ -289,15 +318,32 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     francotiradores.sort(key=lambda x: x['score'], reverse=True)
     quirofano_tactico.sort(key=lambda x: x['score'], reverse=True)
 
+    # 🔥 RECOLECCIÓN DE SELECCIONADOS PARA LA AUTOPSIA Y EL ESCUDO ANTI-BAJAS
     seleccionados = set()
-    for item in bb_list[:30]: seleccionados.add(item['match']['_id_interno'])
-    for item in ganadores[:30]: seleccionados.add(item['match']['_id_interno'])
-    for item in dobles[:30]: seleccionados.add(item['match']['_id_interno'])
-    for item in goles[:30]: seleccionados.add(item['match']['_id_interno'])
-    for item in quirofano_tactico[:15]: seleccionados.add(item['match']['_id_interno'])
-    for item in francotiradores[:15]: seleccionados.add(item['match']['_id_interno'])
-    for item in radar_remontadas: seleccionados.add(item['match']['_id_interno'])
-    for item in mega_misiles[:30]: seleccionados.add(item['match']['_id_interno'])
+    for item in bb_list[:30]: seleccionados.add(item['match'].get('_id_interno'))
+    for item in ganadores[:30]: seleccionados.add(item['match'].get('_id_interno'))
+    for item in dobles[:30]: seleccionados.add(item['match'].get('_id_interno'))
+    for item in goles[:30]: seleccionados.add(item['match'].get('_id_interno'))
+    for item in quirofano_tactico[:15]: seleccionados.add(item['match'].get('_id_interno'))
+    for item in francotiradores[:15]: seleccionados.add(item['match'].get('_id_interno'))
+    for item in radar_remontadas: seleccionados.add(item['match'].get('_id_interno'))
+    for item in mega_misiles[:30]: seleccionados.add(item['match'].get('_id_interno'))
+
+    # 🔥 EJECUCIÓN DEL ESCUDO ANTI-BAJAS (Solo para los que entraron al Top)
+    cache_bajas = {}
+    if bot_api_client:
+        # Recolectamos los fixture_id únicos de los seleccionados
+        fixtures_a_consultar = set()
+        for p in partidos_validos:
+            if p.get('_id_interno') in seleccionados and p.get('fixture_id'):
+                fixtures_a_consultar.add(p['fixture_id'])
+                
+        print(f"🛡️ [ANTI-BAJAS] Consultando lesiones para {len(fixtures_a_consultar)} partidos TOP...")
+        for fix_id in fixtures_a_consultar:
+            alerta = obtener_alertas_bajas(fix_id)
+            if alerta:
+                cache_bajas[fix_id] = alerta
+            time.sleep(0.5) # Protegemos el rate-limit de la API
 
     etiqueta_ventana = f" | {titulo_bloque}" if titulo_bloque else ""
     msg = f"💎 ━━ *MENÚ BENDER V4.0 (Estadístico): {fecha_bloque}{etiqueta_ventana}* ━━ 💎\n\n"
@@ -317,7 +363,8 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         for i, item in enumerate(bb_list[:30], 1): 
             m = item['match']
             es_mata_mata = " ⚔️" if m.get('es_eliminatoria') else ""
-            msg += f"*{i}.* ⚽ {m['bandera']} {m['pais_nombre']} - {m['local']} vs {m['visita']}{es_mata_mata}{m['alerta_fatiga']} | 🧩 *{item['sel']}* ({item['prob']:.0%})\n\n"
+            bajas_str = cache_bajas.get(m.get('fixture_id'), "")
+            msg += f"*{i}.* ⚽ {m['bandera']} {m['pais_nombre']} - {m['local']} vs {m['visita']}{es_mata_mata}{m['alerta_fatiga']}{bajas_str} | 🧩 *{item['sel']}* ({item['prob']:.0%})\n\n"
     else:
         msg += "_Ninguna variable pura superó el 80% hoy._\n\n"
     
@@ -327,7 +374,8 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         for i, item in enumerate(ganadores[:30], 1):
             m = item['match']
             es_mata_mata = " ⚔️" if m.get('es_eliminatoria') else ""
-            msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{es_mata_mata}{m['alerta_fatiga']} | 🎯 Gana *{item['sel']}* ({item['prob']:.0%})\n"
+            bajas_str = cache_bajas.get(m.get('fixture_id'), "")
+            msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{es_mata_mata}{m['alerta_fatiga']}{bajas_str} | 🎯 Gana *{item['sel']}* ({item['prob']:.0%})\n"
             msg += f"   📈 Forma Global: L `{m.get('home_form')}` ({m.get('home_ppg')}p) | V `{m.get('away_form')}` ({m.get('away_ppg')}p)\n"
             msg += f"   🏟️ Casa/Fuera: L `{m.get('home_venue_form')}` ({m.get('home_venue_ppg')}p) | V `{m.get('away_venue_form')}` ({m.get('away_venue_ppg')}p)\n\n"
     else:
@@ -338,21 +386,24 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     for i, item in enumerate(dobles[:30], 1):
         m = item['match']
         es_mata_mata = " ⚔️" if m.get('es_eliminatoria') else ""
-        msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{es_mata_mata}{m['alerta_fatiga']} | 🛡️ *{item['sel']}* ({item['prob']:.0%})\n\n"
+        bajas_str = cache_bajas.get(m.get('fixture_id'), "")
+        msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{es_mata_mata}{m['alerta_fatiga']}{bajas_str} | 🛡️ *{item['sel']}* ({item['prob']:.0%})\n\n"
 
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
     msg += "🔥 *TOP 30 - MERCADOS DE GOLES*\n\n"
     for i, item in enumerate(goles[:30], 1):
         m = item['match']
         es_mata_mata = " ⚔️" if m.get('es_eliminatoria') else ""
-        msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{es_mata_mata}{m['alerta_fatiga']} | 🔥 *{item['sel']}* ({item['prob']:.0%})\n\n"
+        bajas_str = cache_bajas.get(m.get('fixture_id'), "")
+        msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{es_mata_mata}{m['alerta_fatiga']}{bajas_str} | 🔥 *{item['sel']}* ({item['prob']:.0%})\n\n"
 
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
     msg += "🚩 *EL QUIRÓFANO TÁCTICO (Córners, Remates y Tarjetas)*\n\n"
     if quirofano_tactico:
         for i, item in enumerate(quirofano_tactico[:15], 1):
             m = item['match']
-            msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']} | 🧩 *{item['sel']}* ({item['prob']:.0%})\n\n"
+            bajas_str = cache_bajas.get(m.get('fixture_id'), "")
+            msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{bajas_str} | 🧩 *{item['sel']}* ({item['prob']:.0%})\n\n"
     else:
         msg += "_Sin opciones viables de Córners/Remates/Tarjetas hoy._\n\n"
 
@@ -361,7 +412,8 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     if francotiradores:
         for i, item in enumerate(francotiradores[:15], 1):
             m = item['match']
-            msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{m['alerta_fatiga']} | 🎯 *{item['sel']}* ({item['prob']:.0%})\n\n"
+            bajas_str = cache_bajas.get(m.get('fixture_id'), "")
+            msg += f"*{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{m['alerta_fatiga']}{bajas_str} | 🎯 *{item['sel']}* ({item['prob']:.0%})\n\n"
     else:
         msg += "_Ningún partido superó el 80% de BTTS hoy._\n\n"
 
@@ -371,7 +423,8 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         for i, item in enumerate(mega_misiles[:30], 1):
             m = item['match']
             es_mata_mata = " ⚔️" if m.get('es_eliminatoria') else ""
-            msg += f"*{i}.* ⚽ {m['bandera']} {m['pais_nombre']} - {m['local']} vs {m['visita']}{es_mata_mata} | 🧩 *{item['sel']}* ({item['prob']:.0%})\n\n"
+            bajas_str = cache_bajas.get(m.get('fixture_id'), "")
+            msg += f"*{i}.* ⚽ {m['bandera']} {m['pais_nombre']} - {m['local']} vs {m['visita']}{es_mata_mata}{bajas_str} | 🧩 *{item['sel']}* ({item['prob']:.0%})\n\n"
     else:
         msg += "_Ninguna combinación SGBB superó el umbral hoy._\n\n"
 
@@ -480,7 +533,6 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
                     bloque_partido += f"🎯 *CÓRNERS (Poiss)* ➔ +8.5 ({p.get('over_8_5_corners', 0):.0%}) | +9.5 ({p.get('over_9_5_corners', 0):.0%})\n"
                     
                     bloque_partido += f"🟨 *TARJETAS (Prom)* ➔ L ({s_l.get('tarjetas_f', 0):.1f}) | V ({s_v.get('tarjetas_f', 0):.1f})\n"
-                    # 🔥 AÑADIDO: Impresión del Árbitro en la Autopsia
                     ref_name = p.get('referee', 'Desconocido')
                     if ref_name != "Desconocido":
                         ref_avg = p.get('ref_avg', 0.0)
@@ -510,7 +562,6 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
     for msg in mensajes_a_enviar:
         enviar_mensaje_telegram(msg, token_override=token_override)
         time.sleep(1.5)
-
 
 def enviar_bloque_reportes(proyecciones_dict, titulo_bloque, analyzer, token_override=None):
     agrupado_por_fecha = {}
