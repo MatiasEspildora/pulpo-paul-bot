@@ -21,10 +21,6 @@ def cargar_banderas():
 BANDERAS = cargar_banderas()
 
 def calcular_confidence_score(probabilidad, partidos_jugados):
-    """
-    Pondera la probabilidad bruta según el volumen de partidos jugados.
-    Tope de confianza máxima a los 15 partidos.
-    """
     if partidos_jugados == 0: 
         return 0
     partidos_topados = min(partidos_jugados, 15)
@@ -259,6 +255,17 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             sl = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_c)
             sv = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_c)
             promedio_str = f"L: {sl.get('tarjetas_f', 0):.1f} - V: {sv.get('tarjetas_f', 0):.1f}"
+            
+            # 🔥 ETIQUETA DEL ÁRBITRO Y MISIL BLINDADO
+            ref_name = p.get('referee', 'Desconocido')
+            ref_avg = p.get('ref_avg', 0.0)
+            if ref_name != "Desconocido" and ref_avg > 0:
+                promedio_str += f" | 👮 {ref_avg:.1f}T"
+                
+                # Si el árbitro es pistolero (>=5 tarjetas) y la prob matemática es alta, ¡es un misil!
+                if ref_avg >= 5.0 and card_prob > 0.80:
+                    card_sel = f"🧨 MISIL: {card_sel}"
+
             quirofano_tactico.append({
                 'match': p, 
                 'prob': card_prob, 
@@ -464,18 +471,22 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
                 bloque_partido += f"🧱 *PORT. A CERO* ➔ L ({p.get('home_clean_sheet', 0):.0%}) | V ({p.get('away_clean_sheet', 0):.0%})\n"
                 bloque_partido += f"📈 *FORMA (Global)* ➔ L [{p.get('home_form', 'N/A')}] ({p.get('home_ppg', 0)}p) | V [{p.get('away_form', 'N/A')}] ({p.get('away_ppg', 0)}p)\n"
                 bloque_partido += f"🏟️ *FORMA (H/A)* ➔ L [{p.get('home_venue_form', 'N/A')}] ({p.get('home_venue_ppg', 0)}p) | V [{p.get('away_venue_form', 'N/A')}] ({p.get('away_venue_ppg', 0)}p)\n"
-
-                count_l = s_l.get('count', 0)
-                count_v = s_v.get('count', 0)
-                bloque_partido += f"📐 *PROM. GOLES ({count_l}p|{count_v}p)* ➔ L ({s_l.get('goles_favor', 0):.1f}F-{s_l.get('goles_contra', 0):.1f}C) | V ({s_v.get('goles_favor', 0):.1f}F-{s_v.get('goles_contra', 0):.1f}C)\n"
+                bloque_partido += f"📐 *PROM. GOLES ({s_l.get('count',0)}p|{s_v.get('count',0)}p)* ➔ L ({s_l.get('goles_favor', 0):.1f}F-{s_l.get('goles_contra', 0):.1f}C) | V ({s_v.get('goles_favor', 0):.1f}F-{s_v.get('goles_contra', 0):.1f}C)\n"
                 
                 if s_l.get('has_details') or s_v.get('has_details'):
                     bloque_partido += f"📋 *RADIOGRAFÍA* ➔ Remates: L ({s_l.get('remates_f', 0):.1f}) | V ({s_v.get('remates_f', 0):.1f})\n"
                     bloque_partido += f"🎯 *REMATES (Poiss)* ➔ +24.5 ({p.get('over_24_5_shots', 0):.0%}) | +26.5 ({p.get('over_26_5_shots', 0):.0%})\n"
                     bloque_partido += f"🚩 *CÓRNERS (Prom)* ➔ L ({s_l.get('corners_f', 0):.1f}) | V ({s_v.get('corners_f', 0):.1f})\n"
                     bloque_partido += f"🎯 *CÓRNERS (Poiss)* ➔ +8.5 ({p.get('over_8_5_corners', 0):.0%}) | +9.5 ({p.get('over_9_5_corners', 0):.0%})\n"
-                    # 🔥 AÑADIDO: Tarjetas oficiales en la Autopsia Táctica
+                    
                     bloque_partido += f"🟨 *TARJETAS (Prom)* ➔ L ({s_l.get('tarjetas_f', 0):.1f}) | V ({s_v.get('tarjetas_f', 0):.1f})\n"
+                    # 🔥 AÑADIDO: Impresión del Árbitro en la Autopsia
+                    ref_name = p.get('referee', 'Desconocido')
+                    if ref_name != "Desconocido":
+                        ref_avg = p.get('ref_avg', 0.0)
+                        avg_str = f" ({ref_avg:.1f}xP)" if ref_avg > 0 else ""
+                        bloque_partido += f"👮 *ÁRBITRO* ➔ {ref_name}{avg_str}\n"
+                    
                     bloque_partido += f"🎯 *TARJETAS (Poiss)* ➔ +3.5 ({p.get('over_3_5_cards', 0):.0%}) | +4.5 ({p.get('over_4_5_cards', 0):.0%})\n"
 
                 bloque_partido += "\n\n"
