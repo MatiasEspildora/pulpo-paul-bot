@@ -1,21 +1,14 @@
 import os
 import json
-import requests
-from datetime import datetime
+from api_client import FootballAPI
 
 # ==========================================
 # 🤖 BENDER V4.0 - ACTUALIZADOR DE LIGAS (RADAR TÁCTICO)
 # ==========================================
 
-# Credenciales (Asegúrate de que coincidan con las variables de entorno de tu servidor/PC)
-API_KEY = os.environ.get("API_FOOTBALL_KEY") # Cambia el nombre si tu variable se llama distinto
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
-
-HEADERS = {
-    "x-apisports-key": API_KEY,
-    "v": "3"
-}
+API_KEY = os.environ.get("API_FOOTBALL_KEY") # Asegúrate que este nombre coincida con tu .env
 
 RUTA_JSON = os.path.join("config", "Active_Leagues_Coverage.json")
 
@@ -27,6 +20,7 @@ def enviar_telegram(mensaje):
     
     for chat in CHAT_ID.split(","):
         try:
+            import requests
             requests.post(
                 f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage",
                 data={"chat_id": chat.strip(), "text": mensaje, "parse_mode": "Markdown"}
@@ -35,15 +29,16 @@ def enviar_telegram(mensaje):
             print(f"Error enviando a Telegram: {e}")
 
 def actualizar_ligas():
-    print("📡 Iniciando escaneo global de ligas activas en API-Football...")
+    print("📡 Iniciando escaneo global de ligas activas usando FootballAPI...")
     
-    url = "https://v3.football.api-sports.io/leagues?current=true"
-    try:
-        response = requests.get(url, headers=HEADERS)
-        response.raise_for_status()
-        data = response.json()
-    except Exception as e:
-        enviar_telegram(f"❌ *Bender Error:* Falló la conexión al endpoint de Ligas.\nDetalle: `{e}`")
+    # 🔥 Usamos tu cliente centralizado que ya tiene el proxy y los headers configurados
+    api = FootballAPI(API_KEY)
+    
+    # Llamamos al endpoint a través del cliente
+    data = api.get_data("leagues", {"current": "true"})
+    
+    if not data or "response" not in data:
+        enviar_telegram("❌ *Bender Error:* Falló la conexión al endpoint de Ligas (Revisar logs de api_client).")
         return
 
     ligas_validas = {}
@@ -57,13 +52,11 @@ def actualizar_ligas():
         if not seasons:
             continue
             
-        # Tomamos la temporada actual (la API filtra por current=true, así que suele ser la primera/única en la lista)
         current_season = seasons[0]
         coverage = current_season.get("coverage", {})
         fixtures_cov = coverage.get("fixtures", {})
         
-        # 🔥 EL FILTRO DE TITANIO PARA COBERTURA 🔥
-        # Exigimos Eventos (Goles/Tarjetas rojas), Estadísticas (Córners/Remates) y Alineaciones
+        # Filtro Táctico de Bender
         tiene_eventos = fixtures_cov.get("events", False)
         tiene_estadisticas = fixtures_cov.get("statistics_fixtures", False)
         tiene_alineaciones = fixtures_cov.get("lineups", False)
@@ -73,13 +66,10 @@ def actualizar_ligas():
             nombre_pais = pais.get("name", "Desconocido")
             nombre_liga = liga.get("name", "Desconocida")
             
-            # Guardamos con un formato legible para humanos en el JSON
             ligas_validas[id_liga] = f"{nombre_pais} - {nombre_liga}"
 
-    # Guardar en config/Active_Leagues_Coverage.json
     os.makedirs("config", exist_ok=True)
     
-    # Leemos el anterior para ver cuántas nuevas hay
     ligas_anteriores = {}
     if os.path.exists(RUTA_JSON):
         try:
