@@ -32,7 +32,6 @@ def dedupe_dataframe(df):
 
     df = df.copy().fillna("")
     
-    # ✅ Añadidas columnas del Primer Tiempo y Referee
     for col in ["League", "LeagueId", "Country", "Round", "EsEliminatoria", "Date", "HomeTeamId", "AwayTeamId", "HomeTeam", "AwayTeam", "FTHG", "FTAG", "HTHG", "HTAG", "Referee"]:
         if col not in df.columns:
             df[col] = ""
@@ -68,7 +67,6 @@ def dedupe_dataframe(df):
             if i == best_idx:
                 continue
             
-            # ✅ Añadido Referee a la fusión de rescate
             for col in ["League", "LeagueId", "Country", "Round", "EsEliminatoria", "HomeTeamId", "AwayTeamId", "FTHG", "FTAG", "HTHG", "HTAG", "HC", "AC", "HY", "AY", "HR", "AR", "HS", "AS", "Referee"]:
                 bval = best.get(col, "") or ""
                 oval = other.get(col, "") or ""
@@ -130,6 +128,8 @@ def main(args=None):
 
     estados_finalizados = ['FT', 'AET', 'PEN']
 
+    # 🔥 AGRUPAR POR FECHA ANTES DE PROCESAR PARA EVITAR SPAM EN CONSOLA
+    partidos_por_fecha = {}
     for match in lista_partidos:
         estado_actual = match.get('fixture', {}).get('status', {}).get('short')
         if estado_actual in estados_finalizados:
@@ -137,13 +137,18 @@ def main(args=None):
                 fecha_str = pd.to_datetime(match.get('fixture', {}).get('date')).strftime('%Y-%m-%d')
             except Exception:
                 fecha_str = datetime.now().strftime('%Y-%m-%d')
+            
+            partidos_por_fecha.setdefault(fecha_str, []).append(match)
 
-            df_hist = football.actualizar_maestro_con_partidos(df_hist, [match], fecha_str, statuses)
-            try:
-                period = pd.Period(fecha_str[:7], 'M')
-                meses_afectados.add(period)
-            except Exception:
-                pass
+    print(f"📦 Procesando lotes por fecha ({len(partidos_por_fecha)} días en total)...")
+
+    for fecha_str, partidos_dia in partidos_por_fecha.items():
+        df_hist = football.actualizar_maestro_con_partidos(df_hist, partidos_dia, fecha_str, statuses)
+        try:
+            period = pd.Period(fecha_str[:7], 'M')
+            meses_afectados.add(period)
+        except Exception:
+            pass
 
     df_hist = dedupe_dataframe(df_hist)
 
@@ -151,7 +156,7 @@ def main(args=None):
         meses_afectados = None
 
     football.guardar_historico_mensual(df_hist, meses_afectados)
-    print('Backfill completo e inyección de datos de Árbitro y HT terminada. Revisa historico_mensual/football.')
+    print('✅ Backfill completo y limpio. Revisa historico_mensual/football.')
 
 if __name__ == '__main__':
     main()
