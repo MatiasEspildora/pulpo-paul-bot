@@ -1,14 +1,18 @@
+
 import os
+import sys
 import glob
 import json
 import pandas as pd
 import numpy as np
 
-# 🔥 Importamos la lógica real de Bender desde tu proyecto
+# 🔥 Forzamos a Python a mirar en la carpeta raíz del repositorio
+sys.path.append(os.path.abspath('.'))
+
 try:
     from analyzer import MatchAnalyzer
-except ImportError:
-    print("❌ No se encontró 'analyzer.py' en el directorio. Asegúrate de correr este script en la raíz de tu proyecto.")
+except Exception as e:
+    print(f"❌ Error crítico al intentar cargar 'analyzer.py': {e}")
     exit(1)
 
 def diagnosticar(fecha, home_id, away_id):
@@ -66,7 +70,7 @@ def diagnosticar(fecha, home_id, away_id):
     dfs = [pd.read_csv(f) for f in archivos]
     df = pd.concat(dfs, ignore_index=True)
     df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
-    print(f"✅ {len(df)} registros cargados.\n")
+    print(f"✅ {len(df)} registros históricos consolidados.\n")
 
     analyzer = MatchAnalyzer(df)
 
@@ -97,6 +101,7 @@ def diagnosticar(fecha, home_id, away_id):
         
         prob_matrix = raw_proj.get('prob_matrix')
         if prob_matrix is not None:
+            # np.sum requiere iterables compatibles, lo manejamos con cuidado
             ph = float(np.sum(np.tril(prob_matrix, -1)))
             pd_draw = float(np.sum(np.diag(prob_matrix)))
             pa = float(np.sum(np.triu(prob_matrix, 1)))
@@ -115,12 +120,12 @@ def diagnosticar(fecha, home_id, away_id):
             print("⚖️ VEREDICTO DEL FILTRO ELITE (notifier.py):")
             corte_ganador = max(ph, pa) >= 0.90
             corte_doble = max(ph + pd_draw, pa + pd_draw) >= 0.80
-            corte_goles = over_1_5 >= 0.80 or (1-over_1_5) >= 0.85 # Aproximación rápida
+            corte_goles = over_1_5 >= 0.80 or (1-over_1_5) >= 0.85
             
             if corte_ganador or corte_doble or corte_goles:
                 print("   ✅ El partido tiene cuotas suficientemente extremas para entrar al top de Bender.")
             else:
-                print("   ❌ El partido es DEMASIADO PAREJO. Ninguna cuota principal supera el 80%-90%. Por eso Bender lo ocultó.")
+                print("   ❌ El partido es DEMASIADO PAREJO. Ninguna cuota principal supera el 80%-90%. Por eso Bender lo ocultó del menú.")
         else:
             print("   ❌ Error: No se pudo generar la matriz de probabilidad.")
             
