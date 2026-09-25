@@ -38,7 +38,7 @@ jobs:
 
       - name: 💾 Registrar y subir cambios
         run: |
-          git add historico_mensual/football/
+          git add historico_mensual/football/ resultados/
           git status
           if git diff --staged --quiet; then
             echo "No se encontraron más IDs para actualizar."
