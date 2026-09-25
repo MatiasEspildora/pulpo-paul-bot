@@ -6036,8 +6036,8 @@
                 "city": "Vina del Mar"
             },
             "status": {
-                "long": "Match Interrupted",
-                "short": "INT",
+                "long": "Match Abandoned",
+                "short": "ABD",
                 "elapsed": null,
                 "extra": 12
             }
@@ -6057,23 +6057,23 @@
                 "id": 2325,
                 "name": "Everton de Vina",
                 "logo": "https://media.api-sports.io/football/teams/2325.png",
-                "winner": false
+                "winner": null
             },
             "away": {
                 "id": 2323,
                 "name": "Universidad de Chile",
                 "logo": "https://media.api-sports.io/football/teams/2323.png",
-                "winner": true
+                "winner": null
             }
         },
         "goals": {
             "home": 0,
-            "away": 1
+            "away": 0
         },
         "score": {
             "halftime": {
-                "home": 0,
-                "away": 0
+                "home": null,
+                "away": null
             },
             "fulltime": {
                 "home": null,
@@ -6456,10 +6456,10 @@
                 "city": null
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 69,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 7
             }
         },
         "league": {
@@ -6487,8 +6487,8 @@
             }
         },
         "goals": {
-            "home": 0,
-            "away": 1
+            "home": 1,
+            "away": 3
         },
         "score": {
             "halftime": {
@@ -6496,8 +6496,8 @@
                 "away": 1
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 3
             },
             "extratime": {
                 "home": null,
@@ -6526,10 +6526,10 @@
                 "city": "Zacatecas"
             },
             "status": {
-                "long": "Second Half",
-                "short": "2H",
-                "elapsed": 63,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 4
             }
         },
         "league": {
@@ -6566,8 +6566,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -6588,7 +6588,7 @@
             "timestamp": 1790301600,
             "periods": {
                 "first": 1790301600,
-                "second": null
+                "second": 1790305200
             },
             "venue": {
                 "id": null,
@@ -6596,10 +6596,10 @@
                 "city": "Guatemala City"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 23,
-                "extra": null
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
+                "extra": 6
             }
         },
         "league": {
@@ -6627,7 +6627,7 @@
             }
         },
         "goals": {
-            "home": 2,
+            "home": 3,
             "away": 0
         },
         "score": {
@@ -6636,8 +6636,8 @@
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -6652,7 +6652,7 @@
     {
         "fixture": {
             "id": 1639937,
-            "referee": null,
+            "referee": "Mario Escobar",
             "timezone": "America/Santiago",
             "date": "2026-09-24T23:00:00-03:00",
             "timestamp": 1790301600,
@@ -6661,14 +6661,14 @@
                 "second": null
             },
             "venue": {
-                "id": null,
-                "name": null,
-                "city": null
+                "id": 399,
+                "name": "Estadio Ricardo Saprissa Aymá",
+                "city": "San Jose"
             },
             "status": {
-                "long": "First Half",
-                "short": "1H",
-                "elapsed": 29,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -6687,27 +6687,27 @@
                 "id": 29,
                 "name": "Costa Rica",
                 "logo": "https://media.api-sports.io/football/teams/29.png",
-                "winner": true
+                "winner": false
             },
             "away": {
                 "id": 5530,
                 "name": "Curaçao",
                 "logo": "https://media.api-sports.io/football/teams/5530.png",
-                "winner": false
+                "winner": true
             }
         },
         "goals": {
-            "home": 2,
-            "away": 0
+            "home": 3,
+            "away": 4
         },
         "score": {
             "halftime": {
-                "home": 2,
+                "home": 3,
                 "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 3,
+                "away": 4
             },
             "extratime": {
                 "home": null,

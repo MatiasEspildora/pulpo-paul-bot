@@ -9,9 +9,9 @@
         "week": null,
         "venue": "Sajik Arena",
         "status": {
-            "long": "Not Started",
-            "short": "NS",
-            "timer": null
+            "long": "Quarter 1",
+            "short": "Q1",
+            "timer": "4"
         },
         "league": {
             "id": 266,
@@ -36,6 +36,64 @@
                 "id": 1106,
                 "name": "LG Sakers",
                 "logo": "https://media.api-sports.io/basketball/teams/1106.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": 5,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": 5
+            },
+            "away": {
+                "quarter_1": 9,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": 9
+            }
+        }
+    },
+    {
+        "id": 524023,
+        "date": "2026-09-25T04:00:00-03:00",
+        "time": "04:00",
+        "timestamp": 1790319600,
+        "timezone": "America/Santiago",
+        "stage": null,
+        "week": "Asian Games Women - Semi-finals",
+        "venue": null,
+        "status": {
+            "long": "Not Started",
+            "short": "NS",
+            "timer": null
+        },
+        "league": {
+            "id": 302,
+            "name": "Asian Games Women",
+            "type": "cup",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/302.png"
+        },
+        "country": {
+            "id": 2,
+            "name": "Asia",
+            "code": " ",
+            "flag": "https://media.api-sports.io/flags/ .svg"
+        },
+        "teams": {
+            "home": {
+                "id": 3047,
+                "name": "South Korea W",
+                "logo": "https://media.api-sports.io/basketball/teams/3047.png"
+            },
+            "away": {
+                "id": 3039,
+                "name": "China W",
+                "logo": "https://media.api-sports.io/basketball/teams/3039.png"
             }
         },
         "scores": {
@@ -558,6 +616,64 @@
                 "id": 751,
                 "name": "Chiba",
                 "logo": "https://media.api-sports.io/basketball/teams/751.png"
+            }
+        },
+        "scores": {
+            "home": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            },
+            "away": {
+                "quarter_1": null,
+                "quarter_2": null,
+                "quarter_3": null,
+                "quarter_4": null,
+                "over_time": null,
+                "total": null
+            }
+        }
+    },
+    {
+        "id": 524024,
+        "date": "2026-09-25T07:20:00-03:00",
+        "time": "07:20",
+        "timestamp": 1790331600,
+        "timezone": "America/Santiago",
+        "stage": null,
+        "week": "Asian Games Women - Semi-finals",
+        "venue": null,
+        "status": {
+            "long": "Not Started",
+            "short": "NS",
+            "timer": null
+        },
+        "league": {
+            "id": 302,
+            "name": "Asian Games Women",
+            "type": "cup",
+            "season": 2026,
+            "logo": "https://media.api-sports.io/basketball/leagues/302.png"
+        },
+        "country": {
+            "id": 2,
+            "name": "Asia",
+            "code": " ",
+            "flag": "https://media.api-sports.io/flags/ .svg"
+        },
+        "teams": {
+            "home": {
+                "id": 3042,
+                "name": "Japan W",
+                "logo": "https://media.api-sports.io/basketball/teams/3042.png"
+            },
+            "away": {
+                "id": 4348,
+                "name": "Chinese Taipei W",
+                "logo": "https://media.api-sports.io/basketball/teams/4348.png"
             }
         },
         "scores": {
@@ -2411,9 +2527,9 @@
                 "logo": "https://media.api-sports.io/basketball/teams/1481.png"
             },
             "away": {
-                "id": 7909,
-                "name": "Saint Etienne",
-                "logo": "https://media.api-sports.io/basketball/teams/7909.png"
+                "id": 102,
+                "name": "St. Chamond",
+                "logo": "https://media.api-sports.io/basketball/teams/102.png"
             }
         },
         "scores": {
