@@ -21,7 +21,6 @@ def cargar_configuracion():
     return {}, {}, statuses, {}
 
 def cargar_ligas_con_estadisticas():
-    """Lee el JSON de cobertura y devuelve un Set ultrarrápido con los IDs soportados."""
     rutas_posibles = ["config/Active_Leagues_Coverage.json", "config/football/Active_Leagues_Coverage.json"]
     for ruta in rutas_posibles:
         if os.path.exists(ruta):
@@ -39,7 +38,6 @@ def cargar_ligas_con_estadisticas():
     return set()
 
 def cargar_blacklist():
-    """Lee el JSON de ligas tóxicas y devuelve un Set con las ligas baneadas para búsqueda O(1)."""
     ruta_blacklist = os.path.join("config", "blacklist.json")
     baneadas = set()
     if os.path.exists(ruta_blacklist):
@@ -56,12 +54,14 @@ def cargar_blacklist():
 
 def cargar_historico_mensual():
     all_files = glob.glob("historico_mensual/football/historico_*.csv")
-    default_cols = ['League', 'LeagueId', 'Country', 'Round', 'EsEliminatoria', 'Date', 'HomeTeamId', 'AwayTeamId', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HTHG', 'HTAG', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR', 'HS', 'AS', 'Referee']
+    # 🔥 FixtureId agregado al inicio del array oficial
+    default_cols = ['FixtureId', 'League', 'LeagueId', 'Country', 'Round', 'EsEliminatoria', 'Date', 'HomeTeamId', 'AwayTeamId', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HTHG', 'HTAG', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR', 'HS', 'AS', 'Referee']
     if not all_files:
         return pd.DataFrame(columns=default_cols)
     li = [pd.read_csv(filename) for filename in all_files]
     df = pd.concat(li, axis=0, ignore_index=True)
     
+    if 'FixtureId' not in df.columns: df['FixtureId'] = pd.NA
     if 'Country' not in df.columns: df['Country'] = ''
     if 'LeagueId' not in df.columns: df['LeagueId'] = ''
     if 'Round' not in df.columns: df['Round'] = ''
@@ -172,6 +172,8 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
                             elif tipo == "Red Cards": stats_dict[f'{prefijo}R'] = int(valor)
 
             if idx_existente is not None:
+                # 🔥 Inyectar FixtureId al actualizar
+                df_hist.at[idx_existente, "FixtureId"] = match_id
                 df_hist.at[idx_existente, "FTHG"] = match.get("goals", {}).get("home")
                 df_hist.at[idx_existente, "FTAG"] = match.get("goals", {}).get("away")
                 df_hist.at[idx_existente, "HTHG"] = h_ht_score
@@ -189,7 +191,9 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
             palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "play-off", "qualifying"]
             es_eliminatoria = any(palabra in ronda_texto for palabra in palabras_clave)
 
+            # 🔥 Inyectar FixtureId al crear fila nueva
             nuevo = {
+                "FixtureId": match_id,
                 "League": league_name,
                 "LeagueId": liga_id_str,
                 "Country": league_country,
@@ -244,7 +248,6 @@ def obtener_liga_domestica(df, team_id, team_name):
     return ""
 
 def calcular_dias_descanso(df_global, team_id, fecha_actual_dt):
-    """Calcula los días transcurridos desde el último partido oficial del equipo."""
     if df_global is None or df_global.empty or pd.isna(team_id): 
         return 7
     try:
@@ -428,7 +431,6 @@ def run_process(df_externo=None):
                         pais = match.get("league", {}).get("country", "World")
                         liga = match.get("league", {}).get("name", "Unknown")
                         
-                        # 🔥 DETECTOR DE SELECCIONES (LA DOBLE RUTA)
                         es_seleccion = (pais == "World")
                         
                         if f"{pais}_{liga}" in ligas_baneadas:
@@ -448,7 +450,6 @@ def run_process(df_externo=None):
                         
                         referee_str = str(match.get("fixture", {}).get("referee") or "Desconocido").strip()
                         
-                        # 🔥 SE ENVÍA LA SEÑAL DE RUTA AL ANALYZER
                         raw_proj = analyzer.get_projections(
                             h_name, a_name, h_id, a_id, 
                             league_id=league_id_str, 
