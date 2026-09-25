@@ -22,8 +22,12 @@ def gather_files(files_list, all_flag):
             if os.path.exists(f):
                 normalized.append(f)
         return normalized
-    pattern = os.path.join('resultados', 'football', 'partidos_*.json')
-    return sorted(glob.glob(pattern))
+    
+    # 🎯 FILTRAR SOLO SEPTIEMBRE DE 2026
+    pattern = os.path.join('resultados', 'football', 'partidos_2026-09-*.json')
+    archivos_septiembre = sorted(glob.glob(pattern))
+    print(f"🎯 [FILTRO] Encontrados {len(archivos_septiembre]} archivos JSON para Septiembre 2026.")
+    return archivos_septiembre
 
 def dedupe_dataframe(df):
     if df.empty:
@@ -31,7 +35,6 @@ def dedupe_dataframe(df):
 
     df = df.copy().fillna("")
     
-    # 🔥 Agregado FixtureId a las columnas base
     for col in ["FixtureId", "League", "LeagueId", "Country", "Round", "EsEliminatoria", "Date", "HomeTeamId", "AwayTeamId", "HomeTeam", "AwayTeam", "FTHG", "FTAG", "HTHG", "HTAG", "Referee"]:
         if col not in df.columns:
             df[col] = ""
@@ -41,7 +44,7 @@ def dedupe_dataframe(df):
 
     def completeness_score(row):
         score = 0
-        if row.get("FixtureId"): score += 20 # Premiar filas que ya traen el ID
+        if row.get("FixtureId"): score += 20
         if row.get("LeagueId"): score += 50
         if row.get("Country"): score += 30
         if row.get("League"): score += 10
@@ -68,7 +71,6 @@ def dedupe_dataframe(df):
             if i == best_idx:
                 continue
             
-            # 🔥 Agregado FixtureId a la lista de resolución de conflictos
             for col in ["FixtureId", "League", "LeagueId", "Country", "Round", "EsEliminatoria", "HomeTeamId", "AwayTeamId", "FTHG", "FTAG", "HTHG", "HTAG", "HC", "AC", "HY", "AY", "HR", "AR", "HS", "AS", "Referee"]:
                 bval = best.get(col, "") or ""
                 oval = other.get(col, "") or ""
@@ -93,14 +95,14 @@ def dedupe_dataframe(df):
     return df_new
 
 def main(args=None):
-    parser = argparse.ArgumentParser(description='Recarga historicos desde JSONs en resultados/football')
+    parser = argparse.ArgumentParser(description='Recarga historicos solo para Septiembre 2026')
     parser.add_argument('--files', nargs='+', help='Archivos JSON concretos a procesar')
-    parser.add_argument('--all', action='store_true', help='Procesar todos los JSON en resultados/football')
+    parser.add_argument('--all', action='store_true', help='Procesar todos los JSON (filtrado internamente a sep 2026)')
     parsed = parser.parse_args(args=args)
 
     files = gather_files(parsed.files, parsed.all)
     if not files:
-        print('No se encontraron archivos a procesar.')
+        print('No se encontraron archivos para Septiembre 2026.')
         return
 
     os.makedirs(os.path.join('logs', 'football'), exist_ok=True)
@@ -124,7 +126,7 @@ def main(args=None):
         if isinstance(lista, list): lista_partidos.extend(lista)
 
     if not lista_partidos:
-        print('No se encontraron partidos finalizados.')
+        print('No se encontraron partidos finalizados para este periodo.')
         return
 
     estados_finalizados = ['FT', 'AET', 'PEN']
@@ -138,9 +140,11 @@ def main(args=None):
             except Exception:
                 fecha_str = datetime.now().strftime('%Y-%m-%d')
             
-            partidos_por_fecha.setdefault(fecha_str, []).append(match)
+            # Forzamos a procesar solo fechas de 2026-09
+            if fecha_str.startswith("2026-09"):
+                partidos_por_fecha.setdefault(fecha_str, []).append(match)
 
-    print(f"📦 Procesando lotes por fecha ({len(partidos_por_fecha)} días en total)...")
+    print(f"📦 Procesando lotes de Septiembre 2026 ({len(partidos_por_fecha)} días)...")
 
     for fecha_str, partidos_dia in partidos_por_fecha.items():
         df_hist = football.actualizar_maestro_con_partidos(df_hist, partidos_dia, fecha_str, statuses)
@@ -152,11 +156,11 @@ def main(args=None):
 
     df_hist = dedupe_dataframe(df_hist)
 
-    if not meses_afectados:
-        meses_afectados = None
+    # Forzamos que solo impacte el periodo 2026-09
+    meses_afectados = {pd.Period('2026-09', 'M')}
 
     football.guardar_historico_mensual(df_hist, meses_afectados)
-    print('✅ Backfill completo y limpio. Revisa historico_mensual/football.')
+    print('✅ Backfill de Septiembre 2026 completo y limpio. Revisa historico_2026_09.csv.')
 
 if __name__ == '__main__':
     main()
