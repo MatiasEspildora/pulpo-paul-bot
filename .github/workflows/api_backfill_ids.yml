@@ -1,0 +1,46 @@
+name: API Backfill Historic IDs
+
+on:
+  workflow_dispatch: # Se ejecuta manualmente
+
+jobs:
+  backfill-ids:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: 📥 Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: 🐍 Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 📦 Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 🚀 Ejecutar Backfill desde API
+        env:
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+        run: python backfill_ids_api.py
+
+      - name: ⚙️ Configurar Git
+        run: |
+          git config --global user.name "Pulpo Paul Bot"
+          git config --global user.email "bot@users.noreply.github.com"
+
+      - name: 💾 Registrar y subir cambios
+        run: |
+          git add historico_mensual/football/
+          git status
+          if git diff --staged --quiet; then
+            echo "No se encontraron más IDs para actualizar."
+          else
+            git commit -m "🌐 Backfill de IDs históricos mediante API-Football [skip ci]"
+            git push
+          fi
