@@ -1,126 +1,132 @@
 import os
-import glob
 import pandas as pd
 import time
 import json
+from datetime import datetime
 from api_client import FootballAPI
 
-def backfill_ids_desde_api():
-    print("🌐 [API BACKFILL] Iniciando rescate de IDs y Árbitros faltantes...")
+def actualizar_historicos_completos():
+    print("🏗️ [RECONSTRUCCIÓN TOTAL] Escaneando calendario desde 2024 hasta hoy...")
     api_key = os.environ.get("API_FOOTBALL_KEY")
     if not api_key:
         print("❌ No se encontró la API_FOOTBALL_KEY en las variables de entorno.")
         return
 
     api = FootballAPI(api_key)
-    archivos = sorted(glob.glob("historico_mensual/football/historico_*.csv"))
-    
-    # 🔥 Asegurar que el directorio de resultados exista
     os.makedirs("resultados/football", exist_ok=True)
+    os.makedirs("historico_mensual/football", exist_ok=True)
 
-    total_peticiones = 0
-    total_actualizados = 0
+    # 1. Definir rango de fechas (Desde 2024-01-01 hasta HOY)
+    fecha_fin = datetime.now()
+    rango_fechas = pd.date_range(start="2024-01-01", end=fecha_fin, freq='D')
 
-    for archivo in archivos:
-        try:
-            df = pd.read_csv(archivo)
-            if 'Date' not in df.columns: continue
+    peticiones = 0
+    fechas_por_mes = {}
 
-            # Forzamos las columnas a tipo texto ('object') para evitar errores de tipo en Pandas
-            columnas_a_forzar = ['LeagueId', 'HomeTeamId', 'AwayTeamId', 'Country', 'Referee']
-            for col in columnas_a_forzar:
-                if col in df.columns:
-                    df[col] = df[col].astype('object')
+    # 2. Rellenar vacíos en la caché local
+    print("🔍 Revisando la caché local para identificar días faltantes...")
+    for fecha_obj in rango_fechas:
+        fecha_str = fecha_obj.strftime("%Y-%m-%d")
+        mes_str = fecha_obj.strftime("%Y_%m") # Formato para el nombre del CSV
+        
+        if mes_str not in fechas_por_mes:
+            fechas_por_mes[mes_str] = []
+        fechas_por_mes[mes_str].append(fecha_str)
 
-            # Identificar fechas que tienen al menos un partido sin ID de equipo o liga
-            mask_incompletos = df['HomeTeamId'].isna() | df['LeagueId'].isna()
-            fechas_necesitadas = df[mask_incompletos]['Date'].dropna().unique()
+        file_path = f"resultados/football/partidos_{fecha_str}.json"
+        
+        if not os.path.exists(file_path):
+            print(f"   📡 Descargando día faltante: {fecha_str}...")
+            try:
+                data = api.get_data("fixtures", {"date": fecha_str, "timezone": "America/Santiago"})
+                peticiones += 1
+                time.sleep(1.2) # Protección de cuota
+                
+                if data and data.get("response") is not None:
+                    with open(file_path, "w", encoding="utf-8") as f:
+                        json.dump(data["response"], f, ensure_ascii=False, indent=4)
+            except Exception as e:
+                print(f"      ❌ Error API en {fecha_str}: {e}")
 
-            if len(fechas_necesitadas) == 0:
+    print(f"\n✅ Sincronización de caché completada. Peticiones usadas: {peticiones}")
+    print("\n🏗️ Reconstruyendo archivos históricos mensuales...")
+
+    columnas_oficiales = [
+        'League', 'LeagueId', 'Country', 'Round', 'EsEliminatoria', 
+        'Date', 'HomeTeamId', 'AwayTeamId', 'HomeTeam', 'AwayTeam', 
+        'FTHG', 'FTAG', 'HTHG', 'HTAG', 'HC', 'AC', 
+        'HY', 'AY', 'HR', 'AR', 'HS', 'AS', 'Referee'
+    ]
+
+    # 3. Generar los CSV definitivos agrupados por mes
+    for mes, fechas in fechas_por_mes.items():
+        nuevas_filas = []
+        
+        for fecha_str in fechas:
+            file_path = f"resultados/football/partidos_{fecha_str}.json"
+            if not os.path.exists(file_path):
+                continue
+                
+            try:
+                with open(file_path, "r", encoding="utf-8") as f:
+                    fixtures_api = json.load(f)
+            except Exception:
                 continue
 
-            print(f"\n📄 {os.path.basename(archivo)}: {len(fechas_necesitadas)} días requieren consulta.")
-            cambios_en_archivo = False
+            if not isinstance(fixtures_api, list):
+                continue
 
-            for fecha_str in fechas_necesitadas:
-                file_path = f"resultados/football/partidos_{fecha_str}.json"
-                fixtures_api = None
-                origen_datos = "🌐 API"
+            for fix in fixtures_api:
+                if not isinstance(fix, dict): continue
                 
-                # 1. Intentar leer desde el caché local primero (Costo: 0 peticiones)
-                if os.path.exists(file_path):
-                    try:
-                        with open(file_path, "r", encoding="utf-8") as f:
-                            fixtures_api = json.load(f)
-                        origen_datos = "📂 LOCAL"
-                    except Exception:
-                        fixtures_api = None
+                status = fix.get("fixture", {}).get("status", {}).get("short")
+                if status not in ['FT', 'AET', 'PEN']: 
+                    continue # Excluir partidos cancelados o no iniciados
 
-                # 2. Si no hay caché, consultar a la API y guardar el resultado
-                if not fixtures_api:
-                    print(f"   📡 Consultando API para el {fecha_str}...")
-                    try:
-                        data = api.get_data("fixtures", {"date": fecha_str, "timezone": "America/Santiago"})
-                        total_peticiones += 1
-                        time.sleep(1.2) # Protegemos el rate-limit
-                        
-                        if data and data.get("response"):
-                            fixtures_api = data["response"]
-                            # Guardar en caché para futuras ejecuciones
-                            try:
-                                with open(file_path, "w", encoding="utf-8") as f:
-                                    json.dump(fixtures_api, f, ensure_ascii=False, indent=4)
-                            except Exception as e:
-                                print(f"      ⚠️ No se pudo guardar caché local: {e}")
-                    except Exception as e:
-                        print(f"      ❌ Error en API: {e}")
-                        continue
+                league_info = fix.get("league", {})
+                teams_info = fix.get("teams", {})
+                goals_info = fix.get("goals", {})
+                score_ht = fix.get("score", {}).get("halftime", {})
+                fixture_info = fix.get("fixture", {})
 
-                if not fixtures_api:
-                    continue
-                    
-                if origen_datos == "📂 LOCAL":
-                    print(f"   📂 Usando caché local para el {fecha_str}...")
+                raw_date = fixture_info.get("date", "")
+                match_date = raw_date[:10] if raw_date else fecha_str
+                
+                round_name = str(league_info.get("round", ""))
+                es_elim = "Group" not in round_name and "Regular" not in round_name
 
-                # Mapear los datos de la respuesta para cruzarlos rápido
-                mapa_api = {}
-                for fix in fixtures_api:
-                    h_name = fix.get("teams", {}).get("home", {}).get("name")
-                    a_name = fix.get("teams", {}).get("away", {}).get("name")
-                    if h_name and a_name:
-                        mapa_api[f"{h_name}_{a_name}"] = fix
+                fila = {
+                    'League': league_info.get("name"),
+                    'LeagueId': league_info.get("id"),
+                    'Country': league_info.get("country"),
+                    'Round': round_name,
+                    'EsEliminatoria': es_elim,
+                    'Date': match_date,
+                    'HomeTeamId': teams_info.get("home", {}).get("id"),
+                    'AwayTeamId': teams_info.get("away", {}).get("id"),
+                    'HomeTeam': teams_info.get("home", {}).get("name"),
+                    'AwayTeam': teams_info.get("away", {}).get("name"),
+                    'FTHG': goals_info.get("home"),
+                    'FTAG': goals_info.get("away"),
+                    'HTHG': score_ht.get("home"),
+                    'HTAG': score_ht.get("away"),
+                    'HC': pd.NA, 'AC': pd.NA, 'HY': pd.NA, 'AY': pd.NA,
+                    'HR': pd.NA, 'AR': pd.NA, 'HS': pd.NA, 'AS': pd.NA,
+                    'Referee': fixture_info.get("referee") if fixture_info.get("referee") else "Desconocido"
+                }
+                nuevas_filas.append(fila)
 
-                # Recorrer solo las filas de ese día en el CSV
-                filas_del_dia = df[df['Date'] == fecha_str].index
-                for idx in filas_del_dia:
-                    if pd.isna(df.at[idx, 'HomeTeamId']) or pd.isna(df.at[idx, 'LeagueId']):
-                        h_csv = df.at[idx, 'HomeTeam']
-                        a_csv = df.at[idx, 'AwayTeam']
-                        key = f"{h_csv}_{a_csv}"
+        # Si el mes tiene partidos, creamos su CSV oficial
+        if nuevas_filas:
+            df_nuevo = pd.DataFrame(nuevas_filas, columns=columnas_oficiales)
+            df_nuevo.drop_duplicates(subset=['Date', 'HomeTeamId', 'AwayTeamId'], inplace=True)
+            df_nuevo.sort_values(by=['Date', 'League', 'HomeTeam'], ascending=[False, True, True], inplace=True)
+            
+            ruta_csv = f"historico_mensual/football/historico_{mes}.csv"
+            df_nuevo.to_csv(ruta_csv, index=False, encoding='utf-8')
+            print(f"   ✅ OK: historico_{mes}.csv reconstruido ({len(df_nuevo)} partidos).")
 
-                        # Parchamos los IDs si el partido está en los datos de la API/Caché
-                        if key in mapa_api:
-                            info = mapa_api[key]
-                            df.at[idx, 'HomeTeamId'] = info["teams"]["home"]["id"]
-                            df.at[idx, 'AwayTeamId'] = info["teams"]["away"]["id"]
-                            df.at[idx, 'LeagueId'] = info["league"]["id"]
-                            df.at[idx, 'Country'] = info["league"]["country"]
-                            
-                            ref = info.get("fixture", {}).get("referee")
-                            if ref and pd.notna(ref) and df.at[idx, 'Referee'] == 'Desconocido':
-                                df.at[idx, 'Referee'] = str(ref).strip()
-                            
-                            total_actualizados += 1
-                            cambios_en_archivo = True
-
-            if cambios_en_archivo:
-                df.to_csv(archivo, index=False, encoding='utf-8')
-                print(f"   💾 OK: {os.path.basename(archivo)} guardado con nuevos datos.")
-
-        except Exception as e:
-            print(f"❌ Error procesando {archivo}: {e}")
-
-    print(f"\n🎉 ¡Proceso finalizado! Se actualizaron {total_actualizados} partidos usando solo {total_peticiones} peticiones a la API.")
+    print("\n🎉 ¡Base de datos histórica estandarizada y al día!")
 
 if __name__ == "__main__":
-    backfill_ids_desde_api()
+    actualizar_historicos_completos()
