@@ -25,14 +25,14 @@ def gather_files(files_list, all_flag):
     pattern = os.path.join('resultados', 'football', 'partidos_*.json')
     return sorted(glob.glob(pattern))
 
-
 def dedupe_dataframe(df):
     if df.empty:
         return df
 
     df = df.copy().fillna("")
     
-    for col in ["League", "LeagueId", "Country", "Round", "EsEliminatoria", "Date", "HomeTeamId", "AwayTeamId", "HomeTeam", "AwayTeam", "FTHG", "FTAG", "HTHG", "HTAG", "Referee"]:
+    # 🔥 Agregado FixtureId a las columnas base
+    for col in ["FixtureId", "League", "LeagueId", "Country", "Round", "EsEliminatoria", "Date", "HomeTeamId", "AwayTeamId", "HomeTeam", "AwayTeam", "FTHG", "FTAG", "HTHG", "HTAG", "Referee"]:
         if col not in df.columns:
             df[col] = ""
 
@@ -41,6 +41,7 @@ def dedupe_dataframe(df):
 
     def completeness_score(row):
         score = 0
+        if row.get("FixtureId"): score += 20 # Premiar filas que ya traen el ID
         if row.get("LeagueId"): score += 50
         if row.get("Country"): score += 30
         if row.get("League"): score += 10
@@ -67,7 +68,8 @@ def dedupe_dataframe(df):
             if i == best_idx:
                 continue
             
-            for col in ["League", "LeagueId", "Country", "Round", "EsEliminatoria", "HomeTeamId", "AwayTeamId", "FTHG", "FTAG", "HTHG", "HTAG", "HC", "AC", "HY", "AY", "HR", "AR", "HS", "AS", "Referee"]:
+            # 🔥 Agregado FixtureId a la lista de resolución de conflictos
+            for col in ["FixtureId", "League", "LeagueId", "Country", "Round", "EsEliminatoria", "HomeTeamId", "AwayTeamId", "FTHG", "FTAG", "HTHG", "HTAG", "HC", "AC", "HY", "AY", "HR", "AR", "HS", "AS", "Referee"]:
                 bval = best.get(col, "") or ""
                 oval = other.get(col, "") or ""
                 if (not bval) and oval:
@@ -89,7 +91,6 @@ def dedupe_dataframe(df):
         pass
 
     return df_new
-
 
 def main(args=None):
     parser = argparse.ArgumentParser(description='Recarga historicos desde JSONs en resultados/football')
@@ -128,7 +129,6 @@ def main(args=None):
 
     estados_finalizados = ['FT', 'AET', 'PEN']
 
-    # 🔥 AGRUPAR POR FECHA ANTES DE PROCESAR PARA EVITAR SPAM EN CONSOLA
     partidos_por_fecha = {}
     for match in lista_partidos:
         estado_actual = match.get('fixture', {}).get('status', {}).get('short')
