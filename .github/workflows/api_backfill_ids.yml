@@ -6,6 +6,7 @@ on:
 jobs:
   backfill-ids:
     runs-on: ubuntu-latest
+    timeout-minutes: 45 # ⏱️ Escudo contra ejecuciones infinitas (Ahorro de minutos)
 
     permissions:
       contents: write
@@ -27,6 +28,7 @@ jobs:
       - name: 🚀 Ejecutar Backfill desde API
         env:
           API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+          PROXY_URL: ${{ secrets.PROXY_URL }} # 🛡️ Túnel activado para evitar bloqueos de IP
         run: python backfill_ids_api.py
 
       - name: ⚙️ Configurar Git
