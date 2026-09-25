@@ -22,6 +22,12 @@ def backfill_ids_desde_api():
             df = pd.read_csv(archivo)
             if 'Date' not in df.columns: continue
 
+            # 🔥 SOLUCIÓN AL ERROR: Forzamos las columnas a tipo texto ('object') para que Pandas no choque
+            columnas_a_forzar = ['LeagueId', 'HomeTeamId', 'AwayTeamId', 'Country', 'Referee']
+            for col in columnas_a_forzar:
+                if col in df.columns:
+                    df[col] = df[col].astype('object')
+
             # Identificar fechas que tienen al menos un partido sin ID de equipo o liga
             mask_incompletos = df['HomeTeamId'].isna() | df['LeagueId'].isna()
             fechas_necesitadas = df[mask_incompletos]['Date'].dropna().unique()
@@ -35,7 +41,6 @@ def backfill_ids_desde_api():
             for fecha_str in fechas_necesitadas:
                 print(f"   📡 Consultando API para el {fecha_str}...")
                 try:
-                    # Traemos TODOS los partidos de ese día con 1 sola petición
                     data = api.get_data("fixtures", {"date": fecha_str, "timezone": "America/Santiago"})
                     total_peticiones += 1
                     time.sleep(1.2) # Protegemos el rate-limit
@@ -46,7 +51,6 @@ def backfill_ids_desde_api():
                 if not data or not data.get("response"):
                     continue
 
-                # Diccionario rápido para cruzar datos de la API con tu CSV
                 mapa_api = {}
                 for fix in data["response"]:
                     h_name = fix.get("teams", {}).get("home", {}).get("name")
@@ -54,7 +58,6 @@ def backfill_ids_desde_api():
                     if h_name and a_name:
                         mapa_api[f"{h_name}_{a_name}"] = fix
 
-                # Recorremos solo las filas de ese día en tu CSV
                 filas_del_dia = df[df['Date'] == fecha_str].index
                 for idx in filas_del_dia:
                     if pd.isna(df.at[idx, 'HomeTeamId']) or pd.isna(df.at[idx, 'LeagueId']):
@@ -62,7 +65,6 @@ def backfill_ids_desde_api():
                         a_csv = df.at[idx, 'AwayTeam']
                         key = f"{h_csv}_{a_csv}"
 
-                        # Si la API tiene ese partido, parchamos los IDs
                         if key in mapa_api:
                             info = mapa_api[key]
                             df.at[idx, 'HomeTeamId'] = info["teams"]["home"]["id"]
@@ -78,7 +80,6 @@ def backfill_ids_desde_api():
                             cambios_en_archivo = True
 
             if cambios_en_archivo:
-                # Guardamos el archivo sin alterar su formato
                 df.to_csv(archivo, index=False, encoding='utf-8')
                 print(f"   💾 OK: {os.path.basename(archivo)} guardado con nuevos datos.")
 
