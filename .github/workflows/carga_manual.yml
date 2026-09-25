@@ -42,24 +42,24 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi
-          python -m pip install pandas pytz
+          python -m pip install pandas pytz numpy scipy
 
       - name: Run backfill (process all JSONs)
         run: |
           python test/carga_manual_fut.py --all
 
-      - name: Commit historico_mensual/ and logs/ if changed
+      - name: Commit historico_mensual/ and logs/ a rama paralela
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Resolve branch name robustly (workflow_dispatch may provide different refs)
-          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
-          BRANCH_NAME="${GITHUB_REF_NAME:-$BRANCH_NAME}"
-          BRANCH_NAME="${GITHUB_HEAD_REF:-$BRANCH_NAME}"
-          BRANCH_NAME="${BRANCH_NAME:-main}"
+          # 🌿 Definimos la rama paralela de destino para aislar los cambios
+          TARGET_BRANCH="historicos-actualizados"
+          
+          # Cambiar o crear la rama paralela localmente
+          git checkout -b "$TARGET_BRANCH" || git checkout "$TARGET_BRANCH"
 
           # Add only if the directories exist
           [ -d historico_mensual/football ] && git add historico_mensual/football
@@ -69,5 +69,6 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "ci(backfill): update historico_mensual and logs via manual workflow"
-            git push origin HEAD:"$BRANCH_NAME"
+            # 🚀 Subir exclusivamente a la rama paralela sin tocar main
+            git push origin HEAD:"$TARGET_BRANCH"
           fi
