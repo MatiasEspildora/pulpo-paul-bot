@@ -26,7 +26,8 @@ def gather_files(files_list, all_flag):
     # 🎯 FILTRAR SOLO SEPTIEMBRE DE 2026
     pattern = os.path.join('resultados', 'football', 'partidos_2026-09-*.json')
     archivos_septiembre = sorted(glob.glob(pattern))
-    print(f"🎯 [FILTRO] Encontrados {len(archivos_septiembre]} archivos JSON para Septiembre 2026.")
+    total_archivos = len(archivos_septiembre)
+    print(f"🎯 [FILTRO] Encontrados {total_archivos} archivos JSON para Septiembre 2026.")
     return archivos_septiembre
 
 def dedupe_dataframe(df):
@@ -140,11 +141,11 @@ def main(args=None):
             except Exception:
                 fecha_str = datetime.now().strftime('%Y-%m-%d')
             
-            # Forzamos a procesar solo fechas de 2026-09
             if fecha_str.startswith("2026-09"):
                 partidos_por_fecha.setdefault(fecha_str, []).append(match)
 
-    print(f"📦 Procesando lotes de Septiembre 2026 ({len(partidos_por_fecha)} días)...")
+    total_dias = len(partidos_por_fecha)
+    print(f"📦 Procesando lotes de Septiembre 2026 ({total_dias} días)...")
 
     for fecha_str, partidos_dia in partidos_por_fecha.items():
         df_hist = football.actualizar_maestro_con_partidos(df_hist, partidos_dia, fecha_str, statuses)
@@ -156,7 +157,6 @@ def main(args=None):
 
     df_hist = dedupe_dataframe(df_hist)
 
-    # Forzamos que solo impacte el periodo 2026-09
     meses_afectados = {pd.Period('2026-09', 'M')}
 
     football.guardar_historico_mensual(df_hist, meses_afectados)
