@@ -7,6 +7,7 @@ import pytz
 import sys
 import time
 import traceback
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -59,13 +60,11 @@ def cargar_historico_mensual(meses_clubes=6, meses_selecciones=24):
     if not all_files:
         return pd.DataFrame(columns=default_cols)
         
-    # 🎯 1. Calcular puntos de corte para Carga Híbrida
     archivos_recientes = all_files[-meses_clubes:] if len(all_files) > meses_clubes else all_files
     archivos_antiguos = all_files[-meses_selecciones:-meses_clubes] if len(all_files) > meses_clubes else []
     
     li = []
     
-    # 🎯 2. CARGA HÍBRIDA - ANTIGUOS (Solo Selecciones Nacionales)
     for filename in archivos_antiguos:
         try:
             temp_df = pd.read_csv(filename)
@@ -77,7 +76,6 @@ def cargar_historico_mensual(meses_clubes=6, meses_selecciones=24):
         except Exception:
             pass
             
-    # 🎯 3. CARGA HÍBRIDA - RECIENTES (Todos los equipos del mundo)
     for filename in archivos_recientes:
         try:
             temp_df = pd.read_csv(filename)
@@ -90,13 +88,11 @@ def cargar_historico_mensual(meses_clubes=6, meses_selecciones=24):
         
     df = pd.concat(li, axis=0, ignore_index=True)
     
-    # 🔥 FIX: Forzar FixtureId como enteros limpios (Int64) compatibles con vacíos sin alterar el disco
     if 'FixtureId' in df.columns:
         df['FixtureId'] = pd.to_numeric(df['FixtureId'], errors='coerce').astype('Int64')
     else:
         df['FixtureId'] = pd.Series(dtype='Int64')
 
-    # Asegurar el estándar de las 24 columnas
     for col in default_cols:
         if col not in df.columns:
             df[col] = pd.NA
@@ -354,6 +350,74 @@ def registrar_predicciones(proyecciones_dict):
     else:
         df_nuevo.to_csv(archivo_log, index=False, encoding='utf-8')
 
+def _procesar_un_partido(match, analyzer, statuses_map, zona, now, ligas_baneadas, df):
+    """Función auxiliar aislada para procesar un partido de forma concurrente."""
+    try:
+        if match.get("fixture", {}).get("status", {}).get("short") not in statuses_map["upcoming"]:
+            return None
+            
+        date_str = match.get("fixture", {}).get("date", "")
+        if not date_str:
+            return None
+            
+        dt_obj = datetime.fromisoformat(date_str.replace("Z", "+00:00")).astimezone(zona)
+        fecha_dt_naive = dt_obj.replace(tzinfo=None)
+        
+        if dt_obj < now:
+            return None
+            
+        pais = match.get("league", {}).get("country", "World")
+        liga = match.get("league", {}).get("name", "Unknown")
+        
+        es_seleccion = (pais == "World")
+        
+        if f"{pais}_{liga}" in ligas_baneadas:
+            return None
+            
+        h_name = match.get("teams", {}).get("home", {}).get("name", "Local")
+        a_name = match.get("teams", {}).get("away", {}).get("name", "Visita")
+        h_id = match.get("teams", {}).get("home", {}).get("id")
+        a_id = match.get("teams", {}).get("away", {}).get("id")
+        
+        league_id_raw = match.get("league", {}).get("id")
+        league_id_str = str(league_id_raw) if league_id_raw is not None else None
+        
+        ronda_texto = (match.get("league", {}).get("round") or "").lower()
+        palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "play-off", "qualifying"]
+        es_elimi = any(palabra in ronda_texto for palabra in palabras_clave)
+        
+        referee_str = str(match.get("fixture", {}).get("referee") or "Desconocido").strip()
+        
+        raw_proj = analyzer.get_projections(
+            h_name, a_name, h_id, a_id, 
+            league_id=league_id_str, 
+            es_eliminatoria=es_elimi,
+            referee=referee_str,
+            es_seleccion=es_seleccion
+        )
+        
+        raw_proj['fixture_id'] = match.get("fixture", {}).get("id")
+        raw_proj['referee'] = referee_str 
+
+        proj = BetBuilderEngine.generar_mercados(raw_proj)
+        
+        proj['fecha_str'] = dt_obj.strftime("%Y-%m-%d")
+        proj['hora'] = dt_obj.strftime("%H:%M")
+        proj['pais'] = pais
+        proj['es_eliminatoria'] = es_elimi
+        proj['local_league'] = obtener_liga_domestica(df, h_id, h_name)
+        proj['visita_league'] = obtener_liga_domestica(df, a_id, a_name)
+        
+        proj['dias_descanso_local'] = calcular_dias_descanso(df, h_id, fecha_dt_naive)
+        proj['dias_descanso_visita'] = calcular_dias_descanso(df, a_id, fecha_dt_naive)
+        
+        proj['fixture_id'] = raw_proj['fixture_id']
+        proj['referee'] = raw_proj['referee']
+        
+        return (pais, liga, proj)
+    except Exception:
+        return None
+
 def run_process(df_externo=None):
     os.makedirs("logs/football", exist_ok=True)
     os.makedirs("resultados/football", exist_ok=True)
@@ -455,78 +519,29 @@ def run_process(df_externo=None):
             
             total_partidos = len(partidos_validos)
             print(f"   ↳ 🎯 Encontrados {total_partidos} partidos próximos para proyectar en este lote.")
+            if total_partidos == 0:
+                return
+
+            print("   ↳ ⚡ Ejecutando análisis en paralelo (ThreadPoolExecutor)...")
             
-            idx_match = 0
-            for match in lista_partidos:
-                try:
-                    if match.get("fixture", {}).get("status", {}).get("short") in statuses_map["upcoming"]:
-                        idx_match += 1
-                        h_name = match.get("teams", {}).get("home", {}).get("name", "Local")
-                        a_name = match.get("teams", {}).get("away", {}).get("name", "Visita")
-                        
-                        print(f"     [{idx_match}/{total_partidos}] Analizando: {h_name} vs {a_name}...")
-                        
-                        date_str = match.get("fixture", {}).get("date", "")
-                        if not date_str:
-                            continue
-                            
-                        dt_obj = datetime.fromisoformat(date_str.replace("Z", "+00:00")).astimezone(zona)
-                        fecha_dt_naive = dt_obj.replace(tzinfo=None)
-                        
-                        if dt_obj < now:
-                            continue
-                            
-                        pais = match.get("league", {}).get("country", "World")
-                        liga = match.get("league", {}).get("name", "Unknown")
-                        
-                        es_seleccion = (pais == "World")
-                        
-                        if f"{pais}_{liga}" in ligas_baneadas:
-                            print(f"       ⚠️ Omitido por Cuarentena (Blacklist): {pais} - {liga}")
-                            continue
-                            
-                        h_id = match.get("teams", {}).get("home", {}).get("id")
-                        a_id = match.get("teams", {}).get("away", {}).get("id")
-                        
-                        league_id_raw = match.get("league", {}).get("id")
-                        league_id_str = str(league_id_raw) if league_id_raw is not None else None
-                        
-                        ronda_texto = (match.get("league", {}).get("round") or "").lower()
-                        palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "play-off", "qualifying"]
-                        es_elimi = any(palabra in ronda_texto for palabra in palabras_clave)
-                        
-                        referee_str = str(match.get("fixture", {}).get("referee") or "Desconocido").strip()
-                        
-                        raw_proj = analyzer.get_projections(
-                            h_name, a_name, h_id, a_id, 
-                            league_id=league_id_str, 
-                            es_eliminatoria=es_elimi,
-                            referee=referee_str,
-                            es_seleccion=es_seleccion
-                        )
-                        
-                        raw_proj['fixture_id'] = match.get("fixture", {}).get("id")
-                        raw_proj['referee'] = referee_str 
-       
-                        proj = BetBuilderEngine.generar_mercados(raw_proj)
-                        
-                        proj['fecha_str'] = dt_obj.strftime("%Y-%m-%d")
-                        proj['hora'] = dt_obj.strftime("%H:%M")
-                        proj['pais'] = pais
-                        proj['es_eliminatoria'] = es_elimi
-                        proj['local_league'] = obtener_liga_domestica(df, h_id, h_name)
-                        proj['visita_league'] = obtener_liga_domestica(df, a_id, a_name)
-                        
-                        proj['dias_descanso_local'] = calcular_dias_descanso(df, h_id, fecha_dt_naive)
-                        proj['dias_descanso_visita'] = calcular_dias_descanso(df, a_id, fecha_dt_naive)
-                        
-                        proj['fixture_id'] = raw_proj['fixture_id']
-                        proj['referee'] = raw_proj['referee']
-                        
+            completados = 0
+            # Usamos 12 hilos concurrentes para procesar el lote en tiempo récord
+            with ThreadPoolExecutor(max_workers=12) as executor:
+                futures = {
+                    executor.submit(_procesar_un_partido, match, analyzer, statuses_map, zona, now, ligas_baneadas, df): match 
+                    for match in lista_partidos
+                }
+                
+                for future in as_completed(futures):
+                    completados += 1
+                    res = future.result()
+                    if res is not None:
+                        pais, liga, proj = res
                         proyecciones_globales.setdefault((pais, liga), []).append(proj)
-                except Exception as e:
-                    print(f"       ❌ Error procesando partido individual: {e}")
-                    continue
+                    
+                    # Mostrar hito de progreso cada 100 partidos o al terminar para no saturar los logs
+                    if completados % 100 == 0 or completados == len(lista_partidos):
+                        print(f"     [Progreso: {completados}/{len(lista_partidos)}] Partidos evaluados...")
 
         print("⚽ [FOOTBALL] Generando proyecciones globales...")
         for fecha in fechas_a_procesar:
