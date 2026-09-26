@@ -122,7 +122,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     
     partidos_validos = []
     for pais, ligas in agrupar_por_pais(proyecciones_dict).items():
-        es_seleccion = (pais == "World")[span_0](start_span)[span_0](end_span)
+        es_seleccion = (pais == "World")
         for liga, projs in ligas.items():
             for p in projs:
                 es_copa = p.get('es_eliminatoria', False)
@@ -137,7 +137,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
                     p['bandera'] = BANDERAS.get(pais, "🏴")
                     p['_id_interno'] = f"{p['local_id']}_{p['visita_id']}_{p['fecha_str']}"
                     p['total_partidos_muestra'] = s_l.get('count', 0) + s_v.get('count', 0)
-                    p['es_seleccion'] = es_seleccion # Guardamos marca explícita
+                    p['es_seleccion'] = es_seleccion
                     
                     if s_l.get('has_details') and s_v.get('has_details'):
                         lam_s_home = (s_l.get('remates_f', 12.0) + s_v.get('remates_c', 12.0)) / 2
@@ -163,7 +163,6 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     radar_remontadas = []
     francotiradores = []
     
-    # Listas específicas separadas para selecciones
     selecciones_bb = []
     selecciones_goles = []
     selecciones_dobles = []
@@ -198,10 +197,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             if combo_key in mapa_nombres_sgbb:
                 score = calcular_confidence_score(prob, t_partidos)
                 item_data = {'match': p, 'prob': prob, 'sel': mapa_nombres_sgbb[combo_key], 'score': score}
-                if es_sel_partido:
-                    mega_misiles.append(item_data) # Opcional: los integramos o separamos
-                else:
-                    mega_misiles.append(item_data)
+                mega_misiles.append(item_data)
         
         def add_bb(condicion, variable_prob, texto):
             if condicion > 0.80: 
@@ -376,7 +372,6 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     msg += f"📅 _Generado: {hora_generacion}_\n\n"
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
 
-    # 🔥 SECCIÓN EXCLUSIVA DE SELECCIONES / FECHA FIFA SI EXISTEN REGISTROS
     if selecciones_bb or selecciones_goles or selecciones_dobles:
         msg += "🌍 *SELECCIONES Y FECHA FIFA (Bloque Especial)* 🌍\n\n"
         if selecciones_bb:
@@ -519,7 +514,7 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
     
     for pais, ligas_del_pais in sorted(agrupado_por_pais.items()):
         bandera = BANDERAS.get(pais, "🏴")
-        es_seleccion = (pais == "World")[span_1](start_span)[span_1](end_span)
+        es_seleccion = (pais == "World")
         
         for liga, proyecciones in sorted(ligas_del_pais.items()):
             
@@ -599,7 +594,7 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
     cierre_reporte = "━"*24 + "\n\n✅ *FIN DE LA AUTOPSIA* ✅\n\n"
     if len(mensaje_actual) + len(cierre_reporte) > max_len:
         if mensaje_actual.strip():
-                        mensajes_a_enviar.append(mensaje_actual)
+            mensajes_a_enviar.append(mensaje_actual)
         mensajes_a_enviar.append(cierre_reporte)
     elif mensaje_actual.strip() and mensaje_actual != header_general:
         mensaje_actual += cierre_reporte
