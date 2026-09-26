@@ -1,4 +1,4 @@
-name: Rescate Táctico Selecciones
+name: 🐙 Rescate Táctico Selecciones
 
 on:
   workflow_dispatch:
@@ -16,35 +16,43 @@ jobs:
       contents: write
 
     steps:
-      - name: Descargar el repositorio
+      - name: 📥 Descargar el repositorio
         uses: actions/checkout@v5
 
-      - name: Instalar Python
+      - name: 🐍 Instalar Python
         uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
-      - name: Instalar dependencias
+      - name: 📦 Instalar dependencias
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Ejecutar Rescate Táctico
+      - name: ⚽ Ejecutar Rescate Táctico
         env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+          API_BASKETBALL_KEY: ${{ secrets.API_BASKETBALL_KEY }}
+          TELEGRAM_BOT_TOKEN_BASKET: ${{ secrets.TELEGRAM_BOT_TOKEN_BASKET }}
+          PROXY_URL: ${{ secrets.PROXY_URL }}
+          TELEGRAM_KPI_CHAT_ID: ${{ secrets.TELEGRAM_KPI_CHAT_ID }}
+          TELEGRAM_KPI_BOT_TOKEN: ${{ secrets.TELEGRAM_KPI_BOT_TOKEN }}
+          PYTHONUNBUFFERED: "1"
         run: python rescate_tactico.py
 
-      - name: Configurar Git
+      - name: ⚙️ Configurar Git
         run: |
           git config --global user.name "Pulpo Paul Bot"
           git config --global user.email "bot@users.noreply.github.com"
 
-      - name: Registrar y subir cambios al repositorio
+      - name: 🚀 Registrar y subir cambios al repositorio
         run: |
           git add historico_mensual/
           git status
           if git diff --staged --quiet; then
-            echo "No hay cambios en los históricos para guardar."
+            echo "⚠️ No hay cambios en los históricos para guardar."
           else
             git commit -m "🤖 Rescate táctico: Actualización de estadísticas de selecciones [skip ci]"
             git push
