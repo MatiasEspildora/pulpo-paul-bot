@@ -6,6 +6,7 @@ import sys
 
 # 🚀 Forzar que los prints salgan en tiempo real en los logs de GitHub Actions
 sys.stdout.reconfigure(line_buffering=True)
+
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from api_client import FootballAPI
 
@@ -26,14 +27,9 @@ def rescatar_estadisticas_selecciones():
     print(f"🔍 [RESCATE TÁCTICO] Analizando {len(archivos)} archivos mensuales en busca de selecciones sin estadísticas...")
 
     total_actualizados = 0
-    limite_diario = 350  # Lote seguro para no quemar cuota de la API en una sola ejecución
     peticiones_realizadas = 0
 
     for filepath in archivos:
-        if peticiones_realizadas >= limite_diario:
-            print(f"🛡️ [LÍMITE ALCANZADO] Se procesaron {peticiones_realizadas} peticiones en este ciclo. Continuaremos mañana.")
-            break
-
         df = pd.read_csv(filepath)
         
         # Asegurar tipado Int64 para los IDs
@@ -46,22 +42,24 @@ def rescatar_estadisticas_selecciones():
             pendientes_indices = df[mask].index
 
             if len(pendientes_indices) > 0:
-                print(f"📂 Archivo {os.path.basename(filepath)}: Encontrados {len(pendientes_indices)} partidos de selecciones sin estadística táctica.")
+                print(f"\n📂 Archivo {os.path.basename(filepath)}: Encontrados {len(pendientes_indices)} partidos de selecciones sin estadística táctica.")
                 
-                modificado = False
+                archivo_modificado = False
                 for idx in pendientes_indices:
-                    if peticiones_realizadas >= limite_diario:
-                        break
-
                     fixture_id = int(df.at[idx, 'FixtureId'])
                     h_team = df.at[idx, 'HomeTeam']
                     a_team = df.at[idx, 'AwayTeam']
                     h_id = df.at[idx, 'HomeTeamId']
 
                     print(f"   ↳ 📥 Consultando API para: {h_team} vs {a_team} (ID: {fixture_id})...")
-                    resp = api.get_fixture_statistics(fixture_id)
-                    peticiones_realizadas += 1
-                    time.sleep(1.2)  # Pausa de cortesía para la API
+                    
+                    try:
+                        resp = api.get_fixture_statistics(fixture_id)
+                        peticiones_realizadas += 1
+                        time.sleep(1.2)  # Pausa de cortesía para la API
+                    except Exception as e:
+                        print(f"     ❌ Error de conexión con la API: {e}")
+                        continue
 
                     if resp and resp.get("response"):
                         datos_stats = resp["response"]
@@ -86,18 +84,18 @@ def rescatar_estadisticas_selecciones():
                             if k in df.columns:
                                 df.at[idx, k] = v
                         
-                        modificado = False # se puede marcar True para guardar
+                        archivo_modificado = True
                         total_actualizados += 1
                         print(f"     ✅ Estadísticas inyectadas con éxito.")
                     else:
                         print(f"     ⚠️ Sin respuesta de estadísticas para este partido.")
 
-                # Guardar el archivo actualizado si hubo cambios
-                if total_actualizados > 0:
+                # Guardar el archivo actualizado si hubo cambios en este mes
+                if archivo_modificado:
                     df.to_csv(filepath, index=False)
-                    print(f"💾 Archivo guardado con las mejoras tácticas: {os.path.basename(filepath)}")
+                    print(f"💾 Archivo guardado con mejoras tácticas: {os.path.basename(filepath)}")
 
-    print(f"\n🎉 [RESCATE FINALIZADO] Se completaron estadísticas tácticas para {total_actualizados} partidos de selecciones.")
+    print(f"\n🎉 [RESCATE FINALIZADO] Se completaron estadísticas tácticas para un total de {total_actualizados} partidos de selecciones en {peticiones_realizadas} peticiones.")
 
 if __name__ == "__main__":
     rescatar_estadisticas_selecciones()
