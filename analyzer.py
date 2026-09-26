@@ -80,9 +80,10 @@ class MatchAnalyzer:
                 matrix[i, j] = poisson.pmf(i, home_cards_lambda) * poisson.pmf(j, away_cards_lambda)
         return matrix / matrix.sum()
 
-    # 🔥 DOBLE RUTA: Diferencia Selecciones de Clubes
+    # 🔥 DOBLE RUTA: Diferencia Selecciones de Clubes con tipado estricto
     def _get_filtered_matches(self, team_id, league_id, es_eliminatoria, es_seleccion=False):
-        base_matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)]
+        t_id = str(team_id)
+        base_matches = self.df[(self.df["HomeTeamId"].astype(str) == t_id) | (self.df["AwayTeamId"].astype(str) == t_id)]
         base_matches = base_matches.dropna(subset=["FTHG", "FTAG"]).sort_values(by="Date", ascending=False)
         
         if es_seleccion:
@@ -107,7 +108,7 @@ class MatchAnalyzer:
         remates_f, remates_c = [], []
 
         for _, row in recent.iterrows():
-            es_local = (row["HomeTeamId"] == team_id)
+            es_local = (str(row["HomeTeamId"]) == str(team_id))
             
             goles_favor.append(row["FTHG"] if es_local else row["FTAG"])
             goles_contra.append(row["FTAG"] if es_local else row["FTHG"])
@@ -176,7 +177,7 @@ class MatchAnalyzer:
             for _, row in df_subset.iterrows():
                 hg, ag = row.get("FTHG"), row.get("FTAG")
                 if pd.isna(hg) or pd.isna(ag): continue
-                if row["HomeTeamId"] == team_id:
+                if str(row["HomeTeamId"]) == str(team_id):
                     if hg > ag: form.append('V'); pts += 3
                     elif hg == ag: form.append('E'); pts += 1
                     else: form.append('D')
@@ -202,7 +203,7 @@ class MatchAnalyzer:
                 a_val = row.get(col_ftag, 0.0)
                 if pd.isna(h_val) or pd.isna(a_val): h_val, a_val = 0.0, 0.0
 
-                if row["HomeTeamId"] == team_id:
+                if str(row["HomeTeamId"]) == str(team_id):
                     goles_f.append(float(h_val)); goles_c.append(float(a_val))
                 else:
                     goles_f.append(float(a_val)); goles_c.append(float(h_val))
@@ -227,7 +228,7 @@ class MatchAnalyzer:
             for _, row in df_subset.iterrows():
                 if pd.isna(row.get("HS")): continue
                 count += 1
-                if row["HomeTeamId"] == team_id:
+                if str(row["HomeTeamId"]) == str(team_id):
                     sf += float(row.get("HS", 0)); sa += float(row.get("AS", 0))
                     cf += float(row.get("HC", 0)); ca += float(row.get("AC", 0))
                 else:
@@ -252,8 +253,8 @@ class MatchAnalyzer:
 
         home_global = home_matches.head(limite)
         away_global = away_matches.head(limite)
-        home_venue = home_matches[home_matches['HomeTeamId'] == home_id].head(limite)
-        away_venue = away_matches[away_matches['AwayTeamId'] == away_id].head(limite)
+        home_venue = home_matches[home_matches['HomeTeamId'].astype(str) == str(home_id)].head(limite)
+        away_venue = away_matches[away_matches['AwayTeamId'].astype(str) == str(away_id)].head(limite)
 
         home_form_str, home_ppg = get_form_tracker(home_global, home_id)
         away_form_str, away_ppg = get_form_tracker(away_global, away_id)
@@ -348,7 +349,7 @@ class MatchAnalyzer:
         }
 
     def get_basketball_team_stats(self, team_name, team_id):
-        matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)]
+        matches = self.df[(self.df["HomeTeamId"].astype(str) == str(team_id)) | (self.df["AwayTeamId"].astype(str) == str(team_id))]
         matches = matches.dropna(subset=["FTHG", "FTAG"]).sort_values(by="Date", ascending=False)
         recent = matches.head(10)
         count = len(recent)
@@ -357,7 +358,7 @@ class MatchAnalyzer:
 
         puntos_favor, puntos_contra = [], []
         for _, row in recent.iterrows():
-            if row["HomeTeamId"] == team_id:
+            if str(row["HomeTeamId"]) == str(team_id):
                 puntos_favor.append(row["FTHG"] if pd.notna(row["FTHG"]) else 0)
                 puntos_contra.append(row["FTAG"] if pd.notna(row["FTAG"]) else 0)
             else:
@@ -377,7 +378,7 @@ class MatchAnalyzer:
             for _, row in df_subset.iterrows():
                 hg, ag = row.get("FTHG"), row.get("FTAG")
                 if pd.isna(hg) or pd.isna(ag): continue
-                if row["HomeTeamId"] == team_id:
+                if str(row["HomeTeamId"]) == str(team_id):
                     if hg > ag: form.append('V'); pts += 3
                     elif hg == ag: form.append('E'); pts += 1
                     else: form.append('D')
@@ -395,7 +396,7 @@ class MatchAnalyzer:
             for _, row in df_subset.iterrows():
                 h_val, a_val = row.get("FTHG"), row.get("FTAG")
                 if pd.isna(h_val) or pd.isna(a_val): h_val, a_val = 0.0, 0.0
-                if row["HomeTeamId"] == team_id:
+                if str(row["HomeTeamId"]) == str(team_id):
                     pts_f.append(float(h_val)); pts_c.append(float(a_val))
                 else:
                     pts_f.append(float(a_val)); pts_c.append(float(h_val))
@@ -404,10 +405,10 @@ class MatchAnalyzer:
             w = [x / w_sum for x in w]
             return float(sum(p * w_i for p, w_i in zip(pts_f, w))), float(sum(p * w_i for p, w_i in zip(pts_c, w)))
 
-        home_global = self.df[(self.df['HomeTeamId'] == home_id) | (self.df['AwayTeamId'] == home_id)].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
-        away_global = self.df[(self.df['HomeTeamId'] == away_id) | (self.df['AwayTeamId'] == away_id)].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
-        home_venue = self.df[self.df['HomeTeamId'] == home_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
-        away_venue = self.df[self.df['AwayTeamId'] == away_id].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
+        home_global = self.df[(self.df['HomeTeamId'].astype(str) == str(home_id)) | (self.df['AwayTeamId'].astype(str) == str(home_id))].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
+        away_global = self.df[(self.df['HomeTeamId'].astype(str) == str(away_id)) | (self.df['AwayTeamId'].astype(str) == str(away_id))].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
+        home_venue = self.df[self.df['HomeTeamId'].astype(str) == str(home_id)].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
+        away_venue = self.df[self.df['AwayTeamId'].astype(str) == str(away_id)].dropna(subset=['FTHG', 'FTAG']).sort_values(by="Date", ascending=False).head(10)
 
         home_form_str, home_ppg = get_form_tracker(home_global, home_id)
         away_form_str, away_ppg = get_form_tracker(away_global, away_id)
@@ -449,7 +450,7 @@ class MatchAnalyzer:
         }
 
     def get_basketball_overtime_stats(self, team_name, team_id):
-        matches = self.df[(self.df["HomeTeamId"] == team_id) | (self.df["AwayTeamId"] == team_id)].sort_values(by="Date", ascending=False).head(10)
+        matches = self.df[(self.df["HomeTeamId"].astype(str) == str(team_id)) | (self.df["AwayTeamId"].astype(str) == str(team_id))].sort_values(by="Date", ascending=False).head(10)
         count = len(matches)
         if matches.empty or count == 0:
             return {"partidos_ot": 0, "promedio_puntos_ot": 0.0, "total_partidos": 0}

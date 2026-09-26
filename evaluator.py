@@ -53,11 +53,26 @@ def enviar_reporte_telegram(mensaje):
         except Exception as e:
             print(f"⚠️ Excepción Telegram KPI: {e}")
 
-def cargar_historico_real():
-    all_files = glob.glob("historico_mensual/football/historico_*.csv")
+def cargar_historico_real(meses_atras=2):
+    # 🔥 OPTIMIZACIÓN MASIVA: El auditor solo necesita el historial reciente (2 meses máx) 
+    # para revisar los pendientes de 48 hrs y calcular la ventana de 30 días de ligas tóxicas.
+    all_files = sorted(glob.glob("historico_mensual/football/historico_*.csv"))
     if not all_files:
         return pd.DataFrame()
-    li = [pd.read_csv(f) for f in all_files]
+        
+    archivos_recientes = all_files[-meses_atras:] if len(all_files) > meses_atras else all_files
+    
+    li = []
+    for f in archivos_recientes:
+        try:
+            df_temp = pd.read_csv(f, dtype={'FixtureId': 'str', 'HomeTeamId': 'str', 'AwayTeamId': 'str'})
+            li.append(df_temp)
+        except Exception:
+            pass
+            
+    if not li:
+        return pd.DataFrame()
+        
     df_hist = pd.concat(li, axis=0, ignore_index=True)
     df_hist = df_hist.dropna(subset=['HomeTeamId', 'AwayTeamId', 'FTHG', 'FTAG'])
     return df_hist
@@ -182,7 +197,8 @@ def auditar_y_reportar():
         print("⚠️ No existe el archivo de proyecciones log.")
         return
 
-    df_log = pd.read_csv(log_path)
+    # Forzamos MatchId como string para que cuadre con el FixtureId
+    df_log = pd.read_csv(log_path, dtype={'MatchId': 'str', 'HomeTeamId': 'str', 'AwayTeamId': 'str'})
     df_log['ResultadoReal'] = df_log['ResultadoReal'].astype(object)
     df_log['Acierto'] = df_log['Acierto'].astype(object)
 
@@ -198,7 +214,7 @@ def auditar_y_reportar():
         for idx, row in pendientes.iterrows():
             # Filtro de expiración (Zombies > 48hrs pasan a VOID)
             try:
-                fecha_pick = datetime.strptime(row['Fecha'], "%Y-%m-%d")
+                fecha_pick = datetime.strptime(str(row['Fecha']), "%Y-%m-%d")
                 if (hoy_dt - fecha_pick).days > 2:
                     df_log.at[idx, 'Estado'] = 'ANULADO (VOID)'
                     cambios += 1
@@ -206,9 +222,15 @@ def auditar_y_reportar():
             except:
                 pass
                 
-            mask = (df_hist['HomeTeamId'] == row['HomeTeamId']) & \
-                   (df_hist['AwayTeamId'] == row['AwayTeamId']) & \
-                   (df_hist['Date'] == row['Fecha'])
+            match_id_str = str(row['MatchId'])
+            
+            # 🔥 BÚSQUEDA HÍBRIDA: Usar FixtureId si está limpio, si tiene "_" usa el filtro legado.
+            if "_" not in match_id_str and match_id_str != "nan":
+                mask = (df_hist['FixtureId'].astype(str) == match_id_str)
+            else:
+                mask = (df_hist['HomeTeamId'].astype(str) == str(row['HomeTeamId'])) & \
+                       (df_hist['AwayTeamId'].astype(str) == str(row['AwayTeamId'])) & \
+                       (df_hist['Date'].astype(str) == str(row['Fecha']))
             
             match = df_hist[mask]
             if not match.empty:
@@ -229,11 +251,19 @@ def auditar_y_reportar():
     if df_resueltos.empty: return
 
     df_ligas = df_hist[['HomeTeamId', 'AwayTeamId', 'Date', 'League', 'Country']].drop_duplicates(subset=['HomeTeamId', 'AwayTeamId', 'Date'])
-    df_resueltos = df_resueltos.merge(df_ligas, left_on=['HomeTeamId', 'AwayTeamId', 'Fecha'], right_on=['HomeTeamId', 'AwayTeamId', 'Date'], how='left')
-
-    fechas_unicas = sorted(df_resueltos['Fecha'].unique())
-    dias_totales = len(fechas_unicas)
     
+    # Cruzamos inyectando ligas y países para que la Blacklist siga funcionando
+    df_resueltos = df_resueltos.merge(
+        df_ligas, 
+        left_on=['HomeTeamId', 'AwayTeamId', 'Fecha'], 
+        right_on=['HomeTeamId', 'AwayTeamId', 'Date'], 
+        how='left'
+    )
+
+    fechas_unicas = sorted(df_resueltos['Fecha'].dropna().unique())
+    if not fechas_unicas: return
+    
+    dias_totales = len(fechas_unicas)
     fecha_hoy = fechas_unicas[-1]
     fecha_hoy_dt = datetime.strptime(fecha_hoy, "%Y-%m-%d")
     fecha_ayer = (fecha_hoy_dt - timedelta(days=1)).strftime("%Y-%m-%d")
@@ -253,16 +283,16 @@ def auditar_y_reportar():
     t_acu, h_acu, p_acu = metricas(df_resueltos)
     
     t_hoy_totales = len(df_hoy_total_picks)
-    p_hoy_pendientes = t_hoy_totales - t_hoy
-    p_hoy_perdidas = t_hoy - h_hoy
+    p_hoy_pendientes = max(0, t_hoy_totales - t_hoy)
+    p_hoy_perdidas = max(0, t_hoy - h_hoy)
     
     t_ayer_totales = len(df_log[df_log['Fecha'] == fecha_ayer]) if fecha_ayer else 0
-    p_ayer_pendientes = t_ayer_totales - t_ayer
-    p_ayer_perdidas = t_ayer - h_ayer
+    p_ayer_pendientes = max(0, t_ayer_totales - t_ayer)
+    p_ayer_perdidas = max(0, t_ayer - h_ayer)
 
     t_acu_totales = len(df_log)
     total_pendientes = len(df_log[df_log['Estado'] == 'PENDIENTE'])
-    fallos_acu = t_acu - h_acu
+    fallos_acu = max(0, t_acu - h_acu)
 
     # Desglose subdividido para SGBB
     desglose = [
