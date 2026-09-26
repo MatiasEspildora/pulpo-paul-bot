@@ -32,7 +32,7 @@ jobs:
       - name: Ejecutar Rescate Táctico
         env:
           API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
-        run: python rescate_táctico.py
+        run: python rescate_tactico.py
 
       - name: Configurar Git
         run: |
