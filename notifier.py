@@ -122,7 +122,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     
     partidos_validos = []
     for pais, ligas in agrupar_por_pais(proyecciones_dict).items():
-        es_seleccion = (pais == "World") # 🔥 DETECTOR DOBLE RUTA
+        es_seleccion = (pais == "World")[span_0](start_span)[span_0](end_span)
         for liga, projs in ligas.items():
             for p in projs:
                 es_copa = p.get('es_eliminatoria', False)
@@ -137,6 +137,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
                     p['bandera'] = BANDERAS.get(pais, "🏴")
                     p['_id_interno'] = f"{p['local_id']}_{p['visita_id']}_{p['fecha_str']}"
                     p['total_partidos_muestra'] = s_l.get('count', 0) + s_v.get('count', 0)
+                    p['es_seleccion'] = es_seleccion # Guardamos marca explícita
                     
                     if s_l.get('has_details') and s_v.get('has_details'):
                         lam_s_home = (s_l.get('remates_f', 12.0) + s_v.get('remates_c', 12.0)) / 2
@@ -161,11 +162,17 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     quirofano_tactico = []
     radar_remontadas = []
     francotiradores = []
+    
+    # Listas específicas separadas para selecciones
+    selecciones_bb = []
+    selecciones_goles = []
+    selecciones_dobles = []
 
     for p in partidos_validos:
         sgbb = p.get('sgbb', {})
         loc, vis = p['local'], p['visita']
         t_partidos = p['total_partidos_muestra']
+        es_sel_partido = p.get('es_seleccion', False)
         
         descanso_l = p.get('dias_descanso_local', 7)
         descanso_v = p.get('dias_descanso_visita', 7)
@@ -190,11 +197,19 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         for combo_key, prob in sgbb.items():
             if combo_key in mapa_nombres_sgbb:
                 score = calcular_confidence_score(prob, t_partidos)
-                mega_misiles.append({'match': p, 'prob': prob, 'sel': mapa_nombres_sgbb[combo_key], 'score': score})
+                item_data = {'match': p, 'prob': prob, 'sel': mapa_nombres_sgbb[combo_key], 'score': score}
+                if es_sel_partido:
+                    mega_misiles.append(item_data) # Opcional: los integramos o separamos
+                else:
+                    mega_misiles.append(item_data)
         
         def add_bb(condicion, variable_prob, texto):
             if condicion > 0.80: 
-                bb_list.append({'match': p, 'prob': variable_prob, 'sel': texto, 'score': calcular_confidence_score(variable_prob, t_partidos)})
+                item_data = {'match': p, 'prob': variable_prob, 'sel': texto, 'score': calcular_confidence_score(variable_prob, t_partidos)}
+                if es_sel_partido:
+                    selecciones_bb.append(item_data)
+                else:
+                    bb_list.append(item_data)
 
         add_bb(p.get('btts_no', 0), p.get('btts_no'), 'Ambos Anotan (NO)')
         add_bb(p.get('btts', 0), p.get('btts'), 'Ambos Anotan (SÍ)')
@@ -210,18 +225,27 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
         prob_gana = max(p.get('probs', [0,0,0])[0], p.get('probs', [0,0,0])[2])
         if prob_gana >= 0.90:
             sel_gana = p['local'] if p.get('probs', [0,0,0])[0] > p.get('probs', [0,0,0])[2] else p['visita']
-            ganadores.append({'match': p, 'prob': prob_gana, 'sel': sel_gana, 'score': calcular_confidence_score(prob_gana, t_partidos)})
+            item_g = {'match': p, 'prob': prob_gana, 'sel': sel_gana, 'score': calcular_confidence_score(prob_gana, t_partidos)}
+            ganadores.append(item_g)
         
         prob_doble = max(p.get('prob_1X', 0), p.get('prob_X2', 0))
         sel_doble = f"1X ({p['local']})" if p.get('prob_1X', 0) > p.get('prob_X2', 0) else f"X2 ({p['visita']})"
-        dobles.append({'match': p, 'prob': prob_doble, 'sel': sel_doble, 'score': calcular_confidence_score(prob_doble, t_partidos)})
+        item_d = {'match': p, 'prob': prob_doble, 'sel': sel_doble, 'score': calcular_confidence_score(prob_doble, t_partidos)}
+        if es_sel_partido:
+            selecciones_dobles.append(item_d)
+        else:
+            dobles.append(item_d)
         
         opciones_goles = [
             {'sel': 'Ambos Anotan', 'prob': p.get('btts', 0)}, {'sel': '+1.5 Goles', 'prob': p.get('over_1_5', 0)},
             {'sel': '+2.5 Goles', 'prob': p.get('over_2_5', 0)}, {'sel': '-3.5 Goles', 'prob': p.get('under_3_5', 0)}
         ]
         mejor_gol = max(opciones_goles, key=lambda x: x['prob'])
-        goles.append({'match': p, 'prob': mejor_gol['prob'], 'sel': mejor_gol['sel'], 'score': calcular_confidence_score(mejor_gol['prob'], t_partidos)})
+        item_gol = {'match': p, 'prob': mejor_gol['prob'], 'sel': mejor_gol['sel'], 'score': calcular_confidence_score(mejor_gol['prob'], t_partidos)}
+        if es_sel_partido:
+            selecciones_goles.append(item_gol)
+        else:
+            goles.append(item_gol)
 
         if p.get('btts', 0) > 0.80: 
             francotiradores.append({'match': p, 'prob': p.get('btts'), 'sel': 'Ambos Anotan (SÍ)', 'score': calcular_confidence_score(p.get('btts'), t_partidos)})
@@ -238,9 +262,8 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             
         if corner_sel:
             es_c = p.get('es_eliminatoria', False)
-            es_sel_p = (p.get('pais_nombre') == "World")
-            sl = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_c, es_seleccion=es_sel_p)
-            sv = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_c, es_seleccion=es_sel_p)
+            sl = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_c, es_seleccion=es_sel_partido)
+            sv = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_c, es_seleccion=es_sel_partido)
             promedio_str = f"L: {sl.get('corners_f', 0):.1f} - V: {sv.get('corners_f', 0):.1f}"
             quirofano_tactico.append({
                 'match': p, 
@@ -261,9 +284,8 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
 
         if shot_sel:
             es_c = p.get('es_eliminatoria', False)
-            es_sel_p = (p.get('pais_nombre') == "World")
-            sl = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_c, es_seleccion=es_sel_p)
-            sv = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_c, es_seleccion=es_sel_p)
+            sl = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_c, es_seleccion=es_sel_partido)
+            sv = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_c, es_seleccion=es_sel_partido)
             promedio_remates_str = f"L: {sl.get('remates_f', 0):.1f} - V: {sv.get('remates_f', 0):.1f}"
             quirofano_tactico.append({
                 'match': p,
@@ -284,9 +306,8 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
 
         if card_sel:
             es_c = p.get('es_eliminatoria', False)
-            es_sel_p = (p.get('pais_nombre') == "World")
-            sl = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_c, es_seleccion=es_sel_p)
-            sv = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_c, es_seleccion=es_sel_p)
+            sl = analyzer.get_team_stats(p['local'], p.get('local_id'), league_id=p.get('league_id'), es_eliminatoria=es_c, es_seleccion=es_sel_partido)
+            sv = analyzer.get_team_stats(p['visita'], p.get('visita_id'), league_id=p.get('league_id'), es_eliminatoria=es_c, es_seleccion=es_sel_partido)
             promedio_str = f"L: {sl.get('tarjetas_f', 0):.1f} - V: {sv.get('tarjetas_f', 0):.1f}"
             
             ref_name = p.get('referee', 'Desconocido')
@@ -314,17 +335,23 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
 
     mega_misiles.sort(key=lambda x: x['score'], reverse=True)
     bb_list.sort(key=lambda x: x['score'], reverse=True)
+    selecciones_bb.sort(key=lambda x: x['score'], reverse=True)
     ganadores.sort(key=lambda x: x['score'], reverse=True)
     dobles.sort(key=lambda x: x['score'], reverse=True)
+    selecciones_dobles.sort(key=lambda x: x['score'], reverse=True)
     goles.sort(key=lambda x: x['score'], reverse=True)
+    selecciones_goles.sort(key=lambda x: x['score'], reverse=True)
     francotiradores.sort(key=lambda x: x['score'], reverse=True)
     quirofano_tactico.sort(key=lambda x: x['score'], reverse=True)
 
     seleccionados = set()
     for item in bb_list[:30]: seleccionados.add(item['match'].get('_id_interno'))
+    for item in selecciones_bb[:15]: seleccionados.add(item['match'].get('_id_interno'))
     for item in ganadores[:30]: seleccionados.add(item['match'].get('_id_interno'))
     for item in dobles[:30]: seleccionados.add(item['match'].get('_id_interno'))
+    for item in selecciones_dobles[:15]: seleccionados.add(item['match'].get('_id_interno'))
     for item in goles[:30]: seleccionados.add(item['match'].get('_id_interno'))
+    for item in selecciones_goles[:15]: seleccionados.add(item['match'].get('_id_interno'))
     for item in quirofano_tactico[:15]: seleccionados.add(item['match'].get('_id_interno'))
     for item in francotiradores[:15]: seleccionados.add(item['match'].get('_id_interno'))
     for item in radar_remontadas: seleccionados.add(item['match'].get('_id_interno'))
@@ -349,6 +376,25 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
     msg += f"📅 _Generado: {hora_generacion}_\n\n"
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
 
+    # 🔥 SECCIÓN EXCLUSIVA DE SELECCIONES / FECHA FIFA SI EXISTEN REGISTROS
+    if selecciones_bb or selecciones_goles or selecciones_dobles:
+        msg += "🌍 *SELECCIONES Y FECHA FIFA (Bloque Especial)* 🌍\n\n"
+        if selecciones_bb:
+            msg += "_🧩 Piezas Bet Builder de Selecciones:_\n"
+            for i, item in enumerate(selecciones_bb[:10], 1):
+                m = item['match']
+                bajas_str = cache_bajas.get(m.get('fixture_id'), "")
+                msg += f"  *{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{bajas_str} | 🧩 *{item['sel']}* ({item['prob']:.0%})\n"
+            msg += "\n"
+        if selecciones_goles:
+            msg += "_🔥 Mercados de Goles en Selecciones:_\n"
+            for i, item in enumerate(selecciones_goles[:10], 1):
+                m = item['match']
+                bajas_str = cache_bajas.get(m.get('fixture_id'), "")
+                msg += f"  *{i}.* ⚽ {m['bandera']} {m['local']} vs {m['visita']}{bajas_str} | 🔥 *{item['sel']}* ({item['prob']:.0%})\n"
+            msg += "\n"
+        msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
+
     if radar_remontadas:
         msg += "⚔️ *RADAR DE REMONTADAS (Alerta Mata-Mata)* ⚔️\n\n"
         for i, item in enumerate(radar_remontadas, 1):
@@ -365,7 +411,7 @@ def _procesar_y_enviar_bloque_futbol(proyecciones_dict, titulo_bloque, fecha_blo
             bajas_str = cache_bajas.get(m.get('fixture_id'), "")
             msg += f"*{i}.* ⚽ {m['bandera']} {m['pais_nombre']} - {m['local']} vs {m['visita']}{es_mata_mata}{m['alerta_fatiga']}{bajas_str} | 🧩 *{item['sel']}* ({item['prob']:.0%})\n\n"
     else:
-        msg += "_Ninguna variable pura superó el 80% hoy._\n\n"
+        msg += "_Ninguna variable pura superó el 80% hoy en clubes._\n\n"
     
     msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
     msg += "🏆 *TOP 30 - GANADOR DIRECTO*\n\n"
@@ -473,7 +519,7 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
     
     for pais, ligas_del_pais in sorted(agrupado_por_pais.items()):
         bandera = BANDERAS.get(pais, "🏴")
-        es_seleccion = (pais == "World") # 🔥 DETECTOR DOBLE RUTA
+        es_seleccion = (pais == "World")[span_1](start_span)[span_1](end_span)
         
         for liga, proyecciones in sorted(ligas_del_pais.items()):
             
@@ -553,7 +599,7 @@ def _procesar_y_enviar_autopsia_futbol(proyecciones_dict, titulo_bloque, fecha_b
     cierre_reporte = "━"*24 + "\n\n✅ *FIN DE LA AUTOPSIA* ✅\n\n"
     if len(mensaje_actual) + len(cierre_reporte) > max_len:
         if mensaje_actual.strip():
-            mensajes_a_enviar.append(mensaje_actual)
+                        mensajes_a_enviar.append(mensaje_actual)
         mensajes_a_enviar.append(cierre_reporte)
     elif mensaje_actual.strip() and mensaje_actual != header_general:
         mensaje_actual += cierre_reporte
