@@ -4,6 +4,7 @@ import pandas as pd
 import json
 import time
 import sys
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # 🚀 Forzar que los prints salgan en tiempo real en los logs de GitHub Actions
 sys.stdout.reconfigure(line_buffering=True)
@@ -26,6 +27,41 @@ def cargar_ligas_con_estadisticas():
                 print(f"⚠️ Aviso: Error leyendo {ruta} ({e}).")
     return set()
 
+def _rescatar_un_partido(idx, row, api):
+    """Función auxiliar para consultar un partido de forma concurrente."""
+    try:
+        fixture_id = int(row['FixtureId'])
+        h_team = row['HomeTeam']
+        a_team = row['AwayTeam']
+        h_id = row['HomeTeamId']
+
+        resp = api.get_fixture_statistics(fixture_id)
+        time.sleep(1.0)  # Pausa de cortesía para la API
+
+        if resp and resp.get("response"):
+            datos_stats = resp["response"]
+            stats_dict = {}
+            
+            for equipo_stats in datos_stats:
+                es_local = equipo_stats.get("team", {}).get("id") == h_id
+                prefijo = "H" if es_local else "A"
+                
+                for metrica in equipo_stats.get("statistics", []):
+                    tipo = str(metrica.get("type"))
+                    valor = metrica.get("value")
+                    if valor is None: valor = 0
+                        
+                    if tipo == "Total Shots": stats_dict[f'{prefijo}S'] = int(valor)
+                    elif tipo == "Corner Kicks": stats_dict[f'{prefijo}C'] = int(valor)
+                    elif tipo == "Yellow Cards": stats_dict[f'{prefijo}Y'] = int(valor)
+                    elif tipo == "Red Cards": stats_dict[f'{prefijo}R'] = int(valor)
+
+            if stats_dict:
+                return idx, stats_dict
+    except Exception:
+        pass
+    return None
+
 def rescatar_estadisticas_selecciones():
     API_KEY = os.environ.get("API_FOOTBALL_KEY")
     if not API_KEY:
@@ -40,12 +76,16 @@ def rescatar_estadisticas_selecciones():
         print("⚠️ No se encontraron archivos históricos mensuales.")
         return
 
-    print(f"🔍 [RESCATE TÁCTICO] Analizando {len(archivos)} archivos mensuales...")
+    print(f"🔍 [RESCATE TÁCTICO] Analizando {len(archivos)} archivos mensuales (desde el más antiguo al más reciente)...")
 
     total_actualizados = 0
-    peticiones_realizadas = 0
 
     for filepath in archivos:
+        nombre_archivo = os.path.basename(filepath)
+        # Extraer año y mes del nombre del archivo (ej: historico_2024_01.csv -> Año: 2024, Mes: 01)
+        partes_nombre = nombre_archivo.replace(".csv", "").split("_")
+        periodo_str = f"{partes_nombre[1]}-{partes_nombre[2]}" if len(partes_nombre) >= 3 else "Período desconocido"
+
         df = pd.read_csv(filepath)
         
         if 'FixtureId' in df.columns:
@@ -54,66 +94,45 @@ def rescatar_estadisticas_selecciones():
             df['LeagueId'] = df['LeagueId'].astype(str)
 
         if 'Country' in df.columns and 'HS' in df.columns:
-            # 🛡️ Filtro estricto: Selecciones (World) + Que la liga soporte estadísticas tácticas
             mask = (df['Country'] == 'World') & (df['FixtureId'].notna()) & (df['HS'].isna())
             if 'LeagueId' in df.columns and ligas_soportadas:
                 mask = mask & (df['LeagueId'].isin(ligas_soportadas))
 
-            pendientes_indices = df[mask].index
+            pendientes = df[mask]
 
-            if len(pendientes_indices) > 0:
-                print(f"\n📂 Archivo {os.path.basename(filepath)}: {len(pendientes_indices)} partidos válidos de selecciones con cobertura táctica.")
+            if not pendientes.empty:
+                print(f"\n📅 [PERIODO: {periodo_str}] Archivo {nombre_archivo}: {len(pendientes)} partidos pendientes de selecciones.")
                 
                 archivo_modificado = False
-                for idx in pendientes_indices:
-                    fixture_id = int(df.at[idx, 'FixtureId'])
-                    h_team = df.at[idx, 'HomeTeam']
-                    a_team = df.at[idx, 'AwayTeam']
-                    h_id = df.at[idx, 'HomeTeamId']
-
-                    print(f"   ↳ 📥 Consultando API para: {h_team} vs {a_team} (ID: {fixture_id})...")
+                exitosos_archivo = 0
+                
+                # Ejecutar en paralelo con max_workers=4
+                with ThreadPoolExecutor(max_workers=4) as executor:
+                    futures = {
+                        executor.submit(_rescatar_un_partido, idx, row, api): idx 
+                        for idx, row in pendientes.iterrows()
+                    }
                     
-                    try:
-                        resp = api.get_fixture_statistics(fixture_id)
-                        peticiones_realizadas += 1
-                        time.sleep(1.2)
-                    except Exception as e:
-                        print(f"     ❌ Error de conexión con la API: {e}")
-                        continue
-
-                    if resp and resp.get("response"):
-                        datos_stats = resp["response"]
-                        stats_dict = {}
-                        
-                        for equipo_stats in datos_stats:
-                            es_local = equipo_stats.get("team", {}).get("id") == h_id
-                            prefijo = "H" if es_local else "A"
-                            
-                            for metrica in equipo_stats.get("statistics", []):
-                                tipo = str(metrica.get("type"))
-                                valor = metrica.get("value")
-                                if valor is None: valor = 0
-                                    
-                                if tipo == "Total Shots": stats_dict[f'{prefijo}S'] = int(valor)
-                                elif tipo == "Corner Kicks": stats_dict[f'{prefijo}C'] = int(valor)
-                                elif tipo == "Yellow Cards": stats_dict[f'{prefijo}Y'] = int(valor)
-                                elif tipo == "Red Cards": stats_dict[f'{prefijo}R'] = int(valor)
-
-                        for k, v in stats_dict.items():
-                            if k in df.columns:
-                                df.at[idx, k] = v
-                        
-                        archivo_modificado = True
-                        total_actualizados += 1
-                        print(f"     ✅ Estadísticas inyectadas con éxito.")
-                    else:
-                        print(f"     ⚠️ Sin respuesta de estadísticas para este partido.")
+                    for future in as_completed(futures):
+                        res = future.result()
+                        if res is not None:
+                            idx, stats_dict = res
+                            for k, v in stats_dict.items():
+                                if k in df.columns:
+                                    df.at[idx, k] = v
+                            archivo_modificado = True
+                            exitosos_archivo += 1
+                            total_actualizados += 1
 
                 if archivo_modificado:
                     df.to_csv(filepath, index=False)
-                    print(f"💾 Archivo guardado con mejoras tácticas: {os.path.basename(filepath)}")
+                    print(f"   💾 Archivo actualizado y guardado: {nombre_archivo} ({exitosos_archivo} rescatados con éxito).")
+                else:
+                    print(f"   ℹ️ Sin estadísticas nuevas recuperadas en este período.")
+            else:
+                print(f"⏩ [PERIODO: {periodo_str}] {nombre_archivo}: Sin partidos pendientes (todo al día).")
 
-    print(f"\n🎉 [RESCATE FINALIZADO] Se completaron estadísticas tácticas para {total_actualizados} partidos válidos en {peticiones_realizadas} peticiones.")
+    print(f"\n🎉 [RESCATE FINALIZADO] Se completaron estadísticas tácticas para un total de {total_actualizados} partidos de selecciones.")
 
 if __name__ == "__main__":
     rescatar_estadisticas_selecciones()
