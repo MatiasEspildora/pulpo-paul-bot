@@ -52,24 +52,52 @@ def cargar_blacklist():
             print(f"⚠️ Aviso: Error leyendo {ruta_blacklist}: {e}")
     return baneadas
 
-def cargar_historico_mensual():
-    all_files = glob.glob("historico_mensual/football/historico_*.csv")
-    # 🔥 FixtureId agregado al inicio del array oficial
+def cargar_historico_mensual(meses_clubes=6, meses_selecciones=24):
+    all_files = sorted(glob.glob("historico_mensual/football/historico_*.csv"))
+    
     default_cols = ['FixtureId', 'League', 'LeagueId', 'Country', 'Round', 'EsEliminatoria', 'Date', 'HomeTeamId', 'AwayTeamId', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'HTHG', 'HTAG', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR', 'HS', 'AS', 'Referee']
     if not all_files:
         return pd.DataFrame(columns=default_cols)
-    li = [pd.read_csv(filename) for filename in all_files]
+        
+    # 🎯 1. Calcular puntos de corte para Carga Híbrida
+    archivos_recientes = all_files[-meses_clubes:] if len(all_files) > meses_clubes else all_files
+    archivos_antiguos = all_files[-meses_selecciones:-meses_clubes] if len(all_files) > meses_clubes else []
+    
+    li = []
+    
+    # 🎯 2. CARGA HÍBRIDA - ANTIGUOS (Solo Selecciones Nacionales)
+    for filename in archivos_antiguos:
+        try:
+            # Leer rápido forzando string en IDs para evitar warnings de Pandas
+            temp_df = pd.read_csv(filename, dtype={'FixtureId': 'str', 'HomeTeamId': 'str', 'AwayTeamId': 'str'})
+            if 'Country' in temp_df.columns:
+                # Nos quedamos estrictamente con selecciones nacionales (descartamos clubes)
+                mask_selecciones = (temp_df['Country'] == 'World') | (temp_df['League'].fillna('').str.contains('World Cup|Nations League|Copa America|Euro Championship', case=False, na=False))
+                temp_df = temp_df[mask_selecciones]
+                if not temp_df.empty:
+                    li.append(temp_df)
+        except Exception:
+            pass
+            
+    # 🎯 3. CARGA HÍBRIDA - RECIENTES (Todos los equipos del mundo)
+    for filename in archivos_recientes:
+        try:
+            temp_df = pd.read_csv(filename, dtype={'FixtureId': 'str', 'HomeTeamId': 'str', 'AwayTeamId': 'str'})
+            li.append(temp_df)
+        except Exception:
+            pass
+            
+    if not li:
+        return pd.DataFrame(columns=default_cols)
+        
     df = pd.concat(li, axis=0, ignore_index=True)
     
-    if 'FixtureId' not in df.columns: df['FixtureId'] = pd.NA
-    if 'Country' not in df.columns: df['Country'] = ''
-    if 'LeagueId' not in df.columns: df['LeagueId'] = ''
-    if 'Round' not in df.columns: df['Round'] = ''
+    # Asegurar el estándar de las 24 columnas
+    for col in default_cols:
+        if col not in df.columns:
+            df[col] = pd.NA
+            
     if 'EsEliminatoria' not in df.columns: df['EsEliminatoria'] = False
-    if 'HomeTeamId' not in df.columns: df['HomeTeamId'] = pd.NA
-    if 'AwayTeamId' not in df.columns: df['AwayTeamId'] = pd.NA
-    if 'HTHG' not in df.columns: df['HTHG'] = pd.NA
-    if 'HTAG' not in df.columns: df['HTAG'] = pd.NA
     if 'Referee' not in df.columns: df['Referee'] = 'Desconocido'
         
     df['Date'] = pd.to_datetime(df['Date'], format='mixed', errors='coerce').dt.strftime('%Y-%m-%d')
@@ -172,7 +200,6 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
                             elif tipo == "Red Cards": stats_dict[f'{prefijo}R'] = int(valor)
 
             if idx_existente is not None:
-                # 🔥 Inyectar FixtureId al actualizar
                 df_hist.at[idx_existente, "FixtureId"] = match_id
                 df_hist.at[idx_existente, "FTHG"] = match.get("goals", {}).get("home")
                 df_hist.at[idx_existente, "FTAG"] = match.get("goals", {}).get("away")
@@ -191,7 +218,6 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
             palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "play-off", "qualifying"]
             es_eliminatoria = any(palabra in ronda_texto for palabra in palabras_clave)
 
-            # 🔥 Inyectar FixtureId al crear fila nueva
             nuevo = {
                 "FixtureId": match_id,
                 "League": league_name,
@@ -271,7 +297,11 @@ def registrar_predicciones(proyecciones_dict):
     filas = []
     for key, projs in proyecciones_dict.items():
         for p in projs:
-            match_id = f"{p.get('local_id', '')}_{p.get('visita_id', '')}_{p.get('fecha_str', '')}"
+            # 🔥 OPTIMIZACIÓN: Usar FixtureId en lugar de texto concatenado
+            match_id = str(p.get('fixture_id', ''))
+            if not match_id or match_id == "None":
+                # Fallback legado por si acaso
+                match_id = f"{p.get('local_id', '')}_{p.get('visita_id', '')}_{p.get('fecha_str', '')}"
             if not match_id or match_id == "__": continue
             
             base = {
@@ -314,7 +344,7 @@ def registrar_predicciones(proyecciones_dict):
     df_nuevo = pd.DataFrame(filas)
     
     if os.path.exists(archivo_log):
-        df_existente = pd.read_csv(archivo_log)
+        df_existente = pd.read_csv(archivo_log, dtype={'MatchId': 'str'})
         df_combined = pd.concat([df_existente, df_nuevo]).drop_duplicates(subset=['MatchId', 'Seleccion'], keep='last')
         df_combined.to_csv(archivo_log, index=False, encoding='utf-8')
     else:
