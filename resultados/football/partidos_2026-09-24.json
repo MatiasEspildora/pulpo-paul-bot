@@ -3132,8 +3132,8 @@
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 1,
+                "away": 0
             },
             "fulltime": {
                 "home": 1,
@@ -5532,7 +5532,7 @@
     {
         "fixture": {
             "id": 1638386,
-            "referee": null,
+            "referee": "F. Gilabert",
             "timezone": "America/Santiago",
             "date": "2026-09-24T18:00:00-03:00",
             "timestamp": 1790283600,
@@ -5966,9 +5966,9 @@
                 "city": null
             },
             "status": {
-                "long": "Not Started",
-                "short": "NS",
-                "elapsed": null,
+                "long": "Match Finished",
+                "short": "FT",
+                "elapsed": 90,
                 "extra": null
             }
         },
@@ -5987,18 +5987,18 @@
                 "id": 10150,
                 "name": "Santa Rita",
                 "logo": "https://media.api-sports.io/football/teams/10150.png",
-                "winner": null
+                "winner": true
             },
             "away": {
                 "id": 7836,
                 "name": "Serrano PB",
                 "logo": "https://media.api-sports.io/football/teams/7836.png",
-                "winner": null
+                "winner": false
             }
         },
         "goals": {
-            "home": null,
-            "away": null
+            "home": 2,
+            "away": 0
         },
         "score": {
             "halftime": {
@@ -6006,8 +6006,8 @@
                 "away": null
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 2,
+                "away": 0
             },
             "extratime": {
                 "home": null,
@@ -6022,7 +6022,7 @@
     {
         "fixture": {
             "id": 1638387,
-            "referee": null,
+            "referee": "P. Maza",
             "timezone": "America/Santiago",
             "date": "2026-09-24T20:30:00-03:00",
             "timestamp": 1790292600,
@@ -6057,27 +6057,27 @@
                 "id": 2325,
                 "name": "Everton de Vina",
                 "logo": "https://media.api-sports.io/football/teams/2325.png",
-                "winner": null
+                "winner": false
             },
             "away": {
                 "id": 2323,
                 "name": "Universidad de Chile",
                 "logo": "https://media.api-sports.io/football/teams/2323.png",
-                "winner": null
+                "winner": true
             }
         },
         "goals": {
             "home": 0,
-            "away": 0
+            "away": 1
         },
         "score": {
             "halftime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 0
             },
             "fulltime": {
-                "home": null,
-                "away": null
+                "home": 0,
+                "away": 1
             },
             "extratime": {
                 "home": null,
@@ -6442,7 +6442,7 @@
     {
         "fixture": {
             "id": 1581432,
-            "referee": null,
+            "referee": "J. O. Montes Santos",
             "timezone": "America/Santiago",
             "date": "2026-09-24T22:00:00-03:00",
             "timestamp": 1790298000,
@@ -6512,7 +6512,7 @@
     {
         "fixture": {
             "id": 1581479,
-            "referee": null,
+            "referee": "R. Villa",
             "timezone": "America/Santiago",
             "date": "2026-09-24T22:00:00-03:00",
             "timestamp": 1790298000,
