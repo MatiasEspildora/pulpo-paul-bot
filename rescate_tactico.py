@@ -4,6 +4,8 @@ import pandas as pd
 import time
 import sys
 
+# 🚀 Forzar que los prints salgan en tiempo real en los logs de GitHub Actions
+sys.stdout.reconfigure(line_buffering=True)
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from api_client import FootballAPI
 
