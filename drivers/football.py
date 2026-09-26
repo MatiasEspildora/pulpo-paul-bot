@@ -68,10 +68,8 @@ def cargar_historico_mensual(meses_clubes=6, meses_selecciones=24):
     # 🎯 2. CARGA HÍBRIDA - ANTIGUOS (Solo Selecciones Nacionales)
     for filename in archivos_antiguos:
         try:
-            # Leer rápido forzando string en IDs para evitar warnings de Pandas
-            temp_df = pd.read_csv(filename, dtype={'FixtureId': 'str', 'HomeTeamId': 'str', 'AwayTeamId': 'str'})
+            temp_df = pd.read_csv(filename)
             if 'Country' in temp_df.columns:
-                # Nos quedamos estrictamente con selecciones nacionales (descartamos clubes)
                 mask_selecciones = (temp_df['Country'] == 'World') | (temp_df['League'].fillna('').str.contains('World Cup|Nations League|Copa America|Euro Championship', case=False, na=False))
                 temp_df = temp_df[mask_selecciones]
                 if not temp_df.empty:
@@ -82,7 +80,7 @@ def cargar_historico_mensual(meses_clubes=6, meses_selecciones=24):
     # 🎯 3. CARGA HÍBRIDA - RECIENTES (Todos los equipos del mundo)
     for filename in archivos_recientes:
         try:
-            temp_df = pd.read_csv(filename, dtype={'FixtureId': 'str', 'HomeTeamId': 'str', 'AwayTeamId': 'str'})
+            temp_df = pd.read_csv(filename)
             li.append(temp_df)
         except Exception:
             pass
@@ -92,6 +90,12 @@ def cargar_historico_mensual(meses_clubes=6, meses_selecciones=24):
         
     df = pd.concat(li, axis=0, ignore_index=True)
     
+    # 🔥 FIX: Forzar FixtureId como enteros limpios (Int64) compatibles con vacíos sin alterar el disco
+    if 'FixtureId' in df.columns:
+        df['FixtureId'] = pd.to_numeric(df['FixtureId'], errors='coerce').astype('Int64')
+    else:
+        df['FixtureId'] = pd.Series(dtype='Int64')
+
     # Asegurar el estándar de las 24 columnas
     for col in default_cols:
         if col not in df.columns:
@@ -200,7 +204,8 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
                             elif tipo == "Red Cards": stats_dict[f'{prefijo}R'] = int(valor)
 
             if idx_existente is not None:
-                df_hist.at[idx_existente, "FixtureId"] = match_id
+                # 🔥 FIX: Asignar como entero Int64 limpio
+                df_hist.at[idx_existente, "FixtureId"] = int(match_id) if pd.notna(match_id) else pd.NA
                 df_hist.at[idx_existente, "FTHG"] = match.get("goals", {}).get("home")
                 df_hist.at[idx_existente, "FTAG"] = match.get("goals", {}).get("away")
                 df_hist.at[idx_existente, "HTHG"] = h_ht_score
@@ -218,8 +223,9 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
             palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "play-off", "qualifying"]
             es_eliminatoria = any(palabra in ronda_texto for palabra in palabras_clave)
 
+            # 🔥 FIX: Asignar FixtureId como entero Int64 limpio al crear registro nuevo
             nuevo = {
-                "FixtureId": match_id,
+                "FixtureId": int(match_id) if pd.notna(match_id) else pd.NA,
                 "League": league_name,
                 "LeagueId": liga_id_str,
                 "Country": league_country,
@@ -297,15 +303,15 @@ def registrar_predicciones(proyecciones_dict):
     filas = []
     for key, projs in proyecciones_dict.items():
         for p in projs:
-            # 🔥 OPTIMIZACIÓN: Usar FixtureId en lugar de texto concatenado
-            match_id = str(p.get('fixture_id', ''))
-            if not match_id or match_id == "None":
-                # Fallback legado por si acaso
-                match_id = f"{p.get('local_id', '')}_{p.get('visita_id', '')}_{p.get('fecha_str', '')}"
-            if not match_id or match_id == "__": continue
+            match_id = p.get('fixture_id')
+            if pd.notna(match_id):
+                match_id_val = str(int(match_id))
+            else:
+                match_id_val = f"{p.get('local_id', '')}_{p.get('visita_id', '')}_{p.get('fecha_str', '')}"
+            if not match_id_val or match_id_val == "__": continue
             
             base = {
-                'MatchId': match_id,
+                'MatchId': match_id_val,
                 'Fecha': p.get('fecha_str', ''),
                 'Local': p.get('local', ''),
                 'Visita': p.get('visita', ''),
