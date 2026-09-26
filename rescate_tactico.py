@@ -1,6 +1,7 @@
 import os
 import glob
 import pandas as pd
+import json
 import time
 import sys
 
@@ -10,6 +11,21 @@ sys.stdout.reconfigure(line_buffering=True)
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from api_client import FootballAPI
 
+def cargar_ligas_con_estadisticas():
+    rutas_posibles = ["config/Active_Leagues_Coverage.json", "config/football/Active_Leagues_Coverage.json"]
+    for ruta in rutas_posibles:
+        if os.path.exists(ruta):
+            try:
+                with open(ruta, "r", encoding="utf-8") as f:
+                    coverage = json.load(f)
+                
+                ligas_soportadas = {str(item.get("league_id", item.get("id"))) for item in coverage if item.get("can_fetch_stats") is True}
+                print(f"📊 [INFO] Cobertura Táctica Activa: {len(ligas_soportadas)} ligas configuradas para estadísticas.")
+                return ligas_soportadas
+            except Exception as e:
+                print(f"⚠️ Aviso: Error leyendo {ruta} ({e}).")
+    return set()
+
 def rescatar_estadisticas_selecciones():
     API_KEY = os.environ.get("API_FOOTBALL_KEY")
     if not API_KEY:
@@ -17,14 +33,14 @@ def rescatar_estadisticas_selecciones():
         return
 
     api = FootballAPI(API_KEY)
+    ligas_soportadas = cargar_ligas_con_estadisticas()
     
-    # Buscar todos los históricos mensuales
     archivos = sorted(glob.glob("historico_mensual/football/historico_*.csv"))
     if not archivos:
         print("⚠️ No se encontraron archivos históricos mensuales.")
         return
 
-    print(f"🔍 [RESCATE TÁCTICO] Analizando {len(archivos)} archivos mensuales en busca de selecciones sin estadísticas...")
+    print(f"🔍 [RESCATE TÁCTICO] Analizando {len(archivos)} archivos mensuales...")
 
     total_actualizados = 0
     peticiones_realizadas = 0
@@ -32,17 +48,21 @@ def rescatar_estadisticas_selecciones():
     for filepath in archivos:
         df = pd.read_csv(filepath)
         
-        # Asegurar tipado Int64 para los IDs
         if 'FixtureId' in df.columns:
             df['FixtureId'] = pd.to_numeric(df['FixtureId'], errors='coerce').astype('Int64')
+        if 'LeagueId' in df.columns:
+            df['LeagueId'] = df['LeagueId'].astype(str)
 
-        # Filtrar filas donde Country == 'World', tenga FixtureId y falten remates (HS)
         if 'Country' in df.columns and 'HS' in df.columns:
+            # 🛡️ Filtro estricto: Selecciones (World) + Que la liga soporte estadísticas tácticas
             mask = (df['Country'] == 'World') & (df['FixtureId'].notna()) & (df['HS'].isna())
+            if 'LeagueId' in df.columns and ligas_soportadas:
+                mask = mask & (df['LeagueId'].isin(ligas_soportadas))
+
             pendientes_indices = df[mask].index
 
             if len(pendientes_indices) > 0:
-                print(f"\n📂 Archivo {os.path.basename(filepath)}: Encontrados {len(pendientes_indices)} partidos de selecciones sin estadística táctica.")
+                print(f"\n📂 Archivo {os.path.basename(filepath)}: {len(pendientes_indices)} partidos válidos de selecciones con cobertura táctica.")
                 
                 archivo_modificado = False
                 for idx in pendientes_indices:
@@ -56,7 +76,7 @@ def rescatar_estadisticas_selecciones():
                     try:
                         resp = api.get_fixture_statistics(fixture_id)
                         peticiones_realizadas += 1
-                        time.sleep(1.2)  # Pausa de cortesía para la API
+                        time.sleep(1.2)
                     except Exception as e:
                         print(f"     ❌ Error de conexión con la API: {e}")
                         continue
@@ -79,7 +99,6 @@ def rescatar_estadisticas_selecciones():
                                 elif tipo == "Yellow Cards": stats_dict[f'{prefijo}Y'] = int(valor)
                                 elif tipo == "Red Cards": stats_dict[f'{prefijo}R'] = int(valor)
 
-                        # Inyectar estadísticas rescatadas al DataFrame
                         for k, v in stats_dict.items():
                             if k in df.columns:
                                 df.at[idx, k] = v
@@ -90,12 +109,11 @@ def rescatar_estadisticas_selecciones():
                     else:
                         print(f"     ⚠️ Sin respuesta de estadísticas para este partido.")
 
-                # Guardar el archivo actualizado si hubo cambios en este mes
                 if archivo_modificado:
                     df.to_csv(filepath, index=False)
                     print(f"💾 Archivo guardado con mejoras tácticas: {os.path.basename(filepath)}")
 
-    print(f"\n🎉 [RESCATE FINALIZADO] Se completaron estadísticas tácticas para un total de {total_actualizados} partidos de selecciones en {peticiones_realizadas} peticiones.")
+    print(f"\n🎉 [RESCATE FINALIZADO] Se completaron estadísticas tácticas para {total_actualizados} partidos válidos en {peticiones_realizadas} peticiones.")
 
 if __name__ == "__main__":
     rescatar_estadisticas_selecciones()
