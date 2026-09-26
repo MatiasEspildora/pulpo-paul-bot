@@ -204,7 +204,6 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
                             elif tipo == "Red Cards": stats_dict[f'{prefijo}R'] = int(valor)
 
             if idx_existente is not None:
-                # 🔥 FIX: Asignar como entero Int64 limpio
                 df_hist.at[idx_existente, "FixtureId"] = int(match_id) if pd.notna(match_id) else pd.NA
                 df_hist.at[idx_existente, "FTHG"] = match.get("goals", {}).get("home")
                 df_hist.at[idx_existente, "FTAG"] = match.get("goals", {}).get("away")
@@ -223,7 +222,6 @@ def actualizar_maestro_con_partidos(df_hist, partidos_lista, fecha_str, statuses
             palabras_clave = ["round", "quarter", "semi", "final", "elimination", "playoff", "play-off", "qualifying"]
             es_eliminatoria = any(palabra in ronda_texto for palabra in palabras_clave)
 
-            # 🔥 FIX: Asignar FixtureId como entero Int64 limpio al crear registro nuevo
             nuevo = {
                 "FixtureId": int(match_id) if pd.notna(match_id) else pd.NA,
                 "League": league_name,
@@ -450,9 +448,23 @@ def run_process(df_externo=None):
         proyecciones_globales = {} 
         
         def procesar_lote_partidos(lista_partidos):
+            partidos_validos = [
+                m for m in lista_partidos 
+                if m.get("fixture", {}).get("status", {}).get("short") in statuses_map["upcoming"]
+            ]
+            
+            total_partidos = len(partidos_validos)
+            print(f"   ↳ 🎯 Encontrados {total_partidos} partidos próximos para proyectar en este lote.")
+            
+            idx_match = 0
             for match in lista_partidos:
                 try:
                     if match.get("fixture", {}).get("status", {}).get("short") in statuses_map["upcoming"]:
+                        idx_match += 1
+                        h_name = match.get("teams", {}).get("home", {}).get("name", "Local")
+                        a_name = match.get("teams", {}).get("away", {}).get("name", "Visita")
+                        
+                        print(f"     [{idx_match}/{total_partidos}] Analizando: {h_name} vs {a_name}...")
                         
                         date_str = match.get("fixture", {}).get("date", "")
                         if not date_str:
@@ -470,10 +482,9 @@ def run_process(df_externo=None):
                         es_seleccion = (pais == "World")
                         
                         if f"{pais}_{liga}" in ligas_baneadas:
+                            print(f"       ⚠️ Omitido por Cuarentena (Blacklist): {pais} - {liga}")
                             continue
                             
-                        h_name = match.get("teams", {}).get("home", {}).get("name")
-                        a_name = match.get("teams", {}).get("away", {}).get("name")
                         h_id = match.get("teams", {}).get("home", {}).get("id")
                         a_id = match.get("teams", {}).get("away", {}).get("id")
                         
@@ -514,6 +525,7 @@ def run_process(df_externo=None):
                         
                         proyecciones_globales.setdefault((pais, liga), []).append(proj)
                 except Exception as e:
+                    print(f"       ❌ Error procesando partido individual: {e}")
                     continue
 
         print("⚽ [FOOTBALL] Generando proyecciones globales...")
